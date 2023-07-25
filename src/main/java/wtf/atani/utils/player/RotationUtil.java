@@ -6,6 +6,8 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraft.util.MathHelper;
 import wtf.atani.utils.interfaces.Methods;
+import wtf.atani.utils.math.MathUtil;
+import wtf.atani.utils.math.random.RandomUtil;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -16,7 +18,7 @@ public class RotationUtil implements Methods {
         return new Vec3(MathHelper.clamp(look.xCoord, axisAlignedBB.minX, axisAlignedBB.maxX), MathHelper.clamp(look.yCoord, axisAlignedBB.minY, axisAlignedBB.maxY), MathHelper.clamp(look.zCoord, axisAlignedBB.minZ, axisAlignedBB.maxZ));
     }
 
-    public static float[] getRotation(Entity entity, boolean mouseFix, boolean heuristics, boolean prediction) {
+    public static float[] getRotation(Entity entity, boolean mouseFix, boolean heuristics, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch) {
         final Vec3 bestVector = getBestVector(mc.thePlayer.getPositionEyes(1F), entity.getEntityBoundingBox());
         double x = bestVector.xCoord - mc.thePlayer.posX;
         double y = bestVector.yCoord - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
@@ -55,8 +57,10 @@ public class RotationUtil implements Methods {
         }
 
         double d3 = MathHelper.sqrt(x * x + z * z);
-        float f = (float) (MathHelper.atan2(z, x) * (180D / Math.PI)) - 90.0F;
-        float f1 = (float) (-(MathHelper.atan2(y, d3) * (180D / Math.PI)));
+        float yawSpeed = (float) RandomUtil.randomBetween(minYaw, maxYaw);
+        float pitchSpeed = (float) RandomUtil.randomBetween(minPitch, maxPitch);
+        float f = (float) (MathHelper.atan2(z, x) * (yawSpeed / Math.PI)) - 90.0F;
+        float f1 = (float) (-(MathHelper.atan2(y, d3) * (pitchSpeed / Math.PI)));
         float calcPitch = updateRotation(PlayerHandler.pitch, f1);
         float calcYaw = updateRotation(PlayerHandler.yaw, f);
         calcPitch = MathHelper.clamp(calcPitch, -90, 90);

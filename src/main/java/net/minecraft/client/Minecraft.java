@@ -184,6 +184,7 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
+import wtf.atani.event.events.ClickingEvent;
 import wtf.atani.event.events.KeyInputEvent;
 import wtf.atani.event.handling.EventHandling;
 import wtf.atani.loader.ModificationLoader;
@@ -2101,6 +2102,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             {
                 this.displayGuiScreen(new GuiChat("/"));
             }
+
+            EventHandling.getInstance().publishEvent(new ClickingEvent());
 
             if (this.thePlayer.isUsingItem())
             {

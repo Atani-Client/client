@@ -6,6 +6,7 @@ import net.optifine.util.MathUtils;
 
 public class MathHelper
 {
+
     public static final float SQRT_2 = sqrt_float(2.0F);
     private static final int SIN_BITS = 12;
     private static final int SIN_MASK = 4095;
@@ -35,6 +36,159 @@ public class MathHelper
     private static final double field_181163_d;
     private static final double[] field_181164_e;
     private static final double[] field_181165_f;
+
+    /**
+     * Though it looks like an array, this is really more like a mapping.  Key (index of this array) is the upper 5 bits
+     * of the result of multiplying a 32-bit unsigned integer by the B(2, 5) De Bruijn sequence 0x077CB531.  Value
+     * (value stored in the array) is the unique index (from the right) of the leftmost one-bit in a 32-bit unsigned
+     * integer that can cause the upper 5 bits to get that value.  Used for highly optimized "find the log-base-2 of
+     * this number" calculations.
+     */
+    public static double fastInvSqrt(double p_181161_0_)
+    {
+        double d0 = 0.5D * p_181161_0_;
+        long i = Double.doubleToRawLongBits(p_181161_0_);
+        i = 6910469410427058090L - (i >> 1);
+        p_181161_0_ = Double.longBitsToDouble(i);
+        p_181161_0_ = p_181161_0_ * (1.5D - d0 * p_181161_0_ * p_181161_0_);
+        return p_181161_0_;
+    }
+
+    public static float wrapDegrees(float value)
+    {
+        value = value % 360.0F;
+
+        if (value >= 180.0F)
+        {
+            value -= 360.0F;
+        }
+
+        if (value < -180.0F)
+        {
+            value += 360.0F;
+        }
+
+        return value;
+    }
+
+    public static float sqrt(float value)
+    {
+        return (float)Math.sqrt((double)value);
+    }
+
+    public static float sqrt(double value)
+    {
+        return (float)Math.sqrt(value);
+    }
+
+    public static double atan2(double p_181159_0_, double p_181159_2_)
+    {
+        double d0 = p_181159_2_ * p_181159_2_ + p_181159_0_ * p_181159_0_;
+
+        if (Double.isNaN(d0))
+        {
+            return Double.NaN;
+        }
+        else
+        {
+            boolean flag = p_181159_0_ < 0.0D;
+
+            if (flag)
+            {
+                p_181159_0_ = -p_181159_0_;
+            }
+
+            boolean flag1 = p_181159_2_ < 0.0D;
+
+            if (flag1)
+            {
+                p_181159_2_ = -p_181159_2_;
+            }
+
+            boolean flag2 = p_181159_0_ > p_181159_2_;
+
+            if (flag2)
+            {
+                double d1 = p_181159_2_;
+                p_181159_2_ = p_181159_0_;
+                p_181159_0_ = d1;
+            }
+
+            double d9 = fastInvSqrt(d0);
+            p_181159_2_ = p_181159_2_ * d9;
+            p_181159_0_ = p_181159_0_ * d9;
+            double d2 = field_181163_d + p_181159_0_;
+            int i = (int)Double.doubleToRawLongBits(d2);
+            double d3 = field_181164_e[i];
+            double d4 = field_181165_f[i];
+            double d5 = d2 - field_181163_d;
+            double d6 = p_181159_0_ * d4 - p_181159_2_ * d5;
+            double d7 = (6.0D + d6 * d6) * d6 * 0.16666666666666666D;
+            double d8 = d3 + d7;
+
+            if (flag2)
+            {
+                d8 = (Math.PI / 2D) - d8;
+            }
+
+            if (flag1)
+            {
+                d8 = Math.PI - d8;
+            }
+
+            if (flag)
+            {
+                d8 = -d8;
+            }
+
+            return d8;
+        }
+    }
+
+
+    /**
+     * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
+     * third parameters.
+     */
+    public static int clamp(int num, int min, int max)
+    {
+        if (num < min)
+        {
+            return min;
+        }
+        else
+        {
+            return num > max ? max : num;
+        }
+    }
+
+    /**
+     * Returns the value of the first parameter, clamped to be within the lower and upper limits given by the second and
+     * third parameters
+     */
+    public static float clamp(float num, float min, float max)
+    {
+        if (num < min)
+        {
+            return min;
+        }
+        else
+        {
+            return num > max ? max : num;
+        }
+    }
+
+    public static double clamp(double num, double min, double max)
+    {
+        if (num < min)
+        {
+            return min;
+        }
+        else
+        {
+            return num > max ? max : num;
+        }
+    }
 
     /**
      * sin looked up in a table

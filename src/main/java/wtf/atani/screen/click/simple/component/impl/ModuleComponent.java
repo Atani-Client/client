@@ -29,7 +29,7 @@ public class ModuleComponent extends Component {
     public void drawScreen(int mouseX, int mouseY) {
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
         RenderUtil.drawRect(getPosX(), getPosY(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
-        normal.drawTotalCenteredStringWithShadow(module.getName(), getPosX() + getBaseWidth() / 2, getPosY() + getBaseHeight() / 2, module.isEnabled() ? new Color(200, 200, 200).getRGB() : -1);
+        normal.drawTotalCenteredStringWithShadow(module.getName(), getPosX() + getBaseWidth() / 2, getPosY() + getBaseHeight() / 2, !module.isEnabled() ? new Color(200, 200, 200).getRGB() : -1);
         if(expanded && this.subComponents.isEmpty()) {
             for(Value value : ValueStorage.getInstance().getValues(module)) {
                 float valueY = this.getPosY() + this.getBaseHeight();

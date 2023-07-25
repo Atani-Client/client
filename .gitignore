@@ -1,3 +1,7 @@
 # Project exclude paths
+/test_run/
 /target/
+/logs/
 /.idea/
+logs/latest.log
+

@@ -128,5 +128,9 @@ public class SliderValue<T extends Number> extends Value<T> {
             this.setValue(NumberParser.parse(value, (Class<T>) ((Number) this.value).getClass()));
         } catch (NumberFormatException e) {}
     }
+
+    public int getDecimalPlaces() {
+        return decimalPlaces;
+    }
 }
 

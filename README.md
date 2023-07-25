@@ -1,2 +1,2 @@
 # Client
-Client.
+Please follow naming conventions.

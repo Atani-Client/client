@@ -7,6 +7,10 @@ public class TimeHelper {
         return System.currentTimeMillis() - ms >= delay;
     }
 
+    public boolean hasReached(double delay) {
+        return System.currentTimeMillis() - ms >= delay;
+    }
+
     public boolean hasReached(long delay, boolean reset) {
         if(hasReached(delay)) {
             if(reset)

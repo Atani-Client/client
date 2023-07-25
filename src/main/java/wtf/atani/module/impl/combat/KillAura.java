@@ -12,6 +12,7 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.combat.FightUtil;
+import wtf.atani.utils.math.random.RandomUtil;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.utils.player.PlayerHandler;
 import wtf.atani.utils.player.RotationUtil;
@@ -20,6 +21,7 @@ import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
+import java.security.SecureRandom;
 import java.util.List;
 
 @ModuleInfo(name = "KillAura", description = "Attacks people", category = Category.COMBAT)
@@ -49,6 +51,8 @@ public class KillAura extends Module {
     public StringBoxValue resetMode = new StringBoxValue("Rest Mode", "How will the rotations reset?", this, new String[]{"Silent", "Locked"});
     public CheckBoxValue rayTrace = new CheckBoxValue("Ray Trace", "Ray Trace?",this, true);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
+    public SliderValue<Float> minCps = new SliderValue<>("Min CPS", "Minimum CPS", this, 10f, 0f, 20f, 1);
+    public SliderValue<Float> maxCps = new SliderValue<>("Max CPS", "Maximum CPS", this, 12f, 0f, 20f, 1);
 
     // Targets
     private EntityLivingBase curEntity;
@@ -58,6 +62,12 @@ public class KillAura extends Module {
     // Rotations
     float curYaw, curPitch;
     boolean hasSilentRotations;
+
+    // Attacking
+    private TimeHelper attackTimer = new TimeHelper();
+    private double cpsDelay = 0;
+    private TimeHelper cpsTimeHelper = new TimeHelper();
+    private boolean wasCPSDrop = false;
 
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
@@ -139,9 +149,35 @@ public class KillAura extends Module {
             if(!this.rayTrace.getValue() || rayTracedEntity != null) {
                 Entity attackEntity = rayTrace.getValue() ? rayTracedEntity : curEntity;
                 if(attackEntity != null && FightUtil.getRange(attackEntity) <= this.attackRange.getValue()) {
-                    mc.playerController.attackEntity(mc.thePlayer, attackEntity);
+                    if(this.attackTimer.hasReached(cpsDelay)) {
+                        mc.thePlayer.swingItem();
+                        mc.playerController.attackEntity(mc.thePlayer, attackEntity);
+                        calculateCps();
+                    }
                 }
             }
+        } else {
+            cpsDelay = 0;
+        }
+    }
+
+    private void calculateCps() {
+        double cps = RandomUtil.randomBetween(this.minCps.getValue().floatValue(), this.maxCps.getValue().floatValue());
+        final SecureRandom random = new SecureRandom();
+        final double maxCPS = cps + 1;
+        cpsDelay = cps + (random.nextInt() * (maxCPS - cps));
+
+        if (cpsTimeHelper.hasReached((long) (1000.0 / RandomUtil.randomBetween(cps, this.maxCps.getValue().floatValue())), true)) {
+            wasCPSDrop = !wasCPSDrop;
+        }
+
+        final double cur = System.currentTimeMillis() * random.nextInt(220);
+
+        double timeCovert = Math.max(cpsDelay, cur) / 3;
+        if (wasCPSDrop) {
+            cpsDelay = (int) timeCovert;
+        } else {
+            cpsDelay = (int) (cps + (random.nextInt() * (maxCPS - cps)) / timeCovert);
         }
     }
 

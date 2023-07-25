@@ -14,6 +14,8 @@ import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 import wtf.atani.value.storage.ValueStorage;
 
+import java.awt.*;
+
 public class ModuleComponent extends Component {
 
     private Module module;
@@ -30,7 +32,7 @@ public class ModuleComponent extends Component {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        FontStorage.getInstance().findFont("Roboto", 19).drawTotalCenteredStringWithShadow(module.getName(), posX + width / 2, posY + elementHeight / 2, -1);
+        FontStorage.getInstance().findFont("Roboto", 19).drawTotalCenteredStringWithShadow(module.getName(), posX + width / 2, posY + elementHeight / 2, module.isEnabled() ? -1 : new Color(210, 210, 210).getRGB());
         float y = this.posY + this.elementHeight;
         if(this.expanded) {
             for(Value value : ValueStorage.getInstance().getValues(module)) {
@@ -48,6 +50,8 @@ public class ModuleComponent extends Component {
                         this.subComponents.remove(foundComponent);
                     }
                 } else {
+                    if(!value.isVisible())
+                        continue;
                     Component component = this.createComponent(value, posX, y, width, elementHeight);
                     this.subComponents.add(component);
                     y += component.getFinalHeight();
@@ -56,8 +60,18 @@ public class ModuleComponent extends Component {
         } else {
             this.subComponents.clear();
         }
+        float y1 = this.posY + this.elementHeight;
         for(Component component : this.subComponents) {
+            ValueComponent valueComponent = (ValueComponent) component;
+            if(valueComponent.getValue() instanceof CheckBoxValue) {
+                ((CheckBoxComponent)valueComponent).setPosY(y1);
+            } else if(valueComponent.getValue() instanceof StringBoxValue) {
+                ((StringBoxComponent)valueComponent).setPosY(y1);
+            } else if(valueComponent.getValue() instanceof SliderValue) {
+                ((SliderComponent)valueComponent).setPosY(y1);
+            }
             component.drawScreen(mouseX, mouseY, partialTicks);
+            y1 += component.getFinalHeight();
         }
     }
 

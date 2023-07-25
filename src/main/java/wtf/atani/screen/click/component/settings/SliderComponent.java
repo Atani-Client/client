@@ -62,4 +62,8 @@ public class SliderComponent extends ValueComponent {
     public Value getValue() {
         return value;
     }
+
+    public void setPosY(float posY) {
+        this.posY = posY;
+    }
 }

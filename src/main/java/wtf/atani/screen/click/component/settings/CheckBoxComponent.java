@@ -42,4 +42,8 @@ public class CheckBoxComponent extends ValueComponent {
     public Value getValue() {
         return value;
     }
+
+    public void setPosY(float posY) {
+        this.posY = posY;
+    }
 }

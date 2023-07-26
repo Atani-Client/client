@@ -164,6 +164,11 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         float sixthY = this.height / 6F;
         RenderUtil.drawRect(fourthX - 1, sixthY * 0.5f, fourthX, sixthY * 3, -1);
         RenderUtil.drawRect(fourthX * 2 + 1, sixthY * 0.5f, fourthX, sixthY * 3, -1);
+
+        buttonList.clear();
+
+        GuiButton lol = new GuiButton(1, 5, 5, "lol");
+        buttonList.add(lol);
     }
 
     /**

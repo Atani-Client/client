@@ -7,7 +7,7 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 
-@ModuleInfo(name = "No Click Delay", description = "Removes clicking delay", category = Category.MISCELLANEOUS)
+@ModuleInfo(name = "NoClickDelay", description = "Removes clicking delay", category = Category.MISCELLANEOUS)
 public class NoClickDelay extends Module {
 
     @Listen

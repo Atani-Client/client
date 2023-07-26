@@ -4,3 +4,8 @@
 test_run
 logs
 
+*.lock
+*.mca
+*.dat
+*.log
+*.gz

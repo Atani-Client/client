@@ -8,7 +8,7 @@ import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.value.impl.StringBoxValue;
 
-@ModuleInfo(name = "No Fall", description = "Reduces fall damage", category = Category.PLAYER)
+@ModuleInfo(name = "NoFall", description = "Reduces fall damage", category = Category.PLAYER)
 public class NoFall extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Edit", "Vulcan"});
 

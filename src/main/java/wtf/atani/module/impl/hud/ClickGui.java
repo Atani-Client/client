@@ -9,7 +9,7 @@ import wtf.atani.screen.click.simple.SimpleClickGuiScreen;
 @ModuleInfo(name = "ClickGui", description = "A clicky gui", category = Category.HUD, key = Keyboard.KEY_RSHIFT)
 public class ClickGui extends Module {
 
-    private SimpleClickGuiScreen clickGuiScreen;
+    public static SimpleClickGuiScreen clickGuiScreen;
 
     @Override
     public void onEnable() {

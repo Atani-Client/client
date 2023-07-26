@@ -4,6 +4,7 @@ import com.google.common.base.Supplier;
 import wtf.atani.value.interfaces.ValueChangeListener;
 import wtf.atani.value.storage.ValueStorage;
 
+import javax.swing.text.LabelView;
 import java.util.ArrayList;
 
 public abstract class Value<T> {
@@ -76,6 +77,8 @@ public abstract class Value<T> {
     public Object getOwner() {
         return owner;
     }
+
+    public abstract String getValueAsString();
 
     public T getValue() {
         return value;

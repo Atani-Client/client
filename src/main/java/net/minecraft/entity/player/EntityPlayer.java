@@ -164,7 +164,7 @@ public abstract class EntityPlayer extends EntityLivingBase
      */
     private int itemInUseCount;
     protected float speedOnGround = 0.1F;
-    public float speedInAir = 0.02F;
+    protected float speedInAir = 0.02F;
     private int lastXPSound;
 
     /** The player's unique game profile */

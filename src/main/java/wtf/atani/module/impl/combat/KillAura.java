@@ -110,12 +110,10 @@ public class KillAura extends Module {
 
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
-        if(curEntity != null) {
-
+        if(curEntity != null && FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue())) {
             float[] rots = null;
-            if (FightUtil.getRange(curEntity) <= this.rotationRange.getValue().doubleValue()) {
+            if (FightUtil.getRange(curEntity) <= this.rotationRange.getValue().doubleValue())
                 rots = RotationUtil.getRotation(curEntity, mouseFix.getValue(), heuristics.getValue(), prediction.getValue(), this.minYaw.getValue().floatValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue());
-            }
 
             if (rots != null) {
                 boolean necessary = !necessaryRotations.getValue() || (mc.objectMouseOver == null || mc.objectMouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY) || (FightUtil.getRange(curEntity) >= nearDistance.getValue().floatValue() && nearRotate.getValue());
@@ -131,8 +129,6 @@ public class KillAura extends Module {
                 if (!necessaryRotations.getValue() || necessary || !pitch)
                     curPitch = rots[1];
             }
-
-            System.out.println("ASd2E");
 
             rotationEvent.setYaw(curYaw);
             rotationEvent.setPitch(curPitch);
@@ -150,7 +146,7 @@ public class KillAura extends Module {
     @Listen
     public final void onClick(ClickingEvent clickingEvent) {
         if(this.curEntity != null) {
-            Entity rayTracedEntity = RaytraceUtil.rayCast(this.attackRange.getValue() + 1, PlayerHandler.yaw, PlayerHandler.pitch);
+            Entity rayTracedEntity = RaytraceUtil.rayCast(this.attackRange.getValue(), PlayerHandler.yaw, PlayerHandler.pitch);
             if(!this.rayTrace.getValue() || rayTracedEntity != null) {
                 Entity attackEntity = rayTrace.getValue() ? rayTracedEntity : curEntity;
                 if(attackEntity != null && FightUtil.getRange(attackEntity) <= this.attackRange.getValue()) {

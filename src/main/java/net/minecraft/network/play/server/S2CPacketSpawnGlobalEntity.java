@@ -1,6 +1,7 @@
 package net.minecraft.network.play.server;
 
 import java.io.IOException;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.network.Packet;
@@ -11,6 +12,7 @@ import net.minecraft.util.MathHelper;
 public class S2CPacketSpawnGlobalEntity implements Packet<INetHandlerPlayClient>
 {
     private int entityId;
+
     private int x;
     private int y;
     private int z;

@@ -10,7 +10,6 @@ import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
-import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "TickBase", description = "Shifts time in combat", category = Category.COMBAT)
 public class TickBase extends Module {

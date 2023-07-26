@@ -30,6 +30,14 @@ public class S08PacketPlayerPosLook implements Packet<INetHandlerPlayClient>
         this.field_179835_f = p_i45993_9_;
     }
 
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
+
     /**
      * Reads the raw packet data from the data stream.
      */

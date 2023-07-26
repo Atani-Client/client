@@ -23,7 +23,7 @@ public class ModificationLoader implements ClientInformationAccess {
 
         MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
         try {
-            MicrosoftAuthResult result = authenticator.loginWithCredentials("legendarysomeone92@gmail.com", "VP^l.:9M`^mV!Ec_\"eaTsqxe,pP(=Rnr^lD1Q'0vzH]h#T5'\"w");
+            MicrosoftAuthResult result = authenticator.loginWithCredentials("how about, ", "no?");
             Minecraft.getMinecraft().session = new Session(result.getProfile().getName(), result.getProfile().getId(), result.getAccessToken(), "mojang");
         } catch (MicrosoftAuthenticationException e) {
             e.printStackTrace();

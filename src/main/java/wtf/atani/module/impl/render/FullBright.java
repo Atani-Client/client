@@ -1,4 +1,4 @@
-package wtf.atani.module.impl.player;
+package wtf.atani.module.impl.render;
 
 import wtf.atani.event.events.UpdateEvent;
 import wtf.atani.event.radbus.Listen;

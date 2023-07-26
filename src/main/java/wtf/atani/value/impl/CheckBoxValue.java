@@ -26,11 +26,6 @@ public class CheckBoxValue extends Value<Boolean> {
     }
 
     @Override
-    public String getValueAsString() {
-        return getValue().toString();
-    }
-
-    @Override
     public void setValue(String input) {
         Optional<Boolean> result = BooleanParser.parse(input);
         result.ifPresent(aBoolean -> this.value = aBoolean);

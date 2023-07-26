@@ -4,7 +4,6 @@ import com.google.common.base.Supplier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.MovingObjectPosition;
-import org.lwjgl.input.Keyboard;
 import wtf.atani.event.events.ClickingEvent;
 import wtf.atani.event.events.RotationEvent;
 import wtf.atani.event.events.UpdateMotionEvent;
@@ -25,7 +24,7 @@ import wtf.atani.value.impl.StringBoxValue;
 import java.security.SecureRandom;
 import java.util.List;
 
-@ModuleInfo(name = "KillAura", description = "Attacks people", category = Category.COMBAT, key = Keyboard.KEY_R)
+@ModuleInfo(name = "KillAura", description = "Attacks people", category = Category.COMBAT)
 public class KillAura extends Module {
 
     public SliderValue<Float> findRange = new SliderValue<>("Search Range", "What'll be the range for searching for targets?", this, 4f, 3f, 10f, 1);
@@ -56,7 +55,7 @@ public class KillAura extends Module {
     public SliderValue<Float> maxCps = new SliderValue<>("Max CPS", "Maximum CPS", this, 12f, 0f, 20f, 1);
 
     // Targets
-    public static EntityLivingBase curEntity;
+    private EntityLivingBase curEntity;
     private int currentIndex;
     private TimeHelper switchTimer = new TimeHelper();
 

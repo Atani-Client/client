@@ -43,7 +43,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
-import wtf.atani.event.events.Render2DEvent;
 
 public class GuiIngame extends Gui
 {
@@ -345,8 +344,6 @@ public class GuiIngame extends Gui
         {
             this.overlayPlayerList.updatePlayerList(false);
         }
-
-        new Render2DEvent(scaledresolution).onFire();
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();

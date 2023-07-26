@@ -10,11 +10,6 @@ import net.minecraft.world.World;
 public class S14PacketEntity implements Packet<INetHandlerPlayClient>
 {
     protected int entityId;
-
-    public int getEntityId() {
-        return entityId;
-    }
-
     protected byte posX;
     protected byte posY;
     protected byte posZ;

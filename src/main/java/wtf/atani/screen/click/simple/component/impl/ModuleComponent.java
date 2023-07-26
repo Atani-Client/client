@@ -18,7 +18,7 @@ import java.awt.*;
 public class ModuleComponent extends Component {
 
     private final Module module;
-    private boolean expanded = false;
+    private boolean expanded = true;
 
     public ModuleComponent(Module module, float posX, float posY, float width, float height) {
         super(posX, posY, width, height);
@@ -101,13 +101,10 @@ public class ModuleComponent extends Component {
         float totalComponentHeight = 0;
         if(this.expanded) {
             for(Component component : this.subComponents) {
-                totalComponentHeight += component.isVisible() ? component.getFinalHeight() : 0;
+                totalComponentHeight += component.isVisible() ? 0 : component.getFinalHeight();
             }
         }
         return this.getBaseHeight() + totalComponentHeight;
     }
 
-    public Module getModule() {
-        return module;
-    }
 }

@@ -28,8 +28,8 @@ public class SliderComponent extends ValueComponent {
         if(this.expanded) {
             RenderUtil.drawRect(getPosX(), getPosY() + getBaseHeight(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
             SliderValue sliderValue = (SliderValue) value;
-            String min = sliderValue.getMinimum().floatValue() + "";
-            String max = sliderValue.getMaximum().floatValue() + "";
+            String min = sliderValue.getMinimum().doubleValue() + "";
+            String max = sliderValue.getMaximum().doubleValue() + "";
             normal.drawStringWithShadow(min, getPosX() + 5, getPosY() + getBaseHeight() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
             normal.drawStringWithShadow(max, getPosX() + this.getBaseWidth() - 5 - normal.getStringWidth(max), getPosY() + getBaseHeight() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
             float sliderX = getPosX() + 5 + normal.getStringWidth(min) + 3;
@@ -42,8 +42,8 @@ public class SliderComponent extends ValueComponent {
                             / (sliderValue.getMaximum().floatValue() - sliderValue.getMinimum().floatValue()) * sliderWidth);
             RenderUtil.drawRect(sliderX, sliderY, length, sliderHeight, new Color(0, 0, 0, 90).getRGB());
             if(Mouse.isButtonDown(0) && RenderUtil.isHovered(mouseX, mouseY, this.getPosX(), this.getPosY() + this.getBaseHeight(), this.getBaseWidth(), this.getBaseHeight())) {
-                double min1 = sliderValue.getMinimum().floatValue();
-                double max1 = sliderValue.getMaximum().floatValue();
+                double min1 = sliderValue.getMinimum().doubleValue();
+                double max1 = sliderValue.getMaximum().doubleValue();
                 double newValue = MathUtil.round((mouseX - sliderX) * (max1 - min1) / (sliderWidth - 1.0f) + min1, sliderValue.getDecimalPlaces());
                 sliderValue.setValue(newValue);
             }

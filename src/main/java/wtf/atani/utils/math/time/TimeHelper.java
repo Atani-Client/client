@@ -28,8 +28,4 @@ public class TimeHelper {
     public long getMs() {
         return System.currentTimeMillis() - ms;
     }
-
-    public void setMs(long ms) {
-        this.ms = ms;
-    }
 }

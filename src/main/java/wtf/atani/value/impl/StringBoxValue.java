@@ -29,11 +29,6 @@ public class StringBoxValue extends Value<String> {
     }
 
     @Override
-    public String getValueAsString() {
-        return getValue();
-    }
-
-    @Override
     public void setValue(String string) {
         this.value = string;
     }

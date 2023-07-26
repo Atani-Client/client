@@ -7,6 +7,7 @@ import wtf.atani.utils.interfaces.Methods;
 
 public class MoveUtil implements Methods {
 
+<<<<<<< Updated upstream
     public static double getPredictedMotion(double motion, int ticks) {
         if (ticks == 0) return motion;
         double predicted = motion;
@@ -16,6 +17,10 @@ public class MoveUtil implements Methods {
         }
 
         return predicted;
+=======
+    public static void strafe(MoveEntityEvent moveEntityEvent) {
+        setMoveSpeed(moveEntityEvent, Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ));
+>>>>>>> Stashed changes
     }
 
     public static double[] getMotion(final double speed, final float strafe, final float forward, final float yaw) {
@@ -27,6 +32,7 @@ public class MoveUtil implements Methods {
         return new double[] { motionX, motionZ };
     }
 
+<<<<<<< Updated upstream
     public static float getSpeedBoost(float times) {
         float boost = (float) ((MoveUtil.getBaseMoveSpeed() - 0.2875F) * times);
         if(0 > boost) {
@@ -89,6 +95,8 @@ public class MoveUtil implements Methods {
         }
     }
 
+=======
+>>>>>>> Stashed changes
     public static void setMoveSpeed(final MoveEntityEvent event, final double speed) {
         double forward = mc.thePlayer.movementInput.moveForward;
         double strafe = mc.thePlayer.movementInput.moveStrafe;

@@ -69,6 +69,15 @@ public class C03PacketPlayer implements Packet<INetHandlerPlayServer>
         this.onGround = isOnGround;
     }
 
+    public void setOnGround(boolean isOnGround)
+    {
+        this.onGround = isOnGround;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
     /**
      * Passes this Packet on to the NetHandler for processing.
      */

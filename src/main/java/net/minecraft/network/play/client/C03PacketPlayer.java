@@ -8,13 +8,57 @@ import net.minecraft.network.play.INetHandlerPlayServer;
 public class C03PacketPlayer implements Packet<INetHandlerPlayServer>
 {
     protected double x;
-    protected double y;
+    public double y;
     protected double z;
     protected float yaw;
     protected float pitch;
     protected boolean onGround;
     protected boolean moving;
     protected boolean rotating;
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getZ() {
+        return z;
+    }
+
+    public boolean isRotating() {
+        return rotating;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setZ(double z) {
+        this.z = z;
+    }
+
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
+
+    public void setOnGround(boolean onGround) {
+        this.onGround = onGround;
+    }
+
+    public void setRotating(boolean rotating) {
+        this.rotating = rotating;
+    }
 
     public C03PacketPlayer()
     {
@@ -23,15 +67,6 @@ public class C03PacketPlayer implements Packet<INetHandlerPlayServer>
     public C03PacketPlayer(boolean isOnGround)
     {
         this.onGround = isOnGround;
-    }
-
-    public void setOnGround(boolean isOnGround)
-    {
-        this.onGround = isOnGround;
-    }
-
-    public void setY(double y) {
-        this.y = y;
     }
 
     /**

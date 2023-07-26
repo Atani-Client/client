@@ -1,4 +1,4 @@
-package wtf.atani.module.impl.render;
+package wtf.atani.module.impl.player;
 
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import wtf.atani.event.events.PacketEvent;

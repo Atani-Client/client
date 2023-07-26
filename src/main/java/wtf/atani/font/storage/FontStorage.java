@@ -19,7 +19,8 @@ public class FontStorage extends Storage<FontEntry> {
 
     @Override
     public void init() {
-        this.add(this.createFontEntry("Roboto", 19),
+        this.add(this.createFontEntry("Roboto", 21),
+                this.createFontEntry("Roboto", 19),
                 this.createFontEntry("Roboto", 17),
                 this.createFontEntry("Roboto", 16),
                 this.createFontEntry("Roboto", 14));

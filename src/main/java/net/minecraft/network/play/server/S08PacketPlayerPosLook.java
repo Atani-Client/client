@@ -16,6 +16,14 @@ public class S08PacketPlayerPosLook implements Packet<INetHandlerPlayClient>
     private float pitch;
     private Set<S08PacketPlayerPosLook.EnumFlags> field_179835_f;
 
+    public void setYaw(float yaw) {
+        this.yaw = yaw;
+    }
+
+    public void setPitch(float pitch) {
+        this.pitch = pitch;
+    }
+
     public S08PacketPlayerPosLook()
     {
     }
@@ -28,14 +36,6 @@ public class S08PacketPlayerPosLook implements Packet<INetHandlerPlayClient>
         this.yaw = yawIn;
         this.pitch = pitchIn;
         this.field_179835_f = p_i45993_9_;
-    }
-
-    public void setYaw(float yaw) {
-        this.yaw = yaw;
-    }
-
-    public void setPitch(float pitch) {
-        this.pitch = pitch;
     }
 
     /**

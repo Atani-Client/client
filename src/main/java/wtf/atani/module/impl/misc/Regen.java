@@ -1,3 +1,4 @@
+
 package wtf.atani.module.impl.misc;
 
 import net.minecraft.network.play.client.C03PacketPlayer;

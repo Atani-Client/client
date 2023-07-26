@@ -1,5 +1,6 @@
 package wtf.atani.module.impl.hud;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.minecraft.client.gui.FontRenderer;
 import wtf.atani.event.events.DisableModuleEvent;
 import wtf.atani.event.events.EnableModuleEvent;
@@ -19,6 +20,7 @@ import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @ModuleInfo(name = "ClientOverlay", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
 public class ClientOverlay extends Module {

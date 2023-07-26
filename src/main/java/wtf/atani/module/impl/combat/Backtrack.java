@@ -22,7 +22,6 @@ import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 @ModuleInfo(name = "Backtrack", description = "Delay entity packets to get higher reach", category = Category.COMBAT)

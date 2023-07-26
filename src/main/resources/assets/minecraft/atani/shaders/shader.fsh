@@ -1,58 +1,56 @@
-/*
- * Original shader from: https://www.shadertoy.com/view/clsGDn
- */
-
 #ifdef GL_ES
-precision mediump float;
+precision highp float;
 #endif
 
-// glslsandbox uniforms
-uniform float time;
 uniform vec2 resolution;
+uniform vec2 mouse;
+uniform float time;
 
-// shadertoy emulation
-#define iTime time
-#define iResolution resolution
+float iTime = time;
+vec2 iResolution = resolution;
+vec2 iMouse = mouse;
 
-// --------[ Original ShaderToy begins here ]---------- //
-/*
-    "Starfield" by @XorDev
+#define A .1 // Amplitude
+#define V 3. // Velocity
+#define W 3. // Wavelength
+#define T 1.3 // Thickness
+#define S 6. // Sharpness
 
-    
-    Tweet: twitter.com/XorDev/status/1605413317165490176
-    Twigl: t.co/bPjcAH69kW
-    <300 chars playlist: shadertoy.com/playlist/fXlGDN
-*/
-void mainImage(out vec4 O, vec2 I)
+float sine(vec2 p, float o)
 {
-    //Clear fragcolor
-    O *= 0.;
-    
-    //Relative star position
-    vec2 p,
-    //Resolution for scaling and centering
-    r = iResolution.xy;
-
-    float f = 0.;
-    //Loop 10 times
-    for(float i=0.; i<1e1; ++i) {
-        //Fade toward back and attenuate lighting
-        O += (1e1-f)/max(length(p=mod((I+I-r)/r.y*f*
-        //Rotate layers 
-        mat2(cos(i+vec4(0,33,11,0))),2.)-1.)
-        //Make 5 pointed-stars
-        +cos(atan(p.y,p.x)*5.+iTime*cos(i))/3e1
-        //Blue tint
-        -vec4(7,8,9,0)/6e1,.01)/8e2;
-        
-        //Compute distance to back
-        f = mod(i-iTime,1e1);
-    }
+    // Offset the sine function by subtracting 1.0 from p.y to keep the line at the bottom
+    return pow(T / abs((p.y + sin((p.x * W + o)) * A)), S);
 }
-// --------[ Original ShaderToy ends here ]---------- //
 
-void main(void)
+// Gaussian function to create a glow effect
+float gaussian(float x, float sigma)
+{
+    return exp(-0.5 * (x * x) / (sigma * sigma));
+}
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord)
+{
+    vec2 p = fragCoord.xy / iResolution.xy * 5. - 1.;
+
+    // Calculate the sine value for the current pixel
+    float sineValue = sine(p, iTime * V);
+
+    // Set the RGB channels to color the sine line (red: 10, green: 60, blue: 112)
+    vec3 lineColor = vec3(10.0 / 255.0, 60.0 / 255.0, 112.0 / 255.0);
+
+    // Glow effect using Gaussian function
+    float glow = gaussian(sineValue, 0.3); // Adjust the second parameter for glow intensity
+
+    // Blend the line color with the background color (red: 16, green: 16, blue: 16) using the glow effect
+    vec3 backgroundColor = vec3(16.0 / 255.0);
+    vec3 finalColor = mix(lineColor, backgroundColor, glow);
+
+    // Set the alpha value to 1 for the sine line, and 0 for the background
+    fragColor = vec4(finalColor, 1.0);
+}
+
+// original shadertoy code ends here
+void main()
 {
     mainImage(gl_FragColor, gl_FragCoord.xy);
-    gl_FragColor.a = 1.;
 }

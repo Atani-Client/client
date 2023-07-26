@@ -1,3 +1,4 @@
+
 package wtf.atani.module.impl.misc;
 
 import wtf.atani.event.events.UpdateEvent;

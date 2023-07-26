@@ -1,4 +1,4 @@
-package wtf.atani.module.impl.player;
+package wtf.atani.module.impl.movement;
 
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;

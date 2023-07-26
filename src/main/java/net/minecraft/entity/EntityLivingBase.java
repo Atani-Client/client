@@ -52,7 +52,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import wtf.atani.event.events.JumpEvent;
-import wtf.atani.module.impl.player.NoJumpDelay;
+import wtf.atani.module.impl.movement.NoJumpDelay;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.player.PlayerHandler;
 
@@ -1558,7 +1558,7 @@ public abstract class EntityLivingBase extends Entity
         return false;
     }
 
-    public float getJumpUpwardsMotion()
+    protected float getJumpUpwardsMotion()
     {
         return 0.42F;
     }
@@ -1991,7 +1991,6 @@ public abstract class EntityLivingBase extends Entity
             else if (this.onGround && this.jumpTicks == 0)
             {
                 this.jump();
-
                 if(!ModuleStorage.getInstance().getByClass(NoJumpDelay.class).isEnabled()) {
                     this.jumpTicks = 10;
                 }

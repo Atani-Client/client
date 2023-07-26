@@ -1,57 +1,35 @@
 package net.minecraft.client.gui;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-
 import java.awt.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URI;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
-import net.minecraft.client.Minecraft;
+import java.util.*;
+
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.realms.RealmsBridge;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.demo.DemoWorldServer;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldInfo;
-import net.optifine.CustomPanorama;
-import net.optifine.CustomPanoramaProperties;
 import net.optifine.reflect.Reflector;
-import org.apache.commons.io.Charsets;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.util.glu.Project;
 import wtf.atani.font.storage.FontStorage;
+import wtf.atani.utils.interfaces.ClientInformationAccess;
 import wtf.atani.utils.render.RenderUtil;
+import wtf.atani.utils.render.RoundedUtil;
+import wtf.atani.utils.render.animation.Direction;
+import wtf.atani.utils.render.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.render.shader.shaders.GLSLShader;
 
-public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
+public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
 {
 
     private GLSLShader glslShader = new GLSLShader("/assets/minecraft/atani/shaders/shader.fsh");
     private final long timer;
+    private String currentScreen = "ChangeLog";
 
     public GuiMainMenu() {
         this.timer = System.currentTimeMillis();
     }
+
 
     /**
      * Returns true if this GUI should pause the game when it is displayed in single-player
@@ -75,7 +53,8 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
      */
     public void initGui()
     {
-
+        this.firstPageButtons.clear();
+        this.secondPageButtons.clear();
     }
 
     /**
@@ -136,6 +115,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         }
     }
 
+    private ArrayList<MenuButton> firstPageButtons = new ArrayList<>();
+    private ArrayList<MenuButton> secondPageButtons = new ArrayList<>();
+
     /**
      * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
      */
@@ -162,13 +144,40 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         FontRenderer bigger = FontStorage.getInstance().findFont("Roboto", 21);
         float fourthX = this.width / 4F;
         float sixthY = this.height / 6F;
-        RenderUtil.drawRect(fourthX - 1, sixthY * 0.5f, fourthX, sixthY * 3, -1);
-        RenderUtil.drawRect(fourthX * 2 + 1, sixthY * 0.5f, fourthX, sixthY * 3, -1);
-
-        buttonList.clear();
-
-        GuiButton lol = new GuiButton(1, 5, 5, "lol");
-        buttonList.add(lol);
+        RoundedUtil.drawRoundOutline(fourthX - 7, sixthY * 0.5f, fourthX, sixthY * 3, 15, 3, new Color(16, 16, 16).brighter().brighter(), new Color(16, 16, 16).brighter());
+        RoundedUtil.drawRoundOutline(fourthX * 2 + 7, sixthY * 0.5f, fourthX, sixthY * 3,15, 3, new Color(16, 16, 16).brighter().brighter(), new Color(16, 16, 16).brighter());
+        first: {
+            float rectX = fourthX - 7;
+            float rectY = sixthY * 0.5f;
+            float rectWidth = fourthX;
+            float rectHeight = sixthY * 3;
+            // Adding Buttons
+            if(this.firstPageButtons.isEmpty()) {
+                float buttonY = rectY + (sixthY / 3 * 2);
+                ArrayList<String> buttons = new ArrayList<>();
+                buttons.add("SinglePlayer");
+                buttons.add("MultiPlayer");
+                buttons.add("Options");
+                buttons.add("Account Manager");
+                buttons.add("Client Settings");
+                buttons.add("License");
+                for(String button : buttons) {
+                    this.firstPageButtons.add(new MenuButton(button, rectX, buttonY, rectWidth, 15));
+                    buttonY += 15;
+                }
+            }
+            // Logo
+            FontStorage.getInstance().findFont("Android 101", 100).drawTotalCenteredStringWithShadow(CLIENT_NAME.toLowerCase(), rectX + rectWidth / 2, rectY + sixthY / 3, -1);
+            for(MenuButton menuButton : this.firstPageButtons) {
+                menuButton.draw(mouseX, mouseY);
+            }
+            // Version
+            bigger.drawCenteredString(String.format("Running version %s", VERSION), rectX + rectWidth / 2, rectY + rectHeight - 4 - 10, new Color(80, 80, 80).getRGB());
+            bigger.drawCenteredString(String.format("%s Version", "Premium"), rectX + rectWidth / 2, rectY + rectHeight - 4 - bigger.FONT_HEIGHT - 2 - 10, new Color(80, 80, 80).getRGB());
+        }
+        second: {
+            
+        }
     }
 
     /**
@@ -177,6 +186,64 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    private class MenuButton {
+        private final String name;
+        private final float posX, posY, width, height;
+        private final Runnable action;
+        private DecelerateAnimation hoveringAnimation = new DecelerateAnimation(500, 1, Direction.BACKWARDS);
+
+        public MenuButton(String name, float posX, float posY, float width, float height, Runnable action) {
+            this.name = name;
+            this.posX = posX;
+            this.posY = posY;
+            this.width = width;
+            this.height = height;
+            this.action = action;
+        }
+
+        public MenuButton(String name, float posX, float posY, float width, float height) {
+            this(name, posX, posY, width, height, () -> {
+                currentScreen = name;
+                secondPageButtons.clear();
+            });
+        }
+
+        public void draw(int mouseX, int mouseY) {
+            if(RenderUtil.isHovered(mouseX, mouseY, posX, posY, width, height)) {
+                this.hoveringAnimation.setDirection(Direction.FORWARDS);
+            } else {
+                this.hoveringAnimation.setDirection(Direction.BACKWARDS);
+            }
+            RenderUtil.drawRect(posX, posY, width, height, new Color(255, 255, 255, (int) (20 * hoveringAnimation.getOutput())).getRGB());
+            FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
+            normal.drawTotalCenteredStringWithShadow(name, posX + width / 2, posY + height / 2, -1);
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public float getPosX() {
+            return posX;
+        }
+
+        public float getPosY() {
+            return posY;
+        }
+
+        public float getWidth() {
+            return width;
+        }
+
+        public float getHeight() {
+            return height;
+        }
+
+        public Runnable getAction() {
+            return action;
+        }
     }
 
 }

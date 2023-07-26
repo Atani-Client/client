@@ -237,6 +237,14 @@ public class FontRenderer
         return (f3 - f2) / 2.0f + 1.0f;
     }
 
+    public int drawCenteredString(String string, float f2, float f3, int n2) {
+        return this.drawString(string, f2 - this.getStringWidth(string) / 2, f3, n2);
+    }
+
+    public int drawTotalCenteredString(String string, float f2, float f3, int n2) {
+        return this.drawString(string, f2 - this.getStringWidth(string) / 2, f3 - this.FONT_HEIGHT / 2, n2);
+    }
+
     public int drawCenteredStringWithShadow(String string, float f2, float f3, int n2) {
         return this.drawString(string, f2 - this.getStringWidth(string) / 2, f3, n2, true);
     }

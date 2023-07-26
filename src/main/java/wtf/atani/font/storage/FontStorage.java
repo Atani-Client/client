@@ -23,7 +23,8 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Roboto", 19),
                 this.createFontEntry("Roboto", 17),
                 this.createFontEntry("Roboto", 16),
-                this.createFontEntry("Roboto", 14));
+                this.createFontEntry("Roboto", 14),
+                this.createFontEntry("Android 101", 100, true));
     }
 
     public CustomFontRenderer findFont(String name, float size) {
@@ -31,10 +32,14 @@ public class FontStorage extends Storage<FontEntry> {
     }
 
     private FontEntry createFontEntry(String name, float size) {
-        return new FontEntry(name, size, new CustomFontRenderer(this.getFontFromTTF(new ResourceLocation(String.format("atani/%s.ttf", name)), size, Font.PLAIN), true));
+        return this.createFontEntry(name, size, false);
     }
 
-    private Font getFontFromTTF(ResourceLocation loc, float fontSize, int fontType) {
+    private FontEntry createFontEntry(String name, float size, boolean otf) {
+        return new FontEntry(name, size, new CustomFontRenderer(this.getFontFromFile(new ResourceLocation(String.format("atani/%s.%s", name, otf ? "otf" : "ttf")), size, Font.PLAIN), true));
+    }
+
+    private Font getFontFromFile(ResourceLocation loc, float fontSize, int fontType) {
         try {
             Font output = Font.createFont(fontType, Minecraft.getMinecraft().getResourceManager().getResource(loc).getInputStream());
             output = output.deriveFont(fontSize);

@@ -7,6 +7,17 @@ import wtf.atani.utils.interfaces.Methods;
 
 public class MoveUtil implements Methods {
 
+    public static double getPredictedMotion(double motion, int ticks) {
+        if (ticks == 0) return motion;
+        double predicted = motion;
+
+        for (int i = 0; i < ticks; i++) {
+            predicted = (predicted - 0.08) * 0.98F;
+        }
+
+        return predicted;
+    }
+
     public static double[] getMotion(final double speed, final float strafe, final float forward, final float yaw) {
         final float friction = (float)speed;
         final float f1 = MathHelper.sin(yaw * 3.1415927f / 180.0f);
@@ -16,6 +27,67 @@ public class MoveUtil implements Methods {
         return new double[] { motionX, motionZ };
     }
 
+    public static float getSpeedBoost(float times) {
+        float boost = (float) ((MoveUtil.getBaseMoveSpeed() - 0.2875F) * times);
+        if(0 > boost) {
+            boost = 0;
+        }
+
+        return boost;
+    }
+
+    public static double getSpeed() {
+        return mc.thePlayer == null ? 0 : Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX
+                + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
+    }
+
+    public static void strafe() {
+        strafe(getSpeed());
+    }
+
+    public static void strafe(MoveEntityEvent event) {
+        strafe(event, getSpeed());
+    }
+
+    public static void strafe(double movementSpeed) {
+        strafe(null, movementSpeed);
+    }
+
+    public static void strafe(MoveEntityEvent moveEvent, double movementSpeed) {
+        if (mc.thePlayer.movementInput.moveForward > 0.0) {
+            mc.thePlayer.movementInput.moveForward = (float) 1.0;
+        } else if (mc.thePlayer.movementInput.moveForward < 0.0) {
+            mc.thePlayer.movementInput.moveForward = (float) -1.0;
+        }
+
+        if (mc.thePlayer.movementInput.moveStrafe > 0.0) {
+            mc.thePlayer.movementInput.moveStrafe = (float) 1.0;
+        } else if (mc.thePlayer.movementInput.moveStrafe < 0.0) {
+            mc.thePlayer.movementInput.moveStrafe = (float) -1.0;
+        }
+
+        if (mc.thePlayer.movementInput.moveForward == 0.0 && mc.thePlayer.movementInput.moveStrafe == 0.0) {
+            mc.thePlayer.motionX = 0.0;
+            mc.thePlayer.motionZ = 0.0;
+        }
+
+        if (mc.thePlayer.movementInput.moveForward != 0.0 && mc.thePlayer.movementInput.moveStrafe != 0.0) {
+            mc.thePlayer.movementInput.moveForward *= Math.sin(0.6398355709958845);
+            mc.thePlayer.movementInput.moveStrafe *= Math.cos(0.6398355709958845);
+        }
+
+        if (moveEvent != null) {
+            moveEvent.setX(mc.thePlayer.motionX = mc.thePlayer.movementInput.moveForward * movementSpeed * -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw))
+                    + mc.thePlayer.movementInput.moveStrafe * movementSpeed * Math.cos(Math.toRadians(mc.thePlayer.rotationYaw)));
+            moveEvent.setZ(mc.thePlayer.motionZ = mc.thePlayer.movementInput.moveForward * movementSpeed * Math.cos(Math.toRadians(mc.thePlayer.rotationYaw))
+                    - mc.thePlayer.movementInput.moveStrafe * movementSpeed * -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw)));
+        } else {
+            mc.thePlayer.motionX = mc.thePlayer.movementInput.moveForward * movementSpeed * -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw))
+                    + mc.thePlayer.movementInput.moveStrafe * movementSpeed * Math.cos(Math.toRadians(mc.thePlayer.rotationYaw));
+            mc.thePlayer.motionZ = mc.thePlayer.movementInput.moveForward * movementSpeed * Math.cos(Math.toRadians(mc.thePlayer.rotationYaw))
+                    - mc.thePlayer.movementInput.moveStrafe * movementSpeed * -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw));
+        }
+    }
 
     public static void setMoveSpeed(final MoveEntityEvent event, final double speed) {
         double forward = mc.thePlayer.movementInput.moveForward;

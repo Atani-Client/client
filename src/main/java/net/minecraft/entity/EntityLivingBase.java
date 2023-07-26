@@ -51,10 +51,12 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import wtf.atani.event.events.JumpEvent;
 import wtf.atani.utils.player.PlayerHandler;
 
 public abstract class EntityLivingBase extends Entity
 {
+    public double realPosX, realPosY, realPosZ;
     private static final UUID sprintingSpeedBoostModifierUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
     private static final AttributeModifier sprintingSpeedBoostModifier = (new AttributeModifier(sprintingSpeedBoostModifierUUID, "Sprinting speed boost", 0.30000001192092896D, 2)).setSaved(false);
     private BaseAttributeMap attributeMap;
@@ -1562,22 +1564,18 @@ public abstract class EntityLivingBase extends Entity
     /**
      * Causes this entity to do an upwards motion (jumping).
      */
-    protected void jump()
-    {
-        this.motionY = (double)this.getJumpUpwardsMotion();
-
-        if (this.isPotionActive(Potion.jump))
-        {
-            this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1F);
+    protected void jump() {
+        this.motionY = this.getJumpUpwardsMotion();
+        if (this.isPotionActive(Potion.jump)) {
+            this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1f);
         }
-
-        if (this.isSprinting())
-        {
-            float f = this.rotationYaw * 0.017453292F;
-            this.motionX -= (double)(MathHelper.sin(f) * 0.2F);
-            this.motionZ += (double)(MathHelper.cos(f) * 0.2F);
+        if (this.isSprinting()) {
+            JumpEvent jumpEvent = new JumpEvent(this.rotationYaw).onFire();
+            float f = PlayerHandler.moveFix ? PlayerHandler.yaw : this.rotationYaw;
+            float f2 = f * ((float)Math.PI / 180);
+            this.motionX -= (double)(MathHelper.sin(f2) * 0.2f);
+            this.motionZ += (double)(MathHelper.cos(f2) * 0.2f);
         }
-
         this.isAirBorne = true;
     }
 

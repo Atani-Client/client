@@ -212,6 +212,7 @@ import net.minecraft.world.storage.MapData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import wtf.atani.event.events.HeadLookEvent;
+import wtf.atani.event.events.PacketEvent;
 import wtf.atani.utils.player.PlayerHandler;
 
 public class NetHandlerPlayClient implements INetHandlerPlayClient
@@ -815,7 +816,10 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
     public void addToSendQueue(Packet p_147297_1_)
     {
-        this.netManager.sendPacket(p_147297_1_);
+        PacketEvent packetEvent = new PacketEvent(p_147297_1_, this, PacketEvent.Type.OUTGOING).onFire();
+        if(packetEvent.isCancelled())
+            return;
+        this.netManager.sendPacket(packetEvent.getPacket());
     }
 
     public void handleCollectItem(S0DPacketCollectItem packetIn)

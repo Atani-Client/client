@@ -186,12 +186,13 @@ import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 import wtf.atani.event.events.ClickingEvent;
 import wtf.atani.event.events.KeyInputEvent;
+import wtf.atani.event.events.TickEvent;
 import wtf.atani.event.handling.EventHandling;
 import wtf.atani.loader.ModificationLoader;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
-    private static final Logger logger = LogManager.getLogger();
+    public static final Logger logger = LogManager.getLogger();
     private static final ResourceLocation locationMojangPng = new ResourceLocation("textures/gui/title/mojang.png");
     public static final boolean isRunningOnMac = Util.getOSType() == Util.EnumOS.OSX;
 
@@ -233,7 +234,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private Entity renderViewEntity;
     public Entity pointedEntity;
     public EffectRenderer effectRenderer;
-    private final Session session;
+    public Session session;
     private boolean isGamePaused;
 
     /** The font renderer used for displaying and measuring text */
@@ -1720,6 +1721,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      */
     public void runTick() throws IOException
     {
+        EventHandling.getInstance().publishEvent(new TickEvent());
         if (this.rightClickDelayTimer > 0)
         {
             --this.rightClickDelayTimer;

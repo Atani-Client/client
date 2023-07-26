@@ -43,6 +43,13 @@ public class ModuleStorage extends Storage<Module> {
                 .forEach(Module::toggle);
     }
 
+    @Override
+    public <V extends Module> V getByClass(final Class<V> clazz) {
+        final Module feature = this.getList().stream().filter(m -> m.getClass().equals(clazz)).findFirst().orElse(null);
+        if (feature == null) return null;
+        return clazz.cast(feature);
+    }
+
     public final ArrayList<Module> getModules(Category category) {
         ArrayList<Module> modules = new ArrayList<>();
         for (Module m : this.getList()) {

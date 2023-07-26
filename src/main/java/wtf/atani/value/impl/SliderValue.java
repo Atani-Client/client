@@ -49,6 +49,11 @@ public class SliderValue<T extends Number> extends Value<T> {
     }
 
     @Override
+    public String getValueAsString() {
+        return getValue().doubleValue() + "";
+    }
+
+    @Override
     public T getValue() {
         return value;
     }

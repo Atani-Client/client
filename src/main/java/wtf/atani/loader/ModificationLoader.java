@@ -1,7 +1,13 @@
 package wtf.atani.loader;
 
+import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
+import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
+import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.Session;
 import org.lwjgl.opengl.Display;
 import wtf.atani.event.handling.EventHandling;
+import wtf.atani.file.storage.FileStorage;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.interfaces.ClientInformationAccess;
@@ -14,10 +20,18 @@ public class ModificationLoader implements ClientInformationAccess {
         setTitle();
         setupManagers();
         addShutdownHook();
+
+        MicrosoftAuthenticator authenticator = new MicrosoftAuthenticator();
+        try {
+            MicrosoftAuthResult result = authenticator.loginWithCredentials("how about, ", "no?");
+            Minecraft.getMinecraft().session = new Session(result.getProfile().getName(), result.getProfile().getId(), result.getAccessToken(), "mojang");
+        } catch (MicrosoftAuthenticationException e) {
+            e.printStackTrace();
+        }
     }
 
     public void end() {
-
+        save();
     }
 
     // Start
@@ -34,11 +48,15 @@ public class ModificationLoader implements ClientInformationAccess {
         new FontStorage();
         new ValueStorage();
         new ModuleStorage();
+        new FileStorage();
     }
 
-    // End
     private void addShutdownHook() {
         Runtime.getRuntime().addShutdownHook(new Thread(this::end));
     }
 
+    // End
+    private void save(){
+        FileStorage.getInstance().save();
+    }
 }

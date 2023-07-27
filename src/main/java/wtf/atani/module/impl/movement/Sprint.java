@@ -6,13 +6,20 @@ import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
+import wtf.atani.value.impl.CheckBoxValue;
 
 @ModuleInfo(name = "Sprint", description = "Makes you sprint automatically.", category = Category.MOVEMENT)
 public class Sprint extends Module {
 
+    public CheckBoxValue omni = new CheckBoxValue("Omni Sprint", "Sprint to all sides.", this, false);
+
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
-        KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), true);
+        if(omni.getValue()) {
+            mc.thePlayer.setSprinting(true);
+        } else {
+            KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), true);
+        }
     }
 
     @Override

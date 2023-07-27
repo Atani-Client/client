@@ -1,8 +1,21 @@
 # Project exclude paths
 /target/
 /.idea/
-test_run
+/test_run
+/test_run/
+logs# Project exclude paths
+/target/
+/.idea/
+/test_run
+/test_run/
 logs
+
+*.lock
+*.mca
+*.dat
+*.log
+*.gz
+
 
 *.lock
 *.mca

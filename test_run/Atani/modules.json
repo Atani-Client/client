@@ -70,10 +70,10 @@
       "Key": 0
     },
     "Sprint": {
-      "Enabled": false,
+      "Enabled": true,
       "Key": 0,
       "Values": {
-        "Omni Sprint": "false"
+        "Omni Sprint": "true"
       }
     },
     "Backtrack": {

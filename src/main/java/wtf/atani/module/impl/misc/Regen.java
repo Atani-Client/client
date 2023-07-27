@@ -11,7 +11,7 @@ import wtf.atani.value.impl.SliderValue;
 
 @ModuleInfo(name = "Regen", description = "Regenerates health faster", category = Category.MISCELLANEOUS)
 public class Regen extends Module {
-    private final SliderValue health = new SliderValue("Health", "What health should regen work?", this, 15, 1, 19, 0);
+    private final SliderValue health = new SliderValue("Health", "At what health should regen work?", this, 15, 1, 19, 0);
     private final SliderValue packets = new SliderValue("Packets", "How much packets should be sent?", this, 10, 1, 100, 0);
 
     @Listen

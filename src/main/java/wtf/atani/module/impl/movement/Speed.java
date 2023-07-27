@@ -10,15 +10,17 @@ import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
+import wtf.atani.utils.math.random.RandomUtil;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.utils.player.MoveUtil;
+import wtf.atani.utils.player.PlayerHandler;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "GWEN", "Spartan"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
@@ -40,9 +42,33 @@ public class Speed extends Module {
     private double y;
     private TimeHelper vulcanTimer;
 
+    // GWEN
+    private float gwenSpeed;
+
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {
+            case "GWEN":
+                PlayerHandler.yaw = (float) RandomUtil.randomBetween(-180, 180);
+                PlayerHandler.pitch = (float) RandomUtil.randomBetween(-90, 90);
+                mc.thePlayer.motionX = mc.thePlayer.motionZ = 0;
+                mc.thePlayer.setPosition(mc.thePlayer.posX - mc.thePlayer.motionX, mc.thePlayer.posY, mc.thePlayer.posZ - mc.thePlayer.motionZ);
+                if (mc.thePlayer.onGround) {
+                    if (mc.thePlayer.moveForward != 0 || mc.thePlayer.moveStrafing != 0) {
+                        gwenSpeed = (float) Math.min(1.75F, gwenSpeed + 0.1);
+                        if (gwenSpeed < 0.65) gwenSpeed = (float) 0.65;
+                        MoveUtil.setMoveSpeed(null, -gwenSpeed);
+                        mc.thePlayer.motionY = 0.42f;
+                    }
+                } else {
+                    gwenSpeed *= 0.99;
+                }
+                if (!isMoving()) gwenSpeed = 0;
+                gwenSpeed = Math.min(1.75F, gwenSpeed);
+                if (mc.thePlayer.moveForward > 0) {
+                    mc.thePlayer.setSprinting(true);
+                }
+                break;
             case "Matrix":
                 if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     if (!isMoving()) {
@@ -390,6 +416,9 @@ public class Speed extends Module {
     @Listen
     public void onMove(MoveEntityEvent moveEntityEvent) {
         switch (mode.getValue()) {
+            case "GWEN":
+                MoveUtil.setMoveSpeed(moveEntityEvent, isMoving() ? Math.max(MoveUtil.getBaseMoveSpeed(), gwenSpeed) : 0);
+                break;
             case "BHop":
                 MoveUtil.setMoveSpeed(moveEntityEvent, boost.getValue().floatValue());
                 if (isMoving()) {

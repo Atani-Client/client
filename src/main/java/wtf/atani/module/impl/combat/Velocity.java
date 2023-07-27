@@ -3,6 +3,7 @@ package wtf.atani.module.impl.combat;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
+import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import wtf.atani.event.events.PacketEvent;
 import wtf.atani.event.events.SilentMoveEvent;
 import wtf.atani.event.events.UpdateEvent;
@@ -17,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Intave", "Old Grim", "AAC v4", "AAC v5 Packet"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Intave", "Old Grim", "Vulcan", "AAC v4", "AAC v5 Packet"});
     public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0);
     public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0);
     public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1);
@@ -53,6 +54,17 @@ public class Velocity extends Module {
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
         switch (mode.getValue()) {
+            case "Vulcan":
+                if (mc.thePlayer.hurtTime > 0 && packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {
+                    packetEvent.setCancelled(true);
+                }
+                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
+                    if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                        packetEvent.setCancelled(true);
+                    }
+                }
+                break;
             case "Simple":
                 if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();

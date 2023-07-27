@@ -1,5 +1,6 @@
 package wtf.atani.module.impl.combat;
 
+import com.google.common.base.Supplier;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
@@ -12,26 +13,55 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Intave", "Old Grim", "Vulcan", "AAC v4", "AAC v5 Packet"});
-    public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0);
-    public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0);
-    public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1);
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Intave", "Old Grim", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0"});
+    public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple")});
+    public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple")});
+    public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("AAC v4")});
 
     private KillAura killAura;
+
+    private double packetX = 0;
+    private double packetY = 0;
+    private double packetZ = 0;
+    private boolean receivedVelocity = false;
+
+    // AAC v5.2.0
+    private TimeHelper aacTimer = new TimeHelper();
+
+    // Intave
     private int counter;
 
+    // Grim
     int grimCancel = 0;
     int updates = 0;
 
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         switch (mode.getValue()) {
+            case "AAC v5.2.0":
+                if (mc.thePlayer.hurtTime> 0 && this.receivedVelocity) {
+                    this.receivedVelocity = false;
+                    mc.thePlayer.motionX = 0.0;
+                    mc.thePlayer.motionZ = 0.0;
+                    mc.thePlayer.motionY = 0.0;
+                    mc.thePlayer.jumpMovementFactor = -0.002f;
+                    mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, 1.7976931348623157E+308, mc.thePlayer.posZ, true));
+                }
+                if (aacTimer.hasReached(80L) && this.receivedVelocity) {
+                    this.receivedVelocity = false;
+                    mc.thePlayer.motionX = packetX / 8000.0;
+                    mc.thePlayer.motionZ = packetZ / 8000.0;
+                    mc.thePlayer.motionY = packetY / 8000.0;
+                    mc.thePlayer.jumpMovementFactor = -0.002f;
+                }
+                break;
             case "AAC v4":
                 if (mc.thePlayer.hurtTime > 0 && !mc.thePlayer.onGround){
                     mc.thePlayer.motionX *= aacv4Reduce.getValue().floatValue();
@@ -53,10 +83,22 @@ public class Velocity extends Module {
 
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
+        if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+            S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
+            if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                this.packetX = packet.getMotionX();
+                this.packetY = packet.getMotionY();
+                this.packetZ = packet.getMotionZ();
+                receivedVelocity = true;
+                aacTimer.reset();
+            }
+        }
         switch (mode.getValue()) {
             case "Vulcan":
-                if (mc.thePlayer.hurtTime > 0 && packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {
-                    packetEvent.setCancelled(true);
+                if(mc.thePlayer != null && mc.theWorld != null) {
+                    if (mc.thePlayer.hurtTime > 0 && packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {
+                        packetEvent.setCancelled(true);
+                    }
                 }
                 if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
@@ -95,11 +137,7 @@ public class Velocity extends Module {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
                     if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
                         sendPacketUnlogged(
-                                new C03PacketPlayer.C04PacketPlayerPosition(
-                                        mc.thePlayer.posX,
-                                        Double.MAX_VALUE,
-                                        mc.thePlayer.posZ,
-                                        mc.thePlayer.onGround
+                                new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, 1.7976931348623157E+308, mc.thePlayer.posZ, true
                                 )
                         );
                         packetEvent.setCancelled(true);
@@ -124,6 +162,11 @@ public class Velocity extends Module {
     public void onEnable() {
         this.killAura = ModuleStorage.getInstance().getByClass(KillAura.class);
         grimCancel = 0;
+        packetX = 0;
+        packetY = 0;
+        packetZ = 0;
+        receivedVelocity = false;
+        aacTimer.reset();
     }
 
     @Override

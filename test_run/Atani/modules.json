@@ -30,11 +30,12 @@
       "Enabled": false,
       "Key": 33,
       "Values": {
-        "Mode": "Vanilla",
+        "Mode": "Verus",
+        "Boost Mode": "Jump",
         "Vulcan Mode": "Normal",
         "Time": "10.0",
         "Timer": "0.20000000298023224",
-        "Speed": "0.10000000149011612"
+        "Speed": "2.0999999046325684"
       }
     },
     "TickBase": {
@@ -49,10 +50,10 @@
       }
     },
     "Velocity": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
-        "Mode": "AAC v4",
+        "Mode": "AAC v5.2.0",
         "Horizontal %": "0.0",
         "Vertical %": "100.0",
         "Reduce": "0.6000000238418579"
@@ -73,7 +74,7 @@
       "Enabled": true,
       "Key": 0,
       "Values": {
-        "Legit": "false",
+        "Legit": "true",
         "All Directions": "false"
       }
     },
@@ -100,6 +101,13 @@
       "Values": {
         "Health": "15.0",
         "Packets": "10.0"
+      }
+    },
+    "Criticals": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Packet"
       }
     },
     "ClientOverlay": {
@@ -147,7 +155,7 @@
       "Key": 0
     },
     "KillAura": {
-      "Enabled": false,
+      "Enabled": true,
       "Key": 19,
       "Values": {
         "Search Range": "4.0",

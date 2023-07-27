@@ -1,0 +1,126 @@
+---- Minecraft Crash Report ----
+// You're mean.
+
+Time: 28/07/23 01:25
+Description: Ticking entity
+
+java.lang.NullPointerException: Ticking entity
+	at wtf.atani.module.impl.movement.Flight.onMove(Flight.java:169)
+	at wtf.atani.event.radbus.PubSubImpl.publish(PubSubImpl.java:146)
+	at wtf.atani.event.handling.EventHandling.publishEvent(EventHandling.java:17)
+	at wtf.atani.event.Event.onFire(Event.java:17)
+	at net.minecraft.client.entity.EntityPlayerSP.moveEntity(EntityPlayerSP.java:221)
+	at net.minecraft.entity.EntityLivingBase.moveEntityWithHeading(EntityLivingBase.java:1655)
+	at net.minecraft.entity.player.EntityPlayer.moveEntityWithHeading(EntityPlayer.java:1819)
+	at net.minecraft.entity.EntityLivingBase.onLivingUpdate(EntityLivingBase.java:2009)
+	at net.minecraft.entity.player.EntityPlayer.onLivingUpdate(EntityPlayer.java:627)
+	at net.minecraft.client.entity.EntityPlayerSP.onLivingUpdate(EntityPlayerSP.java:978)
+	at net.minecraft.entity.EntityLivingBase.onUpdate(EntityLivingBase.java:1834)
+	at net.minecraft.entity.player.EntityPlayer.onUpdate(EntityPlayer.java:336)
+	at net.minecraft.client.entity.EntityPlayerSP.onUpdate(EntityPlayerSP.java:195)
+	at net.minecraft.world.World.updateEntityWithOptionalForce(World.java:1889)
+	at net.minecraft.world.World.updateEntity(World.java:1858)
+	at net.minecraft.world.World.updateEntities(World.java:1710)
+	at net.minecraft.client.Minecraft.runTick(Minecraft.java:2194)
+	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1104)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:423)
+	at net.minecraft.client.main.Main.main(Main.java:113)
+	at Start.main(Start.java:11)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at wtf.atani.module.impl.movement.Flight.onMove(Flight.java:169)
+	at wtf.atani.event.radbus.PubSubImpl.publish(PubSubImpl.java:146)
+	at wtf.atani.event.handling.EventHandling.publishEvent(EventHandling.java:17)
+	at wtf.atani.event.Event.onFire(Event.java:17)
+	at net.minecraft.client.entity.EntityPlayerSP.moveEntity(EntityPlayerSP.java:221)
+	at net.minecraft.entity.EntityLivingBase.moveEntityWithHeading(EntityLivingBase.java:1655)
+	at net.minecraft.entity.player.EntityPlayer.moveEntityWithHeading(EntityPlayer.java:1819)
+	at net.minecraft.entity.EntityLivingBase.onLivingUpdate(EntityLivingBase.java:2009)
+	at net.minecraft.entity.player.EntityPlayer.onLivingUpdate(EntityPlayer.java:627)
+	at net.minecraft.client.entity.EntityPlayerSP.onLivingUpdate(EntityPlayerSP.java:978)
+	at net.minecraft.entity.EntityLivingBase.onUpdate(EntityLivingBase.java:1834)
+	at net.minecraft.entity.player.EntityPlayer.onUpdate(EntityPlayer.java:336)
+	at net.minecraft.client.entity.EntityPlayerSP.onUpdate(EntityPlayerSP.java:195)
+	at net.minecraft.world.World.updateEntityWithOptionalForce(World.java:1889)
+	at net.minecraft.world.World.updateEntity(World.java:1858)
+
+-- Entity being ticked --
+Details:
+	Entity Type: null (net.minecraft.client.entity.EntityPlayerSP)
+	Entity ID: 11417659
+	Entity Name: TabioXt
+	Entity's Exact location: -588.24, 4.00, -81.45
+	Entity's Block location: -589.00,4.00,-82.00 - World: (-589,4,-82), Chunk: (at 3,0,14 in -37,-6; contains blocks -592,0,-96 to -577,255,-81), Region: (-2,-1; contains chunks -64,-32 to -33,-1, blocks -1024,0,-512 to -513,255,-1)
+	Entity's Momentum: -0.00, -0.08, 0.15
+	Entity's Rider: ~~ERROR~~ NullPointerException: null
+	Entity's Vehicle: ~~ERROR~~ NullPointerException: null
+Stacktrace:
+	at net.minecraft.world.World.updateEntities(World.java:1710)
+
+-- Affected level --
+Details:
+	Level name: MpServer
+	All players: 10 total; [EntityPlayerSP['TabioXt'/11417659, l='MpServer', x=-588.24, y=4.00, z=-81.45], EntityOtherPlayerMP['Moving'/1458, l='MpServer', x=-552.77, y=4.00, z=-49.34], EntityOtherPlayerMP['Moving'/1440, l='MpServer', x=-553.72, y=4.00, z=-46.57], EntityOtherPlayerMP['Moving'/1461, l='MpServer', x=-550.28, y=4.00, z=-59.17], EntityOtherPlayerMP['Standing'/1464, l='MpServer', x=-551.50, y=4.00, z=-63.50], EntityOtherPlayerMP['Standing'/1449, l='MpServer', x=-554.50, y=4.00, z=-66.53], EntityOtherPlayerMP['Standing'/1452, l='MpServer', x=-551.47, y=4.00, z=-69.59], EntityOtherPlayerMP['Standing'/1455, l='MpServer', x=-548.50, y=4.00, z=-66.53], EntityOtherPlayerMP['Standing'/1382, l='MpServer', x=-551.53, y=4.00, z=-84.53], EntityOtherPlayerMP['pio1234a'/11381158, l='MpServer', x=-562.31, y=4.00, z=-51.44]]
+	Chunk stats: MultiplayerChunkCache: 441, 441
+	Level seed: 0
+	Level generator: ID 01 - flat, ver 0. Features enabled: false
+	Level generator options: 
+	Level spawn location: 200.00,4.00,104.00 - World: (200,4,104), Chunk: (at 8,0,8 in 12,6; contains blocks 192,0,96 to 207,255,111), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,0,0 to 511,255,511)
+	Level time: 486881408 game time, 24000 day time
+	Level dimension: 0
+	Level storage version: 0x00000 - Unknown?
+	Level weather: Rain time: 0 (now: false), thunder time: 0 (now: false)
+	Level game mode: Game mode: survival (ID 0). Hardcore: false. Cheats: false
+	Forced entities: 33 total; [EntityOtherPlayerMP['pio1234a'/11381158, l='MpServer', x=-562.31, y=4.00, z=-51.44], EntityArmorStand['§bIce'/10338567, l='MpServer', x=-588.88, y=5.22, z=-66.19], EntityArmorStand['§bCactus'/10338563, l='MpServer', x=-605.78, y=5.22, z=-40.78], EntityArmorStand['§bNo Slow'/10338562, l='MpServer', x=-594.63, y=5.22, z=-40.28], EntityOtherPlayerMP['Moving'/1440, l='MpServer', x=-553.72, y=4.00, z=-46.57], EntityOtherPlayerMP['Standing'/1449, l='MpServer', x=-554.50, y=4.00, z=-66.53], EntityOtherPlayerMP['Standing'/1452, l='MpServer', x=-551.47, y=4.00, z=-69.59], EntityOtherPlayerMP['Standing'/1455, l='MpServer', x=-548.50, y=4.00, z=-66.53], EntityOtherPlayerMP['Moving'/1458, l='MpServer', x=-552.77, y=4.00, z=-49.34], EntityOtherPlayerMP['Moving'/1461, l='MpServer', x=-550.28, y=4.00, z=-59.17], EntityOtherPlayerMP['Standing'/1464, l='MpServer', x=-551.50, y=4.00, z=-63.50], EntityPlayerSP['TabioXt'/11417659, l='MpServer', x=-588.24, y=4.00, z=-81.45], EntityOtherPlayerMP['SeikaOP'/10338531, l='MpServer', x=-518.22, y=4.00, z=-21.50], EntityOtherPlayerMP['pio1234a'/11381158, l='MpServer', x=-552.51, y=4.00, z=-33.53], EntityOtherPlayerMP['Wall'/1443, l='MpServer', x=-547.66, y=3.00, z=-25.53], EntityOtherPlayerMP['Wall'/1446, l='MpServer', x=-555.59, y=4.00, z=-25.47], EntityOtherPlayerMP['pio1234a'/11381158, l='MpServer', x=-562.31, y=4.00, z=-51.44], EntityOtherPlayerMP['Wall'/1434, l='MpServer', x=-547.44, y=4.00, z=-32.47], EntityOtherPlayerMP['Wall'/1437, l='MpServer', x=-555.50, y=4.00, z=-32.47], EntityOtherPlayerMP['Moving'/1458, l='MpServer', x=-552.77, y=4.00, z=-49.34], EntityOtherPlayerMP['Moving'/1440, l='MpServer', x=-553.72, y=4.00, z=-46.57], EntityOtherPlayerMP['Moving'/1461, l='MpServer', x=-550.28, y=4.00, z=-59.17], EntityOtherPlayerMP['Standing'/1464, l='MpServer', x=-551.50, y=4.00, z=-63.50], EntityOtherPlayerMP['Standing'/1449, l='MpServer', x=-554.50, y=4.00, z=-66.53], EntityOtherPlayerMP['Standing'/1452, l='MpServer', x=-551.47, y=4.00, z=-69.59], EntityOtherPlayerMP['Standing'/1455, l='MpServer', x=-548.50, y=4.00, z=-66.53], EntityOtherPlayerMP['Standing'/1382, l='MpServer', x=-551.53, y=4.00, z=-84.53], EntityArmorStand['§bStep'/10338554, l='MpServer', x=-581.84, y=6.00, z=-20.56], EntityArmorStand['§bPhase'/10338551, l='MpServer', x=-575.38, y=5.22, z=-40.53], EntityOtherPlayerMP['Standing'/1382, l='MpServer', x=-551.53, y=4.00, z=-84.53], EntityArmorStand['§bAura'/1390, l='MpServer', x=-544.69, y=5.22, z=-42.22], EntityArmorStand['§bSpeed Test'/10338543, l='MpServer', x=-538.66, y=5.59, z=-48.56], EntityArmorStand['Easy Anti-Cheat cannot run if Driver Signature Enforcement has been disabled'/10338532, l='MpServer', x=-532.88, y=9.38, z=-23.84]]
+	Retry entities: 0 total; []
+	Server brand: PaperSpigot (Velocity)
+	Server type: Non-integrated multiplayer server
+Stacktrace:
+	at net.minecraft.client.multiplayer.WorldClient.addWorldInfoToCrashReport(WorldClient.java:393)
+	at net.minecraft.client.Minecraft.addGraphicsAndWorldToCrashReport(Minecraft.java:2753)
+	at net.minecraft.client.Minecraft.run(Minecraft.java:444)
+	at net.minecraft.client.main.Main.main(Main.java:113)
+	at Start.main(Start.java:11)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.8.9
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 1.8.0_382, BellSoft
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode), BellSoft
+	Memory: 1156700984 bytes (1103 MB) / 1900544000 bytes (1812 MB) up to 15211692032 bytes (14507 MB)
+	JVM Flags: 0 total; 
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	Launched Version: mcp
+	LWJGL: 2.9.4
+	OpenGL: NVIDIA GeForce RTX 2060/PCIe/SSE2 GL version 4.6.0 NVIDIA 536.67, NVIDIA Corporation
+	GL Caps: Using GL 1.3 multitexturing.
+Using GL 1.3 texture combiners.
+Using framebuffer objects because OpenGL 3.0 is supported and separate blending is supported.
+Shaders are available because OpenGL 2.1 is supported.
+VBOs are available because OpenGL 1.5 is supported.
+
+	Using VBOs: No
+	Is Modded: Very likely; Jar signature invalidated
+	Type: Client (map_client.txt)
+	Resource Packs: 
+	Current Language: English (US)
+	Profiler Position: N/A (disabled)
+	CPU: 20x 13th Gen Intel(R) Core(TM) i5-13600K
+	OptiFine Version: OptiFine_1.8.9_HD_U_L5
+	OptiFine Build: ~~NULL~~
+	Render Distance Chunks: 9
+	Mipmaps: 4
+	Anisotropic Filtering: 1
+	Antialiasing: 0
+	Multitexture: false
+	Shaders: null
+	OpenGlVersion: 4.6.0 NVIDIA 536.67
+	OpenGlRenderer: NVIDIA GeForce RTX 2060/PCIe/SSE2
+	OpenGlVendor: NVIDIA Corporation
+	CpuCount: 20

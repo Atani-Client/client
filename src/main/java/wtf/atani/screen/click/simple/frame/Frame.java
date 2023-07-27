@@ -1,5 +1,6 @@
 package wtf.atani.screen.click.simple.frame;
 
+import net.minecraft.client.gui.FontRenderer;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.enums.Category;
@@ -9,6 +10,8 @@ import wtf.atani.screen.click.simple.component.impl.ModuleComponent;
 import wtf.atani.utils.render.RenderUtil;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Frame extends Component {
 
@@ -22,7 +25,10 @@ public class Frame extends Component {
 
         // The Y position in here is basically useless as the actual Y pos is overwritten in drawScreen
         float moduleY = posY + height;
-        for(Module module : ModuleStorage.getInstance().getModules(this.category)) {
+        ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.category);
+        FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
+        modules.sort(Comparator.comparingInt(o -> normal.getStringWidth(((Module)o).getName())).reversed());
+        for(Module module : modules) {
             this.subComponents.add(new ModuleComponent(module, posX, moduleY, width, moduleHeight));
             moduleY += moduleHeight;
         }

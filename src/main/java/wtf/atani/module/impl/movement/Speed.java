@@ -18,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Spartan"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
@@ -43,6 +43,31 @@ public class Speed extends Module {
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {
+            case "Matrix":
+                if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                    if (!isMoving()) {
+                        mc.gameSettings.keyBindJump.pressed = false;
+                        return;
+                    }
+
+                    mc.gameSettings.keyBindJump.pressed = true;
+
+                    mc.thePlayer.speedInAir = 0.0203F;
+
+                    if(mc.thePlayer.motionY > 0.4) {
+                        mc.thePlayer.motionX *= 1.003F;
+                        mc.thePlayer.motionZ *= 1.003F;
+                    }
+
+                    if(mc.thePlayer.onGround) {
+                        mc.timer.timerSpeed = (float) (1.1 + Math.random() / 50 - Math.random() / 50);
+                        mc.thePlayer.motionX *= 1.0045F;
+                        mc.thePlayer.motionZ *= 1.0045F;
+                    } else {
+                        mc.timer.timerSpeed = (float) (1 - Math.random() / 500);
+                    }
+                }
+                break;
             case "Strafe":
                 if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     if(isMoving()) {
@@ -56,7 +81,8 @@ public class Speed extends Module {
                 break;
             case "Vulcan":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    mc.gameSettings.keyBindJump.pressed = false;
+                    if(!vulcanMode.getValue().equalsIgnoreCase("Ground"))
+                        mc.gameSettings.keyBindJump.pressed = false;
                     if (mc.thePlayer.onGround) {
                         vulcanTicks = 0;
                     } else {
@@ -126,7 +152,7 @@ public class Speed extends Module {
 
                                     MoveUtil.strafe((float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? MoveUtil.getSpeed() * 1.04 : MoveUtil.getSpeed()));
 
-                                    mc.timer.timerSpeed = 1.3F;
+                                    mc.timer.timerSpeed = 1.1F;
                                 }
                                 break;
                             }

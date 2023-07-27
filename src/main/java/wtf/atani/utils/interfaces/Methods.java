@@ -15,6 +15,7 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Timer;
+import wtf.atani.command.Command;
 import wtf.atani.utils.player.PlayerHandler;
 
 public interface Methods extends ClientInformationAccess {
@@ -104,6 +105,24 @@ public interface Methods extends ClientInformationAccess {
 
     default void sendMessage(Object o, boolean prefix) {
         getPlayer().addChatMessage(new ChatComponentText((prefix ? PREFIX : "") + o));
+    }
+
+
+    default void sendHelp(Command command, String... usages) {
+        for (String usage : usages) {
+            String shortestName = command.getName();
+            for (String alias : command.getAliases()) {
+                if (alias.length() < shortestName.length()) {
+                    shortestName = alias;
+                }
+            }
+            sendMessage("§a" + "." + shortestName + " §7" + usage);
+        }
+    }
+
+
+    default void sendError(String issue, String help) {
+        sendMessage("§c§lERROR: §e" + issue.toUpperCase() + "§7: §a" + help);
     }
 
 }

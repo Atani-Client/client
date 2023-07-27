@@ -45,11 +45,13 @@ import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
+import wtf.atani.command.storage.CommandStorage;
 import wtf.atani.event.events.*;
 import wtf.atani.utils.player.MoveUtil;
 import wtf.atani.utils.player.PlayerHandler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
@@ -320,6 +322,17 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void sendChatMessage(String message)
     {
+        if (message.startsWith(".")) {
+            final String[] args = message.split(" ");
+            final String cmd = args[0].substring(1);
+            CommandStorage.getInstance().getList().forEach(command -> {
+                if (command.getName().equalsIgnoreCase(cmd) || Arrays.stream(command.getAliases()).anyMatch(s -> s.equalsIgnoreCase(cmd)))
+                    if (!command.execute(Arrays.copyOfRange(args, 1, args.length))) {
+                        addChatComponentMessage(new ChatComponentText("§cWrong Usage: §a" + "." + cmd + " §7- §dfor help"));
+                    }
+            });
+            return;
+        }
         this.sendQueue.addToSendQueue(new C01PacketChatMessage(message));
     }
 

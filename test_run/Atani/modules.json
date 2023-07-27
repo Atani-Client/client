@@ -28,13 +28,13 @@
     },
     "Flight": {
       "Enabled": false,
-      "Key": 0,
+      "Key": 33,
       "Values": {
         "Mode": "Vanilla",
         "Vulcan Mode": "Normal",
         "Time": "10.0",
         "Timer": "0.20000000298023224",
-        "Speed": "1.399999976158142"
+        "Speed": "0.10000000149011612"
       }
     },
     "TickBase": {
@@ -49,7 +49,7 @@
       }
     },
     "Velocity": {
-      "Enabled": false,
+      "Enabled": true,
       "Key": 0,
       "Values": {
         "Mode": "AAC v4",
@@ -59,10 +59,10 @@
       }
     },
     "W-Tap": {
-      "Enabled": false,
+      "Enabled": true,
       "Key": 0,
       "Values": {
-        "Mode": "Single Packet"
+        "Mode": "Normal Packet"
       }
     },
     "FastPlace": {
@@ -77,10 +77,10 @@
       }
     },
     "Backtrack": {
-      "Enabled": false,
+      "Enabled": true,
       "Key": 0,
       "Values": {
-        "Delay": "450.0",
+        "Delay": "3986.0",
         "Maximum Range": "6.0",
         "Only When Out of Reach": "true"
       }
@@ -126,9 +126,9 @@
     },
     "Speed": {
       "Enabled": false,
-      "Key": 0,
+      "Key": 47,
       "Values": {
-        "Mode": "Vulcan",
+        "Mode": "Matrix",
         "Spartan Mode": "Normal",
         "Verus Mode": "Normal",
         "Vulcan Mode": "Ground",
@@ -171,10 +171,10 @@
         "Near Distance": "0.5",
         "Reset Rotations": "true",
         "Reset Mode": "Silent",
-        "Ray Trace": "false",
+        "Ray Trace": "true",
         "Attack Range": "3.299999952316284",
-        "Min CPS": "7.900000095367432",
-        "Max CPS": "12.899999618530273"
+        "Min CPS": "7.099999904632568",
+        "Max CPS": "9.300000190734863"
       }
     },
     "LightningDetector": {

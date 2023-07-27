@@ -6,6 +6,7 @@ import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
 import org.lwjgl.opengl.Display;
+import wtf.atani.command.storage.CommandStorage;
 import wtf.atani.event.handling.EventHandling;
 import wtf.atani.file.storage.FileStorage;
 import wtf.atani.font.storage.FontStorage;
@@ -20,14 +21,6 @@ public class ModificationLoader implements ClientInformationAccess {
         setTitle();
         setupManagers();
         addShutdownHook();
-
-        MicrosoftAuthenticator microsoftAuthenticator = new MicrosoftAuthenticator();
-        try {
-            MicrosoftAuthResult microsoftAuthResult = microsoftAuthenticator.loginWithCredentials("legendarysomeone92@gmail.com", "V[HVNHVt]y^)upB{pvj#6p]r*5@z,yt6MjOgQEZFRPxdmVM,yf");
-            Minecraft.getMinecraft().session = new Session(microsoftAuthResult.getProfile().getName(), microsoftAuthResult.getProfile().getId(), microsoftAuthResult.getAccessToken(), "mojang");
-        } catch (MicrosoftAuthenticationException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void end() {
@@ -48,6 +41,7 @@ public class ModificationLoader implements ClientInformationAccess {
         new FontStorage();
         new ValueStorage();
         new ModuleStorage();
+        new CommandStorage();
         new FileStorage();
     }
 

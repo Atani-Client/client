@@ -59,6 +59,10 @@ public class ModuleStorage extends Storage<Module> {
         return modules;
     }
 
+    public <T extends Module> T getModule(String name) {
+        return (T) this.getList().stream().filter(module -> module.getName().equalsIgnoreCase(name)).findAny().orElse(null);
+    }
+
     public static ModuleStorage getInstance() {
         return instance;
     }

@@ -21,14 +21,6 @@ public class ModificationLoader implements ClientInformationAccess {
         setTitle();
         setupManagers();
         addShutdownHook();
-
-        MicrosoftAuthenticator microsoftAuthenticator = new MicrosoftAuthenticator();
-        try {
-            MicrosoftAuthResult microsoftAuthResult = microsoftAuthenticator.loginWithCredentials("legendarysomeone92@gmail.com", "V[HVNHVt]y^)upB{pvj#6p]r*5@z,yt6MjOgQEZFRPxdmVM,yf");
-            Minecraft.getMinecraft().session = new Session(microsoftAuthResult.getProfile().getName(), microsoftAuthResult.getProfile().getId(), microsoftAuthResult.getAccessToken(), "mojang");
-        } catch (MicrosoftAuthenticationException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public void end() {

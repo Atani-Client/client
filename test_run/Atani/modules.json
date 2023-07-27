@@ -73,7 +73,8 @@
       "Enabled": true,
       "Key": 0,
       "Values": {
-        "Omni Sprint": "true"
+        "Legit": "false",
+        "All Directions": "false"
       }
     },
     "Backtrack": {

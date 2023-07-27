@@ -24,6 +24,7 @@ import wtf.atani.value.impl.StringBoxValue;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Random;
 
 @ModuleInfo(name = "KillAura", description = "Attacks people", category = Category.COMBAT, key = Keyboard.KEY_R)
 public class KillAura extends Module {
@@ -156,6 +157,7 @@ public class KillAura extends Module {
                         mc.thePlayer.swingItem();
                         mc.playerController.attackEntity(mc.thePlayer, attackEntity);
                         calculateCps();
+                        this.attackTimer.reset();
                     }
                 }
             }
@@ -165,23 +167,8 @@ public class KillAura extends Module {
     }
 
     private void calculateCps() {
-        double cps = RandomUtil.randomBetween(this.minCps.getValue().floatValue(), this.maxCps.getValue().floatValue());
-        final SecureRandom random = new SecureRandom();
-        final double maxCPS = cps + 1;
-        cpsDelay = cps + (random.nextInt() * (maxCPS - cps));
-
-        if (cpsTimeHelper.hasReached((long) (1000.0 / RandomUtil.randomBetween(cps, this.maxCps.getValue().floatValue())), true)) {
-            wasCPSDrop = !wasCPSDrop;
-        }
-
-        final double cur = System.currentTimeMillis() * random.nextInt(220);
-
-        double timeCovert = Math.max(cpsDelay, cur) / 3;
-        if (wasCPSDrop) {
-            cpsDelay = (int) timeCovert;
-        } else {
-            cpsDelay = (int) (cps + (random.nextInt() * (maxCPS - cps)) / timeCovert);
-        }
+        // Temporarily removed legit cps calc
+        cpsDelay = 1000 / RandomUtil.randomBetween(this.minCps.getValue().floatValue(), this.maxCps.getValue().floatValue());
     }
 
     @Override

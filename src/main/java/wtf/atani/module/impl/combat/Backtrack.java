@@ -40,40 +40,44 @@ public class Backtrack extends Module {
 
     @Listen
     public final void onTick(TickEvent tickEvent) {
-        if (entity != null && getPlayer() != null && this.packetListener != null && getWorld() != null) {
-            double d0 = (double) this.entity.realPosX / 32.0D;
-            double d1 = (double) this.entity.realPosY / 32.0D;
-            double d2 = (double) this.entity.realPosZ / 32.0D;
-            double d3 = (double) this.entity.serverPosX / 32.0D;
-            double d4 = (double) this.entity.serverPosY / 32.0D;
-            double d5 = (double) this.entity.serverPosZ / 32.0D;
-            AxisAlignedBB alignedBB = new AxisAlignedBB(d3 - (double) this.entity.width, d4, d5 - (double) this.entity.width, d3 + (double) this.entity.width, d4 + (double) this.entity.height, d5 + (double) this.entity.width);
-            Vec3 positionEyes = getPlayer().getPositionEyes(getTimer().renderPartialTicks);
-            double currentX = MathHelper.clamp_double(positionEyes.xCoord, alignedBB.minX, alignedBB.maxX);
-            double currentY = MathHelper.clamp_double(positionEyes.yCoord, alignedBB.minY, alignedBB.maxY);
-            double currentZ = MathHelper.clamp_double(positionEyes.zCoord, alignedBB.minZ, alignedBB.maxZ);
-            AxisAlignedBB alignedBB2 = new AxisAlignedBB(d0 - (double) this.entity.width, d1, d2 - (double) this.entity.width, d0 + (double) this.entity.width, d1 + (double) this.entity.height, d2 + (double) this.entity.width);
-            double realX = MathHelper.clamp_double(positionEyes.xCoord, alignedBB2.minX, alignedBB2.maxX);
-            double realY = MathHelper.clamp_double(positionEyes.yCoord, alignedBB2.minY, alignedBB2.maxY);
-            double realZ = MathHelper.clamp_double(positionEyes.zCoord, alignedBB2.minZ, alignedBB2.maxZ);
-            double distance = this.maximumRange.getValue().floatValue();
-            if (!this.getPlayer().canEntityBeSeen(this.entity)) {
-                distance = distance > 3 ? 3 : distance;
+        try {
+            if (entity != null && getPlayer() != null && this.packetListener != null && getWorld() != null) {
+                double d0 = (double) this.entity.realPosX / 32.0D;
+                double d1 = (double) this.entity.realPosY / 32.0D;
+                double d2 = (double) this.entity.realPosZ / 32.0D;
+                double d3 = (double) this.entity.serverPosX / 32.0D;
+                double d4 = (double) this.entity.serverPosY / 32.0D;
+                double d5 = (double) this.entity.serverPosZ / 32.0D;
+                AxisAlignedBB alignedBB = new AxisAlignedBB(d3 - (double) this.entity.width, d4, d5 - (double) this.entity.width, d3 + (double) this.entity.width, d4 + (double) this.entity.height, d5 + (double) this.entity.width);
+                Vec3 positionEyes = getPlayer().getPositionEyes(getTimer().renderPartialTicks);
+                double currentX = MathHelper.clamp_double(positionEyes.xCoord, alignedBB.minX, alignedBB.maxX);
+                double currentY = MathHelper.clamp_double(positionEyes.yCoord, alignedBB.minY, alignedBB.maxY);
+                double currentZ = MathHelper.clamp_double(positionEyes.zCoord, alignedBB.minZ, alignedBB.maxZ);
+                AxisAlignedBB alignedBB2 = new AxisAlignedBB(d0 - (double) this.entity.width, d1, d2 - (double) this.entity.width, d0 + (double) this.entity.width, d1 + (double) this.entity.height, d2 + (double) this.entity.width);
+                double realX = MathHelper.clamp_double(positionEyes.xCoord, alignedBB2.minX, alignedBB2.maxX);
+                double realY = MathHelper.clamp_double(positionEyes.yCoord, alignedBB2.minY, alignedBB2.maxY);
+                double realZ = MathHelper.clamp_double(positionEyes.zCoord, alignedBB2.minZ, alignedBB2.maxZ);
+                double distance = this.maximumRange.getValue().floatValue();
+                if (!this.getPlayer().canEntityBeSeen(this.entity)) {
+                    distance = distance > 3 ? 3 : distance;
+                }
+                double bestX = MathHelper.clamp_double(positionEyes.xCoord, this.entity.getEntityBoundingBox().minX, this.entity.getEntityBoundingBox().maxX);
+                double bestY = MathHelper.clamp_double(positionEyes.yCoord, this.entity.getEntityBoundingBox().minY, this.entity.getEntityBoundingBox().maxY);
+                double bestZ = MathHelper.clamp_double(positionEyes.zCoord, this.entity.getEntityBoundingBox().minZ, this.entity.getEntityBoundingBox().maxZ);
+                boolean b = false;
+                if (positionEyes.distanceTo(new Vec3(bestX, bestY, bestZ)) > 2.9 || (getPlayer().hurtTime < 8 && getPlayer().hurtTime > 1)) {
+                    b = true;
+                }
+                if (!this.onlyWhenNeeded.getValue()) {
+                    b = true;
+                }
+                if (!(b && positionEyes.distanceTo(new Vec3(realX, realY, realZ)) > positionEyes.distanceTo(new Vec3(currentX, currentY, currentZ)) + 0.05) || !(getPlayer().getDistance(d0, d1, d2) < distance) || this.timeHelper.hasReached((long) this.delay.getValue())) {
+                    this.resetPackets(this.packetListener);
+                    this.timeHelper.reset();
+                }
             }
-            double bestX = MathHelper.clamp_double(positionEyes.xCoord, this.entity.getEntityBoundingBox().minX, this.entity.getEntityBoundingBox().maxX);
-            double bestY = MathHelper.clamp_double(positionEyes.yCoord, this.entity.getEntityBoundingBox().minY, this.entity.getEntityBoundingBox().maxY);
-            double bestZ = MathHelper.clamp_double(positionEyes.zCoord, this.entity.getEntityBoundingBox().minZ, this.entity.getEntityBoundingBox().maxZ);
-            boolean b = false;
-            if (positionEyes.distanceTo(new Vec3(bestX, bestY, bestZ)) > 2.9 || (getPlayer().hurtTime < 8 && getPlayer().hurtTime > 1)) {
-                b = true;
-            }
-            if (!this.onlyWhenNeeded.getValue()) {
-                b = true;
-            }
-            if (!(b && positionEyes.distanceTo(new Vec3(realX, realY, realZ)) > positionEyes.distanceTo(new Vec3(currentX, currentY, currentZ)) + 0.05) || !(getPlayer().getDistance(d0, d1, d2) < distance) || this.timeHelper.hasReached((long) this.delay.getValue())) {
-                this.resetPackets(this.packetListener);
-                this.timeHelper.reset();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

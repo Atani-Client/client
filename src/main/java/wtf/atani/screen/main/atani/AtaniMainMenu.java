@@ -143,7 +143,8 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
         super.mouseClicked(mouseX, mouseY, mouseButton);
-        firstPage.mouseClicked(mouseX, mouseY, mouseButton);
+        if(firstPage != null)
+            firstPage.mouseClicked(mouseX, mouseY, mouseButton);
         if(secondPage != null)
             secondPage.mouseClicked(mouseX, mouseY, mouseButton);
     }

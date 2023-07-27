@@ -49,7 +49,7 @@
       }
     },
     "Velocity": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
         "Mode": "AAC v4",
@@ -59,7 +59,7 @@
       }
     },
     "W-Tap": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
         "Mode": "Single Packet"
@@ -77,7 +77,7 @@
       }
     },
     "Backtrack": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
         "Delay": "450.0",
@@ -125,7 +125,7 @@
       "Key": 0
     },
     "Speed": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
         "Mode": "Vulcan",
@@ -172,7 +172,7 @@
         "Reset Rotations": "true",
         "Reset Mode": "Silent",
         "Ray Trace": "false",
-        "Attack Range": "3.4000000953674316",
+        "Attack Range": "3.299999952316284",
         "Min CPS": "7.900000095367432",
         "Max CPS": "12.899999618530273"
       }

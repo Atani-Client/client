@@ -100,6 +100,7 @@ public class MultiPlayerPage extends SecondPage implements Methods {
                 this.menuButtons.remove(found);
                 selected = null;
                 saveServerList();
+                refresh();
             }
         }));
     }
@@ -114,8 +115,8 @@ public class MultiPlayerPage extends SecondPage implements Methods {
             {
                 ServerData serverData = selected;
                 this.toBeAdded.add(new ServerButton(serverData, pageX + 1, (this.menuButtons.isEmpty() ? 0 : this.menuButtons.get(this.menuButtons.size() - 1).getPosY()) + 40, pageWidth - 2, () -> selected = serverData));
-                this.saveServerList();
-                this.refresh();
+                saveServerList();
+                refresh();
             }
 
             this.mc.displayGuiScreen(guiScreen);
@@ -149,24 +150,28 @@ public class MultiPlayerPage extends SecondPage implements Methods {
         try {
             NBTTagList nbttaglist = new NBTTagList();
             for (MenuButton button : this.toBeAdded) {
-                ServerButton serverButton = (ServerButton) button;
-                if (serverButton.getServerData() != null) {
-                    System.out.println(serverButton.getServerData().serverIP);
-                    nbttaglist.appendTag(((ServerButton) button).getServerData().getNBTCompound());
+                if(button instanceof ServerButton) {
+                    ServerButton serverButton = (ServerButton) button;
+                    if (serverButton.getServerData() != null) {
+                        System.out.println(serverButton.getServerData().serverIP);
+                        nbttaglist.appendTag(((ServerButton) button).getServerData().getNBTCompound());
+                    }
                 }
             }
             for (MenuButton button : this.menuButtons) {
-                ServerButton serverButton = (ServerButton) button;
-                if (serverButton.getServerData() != null) {
-                    nbttaglist.appendTag(((ServerButton) button).getServerData().getNBTCompound());
+                if(button instanceof ServerButton) {
+                    ServerButton serverButton = (ServerButton) button;
+                    if (serverButton.getServerData() != null) {
+                        nbttaglist.appendTag(((ServerButton) button).getServerData().getNBTCompound());
+                    }
                 }
             }
-
+            System.out.println(nbttaglist.toString());
             NBTTagCompound nbttagcompound = new NBTTagCompound();
             nbttagcompound.setTag("servers", nbttaglist);
             CompressedStreamTools.write(nbttagcompound, new File(this.mc.mcDataDir, "servers.dat"));
         } catch (Exception exception) {
-
+            exception.printStackTrace();
         }
     }
 

@@ -1500,6 +1500,23 @@ public abstract class Entity implements ICommandSender
         return this.worldObj.rayTraceBlocks(vec3, vec32, false, false, true);
     }
 
+    public MovingObjectPosition customRayTrace(final double blockReachDistance, final float partialTicks, final float yaw, final float pitch) {
+        final Vec3 vec3 = this.getPositionEyes(partialTicks);
+        final Vec3 vec4 = this.getCustomLook(partialTicks, yaw, pitch);
+        final Vec3 vec5 = vec3.addVector(vec4.xCoord * blockReachDistance, vec4.yCoord * blockReachDistance, vec4.zCoord * blockReachDistance);
+        return this.worldObj.rayTraceBlocks(vec3, vec5, false, false, true);
+    }
+
+    public Vec3 getCustomLook(final float partialTicks, final float yaw, final float pitch) {
+        if (partialTicks == 1.0f || partialTicks == 2.0f) {
+            return this.getVectorForRotation(pitch, yaw);
+        }
+        final float f = this.prevRotationPitch + (this.rotationPitch - this.prevRotationPitch) * partialTicks;
+        final float f2 = this.prevRotationYaw + (this.rotationYaw - this.prevRotationYaw) * partialTicks;
+        return this.getVectorForRotation(f, f2);
+    }
+
+
     /**
      * Returns true if other Entities should be prevented from moving through this Entity.
      */

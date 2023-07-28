@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.world.MinecraftException;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.SaveFormatComparator;
+import org.lwjgl.input.Mouse;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.screen.main.atani.button.MenuButton;
 import wtf.atani.screen.main.atani.button.impl.SimpleButton;
@@ -39,23 +40,52 @@ public class SinglePlayerPage extends SecondPage implements Methods {
         }
     }
 
+    public int scroll = 0;
+
     @Override
     public void draw(int mouseX, int mouseY) {
+        if(RenderUtil.isHovered(mouseX, mouseY, this.pageX, this.pageY, this.pageWidth, this.pageHeight)) {
+            scroll = (int) (Math.min(scroll + Mouse.getDWheel() / 10.0f, 0));
+        }
         float sixthY = this.screenHeight / 6F;
         FontRenderer bigger = FontStorage.getInstance().findFont("Roboto", 21);
         float usableAreaX = pageX + 1;
         float usableAreaY = pageY + 7 * 2 + bigger.FONT_HEIGHT;
         float usableAreaWidth = pageWidth - 2;
         float usableAreaHeight = pageHeight - (7 * 2 + bigger.FONT_HEIGHT) - (7 * 2);
+        RenderUtil.startScissorBox();
+        RenderUtil.drawScissorBox(usableAreaX, usableAreaY, usableAreaWidth, usableAreaHeight - 30);
         for(MenuButton menuButton : this.menuButtons) {
             if(menuButton instanceof WorldButton) {
                 WorldButton worldButton = (WorldButton) menuButton;
+                worldButton.scroll = scroll;
                 if(worldButton.getSaveFormatComparator() == selected)
                     worldButton.selected = true;
                 else
                     worldButton.selected = false;
+                menuButton.draw(mouseX, mouseY);
             }
-            menuButton.draw(mouseX, mouseY);
+        }
+        RenderUtil.endScissorBox();
+        for(MenuButton menuButton : this.menuButtons) {
+            if(!(menuButton instanceof WorldButton)) {
+                menuButton.draw(mouseX, mouseY);
+            }
+        }
+    }
+
+    @Override
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        for(MenuButton menuButton : menuButtons) {
+            FontRenderer bigger = FontStorage.getInstance().findFont("Roboto", 21);
+            float usableAreaX = pageX + 1;
+            float usableAreaY = pageY + 7 * 2 + bigger.FONT_HEIGHT;
+            float usableAreaWidth = pageWidth - 2;
+            float usableAreaHeight = pageHeight - (7 * 2 + bigger.FONT_HEIGHT) - (7 * 2);
+            if(RenderUtil.isHovered(mouseX, mouseY, menuButton.getPosX(), menuButton.getPosY() + menuButton.scroll, menuButton.getWidth(), menuButton.getHeight())) {
+                if(RenderUtil.isHovered(mouseX, mouseY, usableAreaX, usableAreaY, usableAreaWidth, usableAreaHeight - 30) || !(menuButton instanceof WorldButton))
+                    menuButton.getAction().run();
+            }
         }
     }
 

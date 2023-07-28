@@ -28,16 +28,16 @@ public class WorldButton extends MenuButton {
 
     @Override
     public void draw(int mouseX, int mouseY) {
-        if(RenderUtil.isHovered(mouseX, mouseY, posX, posY, width, height) || selected) {
+        if(RenderUtil.isHovered(mouseX, mouseY, posX, posY + scroll, width, height) || selected) {
             this.hoveringAnimation.setDirection(Direction.FORWARDS);
         } else {
             this.hoveringAnimation.setDirection(Direction.BACKWARDS);
         }
-        RenderUtil.drawRect(posX, posY, width, height, new Color(255, 255, 255, (int) (20 * hoveringAnimation.getOutput())).getRGB());
+        RenderUtil.drawRect(posX, posY + scroll, width, height, new Color(255, 255, 255, (int) (20 * hoveringAnimation.getOutput())).getRGB());
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
-        normal.drawStringWithShadow(String.format("%s (%s)", saveFormatComparator.getDisplayName(), saveFormatComparator.getFileName()), posX + 10, posY + 2 + 1, -1);
-        normal.drawStringWithShadow(String.format("Last Played: %s", this.field_146633_h.format(new Date(saveFormatComparator.getLastTimePlayed()))), posX + 10, posY + 15 + 1, -1);
-        normal.drawStringWithShadow(saveFormatComparator.getEnumGameType().getName().substring(0, 1).toUpperCase() + saveFormatComparator.getEnumGameType().getName().substring(1), posX + 10, posY + 15 + 15 - 2 + 1, -1);
+        normal.drawStringWithShadow(String.format("%s (%s)", saveFormatComparator.getDisplayName(), saveFormatComparator.getFileName()), posX + 10, posY + 2 + 1 + scroll, -1);
+        normal.drawStringWithShadow(String.format("Last Played: %s", this.field_146633_h.format(new Date(saveFormatComparator.getLastTimePlayed()))), posX + 10, posY + 15 + 1 + scroll, -1);
+        normal.drawStringWithShadow(saveFormatComparator.getEnumGameType().getName().substring(0, 1).toUpperCase() + saveFormatComparator.getEnumGameType().getName().substring(1), posX + 10, posY + 15 + 15 - 2 + 1 + scroll, -1);
     }
 
     public SaveFormatComparator getSaveFormatComparator() {

@@ -15,6 +15,8 @@ import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Timer;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import wtf.atani.command.Command;
 import wtf.atani.utils.player.PlayerHandler;
 
@@ -99,6 +101,29 @@ public interface Methods extends ClientInformationAccess {
         return entity.lastTickPosX != entity.posX || entity.lastTickPosZ != entity.posZ || entity.lastTickPosY != entity.posY;
     }
 
+    default boolean isKeyDown(int keyCode) {
+        if (keyCode < 0) {
+            int i = Mouse.getEventButton();
+            return i - 100 == keyCode;
+        } else {
+            return Keyboard.isKeyDown(keyCode);
+        }
+    }
+
+    default void resumeWalk() {
+        getGameSettings().keyBindForward.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());
+        getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindBack.getKeyCode());
+        getGameSettings().keyBindLeft.pressed = isKeyDown(getGameSettings().keyBindLeft.getKeyCode());
+        getGameSettings().keyBindRight.pressed = isKeyDown(getGameSettings().keyBindRight.getKeyCode());
+    }
+
+    default void stopWalk() {
+        getGameSettings().keyBindForward.pressed = false;
+        getGameSettings().keyBindBack.pressed = false;
+        getGameSettings().keyBindLeft.pressed = false;
+        getGameSettings().keyBindRight.pressed = false;
+    }
+
     default void sendMessage(Object o) {
         sendMessage(o, true);
     }
@@ -106,7 +131,6 @@ public interface Methods extends ClientInformationAccess {
     default void sendMessage(Object o, boolean prefix) {
         getPlayer().addChatMessage(new ChatComponentText((prefix ? PREFIX : "") + o));
     }
-
 
     default void sendHelp(Command command, String... usages) {
         for (String usage : usages) {
@@ -119,7 +143,6 @@ public interface Methods extends ClientInformationAccess {
             sendMessage("§a" + "." + shortestName + " §7" + usage);
         }
     }
-
 
     default void sendError(String issue, String help) {
         sendMessage("§c§lERROR: §e" + issue.toUpperCase() + "§7: §a" + help);

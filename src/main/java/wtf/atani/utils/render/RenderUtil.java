@@ -1,6 +1,7 @@
 package wtf.atani.utils.render;
 
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.GL11;
@@ -31,6 +32,32 @@ public class RenderUtil implements Methods {
         GL11.glEnable(3553);
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    public static void startScissorBox() {
+        GL11.glPushMatrix();
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+    }
+
+    public static void drawScissorBox(double x, double y, double width, double height) {
+        width = Math.max(width, 0.1);
+
+        ScaledResolution sr = new ScaledResolution(mc);
+        double scale = sr.getScaleFactor();
+
+        y = sr.getScaledHeight() - y;
+
+        x *= scale;
+        y *= scale;
+        width *= scale;
+        height *= scale;
+
+        GL11.glScissor((int) x, (int) (y - height), (int) width, (int) height);
+    }
+
+    public static void endScissorBox() {
+        GL11.glDisable(GL11.GL_SCISSOR_TEST);
+        GL11.glPopMatrix();
     }
 
     public static Framebuffer createFrameBuffer(Framebuffer framebuffer) {

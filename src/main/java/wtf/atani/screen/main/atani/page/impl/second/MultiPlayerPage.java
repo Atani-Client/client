@@ -10,6 +10,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import org.lwjgl.input.Mouse;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.screen.main.atani.button.MenuButton;
 import wtf.atani.screen.main.atani.button.impl.ServerButton;
@@ -18,6 +19,7 @@ import wtf.atani.screen.main.atani.button.impl.WorldButton;
 import wtf.atani.screen.main.atani.page.impl.SecondPage;
 import wtf.atani.screen.main.atani.page.impl.second.multiplayer.GuiScreenAddServer;
 import wtf.atani.utils.interfaces.Methods;
+import wtf.atani.utils.render.RenderUtil;
 
 import java.io.File;
 import java.net.UnknownHostException;
@@ -34,29 +36,58 @@ public class MultiPlayerPage extends SecondPage implements Methods {
     private final OldServerPinger oldServerPinger = new OldServerPinger();
     private ServerData selected;
     private boolean addingServer;
+    public int scroll = 0;
 
     @Override
     public void draw(int mouseX, int mouseY) {
+        if(RenderUtil.isHovered(mouseX, mouseY, this.pageX, this.pageY, this.pageWidth, this.pageHeight)) {
+            scroll = (int) (Math.min(scroll + Mouse.getDWheel() / 10.0f, 0));
+        }
         float sixthY = this.screenHeight / 6F;
         FontRenderer bigger = FontStorage.getInstance().findFont("Roboto", 21);
         float usableAreaX = pageX + 1;
         float usableAreaY = pageY + 7 * 2 + bigger.FONT_HEIGHT;
         float usableAreaWidth = pageWidth - 2;
         float usableAreaHeight = pageHeight - (7 * 2 + bigger.FONT_HEIGHT) - (7 * 2);
+        RenderUtil.startScissorBox();
+        RenderUtil.drawScissorBox(usableAreaX, usableAreaY, usableAreaWidth, usableAreaHeight - 30);
         for(MenuButton menuButton : this.menuButtons) {
-            if(menuButton instanceof WorldButton) {
+            if(menuButton instanceof ServerButton) {
                 ServerButton serverButton = (ServerButton) menuButton;
+                serverButton.scroll = scroll;
                 if(serverButton.getServerData() == selected)
                     serverButton.selected = true;
                 else
                     serverButton.selected = false;
+                menuButton.draw(mouseX, mouseY);
             }
-            menuButton.draw(mouseX, mouseY);
+        }
+        RenderUtil.endScissorBox();
+        for(MenuButton menuButton : this.menuButtons) {
+            if(!(menuButton instanceof ServerButton)) {
+                menuButton.draw(mouseX, mouseY);
+            }
+        }
+    }
+
+    @Override
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        for(MenuButton menuButton : menuButtons) {
+            FontRenderer bigger = FontStorage.getInstance().findFont("Roboto", 21);
+            float usableAreaX = pageX + 1;
+            float usableAreaY = pageY + 7 * 2 + bigger.FONT_HEIGHT;
+            float usableAreaWidth = pageWidth - 2;
+            float usableAreaHeight = pageHeight - (7 * 2 + bigger.FONT_HEIGHT) - (7 * 2);
+            if(RenderUtil.isHovered(mouseX, mouseY, menuButton.getPosX(), menuButton.getPosY() + menuButton.scroll, menuButton.getWidth(), menuButton.getHeight())) {
+                if(RenderUtil.isHovered(mouseX, mouseY, usableAreaX, usableAreaY, usableAreaWidth, usableAreaHeight - 30) || !(menuButton instanceof WorldButton))
+                    menuButton.getAction().run();
+            }
         }
     }
 
     @Override
     public void refresh() {
+        scroll = 0;
         float sixthY = this.screenHeight / 6F;
         float fourthX = this.screenWidth/ 4F;
         this.pageX = fourthX * 2 + 7;
@@ -153,7 +184,6 @@ public class MultiPlayerPage extends SecondPage implements Methods {
                 if(button instanceof ServerButton) {
                     ServerButton serverButton = (ServerButton) button;
                     if (serverButton.getServerData() != null) {
-                        System.out.println(serverButton.getServerData().serverIP);
                         nbttaglist.appendTag(((ServerButton) button).getServerData().getNBTCompound());
                     }
                 }
@@ -166,7 +196,6 @@ public class MultiPlayerPage extends SecondPage implements Methods {
                     }
                 }
             }
-            System.out.println(nbttaglist.toString());
             NBTTagCompound nbttagcompound = new NBTTagCompound();
             nbttagcompound.setTag("servers", nbttaglist);
             CompressedStreamTools.write(nbttagcompound, new File(this.mc.mcDataDir, "servers.dat"));

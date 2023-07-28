@@ -30,7 +30,7 @@
       "Enabled": false,
       "Key": 33,
       "Values": {
-        "Mode": "Old NCP",
+        "Mode": "Vanilla",
         "Vulcan Mode": "Glide",
         "Time": "10.0",
         "Timer": "0.20000000298023224",
@@ -49,7 +49,7 @@
       }
     },
     "Velocity": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
         "Mode": "Grim Flag",
@@ -144,11 +144,11 @@
       "Enabled": false,
       "Key": 47,
       "Values": {
-        "Mode": "Verus",
+        "Mode": "NCP",
         "Spartan Mode": "Timer",
         "Verus Mode": "Air Boost",
         "Vulcan Mode": "Normal",
-        "Incognito Mode": "Normal",
+        "Incognito Mode": "Exploit",
         "Boost": "1.2000000476837158",
         "Jump Height": "0.4099999964237213"
       }
@@ -174,6 +174,8 @@
         "Invisibles": "true",
         "Walls": "true",
         "Rotation Range": "3.5",
+        "Snap Yaw": "false",
+        "Snap Pitch": "false",
         "Minimum Yaw": "180.0",
         "Maximum Yaw": "180.0",
         "Minimum Pitch": "180.0",
@@ -202,6 +204,38 @@
       "Key": 0,
       "Values": {
         "Time Speed": "1.0"
+      }
+    },
+    "Scaffold": {
+      "Enabled": false,
+      "Key": 34,
+      "Values": {
+        "Mode": "Normal",
+        "Place On": "Legit",
+        "Delay": "0.0",
+        "Tower": "false",
+        "Tower Mode": "Matrix",
+        "Reverse Movement": "false",
+        "Switch Items": "true",
+        "Sprint": "false",
+        "Safewalk": "true",
+        "Legit Safewalk": "true",
+        "Eagle": "false",
+        "Eagle Blocks": "2.0",
+        "Keep Y": "false",
+        "Yaw Mode": "Static",
+        "Pitch Mode": "Normal",
+        "Snap Yaw": "true",
+        "Snap Pitch": "true",
+        "Minimum Yaw": "50.099998474121094",
+        "Maximum Yaw": "72.9000015258789",
+        "Minimum Pitch": "52.400001525878906",
+        "Maximum Pitch": "75.19999694824219",
+        "Mouse Fix": "true",
+        "Randomize Yaw": "false",
+        "Randomize Pitch": "false",
+        "Ray Trace": "true",
+        "Strict": "true"
       }
     }
   }

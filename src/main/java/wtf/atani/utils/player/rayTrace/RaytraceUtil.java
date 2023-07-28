@@ -8,10 +8,26 @@ import net.minecraft.entity.item.EntityItemFrame;
 import net.minecraft.util.*;
 import net.optifine.reflect.Reflector;
 import wtf.atani.utils.interfaces.Methods;
+import wtf.atani.utils.player.PlayerHandler;
 
 import java.util.List;
 
 public class RaytraceUtil implements Methods {
+
+	public static boolean getOver(final EnumFacing enumFacing, final BlockPos pos, final boolean strict, float reach) {
+		final MovingObjectPosition movingObjectPosition = rayCast(1, new float[]{PlayerHandler.yaw, PlayerHandler.pitch}, reach, 0.10000000149011612);
+
+		if (movingObjectPosition == null)
+			return false;
+
+		final Vec3 hitVec = movingObjectPosition.hitVec;
+
+		if (hitVec == null)
+			return false;
+
+		return movingObjectPosition.getBlockPos() != null && movingObjectPosition.getBlockPos().equals(pos) && (!strict || movingObjectPosition.sideHit == enumFacing);
+	}
+
 
 	public static MovingObjectPosition rayCast(final float partialTicks) {
 		MovingObjectPosition objectMouseOver = null;

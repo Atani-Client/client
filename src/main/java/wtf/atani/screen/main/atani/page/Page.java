@@ -13,7 +13,7 @@ public abstract class Page {
     protected float pageX, pageY, pageWidth, pageHeight;
     protected float screenWidth, screenHeight;
     protected final CopyOnWriteArrayList<MenuButton> menuButtons = new CopyOnWriteArrayList<>();
-    protected GuiScreen guiScreen;
+    public GuiScreen guiScreen;
 
     public Page(GuiScreen guiScreen, float pageX, float pageY, float pageWidth, float pageHeight, float screenWidth, float screenHeight) {
         this.guiScreen = guiScreen;
@@ -27,7 +27,7 @@ public abstract class Page {
 
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         for(MenuButton menuButton : menuButtons) {
-            if(RenderUtil.isHovered(mouseX, mouseY, menuButton.getPosX(), menuButton.getPosY(), menuButton.getWidth(), menuButton.getHeight())) {
+            if(RenderUtil.isHovered(mouseX, mouseY, menuButton.getPosX(), menuButton.getPosY() + menuButton.scroll, menuButton.getWidth(), menuButton.getHeight())) {
                 menuButton.getAction().run();
             }
         }

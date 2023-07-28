@@ -2,10 +2,7 @@ package wtf.atani.utils.player;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.Vec3;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.*;
 import wtf.atani.utils.interfaces.Methods;
 import wtf.atani.utils.math.MathUtil;
 import wtf.atani.utils.math.random.RandomUtil;
@@ -19,7 +16,7 @@ public class RotationUtil implements Methods {
         return new Vec3(MathHelper.clamp(look.xCoord, axisAlignedBB.minX, axisAlignedBB.maxX), MathHelper.clamp(look.yCoord, axisAlignedBB.minY, axisAlignedBB.maxY), MathHelper.clamp(look.zCoord, axisAlignedBB.minZ, axisAlignedBB.maxZ));
     }
 
-    public static float[] getRotation(Entity entity, boolean mouseFix, boolean heuristics, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch) {
+    public static float[] getRotation(Entity entity, boolean mouseFix, boolean heuristics, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
         final Vec3 bestVector = getBestVector(mc.thePlayer.getPositionEyes(1F), entity.getEntityBoundingBox());
         double x = bestVector.xCoord - mc.thePlayer.posX;
         double y = bestVector.yCoord - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
@@ -67,24 +64,8 @@ public class RotationUtil implements Methods {
         final float deltaPitch = f1 - PlayerHandler.pitch;
         final float yawDistance = MathHelper.clamp_float(deltaYaw, -yawSpeed, yawSpeed) / fps * 4;
         final float pitchDistance = MathHelper.clamp_float(deltaPitch, -pitchSpeed, pitchSpeed) / fps * 4;
-        float calcYaw = PlayerHandler.yaw + yawDistance;
-        float calcPitch = PlayerHandler.pitch + pitchDistance;
-        calcPitch = MathHelper.clamp(calcPitch, -90, 90);
-        if (!mouseFix)
-            return new float[]{calcYaw, calcPitch};
-        return applyMouseFix(calcYaw, calcPitch);
-    }
-
-    public static float[] getRotation(BlockPos pos, AxisAlignedBB block, boolean mouseFix) {
-        double x = pos.getX() - mc.thePlayer.posX + mc.thePlayer.motionX;
-        double y = (pos.getY() + (block.maxY - block.minY)) - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
-        double z = pos.getZ() - mc.thePlayer.posZ + mc.thePlayer.motionZ;
-
-        double d3 = MathHelper.sqrt(x * x + z * z);
-        float f = (float) (MathHelper.atan2(z, x) * (180D / Math.PI)) - 90.0F;
-        float f1 = (float) (-(MathHelper.atan2(y, d3) * (180D / Math.PI)));
-        float calcPitch = updateRotation(PlayerHandler.pitch, f1);
-        float calcYaw = updateRotation(PlayerHandler.yaw, f);
+        float calcYaw = snapYaw ? f : PlayerHandler.yaw + yawDistance;
+        float calcPitch = snapPitch ? f1 : PlayerHandler.pitch + pitchDistance;
         calcPitch = MathHelper.clamp(calcPitch, -90, 90);
         if (!mouseFix)
             return new float[]{calcYaw, calcPitch};
@@ -104,6 +85,78 @@ public class RotationUtil implements Methods {
         float endPitch = (float) ((double) PlayerHandler.pitch - (double) f3 * 0.15);
         endPitch = MathHelper.clamp(endPitch, -90, 90);
         return new float[]{endYaw, endPitch};
+    }
+
+    public static float[] faceBlock(BlockPos blockPos, EnumFacing enumFacing, boolean mouseFix, boolean randomizeYaw, boolean randomizePitch, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
+        double x = (double) blockPos.getX() + (randomizeYaw ? RandomUtil.randomBetween(0.45D, 0.5D) : 0.5D) - mc.thePlayer.posX + (double) enumFacing.getFrontOffsetX() / 2.0;
+        double y = (double) blockPos.getZ() + 0.5 - mc.thePlayer.posZ + (double) enumFacing.getFrontOffsetZ() / 2.0;
+        double z = mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight() - ((double) blockPos.getY() + (randomizeYaw ? RandomUtil.randomBetween(0.45D, 0.5D) : 0.5D));
+        double theta = MathHelper.sqrt_double(x * x + y * y);
+
+        if (randomizePitch)
+            y += RandomUtil.randomBetween(-0.05, 0.05);
+
+        float f = (float) (Math.atan2(y, x) * 180.0 / Math.PI) - 90.0f;
+        float f1 = (float) (Math.atan2(z, theta) * 180.0 / Math.PI);
+
+        float yawSpeed = (float) RandomUtil.randomBetween(minYaw, maxYaw), pitchSpeed = (float) RandomUtil.randomBetween(minPitch, maxPitch);
+        float[] newRots = updateRotationAdvanced(PlayerHandler.yaw, f, yawSpeed, PlayerHandler.pitch, f1, pitchSpeed);
+        f = snapYaw ? f : newRots[0];
+        f1 = snapPitch ? f1 : newRots[1];
+
+        if (f >= 0.0f) {
+            return new float[]{f, f1};
+        }
+
+        f += 360.0f;
+
+        if(mouseFix)
+            return applyMouseFix(f, f1);
+        else
+            return new float[]{f, f1};
+    }
+
+    public static float[] updateRotationAdvanced(float oldYaw, float newYaw, float yawSpeed, float oldPitch, float newPitch, float pitchSpeed) {
+        final int fps = (int) (Minecraft.getDebugFPS() / 20.0F);
+        final float deltaYaw = (((newYaw - oldYaw) + 540) % 360) - 180;
+        final float deltaPitch = newPitch - oldPitch;
+        final float yawDistance = MathHelper.clamp_float(deltaYaw, -yawSpeed, yawSpeed) / fps * 4;
+        final float pitchDistance = MathHelper.clamp_float(deltaPitch, -pitchSpeed, pitchSpeed) / fps * 4;
+        float calcYaw = oldYaw + yawDistance;
+        float calcPitch = oldPitch + pitchDistance;
+        return new float[] {calcYaw, calcPitch};
+    }
+
+    public static float getSimpleScaffoldYaw() {
+        boolean forward = mc.gameSettings.keyBindForward.isKeyDown();
+        boolean left = mc.gameSettings.keyBindLeft.isKeyDown();
+        boolean right = mc.gameSettings.keyBindRight.isKeyDown();
+        boolean back = mc.gameSettings.keyBindBack.isKeyDown();
+
+        float yaw = 0;
+
+        // Only one Key directions
+        if (forward && !left && !right && !back)
+            yaw = 180;
+        if (!forward && left && !right && !back)
+            yaw = 90;
+        if (!forward && !left && right && !back)
+            yaw = -90;
+        if (!forward && !left && !right && back)
+            yaw = 0;
+
+        // Multi Key directions
+        if (forward && left && !right && !back)
+            yaw = 135;
+        if (forward && !left && right && !back)
+            yaw = -135;
+
+        if (!forward && left && !right && back)
+            yaw = 45;
+        if (!forward && !left && right && back)
+            yaw = -45;
+
+        return mc.thePlayer.rotationYaw + yaw;
     }
 
     public static void resetRotations(float yaw, float pitch, boolean silent) {

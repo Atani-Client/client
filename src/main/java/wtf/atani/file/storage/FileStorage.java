@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.florianmichael.rclasses.storage.Storage;
 import wtf.atani.file.IFile;
+import wtf.atani.file.impl.AccountsFile;
 import wtf.atani.file.impl.ModulesFile;
 import wtf.atani.utils.interfaces.Methods;
 
@@ -26,6 +27,7 @@ public class FileStorage extends Storage<IFile> implements Methods {
     public void init() {
         this.setupRoot(CLIENT_NAME);
         this.add(new ModulesFile());
+        this.add(new AccountsFile());
         this.load();
     }
 

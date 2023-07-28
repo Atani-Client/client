@@ -46,6 +46,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import wtf.atani.event.events.SafeWalkEvent;
 
 public abstract class Entity implements ICommandSender
 {
@@ -615,8 +616,9 @@ public abstract class Entity implements ICommandSender
             double d5 = z;
             boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
 
-            if (flag)
-            {
+            final SafeWalkEvent safewalkEvent = new SafeWalkEvent(flag).onFire();
+
+            if (safewalkEvent.isSafe()) {
                 double d6;
 
                 for (d6 = 0.05D; x != 0.0D && this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().offset(x, -1.0D, 0.0D)).isEmpty(); d3 = x)

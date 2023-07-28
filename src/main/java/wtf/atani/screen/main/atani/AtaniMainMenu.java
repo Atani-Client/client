@@ -9,9 +9,7 @@ import org.lwjgl.opengl.GL20;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.screen.main.atani.page.impl.FirstPage;
 import wtf.atani.screen.main.atani.page.impl.SecondPage;
-import wtf.atani.screen.main.atani.page.impl.second.LicensePage;
-import wtf.atani.screen.main.atani.page.impl.second.MultiPlayerPage;
-import wtf.atani.screen.main.atani.page.impl.second.SinglePlayerPage;
+import wtf.atani.screen.main.atani.page.impl.second.*;
 import wtf.atani.utils.interfaces.ClientInformationAccess;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.RoundedUtil;
@@ -118,6 +116,14 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
                         break;
                     case "MultiPlayer":
                         secondPage = new MultiPlayerPage(this, rectX, rectY, rectWidth, rectHeight, this.width, this.height);
+                        secondPage.refresh();
+                        break;
+                    case "Options":
+                        secondPage = new OptionsPage(this, rectX, rectY, rectWidth, rectHeight, this.width, this.height);
+                        secondPage.refresh();
+                        break;
+                    case "Account Manager":
+                        secondPage = new AccountPage(this, rectX, rectY, rectWidth, rectHeight, this.width, this.height);
                         secondPage.refresh();
                         break;
                     default:

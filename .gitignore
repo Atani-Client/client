@@ -16,7 +16,7 @@ testrun/shaderpacks
 
 testrun/saves
 
-testrun/raze/
+testrun/Atani/
 
 testrun/optionsshaders.txt
 testrun/optionsof.txt
@@ -26,6 +26,30 @@ testrun/server.properties
 testrun/servers.dat
 
 testrun/usercache.json
+
+/testrun/assets/
+/testrun/config/
+/testrun/libraries/
+
+/testrun/crash-reports/
+/testrun/logs/
+
+/testrun/screenshots
+/testrun/resourcepacks
+/testrun/shaderpacks
+
+/testrun/saves
+
+/testrun/Atani/
+
+/testrun/optionsshaders.txt
+/testrun/optionsof.txt
+/testrun/options.txt
+
+/testrun/server.properties
+/testrun/servers.dat
+
+/testrun/usercache.json
 
 *.xml
 .idea/discord.xml

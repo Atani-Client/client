@@ -6,8 +6,8 @@ testrun/assets/
 testrun/config/
 testrun/libraries/
 
-testrun/crash-reports/
-testrun/logs/
+testrun/crash-reports
+testrun/logs
 
 testrun/screenshots
 testrun/resourcepacks
@@ -23,6 +23,8 @@ testrun/server.properties
 testrun/servers.dat
 
 testrun/usercache.json
+
+testrun/Atani
 
 *.xml
 .idea/discord.xml

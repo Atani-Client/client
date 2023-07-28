@@ -20,7 +20,7 @@ public class Sprint extends Module {
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
         if (legit.getValue()) {
             getGameSettings().keyBindSprint.pressed = true;
-    } else {
+        } else {
             if (MoveUtil.getSpeed() != 0) {
                 getPlayer().setSprinting(true);
             }

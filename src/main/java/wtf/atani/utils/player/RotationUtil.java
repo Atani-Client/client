@@ -1,5 +1,6 @@
 package wtf.atani.utils.player;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -59,10 +60,15 @@ public class RotationUtil implements Methods {
         double d3 = MathHelper.sqrt(x * x + z * z);
         float yawSpeed = (float) RandomUtil.randomBetween(minYaw, maxYaw);
         float pitchSpeed = (float) RandomUtil.randomBetween(minPitch, maxPitch);
-        float f = (float) (MathHelper.atan2(z, x) * (yawSpeed / Math.PI)) - 90.0F;
-        float f1 = (float) (-(MathHelper.atan2(y, d3) * (pitchSpeed / Math.PI)));
-        float calcPitch = updateRotation(PlayerHandler.pitch, f1);
-        float calcYaw = updateRotation(PlayerHandler.yaw, f);
+        float f = (float) (MathHelper.atan2(z, x) * (180 / Math.PI)) - 90.0F;
+        float f1 = (float) (-(MathHelper.atan2(y, d3) * (180 / Math.PI)));
+        final int fps = (int) (Minecraft.getDebugFPS() / 20.0F);
+        final float deltaYaw = (((f - PlayerHandler.yaw) + 540) % 360) - 180;
+        final float deltaPitch = f1 - PlayerHandler.pitch;
+        final float yawDistance = MathHelper.clamp_float(deltaYaw, -yawSpeed, yawSpeed) / fps * 4;
+        final float pitchDistance = MathHelper.clamp_float(deltaPitch, -pitchSpeed, pitchSpeed) / fps * 4;
+        float calcYaw = PlayerHandler.yaw + yawDistance;
+        float calcPitch = PlayerHandler.pitch + pitchDistance;
         calcPitch = MathHelper.clamp(calcPitch, -90, 90);
         if (!mouseFix)
             return new float[]{calcYaw, calcPitch};

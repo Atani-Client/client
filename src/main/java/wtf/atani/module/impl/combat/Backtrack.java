@@ -21,6 +21,7 @@ import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
+import wtf.atani.value.impl.StringBoxValue;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,7 @@ public class Backtrack extends Module {
 
     private final ArrayList<Packet<INetHandler>> packets = new ArrayList<>();
 
+    public StringBoxValue packetMode = new StringBoxValue("Packets", "Which packets to cancel?", this, new String[]{"Select", "All"});
     private SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the packet delay?", this, 450L, 0L, 5000L, 0);
     public SliderValue<Float> maximumRange = new SliderValue<>("Maximum Range", "What'll be the maximum range?", this, 6f, 3f, 6f, 1);
     public CheckBoxValue onlyWhenNeeded = new CheckBoxValue("Only When Out of Reach", "Backtrack target only if it is out of reach?", this, true);
@@ -163,14 +165,19 @@ public class Backtrack extends Module {
     }
 
     private boolean blockPacket(Packet packet) {
-        if (packet instanceof S03PacketTimeUpdate) {
-            return true;
-        } else if (packet instanceof S00PacketKeepAlive) {
-            return true;
-        } else if (packet instanceof S12PacketEntityVelocity || packet instanceof S27PacketExplosion) {
-            return true;
-        } else {
-            return packet instanceof S32PacketConfirmTransaction || packet instanceof S14PacketEntity || packet instanceof S19PacketEntityStatus || packet instanceof S19PacketEntityHeadLook || packet instanceof S18PacketEntityTeleport || packet instanceof S0FPacketSpawnMob;
+        switch (this.packetMode.getValue()) {
+            case "All":
+                return true;
+            default:
+                if (packet instanceof S03PacketTimeUpdate) {
+                    return true;
+                } else if (packet instanceof S00PacketKeepAlive) {
+                    return true;
+                } else if (packet instanceof S12PacketEntityVelocity || packet instanceof S27PacketExplosion) {
+                    return true;
+                } else {
+                    return packet instanceof S32PacketConfirmTransaction || packet instanceof S14PacketEntity || packet instanceof S19PacketEntityStatus || packet instanceof S19PacketEntityHeadLook || packet instanceof S18PacketEntityTeleport || packet instanceof S0FPacketSpawnMob;
+                }
         }
     }
 

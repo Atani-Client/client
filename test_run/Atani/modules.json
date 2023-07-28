@@ -13,7 +13,7 @@
       "Key": 54
     },
     "CorrectMovement": {
-      "Enabled": false,
+      "Enabled": true,
       "Key": 0,
       "Values": {
         "Silent": "true"
@@ -30,9 +30,8 @@
       "Enabled": false,
       "Key": 33,
       "Values": {
-        "Mode": "Verus",
-        "Boost Mode": "Jump",
-        "Vulcan Mode": "Normal",
+        "Mode": "Old NCP",
+        "Vulcan Mode": "Glide",
         "Time": "10.0",
         "Timer": "0.20000000298023224",
         "Speed": "2.0999999046325684"
@@ -43,7 +42,7 @@
       "Key": 0,
       "Values": {
         "Delay": "500.0",
-        "Only When Out of Reach": "false",
+        "Only When Out of Reach": "true",
         "Charge Ticks": "5.0",
         "Minimum Discharge Ticks": "5.0",
         "Maximum Discharge Ticks": "5.0"
@@ -63,7 +62,7 @@
       "Enabled": true,
       "Key": 0,
       "Values": {
-        "Mode": "Normal Packet"
+        "Mode": "Sprint Reset"
       }
     },
     "FastPlace": {
@@ -71,7 +70,7 @@
       "Key": 0
     },
     "Sprint": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
         "Legit": "true",
@@ -79,10 +78,11 @@
       }
     },
     "Backtrack": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
-        "Delay": "3986.0",
+        "Packets": "All",
+        "Delay": "270.0",
         "Maximum Range": "6.0",
         "Only When Out of Reach": "true"
       }
@@ -137,10 +137,10 @@
       "Enabled": false,
       "Key": 47,
       "Values": {
-        "Mode": "Matrix",
-        "Spartan Mode": "Normal",
-        "Verus Mode": "Normal",
-        "Vulcan Mode": "Ground",
+        "Mode": "Verus",
+        "Spartan Mode": "Timer",
+        "Verus Mode": "Air Boost",
+        "Vulcan Mode": "Normal",
         "Incognito Mode": "Normal",
         "Boost": "1.2000000476837158",
         "Jump Height": "0.4099999964237213"
@@ -155,10 +155,10 @@
       "Key": 0
     },
     "KillAura": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 19,
       "Values": {
-        "Search Range": "4.0",
+        "Search Range": "3.5",
         "Target Mode": "Single",
         "Switch Delay": "300.0",
         "Players": "true",
@@ -166,24 +166,24 @@
         "Monsters": "true",
         "Invisibles": "true",
         "Walls": "true",
-        "Rotation Range": "4.0",
+        "Rotation Range": "3.5",
         "Minimum Yaw": "180.0",
         "Maximum Yaw": "180.0",
         "Minimum Pitch": "180.0",
         "Maximum Pitch": "180.0",
         "Mouse Fix": "true",
-        "Heuristics": "true",
+        "Heuristics": "false",
         "Prediction": "false",
-        "Necessary Rotations": "false",
+        "Necessary Rotations": "true",
         "Necessary Mode": "Pitch",
         "Near Rotate": "false",
         "Near Distance": "0.5",
         "Reset Rotations": "true",
         "Reset Mode": "Silent",
         "Ray Trace": "true",
-        "Attack Range": "3.299999952316284",
-        "Min CPS": "7.099999904632568",
-        "Max CPS": "9.300000190734863"
+        "Attack Range": "3.0",
+        "Min CPS": "11.0",
+        "Max CPS": "14.300000190734863"
       }
     },
     "LightningDetector": {

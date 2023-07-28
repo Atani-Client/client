@@ -7,6 +7,7 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.player.PlayerHandler;
 import wtf.atani.value.impl.StringBoxValue;
 
@@ -17,7 +18,7 @@ public class WTap extends Module {
 
     @Listen
     public final void onAttack(ClickingEvent clickingEvent) {
-        if(ModuleStorage.getInstance().getByClass(KillAura.class).isEnabled() && KillAura.curEntity != null) {
+        if(ModuleStorage.getInstance().getByClass(KillAura.class).isEnabled() && KillAura.curEntity != null && FightUtil.getRange(KillAura.curEntity) <= ModuleStorage.getInstance().getByClass(KillAura.class).attackRange.getValue().floatValue()) {
             switch (mode.getValue()) {
                 case "Sprint Reset":
                     PlayerHandler.shouldSprintReset = true;

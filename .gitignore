@@ -6,14 +6,14 @@ testrun/assets/
 testrun/config/
 testrun/libraries/
 
-testrun/crash-reports
-testrun/logs
+testrun/crash-reports/
+testrun/logs/
 
-testrun/screenshots
-testrun/resourcepacks
-testrun/shaderpacks
+testrun/screenshots/
+testrun/resourcepacks/
+testrun/shaderpacks/
 
-testrun/saves
+testrun/saves/
 
 testrun/optionsshaders.txt
 testrun/optionsof.txt
@@ -24,7 +24,7 @@ testrun/servers.dat
 
 testrun/usercache.json
 
-testrun/Atani
+testrun/Atani/
 
 *.xml
 .idea/discord.xml

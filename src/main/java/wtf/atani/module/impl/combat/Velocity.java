@@ -1,6 +1,7 @@
 package wtf.atani.module.impl.combat;
 
 import com.google.common.base.Supplier;
+import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
@@ -20,7 +21,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Intave", "Old Grim", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Intave", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0"});
     public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple")});
     public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("AAC v4")});
@@ -42,9 +43,16 @@ public class Velocity extends Module {
     int grimCancel = 0;
     int updates = 0;
 
+    // Grim Flag
+    private boolean grimFlag;
+
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         switch (mode.getValue()) {
+            case "Grim Flag":
+                if (mc.thePlayer.hurtTime != 0)
+                    mc.thePlayer.setPosition(mc.thePlayer.lastTickPosX, mc.thePlayer.lastTickPosY, mc.thePlayer.lastTickPosZ);
+                break;
             case "AAC v5.2.0":
                 if (mc.thePlayer.hurtTime> 0 && this.receivedVelocity) {
                     this.receivedVelocity = false;
@@ -94,6 +102,26 @@ public class Velocity extends Module {
             }
         }
         switch (mode.getValue()) {
+            case "Grim Flag":
+                if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
+                    Packet p = packetEvent.getPacket();
+                    if (p instanceof S12PacketEntityVelocity && ((S12PacketEntityVelocity)p).getEntityID() == mc.thePlayer.getEntityId()) {
+                        packetEvent.setCancelled(true);
+                        mc.thePlayer.motionX += 0.1D;
+                        mc.thePlayer.motionY += 0.1D;
+                        mc.thePlayer.motionZ += 0.1D;
+                    }
+                } else if(packetEvent.getType() == PacketEvent.Type.OUTGOING) {
+                    if (mc.thePlayer.hurtTime != 0)
+                        this.grimFlag = true;
+                    if (mc.thePlayer.onGround)
+                        this.grimFlag = false;
+                    if (this.grimFlag && packetEvent.getPacket() instanceof C03PacketPlayer) {
+                        ((C03PacketPlayer)packetEvent.getPacket()).setX(mc.thePlayer.posX + 210.0D);
+                        ((C03PacketPlayer)packetEvent.getPacket()).setZ(mc.thePlayer.posZ + 210.0D);
+                    }
+                }
+                break;
             case "Vulcan":
                 if(mc.thePlayer != null && mc.theWorld != null) {
                     if (mc.thePlayer.hurtTime > 0 && packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {

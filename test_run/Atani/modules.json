@@ -49,10 +49,10 @@
       }
     },
     "Velocity": {
-      "Enabled": false,
+      "Enabled": true,
       "Key": 0,
       "Values": {
-        "Mode": "AAC v5.2.0",
+        "Mode": "Grim Flag",
         "Horizontal %": "0.0",
         "Vertical %": "100.0",
         "Reduce": "0.6000000238418579"
@@ -75,6 +75,13 @@
       "Values": {
         "Legit": "true",
         "All Directions": "false"
+      }
+    },
+    "TriggerBot": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "CPS": "12.0"
       }
     },
     "Backtrack": {

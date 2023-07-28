@@ -2,12 +2,8 @@ package wtf.atani.screen.main.atani;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.*;
-import java.util.List;
-
 import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.world.storage.SaveFormatComparator;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import wtf.atani.font.storage.FontStorage;
@@ -19,8 +15,6 @@ import wtf.atani.screen.main.atani.page.impl.second.SinglePlayerPage;
 import wtf.atani.utils.interfaces.ClientInformationAccess;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.RoundedUtil;
-import wtf.atani.utils.render.animation.Direction;
-import wtf.atani.utils.render.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.render.shader.shaders.GLSLShader;
 
 public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess

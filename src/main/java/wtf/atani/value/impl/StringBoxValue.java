@@ -28,6 +28,10 @@ public class StringBoxValue extends Value<String> {
         this.values = values;
     }
 
+    public boolean is(String string) {
+        return this.getValue().equalsIgnoreCase(string);
+    }
+
     @Override
     public String getValueAsString() {
         return getValue();

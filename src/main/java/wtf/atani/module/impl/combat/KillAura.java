@@ -23,6 +23,7 @@ import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.security.SecureRandom;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -31,6 +32,8 @@ public class KillAura extends Module {
 
     public SliderValue<Float> findRange = new SliderValue<>("Search Range", "What'll be the range for searching for targets?", this, 4f, 3f, 10f, 1);
     public StringBoxValue targetMode = new StringBoxValue("Target Mode", "How will the aura search for targets?", this, new String[]{"Single", "Hybrid", "Switch", "Multi"});
+    public StringBoxValue priority = new StringBoxValue("Priority", "How will the aura sort targets?", this, new String[]{"Health", "Distance"});
+
     public SliderValue<Long> switchDelay = new SliderValue<>("Switch Delay", "How long will it take to switch between targets?", this, 300L, 0L, 1000L, 0, new Supplier[]{() -> targetMode.getValue().equalsIgnoreCase("Switch")});
     public CheckBoxValue players = new CheckBoxValue("Players", "Attack Players?", this, true);
     public CheckBoxValue animals = new CheckBoxValue("Animals", "Attack Animals", this, true);
@@ -73,22 +76,41 @@ public class KillAura extends Module {
     private TimeHelper cpsTimeHelper = new TimeHelper();
     private boolean wasCPSDrop = false;
 
+    private final class HealthSorter implements Comparator<EntityLivingBase> {
+        public int compare(EntityLivingBase o1, EntityLivingBase o2) {
+            return Double.compare(FightUtil.getEffectiveHealth(o1), FightUtil.getEffectiveHealth(o2));
+        }
+    }
+
+    private final class DistanceSorter implements Comparator<EntityLivingBase> {
+        public int compare(EntityLivingBase o1, EntityLivingBase o2) {
+            return Double.compare(mc.thePlayer.getDistanceToEntity(o1), mc.thePlayer.getDistanceToEntity(o2));
+        }
+    }
+
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
         targetFinding: {
             List<EntityLivingBase> targets = FightUtil.getMultipleTargets(findRange.getValue(), players.getValue(), animals.getValue(), walls.getValue(), monsters.getValue(), invisible.getValue());
-
+            switch (this.priority.getValue()){
+                case "Distance":
+                    targets.sort(new DistanceSorter());
+                    break;
+                case "Health":
+                    targets.sort(new HealthSorter());
+                    break;
+            }
             if (targets.isEmpty() || (curEntity != null && !targets.contains(curEntity))) {
                 curEntity = null;
                 return;
             }
-            if (targetMode.getValue().equalsIgnoreCase("single") || !this.switchTimer.hasReached(switchDelay.getValue())) {
-                if (curEntity != null && FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue())) {
+            if (targetMode.getValue().equalsIgnoreCase("single") || targetMode.getValue().equalsIgnoreCase("hybrid") || !this.switchTimer.hasReached(targetMode.getValue().equalsIgnoreCase("multi") ? 0 :switchDelay.getValue())) {
+                if (curEntity != null && FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()) && !targetMode.getValue().equalsIgnoreCase("hybrid")) {
                     break targetFinding;
                 } else {
                     curEntity = targets.get(0);
                 }
-            } else if (targetMode.getValue().equalsIgnoreCase("switch")) {
+            } else if (targetMode.getValue().equalsIgnoreCase("switch") || targetMode.getValue().equalsIgnoreCase("multi")) {
                 if (curEntity != null && FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()) && targets.size() == 1) {
                     break targetFinding;
                 } else if (curEntity == null) {

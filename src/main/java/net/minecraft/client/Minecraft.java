@@ -1477,7 +1477,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private void sendClickBlockToController(boolean leftClick)
+    public void sendClickBlockToController(boolean leftClick)
     {
         if (!leftClick)
         {

@@ -28,6 +28,19 @@ public class RaytraceUtil implements Methods {
 		return movingObjectPosition.getBlockPos() != null && movingObjectPosition.getBlockPos().equals(pos) && (!strict || movingObjectPosition.sideHit == enumFacing);
 	}
 
+	public static boolean getOver(final EnumFacing enumFacing, final BlockPos pos, final boolean strict, float reach, float yaw, float pitch) {
+		final MovingObjectPosition movingObjectPosition = rayCast(1, new float[]{yaw, pitch}, reach, 0.10000000149011612);
+
+		if (movingObjectPosition == null)
+			return false;
+
+		final Vec3 hitVec = movingObjectPosition.hitVec;
+
+		if (hitVec == null)
+			return false;
+
+		return movingObjectPosition.getBlockPos() != null && movingObjectPosition.getBlockPos().equals(pos) && (!strict || movingObjectPosition.sideHit == enumFacing);
+	}
 
 	public static MovingObjectPosition rayCast(final float partialTicks) {
 		MovingObjectPosition objectMouseOver = null;

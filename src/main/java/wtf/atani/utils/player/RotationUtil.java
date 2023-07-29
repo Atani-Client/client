@@ -6,14 +6,24 @@ import net.minecraft.util.*;
 import wtf.atani.utils.interfaces.Methods;
 import wtf.atani.utils.math.MathUtil;
 import wtf.atani.utils.math.random.RandomUtil;
+import wtf.atani.utils.module.ScaffoldUtil;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Random;
 
 public class RotationUtil implements Methods {
 
     public static Vec3 getBestVector(Vec3 look, AxisAlignedBB axisAlignedBB) {
         return new Vec3(MathHelper.clamp(look.xCoord, axisAlignedBB.minX, axisAlignedBB.maxX), MathHelper.clamp(look.yCoord, axisAlignedBB.minY, axisAlignedBB.maxY), MathHelper.clamp(look.zCoord, axisAlignedBB.minZ, axisAlignedBB.maxZ));
+    }
+
+    public static Vec3 getVectorForRotation(float yaw, float pitch) {
+        float f = MathHelper.cos((float) (-yaw * 0.017163291F - Math.PI));
+        float f2 = MathHelper.sin((float) (-yaw * 0.017163291F - Math.PI));
+        float f3 = -MathHelper.cos(-pitch * 0.017163291F);
+        float f4 = MathHelper.sin(-pitch * 0.017163291F);
+        return new Vec3(f2 * f3, f4, f * f3);
     }
 
     public static float[] getRotation(Entity entity, boolean mouseFix, boolean heuristics, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
@@ -87,33 +97,19 @@ public class RotationUtil implements Methods {
         return new float[]{endYaw, endPitch};
     }
 
-    public static float[] faceBlock(BlockPos blockPos, EnumFacing enumFacing, boolean mouseFix, boolean randomizeYaw, boolean randomizePitch, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
-        double x = (double) blockPos.getX() + (randomizeYaw ? RandomUtil.randomBetween(0.45D, 0.5D) : 0.5D) - mc.thePlayer.posX + (double) enumFacing.getFrontOffsetX() / 2.0;
-        double y = (double) blockPos.getZ() + 0.5 - mc.thePlayer.posZ + (double) enumFacing.getFrontOffsetZ() / 2.0;
-        double z = mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight() - ((double) blockPos.getY() + (randomizeYaw ? RandomUtil.randomBetween(0.45D, 0.5D) : 0.5D));
-        double theta = MathHelper.sqrt_double(x * x + y * y);
+    public static float[] getScaffoldRotations(final ScaffoldUtil.BlockData data, final boolean legit) {
+        final Vec3 eyes = mc.thePlayer.getPositionEyes(RandomUtil.nextFloat(2.997f, 3.997f));
+        final Vec3 position = new Vec3(data.position.getX() + 0.49, data.position.getY() + 0.49, data.position.getZ() + 0.49).add(new Vec3(data.face.getDirectionVec()).scale(0.489997f));
+        final Vec3 resultPosition = position.subtract(eyes);
+        float yaw = (float) Math.toDegrees(Math.atan2(resultPosition.zCoord, resultPosition.xCoord)) - 90.0F;
+        float pitch = (float) -Math.toDegrees(Math.atan2(resultPosition.yCoord, Math.hypot(resultPosition.xCoord, resultPosition.zCoord)));
+        final float[] rotations = new float[] {yaw, pitch};
 
-        if (randomizePitch)
-            y += RandomUtil.randomBetween(-0.05, 0.05);
-
-        float f = (float) (Math.atan2(y, x) * 180.0 / Math.PI) - 90.0f;
-        float f1 = (float) (Math.atan2(z, theta) * 180.0 / Math.PI);
-
-        float yawSpeed = (float) RandomUtil.randomBetween(minYaw, maxYaw), pitchSpeed = (float) RandomUtil.randomBetween(minPitch, maxPitch);
-        float[] newRots = updateRotationAdvanced(PlayerHandler.yaw, f, yawSpeed, PlayerHandler.pitch, f1, pitchSpeed);
-        f = snapYaw ? f : newRots[0];
-        f1 = snapPitch ? f1 : newRots[1];
-
-        if (f >= 0.0f) {
-            return new float[]{f, f1};
+        if (legit) {
+            return new float[] {mc.thePlayer.rotationYaw + 180F, updateRotation(PlayerHandler.pitch, applyMouseFix(0, rotations[1])[1], (float) RandomUtil.randomBetween(30, 80))};
         }
 
-        f += 360.0f;
-
-        if(mouseFix)
-            return applyMouseFix(f, f1);
-        else
-            return new float[]{f, f1};
+        return applyMouseFix(rotations[0], rotations[1]);
     }
 
     public static float[] updateRotationAdvanced(float oldYaw, float newYaw, float yawSpeed, float oldPitch, float newPitch, float pitchSpeed) {
@@ -168,7 +164,21 @@ public class RotationUtil implements Methods {
         }
     }
 
-    private static float updateRotation(float p_75652_1_, float p_75652_2_) {
+    public static float updateRotation(float p_75652_1_, float p_75652_2_, float speed) {
+        float f = MathHelper.wrapDegrees(p_75652_2_ - p_75652_1_);
+
+        if (f > (float) speed) {
+            f = (float) speed;
+        }
+
+        if (f < -(float) speed) {
+            f = -(float) speed;
+        }
+
+        return p_75652_1_ + f;
+    }
+
+    public static float updateRotation(float p_75652_1_, float p_75652_2_) {
         float f = MathHelper.wrapDegrees(p_75652_2_ - p_75652_1_);
 
         if (f > (float) 180) {

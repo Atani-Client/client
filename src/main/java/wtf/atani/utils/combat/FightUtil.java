@@ -60,8 +60,14 @@ public class FightUtil implements Methods {
     }
 
     public static double getRange(Entity entity) {
+        if(mc.thePlayer == null)
+            return 0;
         return mc.thePlayer.getPositionEyes(1.0f).distanceTo(RotationUtil.getBestVector(mc.thePlayer.getPositionEyes(1F),
                 entity.getEntityBoundingBox()));
+    }
+
+    public static double getEffectiveHealth(EntityLivingBase entity) {
+        return entity.getHealth() * (entity.getMaxHealth() / entity.getTotalArmorValue());
     }
 
 }

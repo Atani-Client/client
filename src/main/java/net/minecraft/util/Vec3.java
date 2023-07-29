@@ -83,6 +83,10 @@ public class Vec3
         return this.addVector(vec.xCoord, vec.yCoord, vec.zCoord);
     }
 
+    public Vec3 scale(final double value) {
+        return new Vec3(this.xCoord * value, this.yCoord * value, this.zCoord * value);
+    }
+
     /**
      * Adds the specified x,y,z vector components to this vector and returns the resulting vector. Does not change this
      * vector.

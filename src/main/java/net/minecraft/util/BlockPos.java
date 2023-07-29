@@ -332,6 +332,14 @@ public class BlockPos extends Vec3i
         };
     }
 
+    public final BlockPos offsetDown() {
+        return this.offsetDown(1);
+    }
+
+    public final BlockPos offsetDown(final int n) {
+        return this.offset(EnumFacing.DOWN, n);
+    }
+
     public static final class MutableBlockPos extends BlockPos
     {
         private int x;

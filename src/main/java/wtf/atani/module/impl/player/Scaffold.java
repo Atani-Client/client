@@ -37,7 +37,7 @@ public class Scaffold extends Module {
     private final TimeHelper timer = new TimeHelper();
 
     public final StringBoxValue placeTiming = new StringBoxValue("Place Timing", "On which event will the scaffold place blocks?", this, new String[] {"Legit", "Tick", "Pre", "Post"});
-    public final SliderValue<Long> placeDelay = new SliderValue<>("Place Delay", "What'll be the delay between placing?", this, 0L, 1000L, 0L, 0);
+    public final SliderValue<Long> placeDelay = new SliderValue<>("Place Delay", "What'll be the delay between placing?", this, 0L, 0L, 1000L, 0);
     public final StringBoxValue rotationMode = new StringBoxValue("Rotations", "How will the module rotate?", this, new String[]{"Normal", "Legit"});
     public final CheckBoxValue legitPlace = new CheckBoxValue("Legit place", "Place legitly?", this, false);
     public final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, true);

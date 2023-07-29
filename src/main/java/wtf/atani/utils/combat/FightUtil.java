@@ -56,7 +56,7 @@ public class FightUtil implements Methods {
                 || entityLivingBase instanceof EntityAnimal && !animals
                 || entityLivingBase instanceof EntityMob && !mobs
                 || entityLivingBase.isInvisible() && !invis
-                || entityLivingBase == mc.thePlayer);
+                || entityLivingBase.getEntityId() == mc.thePlayer.getEntityId());
     }
 
     public static double getRange(Entity entity) {

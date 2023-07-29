@@ -20,7 +20,7 @@ public class InventoryMove extends Module {
 
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
-        if (updateMotionEvent.getType() == UpdateMotionEvent.Type.PRE) {
+        if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
             block3 : {
                 KeyBinding[] moveKeys;
                 block2 : {

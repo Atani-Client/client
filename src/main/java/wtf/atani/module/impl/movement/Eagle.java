@@ -21,7 +21,7 @@ public class Eagle extends Module {
 
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
-        if (updateMotionEvent.getType() == UpdateMotionEvent.Type.PRE) {
+        if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
             if (mc.theWorld.getBlockState(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1.0, mc.thePlayer.posZ)).getBlock() instanceof BlockAir && mc.thePlayer.onGround) {
                 if(timer.hasReached(delay.getValue(), true)) {
                     mc.gameSettings.keyBindSneak.pressed = true;

@@ -20,7 +20,7 @@ public class Step extends Module {
 
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
-        if (updateMotionEvent.getType() == UpdateMotionEvent.Type.PRE) {
+        if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
             switch(mode.getValue()) {
                 case "Vanilla":
                     mc.thePlayer.stepHeight = height.getValue();

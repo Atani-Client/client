@@ -18,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim (Boost)", "TEST"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim (Boost)", "Test"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
@@ -28,7 +28,7 @@ public class Speed extends Module {
     private SliderValue<Float> jumpheight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
 
     // Spartan
-    private final TimeHelper sparanTimer = new TimeHelper();
+    private final TimeHelper spartanTimer = new TimeHelper();
     private boolean spartanBoost = true;
     
     // Verus
@@ -285,9 +285,9 @@ public class Speed extends Module {
                                 mc.thePlayer.jump();
                             }
 
-                            if(sparanTimer.hasReached(3000)) {
+                            if(spartanTimer.hasReached(3000)) {
                                 spartanBoost = !spartanBoost;
-                                sparanTimer.reset();
+                                spartanTimer.reset();
                             }
 
                             if(spartanBoost) {

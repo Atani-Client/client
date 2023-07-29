@@ -18,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim (Boost)", "Test"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim (Boost)", "Test", "WatchDog"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
@@ -38,6 +38,9 @@ public class Speed extends Module {
     // Vulcan
     private int vulcanTicks;
     private double y;
+
+    // WatchDog
+    private int watchDogTicks;
     private TimeHelper vulcanTimer;
 
     @Listen
@@ -382,6 +385,29 @@ public class Speed extends Module {
                             MoveUtil.strafe((float) (MoveUtil.getSpeed() + 0.02));
                         }
                         break;
+                }
+                break;
+                // Do not change the name I will be very made >:(
+            case "WatchDog":
+                if(MoveUtil.getSpeed() == 0) {
+                    mc.timer.timerSpeed = 1;
+                } else {
+                    mc.timer.timerSpeed = (float) (1 + Math.random() / 30);
+                    if(mc.thePlayer.onGround) {
+                        watchDogTicks = 0;
+                        mc.thePlayer.jump();
+                        MoveUtil.strafe((float) (0.525 - Math.random() / 10));
+                    } else {
+                        watchDogTicks++;
+                        mc.thePlayer.motionY -= 0.0008;
+                        if(watchDogTicks == 1) {
+                            mc.thePlayer.motionY -= 0.002;
+                        }
+
+                        if(watchDogTicks == 8) {
+                            mc.thePlayer.motionY -= 0.003;
+                        }
+                    }
                 }
                 break;
             case "Test":

@@ -104,31 +104,41 @@ public class KillAura extends Module {
                 curEntity = null;
                 return;
             }
-            if (targetMode.getValue().equalsIgnoreCase("single") || targetMode.getValue().equalsIgnoreCase("hybrid") || !this.switchTimer.hasReached(targetMode.getValue().equalsIgnoreCase("multi") ? 0 :switchDelay.getValue())) {
-                if (curEntity != null && FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()) && !targetMode.getValue().equalsIgnoreCase("hybrid")) {
-                    break targetFinding;
-                } else {
+            switch (this.targetMode.getValue()) {
+                case "Hybrid":
                     curEntity = targets.get(0);
-                }
-            } else if (targetMode.getValue().equalsIgnoreCase("switch") || targetMode.getValue().equalsIgnoreCase("multi")) {
-                if (curEntity != null && FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()) && targets.size() == 1) {
-                    break targetFinding;
-                } else if (curEntity == null) {
-                    curEntity = targets.get(0);
-                } else if (targets.size() > 1) {
-                    int maxIndex = targets.size() - 1;
-                    if (this.currentIndex >= maxIndex) {
-                        this.currentIndex = 0;
+                    break;
+                case "Single":
+                    if(curEntity == null || !FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()))
+                        curEntity = targets.get(0);
+                    break;
+                case "Multi":
+                case "Switch":
+                    long switchDelay = this.targetMode.getValue().equalsIgnoreCase("Multi") ? 0 : this.switchDelay.getValue();
+                    if(!this.switchTimer.hasReached(switchDelay)) {
+                        if(curEntity == null || !FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()))
+                            curEntity = targets.get(0);
+                        return;
+                    }
+                    if (curEntity != null && FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()) && targets.size() == 1) {
+                        return;
+                    } else if (curEntity == null) {
+                        curEntity = targets.get(0);
+                    } else if (targets.size() > 1) {
+                        int maxIndex = targets.size() - 1;
+                        if (this.currentIndex >= maxIndex) {
+                            this.currentIndex = 0;
+                        } else {
+                            this.currentIndex += 1;
+                        }
+                        if (targets.get(currentIndex) != null && targets.get(currentIndex) != curEntity) {
+                            curEntity = targets.get(currentIndex);
+                            this.switchTimer.reset();
+                        }
                     } else {
-                        this.currentIndex += 1;
+                        curEntity = null;
                     }
-                    if (targets.get(currentIndex) != null && targets.get(currentIndex) != curEntity) {
-                        curEntity = targets.get(currentIndex);
-                        this.switchTimer.reset();
-                    }
-                } else {
-                    curEntity = null;
-                }
+                    break;
             }
         }
     }

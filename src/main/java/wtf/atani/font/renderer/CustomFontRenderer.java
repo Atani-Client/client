@@ -357,22 +357,22 @@ implements Methods {
     }
 
     @Override
-    public final int drawStringWithShadow(String string, float f2, float f3, int n2) {
-        this.renderString(string, f2 + 1.0f, f3 + 1.0f, n2, true, true);
-        return this.renderString(string, f2, f3, n2, false, false);
+    public final int drawStringWithShadow(String string, float x, float y, int color) {
+        this.renderString(string, x + 1.0f, y + 1.0f, color, true, true);
+        return this.renderString(string, x, y, color, false, false);
     }
 
     @Override
-    public final int drawString(String string, float n2, float n3, int n4) {
-        return this.renderString(string, n2, n3, n4, false, false);
+    public final int drawString(String string, float x, float y, int color) {
+        return this.renderString(string, x, y, color, false, false);
     }
 
     @Override
-    public final int drawString(String string, float f2, float f3, int n2, boolean bl2) {
-        if (bl2) {
-            this.renderString(string, f2 + 1.0f, f3 + 1.0f, n2, true, true);
+    public final int drawString(String string, float x, float y, int color, boolean hasAlpha) {
+        if (hasAlpha) {
+            this.renderString(string, x + 1.0f, y + 1.0f, color, true, true);
         }
-        return this.renderString(string, f2, f3, n2, false, false);
+        return this.renderString(string, x, y, color, false, false);
     }
 
     @Override

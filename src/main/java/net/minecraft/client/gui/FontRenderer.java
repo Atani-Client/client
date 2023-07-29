@@ -237,39 +237,39 @@ public class FontRenderer
         return (f3 - f2) / 2.0f + 1.0f;
     }
 
-    public int drawCenteredString(String string, float f2, float f3, int n2) {
-        return this.drawString(string, f2 - this.getStringWidth(string) / 2, f3, n2);
+    public int drawCenteredString(String string, float x, float y, int color) {
+        return this.drawString(string, x - this.getStringWidth(string) / 2, y, color);
     }
 
-    public int drawTotalCenteredString(String string, float f2, float f3, int n2) {
-        return this.drawString(string, f2 - this.getStringWidth(string) / 2, f3 - this.FONT_HEIGHT / 2, n2);
+    public int drawTotalCenteredString(String string, float x, float y, int color) {
+        return this.drawString(string, x - this.getStringWidth(string) / 2, y - this.FONT_HEIGHT / 2, color);
     }
 
-    public int drawCenteredStringWithShadow(String string, float f2, float f3, int n2) {
-        return this.drawString(string, f2 - this.getStringWidth(string) / 2, f3, n2, true);
+    public int drawCenteredStringWithShadow(String string, float x, float y, int color) {
+        return this.drawString(string, x - this.getStringWidth(string) / 2, y, color, true);
     }
 
-    public int drawTotalCenteredStringWithShadow(String string, float f2, float f3, int n2) {
-        return this.drawString(string, f2 - this.getStringWidth(string) / 2, f3 - this.FONT_HEIGHT / 2, n2, true);
+    public int drawTotalCenteredStringWithShadow(String string, float x, float y, int color) {
+        return this.drawString(string, x - this.getStringWidth(string) / 2, y - this.FONT_HEIGHT / 2, color, true);
     }
 
-    public int drawStringWithShadow(String string, float f2, float f3, int n2) {
-        return this.drawString(string, f2, f3, n2, true);
+    public int drawStringWithShadow(String string, float x, float y, int color) {
+        return this.drawString(string, x, y, color, true);
     }
 
-    public int drawString(String string, float f, float g, int n4) {
-        return !this.enabled ? 0 : this.drawString(string, f, g, n4, false);
+    public int drawString(String string, float x, float y, int color) {
+        return !this.enabled ? 0 : this.drawString(string, x, y, color, false);
     }
 
-    public int drawString(String string, float f2, float f3, int n2, boolean bl2) {
+    public int drawString(String string, float x, float y, int color, boolean hasAlpha) {
         int n3;
         this.enableAlpha();
         this.resetStyles();
-        if (bl2) {
-            n3 = this.renderString(string, f2 + 1.0f, f3 + 1.0f, n2, true);
-            n3 = Math.max(n3, this.renderString(string, f2, f3, n2, false));
+        if (hasAlpha) {
+            n3 = this.renderString(string, x + 1.0f, y + 1.0f, color, true);
+            n3 = Math.max(n3, this.renderString(string, x, y, color, false));
         } else {
-            n3 = this.renderString(string, f2, f3, n2, false);
+            n3 = this.renderString(string, x, y, color, false);
         }
         return n3;
     }

@@ -11,7 +11,7 @@ public class AutoRespawn extends Module {
 
     @Listen
     public void onMotionEvent(UpdateMotionEvent event) {
-        if(event.getType() == UpdateMotionEvent.Type.PRE) {
+        if(event.getType() == UpdateMotionEvent.Type.MID) {
             if (mc.thePlayer.isDead) {
                 mc.thePlayer.respawnPlayer();
             }

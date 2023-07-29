@@ -121,8 +121,8 @@
       "Enabled": true,
       "Key": 0,
       "Values": {
-        "Watermark Mode": "Simple",
-        "Module List Mode": "Simple"
+        "Watermark Mode": "Golden",
+        "Module List Mode": "Golden"
       }
     },
     "NoAchievements": {
@@ -169,7 +169,7 @@
       }
     },
     "FullBright": {
-      "Enabled": false,
+      "Enabled": true,
       "Key": 0
     },
     "NoClickDelay": {
@@ -182,6 +182,7 @@
       "Values": {
         "Search Range": "8.899999618530273",
         "Target Mode": "Switch",
+        "Priority": "Health",
         "Switch Delay": "300.0",
         "Players": "true",
         "Animals": "true",
@@ -222,7 +223,7 @@
       }
     },
     "Eagle": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
         "Sneak Delay": "277.0"
@@ -232,32 +233,13 @@
       "Enabled": false,
       "Key": 34,
       "Values": {
-        "Mode": "Normal",
-        "Place On": "Legit",
-        "Delay": "0.0",
-        "Tower": "false",
-        "Tower Mode": "Matrix",
-        "Reverse Movement": "false",
-        "Switch Items": "true",
+        "Place Timing": "Pre",
+        "Place Delay": "1000.0",
+        "Rotations": "Legit",
+        "Legit place": "false",
         "Sprint": "false",
-        "Safewalk": "true",
-        "Legit Safewalk": "true",
-        "Eagle": "false",
-        "Eagle Blocks": "2.0",
-        "Keep Y": "false",
-        "Yaw Mode": "Static",
-        "Pitch Mode": "Normal",
-        "Snap Yaw": "true",
-        "Snap Pitch": "true",
-        "Minimum Yaw": "50.099998474121094",
-        "Maximum Yaw": "72.9000015258789",
-        "Minimum Pitch": "52.400001525878906",
-        "Maximum Pitch": "75.19999694824219",
-        "Mouse Fix": "true",
-        "Randomize Yaw": "false",
-        "Randomize Pitch": "false",
-        "Ray Trace": "true",
-        "Strict": "true"
+        "Silent": "true",
+        "KeepY": "true"
       }
     }
   }

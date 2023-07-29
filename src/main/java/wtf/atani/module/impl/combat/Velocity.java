@@ -21,7 +21,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi"});
     public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple") || mode.getValue().equalsIgnoreCase("Reverse")});
     public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple") || mode.getValue().equalsIgnoreCase("Reverse")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("AAC v4")});
@@ -172,7 +172,15 @@ public class Velocity extends Module {
                     grimCancel--;
                 }
                 break;
-            case "AAC v5 Packet": {
+            case "Matrix Semi":
+                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                    if (mc.thePlayer.hurtTime > 0) {
+                        mc.thePlayer.motionX *= 0.6;
+                        mc.thePlayer.motionZ *= 0.6;
+                    }
+                }
+                break;
+            case "AAC v5 Packet":
                 if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
                     if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
@@ -183,7 +191,7 @@ public class Velocity extends Module {
                         packetEvent.setCancelled(true);
                     }
                 }
-            }
+            break;
         }
     }
 

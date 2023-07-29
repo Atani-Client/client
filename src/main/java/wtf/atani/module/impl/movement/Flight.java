@@ -1,6 +1,7 @@
 package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import wtf.atani.event.events.MoveEntityEvent;
 import wtf.atani.event.events.PacketEvent;
@@ -9,6 +10,7 @@ import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
+import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.utils.player.MoveUtil;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
@@ -16,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Flight", description = "Mkaes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim Explosion"});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Glide"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
     private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
     private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
 
@@ -29,6 +31,8 @@ public class Flight extends Module {
     // Vulcan
     private double startY;
     private int stage;
+    public int jumps;
+    private final TimeHelper glideTime = new TimeHelper();
 
     // Grim
     boolean velo = false;
@@ -73,6 +77,24 @@ public class Flight extends Module {
             case "Vulcan":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.PRE) {
                     switch (vulcanMode.getValue()) {
+                        case "Clip & Glide":
+                            if(mc.thePlayer.onGround) {
+                                mc.thePlayer.jump();
+                            } else if(mc.thePlayer.fallDistance > 0.25) {
+                                if(jumps < 3) {
+                                    this.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + (jumps == 0 ? 10 : 10), mc.thePlayer.posZ);
+                                    jumps++;
+                                } else {
+                                    jumped = true;
+
+                                    if(glideTime.hasReached(146, true)) {
+                                        mc.thePlayer.motionY = -0.1476D;
+                                    } else {
+                                        mc.thePlayer.motionY = -0.0975D;
+                                    }
+                                }
+                            }
+                            break;
                         case "Normal":
                             stage++;
 
@@ -128,6 +150,17 @@ public class Flight extends Module {
                     }
                 }
                 break;
+            case "Vulcan":
+                if(this.vulcanMode.getValue().equalsIgnoreCase("Clip & Glide")) {
+                    if(jumped && packetEvent.getPacket() instanceof C03PacketPlayer) {
+                        C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
+
+                        if(mc.thePlayer.ticksExisted % 11 == 0) {
+                            packet.setOnGround(true);
+                        }
+                    }
+                }
+                break;
         }
     }
 
@@ -160,6 +193,8 @@ public class Flight extends Module {
         moveSpeed = speed.getValue();
         startY = mc.thePlayer.posY;
         stage = 0;
+        jumped = false;
+        jumps = 0;
     }
 
     @Override
@@ -170,5 +205,7 @@ public class Flight extends Module {
         mc.timer.timerSpeed = 1f;
         stage = 0;
         mc.thePlayer.speedInAir = 0.02F;
+        jumped = false;
+        jumps = 0;
     }
 }

@@ -144,12 +144,12 @@
       "Enabled": false,
       "Key": 45,
       "Values": {
-        "Mode": "NCP",
-        "Height": "0.0"
+        "Mode": "Vanilla",
+        "Height": "10.0"
       }
     },
     "InventoryMove": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
         "No Open Packet": "false"
@@ -219,6 +219,13 @@
       "Key": 0,
       "Values": {
         "Time Speed": "1.0"
+      }
+    },
+    "Eagle": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Sneak Delay": "277.0"
       }
     },
     "Scaffold": {

@@ -13,7 +13,7 @@ import wtf.atani.value.impl.StringBoxValue;
 public class Step extends Module {
 
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "NCP", "Motion", "Spartan"});
-    private final SliderValue<Integer> height = new SliderValue<>("Height", "How high will the step go?", this, 2, 0, 10, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vanilla")});
+    private final SliderValue<Integer> height = new SliderValue<>("Height", "How high will the step go?", this, 2, 0, 10, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vanilla")});
 
     // NCP
     private boolean hasStepped;

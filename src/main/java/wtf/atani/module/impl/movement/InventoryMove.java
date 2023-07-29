@@ -17,7 +17,7 @@ import wtf.atani.value.impl.CheckBoxValue;
 public class InventoryMove extends Module {
 
     private final CheckBoxValue openPacket = new CheckBoxValue("No Open Packet", "Should the module send open packets?", this, false);
-    
+
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         if (updateMotionEvent.getType() == UpdateMotionEvent.Type.PRE) {

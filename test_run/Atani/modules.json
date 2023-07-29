@@ -30,7 +30,7 @@
       "Enabled": false,
       "Key": 33,
       "Values": {
-        "Mode": "Vanilla",
+        "Mode": "Spartan",
         "Vulcan Mode": "Glide",
         "Time": "10.0",
         "Timer": "0.20000000298023224",
@@ -59,7 +59,7 @@
       }
     },
     "W-Tap": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
         "Mode": "Sprint Reset"
@@ -133,16 +133,24 @@
       "Enabled": false,
       "Key": 0,
       "Values": {
-        "Mode": "Edit"
+        "Mode": "Spartan"
       }
     },
     "AntiResourceExploit": {
       "Enabled": false,
       "Key": 0
     },
+    "Step": {
+      "Enabled": false,
+      "Key": 45,
+      "Values": {
+        "Mode": "NCP",
+        "Height": "0.0"
+      }
+    },
     "Speed": {
       "Enabled": false,
-      "Key": 47,
+      "Key": 44,
       "Values": {
         "Mode": "NCP",
         "Spartan Mode": "Timer",
@@ -165,13 +173,13 @@
       "Enabled": false,
       "Key": 19,
       "Values": {
-        "Search Range": "3.5",
-        "Target Mode": "Single",
+        "Search Range": "8.899999618530273",
+        "Target Mode": "Switch",
         "Switch Delay": "300.0",
         "Players": "true",
         "Animals": "true",
-        "Monsters": "true",
-        "Invisibles": "true",
+        "Monsters": "false",
+        "Invisibles": "false",
         "Walls": "true",
         "Rotation Range": "3.5",
         "Snap Yaw": "false",

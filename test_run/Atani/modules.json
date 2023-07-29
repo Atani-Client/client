@@ -13,10 +13,10 @@
       "Key": 54
     },
     "CorrectMovement": {
-      "Enabled": true,
+      "Enabled": false,
       "Key": 0,
       "Values": {
-        "Silent": "true"
+        "Silent": "false"
       }
     },
     "TimeChanger": {
@@ -146,6 +146,13 @@
       "Values": {
         "Mode": "NCP",
         "Height": "0.0"
+      }
+    },
+    "InventoryMove": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "No Open Packet": "false"
       }
     },
     "Speed": {

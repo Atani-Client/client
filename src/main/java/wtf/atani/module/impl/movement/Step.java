@@ -25,7 +25,6 @@ public class Step extends Module {
                 case "Vanilla":
                     mc.thePlayer.stepHeight = height.getValue();
                     break;
-
                 case "NCP":
                     mc.thePlayer.stepHeight = 0.6F;
 
@@ -46,7 +45,6 @@ public class Step extends Module {
                         }
                     }
                     break;
-
                 case "Motion":
                     mc.thePlayer.stepHeight = 0.6F;
 
@@ -54,7 +52,6 @@ public class Step extends Module {
                         mc.thePlayer.motionY = .39;
                     }
                     break;
-
                 case "Spartan":
                     mc.thePlayer.stepHeight = 1;
                     break;

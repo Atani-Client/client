@@ -3,3 +3,5 @@
 target/*
 test_natives/*
 test_run/*
+test_run/usercache.json
+*.gz

@@ -21,9 +21,9 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Intave", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0"});
-    public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple")});
-    public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple")});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0"});
+    public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple") || mode.getValue().equalsIgnoreCase("Reverse")});
+    public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple") || mode.getValue().equalsIgnoreCase("Reverse")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("AAC v4")});
 
     private KillAura killAura;
@@ -144,6 +144,18 @@ public class Velocity extends Module {
                         packet.setMotionX((int) (packet.getMotionX() * (horizontal.getValue().doubleValue() / 100D)));
                         packet.setMotionY((int) (packet.getMotionY() * (vertical.getValue().doubleValue() / 100D)));
                         packet.setMotionZ((int) (packet.getMotionZ() * (horizontal.getValue().doubleValue() / 100D)));
+                    }
+                }
+                break;
+            case "Reverse":
+                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
+                    if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                        if(horizontal.getValue() == 0 && vertical.getValue() == 0)
+                            packetEvent.setCancelled(true);
+                        packet.setMotionX((int) (packet.getMotionX() * (-horizontal.getValue().doubleValue() / 100D)));
+                        packet.setMotionY((int) (packet.getMotionY() * (-vertical.getValue().doubleValue() / 100D)));
+                        packet.setMotionZ((int) (packet.getMotionZ() * (-horizontal.getValue().doubleValue() / 100D)));
                     }
                 }
                 break;

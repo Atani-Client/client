@@ -6,7 +6,6 @@ import net.minecraft.util.*;
 import wtf.atani.utils.interfaces.Methods;
 import wtf.atani.utils.math.MathUtil;
 import wtf.atani.utils.math.random.RandomUtil;
-import wtf.atani.utils.module.ScaffoldUtil;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -95,21 +94,6 @@ public class RotationUtil implements Methods {
         float endPitch = (float) ((double) PlayerHandler.pitch - (double) f3 * 0.15);
         endPitch = MathHelper.clamp(endPitch, -90, 90);
         return new float[]{endYaw, endPitch};
-    }
-
-    public static float[] getScaffoldRotations(final ScaffoldUtil.BlockData data, final boolean legit) {
-        final Vec3 eyes = mc.thePlayer.getPositionEyes(RandomUtil.nextFloat(2.997f, 3.997f));
-        final Vec3 position = new Vec3(data.position.getX() + 0.49, data.position.getY() + 0.49, data.position.getZ() + 0.49).add(new Vec3(data.face.getDirectionVec()).scale(0.489997f));
-        final Vec3 resultPosition = position.subtract(eyes);
-        float yaw = (float) Math.toDegrees(Math.atan2(resultPosition.zCoord, resultPosition.xCoord)) - 90.0F;
-        float pitch = (float) -Math.toDegrees(Math.atan2(resultPosition.yCoord, Math.hypot(resultPosition.xCoord, resultPosition.zCoord)));
-        final float[] rotations = new float[] {yaw, pitch};
-
-        if (legit) {
-            return new float[] {mc.thePlayer.rotationYaw + 180F, updateRotation(PlayerHandler.pitch, applyMouseFix(0, rotations[1])[1], (float) RandomUtil.randomBetween(30, 80))};
-        }
-
-        return applyMouseFix(rotations[0], rotations[1]);
     }
 
     public static float[] updateRotationAdvanced(float oldYaw, float newYaw, float yawSpeed, float oldPitch, float newPitch, float pitchSpeed) {

@@ -26,7 +26,7 @@ public class CombatManager {
     }
 
     public final boolean hasBot(Entity entity) {
-        bots.getList().contains(entity);
+        return bots.getList().contains(entity);
     }
 
     public final List<Entity> getBots() {

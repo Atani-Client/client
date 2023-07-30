@@ -4,15 +4,96 @@ import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.src.Config;
+import net.minecraft.util.AxisAlignedBB;
+import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
 import wtf.atani.utils.interfaces.Methods;
 
 import java.awt.*;
 
 public class RenderUtil implements Methods {
+
+    public static void renderESP(Entity entity, boolean hurtTime, AxisAlignedBB boundingBox, boolean outline, boolean fill, Color color) {
+        GL11.glPushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        if (entity == null || !hurtTime || ((EntityLivingBase)entity).hurtTime == 0) {
+            GlStateManager.color(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, color.getAlpha() / 255.0F);
+        } else {
+            GlStateManager.color(1.0F, 0.0F, 0.0F, color.getAlpha() / 255.0F);
+        }
+        GL11.glLineWidth(1.0F);
+        GlStateManager.disableTexture2D();
+        if (Config.isShaders())
+            Shaders.disableTexture2D();
+        GlStateManager.depthMask(false);
+        GL11.glDepthMask(false);
+        GlStateManager.disableDepth();
+        if (outline)
+            drawOutline(entity, hurtTime, boundingBox, color);
+        if (fill)
+            drawFill(boundingBox);
+        GlStateManager.enableDepth();
+        GlStateManager.resetColor();
+        GlStateManager.depthMask(true);
+        GlStateManager.enableTexture2D();
+        if (Config.isShaders())
+            Shaders.enableTexture2D();
+        GlStateManager.disableBlend();
+        GL11.glPopMatrix();
+    }
+
+    private static void drawOutline(Entity entity, boolean hurtTime, AxisAlignedBB boundingBox, Color color) {
+        int r = color.getRed();
+        int g = color.getGreen();
+        int b = color.getBlue();
+        if (entity != null && hurtTime && ((EntityLivingBase)entity).hurtTime != 0) {
+            r = 255;
+            g = 0;
+            b = 0;
+        }
+        RenderGlobal.func_181563_a(boundingBox, r, g, b, 255);
+    }
+
+    private static void drawFill(AxisAlignedBB boundingBox) {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_NORMAL);
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.minX, boundingBox.minY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.minZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).endVertex();
+        worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).endVertex();
+        tessellator.draw();
+    }
 
     public static void drawSkinHead(EntityLivingBase player, double x, double y, int size) {
         drawSkinHead(player, x, y, size, Color.WHITE);

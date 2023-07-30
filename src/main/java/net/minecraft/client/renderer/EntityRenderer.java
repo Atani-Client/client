@@ -95,6 +95,7 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 import wtf.atani.event.events.EntityRendererEvent;
+import wtf.atani.event.events.Render3DEvent;
 import wtf.atani.event.events.RendererEvent;
 import wtf.atani.event.events.RotationEvent;
 import wtf.atani.utils.player.PlayerHandler;
@@ -1903,6 +1904,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("forge_render_last");
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {renderglobal, Float.valueOf(partialTicks)});
         }
+
+        new Render3DEvent(partialTicks).onFire();
 
         this.mc.mcProfiler.endStartSection("hand");
 

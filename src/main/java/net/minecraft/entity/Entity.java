@@ -122,7 +122,7 @@ public abstract class Entity implements ICommandSender
      */
     public boolean isCollided;
     public boolean velocityChanged;
-    protected boolean isInWeb;
+    public boolean isInWeb;
     private boolean isOutsideBorder;
 
     /**

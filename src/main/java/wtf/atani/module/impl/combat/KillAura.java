@@ -3,9 +3,12 @@ package wtf.atani.module.impl.combat;
 import com.google.common.base.Supplier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import org.lwjgl.input.Keyboard;
 import wtf.atani.event.events.ClickingEvent;
+import wtf.atani.event.events.Render3DEvent;
 import wtf.atani.event.events.RotationEvent;
 import wtf.atani.event.events.UpdateMotionEvent;
 import wtf.atani.event.radbus.Listen;
@@ -16,16 +19,17 @@ import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.math.random.RandomUtil;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.utils.player.PlayerHandler;
+import wtf.atani.utils.player.PlayerUtil;
 import wtf.atani.utils.player.RotationUtil;
 import wtf.atani.utils.player.rayTrace.RaytraceUtil;
+import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
-import java.security.SecureRandom;
+import java.awt.*;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 @ModuleInfo(name = "KillAura", description = "Attacks people", category = Category.COMBAT, key = Keyboard.KEY_R)
 public class KillAura extends Module {
@@ -60,6 +64,8 @@ public class KillAura extends Module {
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
     public SliderValue<Float> minCps = new SliderValue<>("Min CPS", "Minimum CPS", this, 10f, 0f, 20f, 1);
     public SliderValue<Float> maxCps = new SliderValue<>("Max CPS", "Maximum CPS", this, 12f, 0f, 20f, 1);
+    public CheckBoxValue targetESP = new CheckBoxValue("Target ESP", "Show which entity you're attacking?", this, true);
+    public CheckBoxValue pointer = new CheckBoxValue("Pointer", "Show where you're looking at?", this, true);
 
     // Targets
     public static EntityLivingBase curEntity;
@@ -85,6 +91,32 @@ public class KillAura extends Module {
     private final class DistanceSorter implements Comparator<EntityLivingBase> {
         public int compare(EntityLivingBase o1, EntityLivingBase o2) {
             return Double.compare(mc.thePlayer.getDistanceToEntity(o1), mc.thePlayer.getDistanceToEntity(o2));
+        }
+    }
+
+    @Listen
+    public final void on3D(Render3DEvent render3DEvent) {
+        if(curEntity != null && targetESP.getValue()) {
+            double x = this.curEntity.lastTickPosX + (this.curEntity.posX - this.curEntity.lastTickPosX) * render3DEvent.getPartialTicks() - (mc.getRenderManager()).renderPosX;
+            double y = this.curEntity.lastTickPosY + (this.curEntity.posY - this.curEntity.lastTickPosY) * render3DEvent.getPartialTicks() - (mc.getRenderManager()).renderPosY;
+            double z = this.curEntity.lastTickPosZ + (this.curEntity.posZ - this.curEntity.lastTickPosZ) * render3DEvent.getPartialTicks() - (mc.getRenderManager()).renderPosZ;
+            double width = 0.17D;
+            double height = 0.25D;
+            double thickness = 0.08D;
+            AxisAlignedBB entityBox = this.curEntity.getEntityBoundingBox();
+            AxisAlignedBB espBox = new AxisAlignedBB(entityBox.minX - this.curEntity.posX + x - width, entityBox.maxY - this.curEntity.posY + y + height, entityBox.minZ - this.curEntity.posZ + z - width, entityBox.maxX - this.curEntity.posX + x + width, entityBox.maxY - this.curEntity.posY + y + height + thickness, entityBox.maxZ - this.curEntity.posZ + z + width);
+            RenderUtil.renderESP(curEntity, true, espBox, false, true, curEntity.hurtTime > 0 ? new Color(255, 0, 0, 150) : new Color(255, 255, 255, 150));
+        }
+        if(curEntity != null && pointer.getValue()) {
+            Vec3 aimPoint = RotationUtil.getVectorForRotation(PlayerHandler.yaw, PlayerHandler.pitch);
+            Vec3 vec = RotationUtil.getBestVector(mc.thePlayer.getPositionEyes(1F), curEntity.getEntityBoundingBox());
+            double dist = PlayerUtil.getDistance(vec.xCoord, vec.yCoord, vec.zCoord);
+            aimPoint.xCoord *= dist;
+            aimPoint.yCoord *= dist;
+            aimPoint.zCoord *= dist;
+            aimPoint.yCoord += mc.thePlayer.getEyeHeight();
+            AxisAlignedBB aimBB = new AxisAlignedBB(aimPoint.xCoord - 0.1, aimPoint.yCoord - 0.1, aimPoint.zCoord - 0.1, aimPoint.xCoord + 0.1, aimPoint.yCoord + 0.1, aimPoint.zCoord + 0.1);
+            RenderUtil.renderESP(curEntity, true, aimBB, false, true, curEntity.hurtTime > 0 ? new Color(255, 0, 0, 150) : new Color(255, 255, 255, 150));
         }
     }
 

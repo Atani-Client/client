@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
 import org.lwjgl.opengl.Display;
 import wtf.atani.account.storage.AccountStorage;
+import wtf.atani.combat.CombatManager;
 import wtf.atani.command.storage.CommandStorage;
 import wtf.atani.event.handling.EventHandling;
 import wtf.atani.file.storage.FileStorage;
@@ -45,6 +46,7 @@ public class ModificationLoader implements ClientInformationAccess {
         new CommandStorage();
         new AccountStorage();
         new FileStorage();
+        new CombatManager();
     }
 
     private void addShutdownHook() {

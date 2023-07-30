@@ -187,6 +187,7 @@ import org.lwjgl.util.glu.GLU;
 import wtf.atani.event.events.ClickingEvent;
 import wtf.atani.event.events.KeyInputEvent;
 import wtf.atani.event.events.TickEvent;
+import wtf.atani.event.events.WorldLoadEvent;
 import wtf.atani.event.handling.EventHandling;
 import wtf.atani.loader.ModificationLoader;
 
@@ -2340,6 +2341,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      */
     public void loadWorld(WorldClient worldClientIn, String loadingMessage)
     {
+        new WorldLoadEvent().onFire();
         if (worldClientIn == null)
         {
             NetHandlerPlayClient nethandlerplayclient = this.getNetHandler();

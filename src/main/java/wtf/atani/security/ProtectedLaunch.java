@@ -122,31 +122,44 @@ public class ProtectedLaunch {
         UploadTokenCache.uploadValidRealmsToken();
         int i = ((Integer)optionset.valueOf(optionspec13)).intValue();
         int j = ((Integer)optionset.valueOf(optionspec14)).intValue();
-        boolean flag = optionset.has("fullscreen");
-        boolean flag1 = optionset.has("checkGlErrors");
-        boolean flag2 = optionset.has("demo");
-        String s3 = (String)optionset.valueOf(optionspec12);
-        Gson gson = (new GsonBuilder()).registerTypeAdapter(PropertyMap.class, new PropertyMap.Serializer()).create();
-        PropertyMap propertymap = (PropertyMap)gson.fromJson((String)optionset.valueOf(optionspec15), PropertyMap.class);
-        PropertyMap propertymap1 = (PropertyMap)gson.fromJson((String)optionset.valueOf(optionspec16), PropertyMap.class);
-        File file1 = (File)optionset.valueOf(optionspec2);
-        File file2 = optionset.has(optionspec3) ? (File)optionset.valueOf(optionspec3) : new File(file1, "assets/");
-        File file3 = optionset.has(optionspec4) ? (File)optionset.valueOf(optionspec4) : new File(file1, "resourcepacks/");
-        String s4 = optionset.has(optionspec10) ? (String)optionspec10.value(optionset) : (String)optionspec9.value(optionset);
-        String s5 = optionset.has(optionspec17) ? (String)optionspec17.value(optionset) : null;
-        String s6 = (String)optionset.valueOf(optionspec);
-        Integer integer = (Integer)optionset.valueOf(optionspec1);
-        Session session = new Session((String)optionspec9.value(optionset), s4, (String)optionspec11.value(optionset), (String)optionspec18.value(optionset));
-        GameConfiguration gameconfiguration = new GameConfiguration(new GameConfiguration.UserInformation(session, propertymap, propertymap1, proxy), new GameConfiguration.DisplayInformation(i, j, flag, flag1), new GameConfiguration.FolderInformation(file1, file3, file2, s5), new GameConfiguration.GameInformation(flag2, s3), new GameConfiguration.ServerInformation(s6, integer.intValue()));
-        Runtime.getRuntime().addShutdownHook(new Thread("Client Shutdown Thread")
-        {
-            public void run()
-            {
+        boolean fullscreen = optionset.has("fullscreen");
+        boolean checkGlErrors = optionset.has("checkGlErrors");
+        boolean demo = optionset.has("demo");
+
+        String valueOfOptionSpec12 = (String) optionset.valueOf(optionspec12);
+        String valueOfOptionSpec15 = (String) optionset.valueOf(optionspec15);
+        String valueOfOptionSpec16 = (String) optionset.valueOf(optionspec16);
+
+        Gson gson = new GsonBuilder().registerTypeAdapter(PropertyMap.class, new PropertyMap.Serializer()).create();
+        PropertyMap propertyMap1 = gson.fromJson(valueOfOptionSpec15, PropertyMap.class);
+        PropertyMap propertyMap2 = gson.fromJson(valueOfOptionSpec16, PropertyMap.class);
+
+        File gameDirectory = (File) optionset.valueOf(optionspec2);
+        File assetsDirectory = optionset.has(optionspec3) ? (File) optionset.valueOf(optionspec3) : new File(gameDirectory, "assets/");
+        File resourcePacksDirectory = optionset.has(optionspec4) ? (File) optionset.valueOf(optionspec4) : new File(gameDirectory, "resourcepacks/");
+
+        String version = optionset.has(optionspec10) ? (String) optionspec10.value(optionset) : (String) optionspec9.value(optionset);
+        String serverAddress = optionset.has(optionspec17) ? (String) optionspec17.value(optionset) : null;
+        String proxyHost = (String) optionset.valueOf(optionspec);
+        int proxyPort = (Integer) optionset.valueOf(optionspec1);
+
+        Session session = new Session((String) optionspec9.value(optionset), version, (String) optionspec11.value(optionset), (String) optionspec18.value(optionset));
+
+        GameConfiguration.UserInformation userInformation = new GameConfiguration.UserInformation(session, propertyMap1, propertyMap2, proxy);
+        GameConfiguration.DisplayInformation displayInformation = new GameConfiguration.DisplayInformation(i, j, fullscreen, checkGlErrors);
+        GameConfiguration.FolderInformation folderInformation = new GameConfiguration.FolderInformation(gameDirectory, resourcePacksDirectory, assetsDirectory, serverAddress);
+        GameConfiguration.GameInformation gameInformation = new GameConfiguration.GameInformation(demo, valueOfOptionSpec12);
+        GameConfiguration.ServerInformation serverInformation = new GameConfiguration.ServerInformation(proxyHost, proxyPort);
+
+        GameConfiguration gameConfiguration = new GameConfiguration(userInformation, displayInformation, folderInformation, gameInformation, serverInformation);
+
+        Runtime.getRuntime().addShutdownHook(new Thread("Client Shutdown Thread") {
+            public void run() {
                 Minecraft.stopIntegratedServer();
             }
         });
         Thread.currentThread().setName("Client thread");
-        createMinecraft(gameconfiguration);
+        createMinecraft(gameConfiguration);
         run();
     }
 
@@ -158,33 +171,42 @@ public class ProtectedLaunch {
     private static Minecraft mc;
 
     private void createMinecraft(GameConfiguration gameConfig) {
-        Minecraft.theMinecraft = new Minecraft();
-        mc = Minecraft.theMinecraft;
-        mc.mcDataDir = gameConfig.folderInfo.mcDataDir;
-        mc.fileAssets = gameConfig.folderInfo.assetsDir;
-        mc.fileResourcepacks = gameConfig.folderInfo.resourcePacksDir;
-        mc.launchedVersion = gameConfig.gameInfo.version;
-        mc.twitchDetails = gameConfig.userInfo.userProperties;
-        mc.field_181038_N = gameConfig.userInfo.field_181172_c;
-        mc.mcDefaultResourcePack = new DefaultResourcePack((new ResourceIndex(gameConfig.folderInfo.assetsDir, gameConfig.folderInfo.assetIndex)).getResourceMap());
-        mc.proxy = gameConfig.userInfo.proxy == null ? Proxy.NO_PROXY : gameConfig.userInfo.proxy;
-        mc.sessionService = (new YggdrasilAuthenticationService(gameConfig.userInfo.proxy, UUID.randomUUID().toString())).createMinecraftSessionService();
-        mc.session = gameConfig.userInfo.session;
+        mc = new Minecraft();
+        Minecraft.theMinecraft = mc;
+        GameConfiguration.FolderInformation folderInfo = gameConfig.folderInfo;
+        GameConfiguration.GameInformation gameInfo = gameConfig.gameInfo;
+        GameConfiguration.DisplayInformation displayInfo = gameConfig.displayInfo;
+        GameConfiguration.UserInformation userInfo = gameConfig.userInfo;
+        GameConfiguration.ServerInformation serverInfo = gameConfig.serverInfo;
+
+        mc.mcDataDir = folderInfo.mcDataDir;
+        mc.fileAssets = folderInfo.assetsDir;
+        mc.fileResourcepacks = folderInfo.resourcePacksDir;
+        mc.launchedVersion = gameInfo.version;
+        mc.twitchDetails = userInfo.userProperties;
+        mc.field_181038_N = userInfo.field_181172_c;
+        mc.mcDefaultResourcePack = new DefaultResourcePack(new ResourceIndex(folderInfo.assetsDir, folderInfo.assetIndex).getResourceMap());
+        mc.proxy = userInfo.proxy == null ? Proxy.NO_PROXY : userInfo.proxy;
+        mc.sessionService = new YggdrasilAuthenticationService(userInfo.proxy, UUID.randomUUID().toString()).createMinecraftSessionService();
+        mc.session = userInfo.session;
         mc.logger.info("Setting user: " + mc.session.getUsername());
         mc.logger.info("(Session ID is " + mc.session.getSessionID() + ")");
-        mc.isDemo = gameConfig.gameInfo.isDemo;
-        mc.displayWidth = gameConfig.displayInfo.width > 0 ? gameConfig.displayInfo.width : 1;
-        mc.displayHeight = gameConfig.displayInfo.height > 0 ? gameConfig.displayInfo.height : 1;
-        mc.tempDisplayWidth = gameConfig.displayInfo.width;
-        mc.tempDisplayHeight = gameConfig.displayInfo.height;
-        mc.fullscreen = gameConfig.displayInfo.fullscreen;
+        mc.isDemo = gameInfo.isDemo;
+
+        int width = gameConfig.displayInfo.width > 0 ? gameConfig.displayInfo.width : 1;
+        int height = gameConfig.displayInfo.height > 0 ? gameConfig.displayInfo.height : 1;
+
+        mc.displayWidth = width;
+        mc.displayHeight = height;
+        mc.tempDisplayWidth = width;
+        mc.tempDisplayHeight = height;
+        mc.fullscreen = displayInfo.fullscreen;
         mc.jvm64bit = mc.isJvm64bit();
         mc.theIntegratedServer = new IntegratedServer(mc);
 
-        if (gameConfig.serverInfo.serverName != null)
-        {
-            mc.serverName = gameConfig.serverInfo.serverName;
-            mc.serverPort = gameConfig.serverInfo.serverPort;
+        if (serverInfo.serverName != null) {
+            mc.serverName = serverInfo.serverName;
+            mc.serverPort = serverInfo.serverPort;
         }
 
         ImageIO.setUseCache(false);

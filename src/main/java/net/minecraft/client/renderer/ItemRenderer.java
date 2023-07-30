@@ -31,6 +31,10 @@ import net.optifine.DynamicLights;
 import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
+import wtf.atani.module.impl.render.BlockAnimations;
+import wtf.atani.module.impl.render.HitAnimations;
+import wtf.atani.module.impl.render.ViewModel;
+import wtf.atani.module.storage.ModuleStorage;
 
 public class ItemRenderer
 {
@@ -242,15 +246,15 @@ public class ItemRenderer
         GlStateManager.enableCull();
     }
 
-    private void func_178105_d(float p_178105_1_)
+    private void doItemUsedTransformations(float swingProgress)
     {
-        float f = -0.4F * MathHelper.sin(MathHelper.sqrt_float(p_178105_1_) * (float)Math.PI);
-        float f1 = 0.2F * MathHelper.sin(MathHelper.sqrt_float(p_178105_1_) * (float)Math.PI * 2.0F);
-        float f2 = -0.2F * MathHelper.sin(p_178105_1_ * (float)Math.PI);
+        float f = -0.4F * MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float)Math.PI);
+        float f1 = 0.2F * MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float)Math.PI * 2.0F);
+        float f2 = -0.2F * MathHelper.sin(swingProgress * (float)Math.PI);
         GlStateManager.translate(f, f1, f2);
     }
 
-    private void func_178104_a(AbstractClientPlayer clientPlayer, float p_178104_2_)
+    private void performDrinking(AbstractClientPlayer clientPlayer, float p_178104_2_)
     {
         float f = (float)clientPlayer.getItemInUseCount() - p_178104_2_ + 1.0F;
         float f1 = f / (float)this.itemToRender.getMaxItemUseDuration();
@@ -277,7 +281,15 @@ public class ItemRenderer
      */
     private void transformFirstPersonItem(float equipProgress, float swingProgress)
     {
-        GlStateManager.translate(0.56F, -0.52F, -0.71999997F);
+        float scale = ModuleStorage.getInstance().getByClass(ViewModel.class).isEnabled() ? ModuleStorage.getInstance().getByClass(ViewModel.class).scale.getValue() : 0.4f;
+        float x = ModuleStorage.getInstance().getByClass(ViewModel.class).isEnabled() ? ModuleStorage.getInstance().getByClass(ViewModel.class).xPos.getValue() : 0.56f;
+        float y = ModuleStorage.getInstance().getByClass(ViewModel.class).isEnabled() ? ModuleStorage.getInstance().getByClass(ViewModel.class).yPos.getValue() : 0.52f;
+
+        if(mc.thePlayer.isUsingItem())
+            GlStateManager.translate(0.56F, -0.52F, -0.71999997F);
+        else
+            GlStateManager.translate(x, -y, -0.71999997F);
+
         GlStateManager.translate(0.0F, equipProgress * -0.6F, 0.0F);
         GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
         float f = MathHelper.sin(swingProgress * swingProgress * (float)Math.PI);
@@ -285,10 +297,10 @@ public class ItemRenderer
         GlStateManager.rotate(f * -20.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(f1 * -20.0F, 0.0F, 0.0F, 1.0F);
         GlStateManager.rotate(f1 * -80.0F, 1.0F, 0.0F, 0.0F);
-        GlStateManager.scale(0.4F, 0.4F, 0.4F);
+        GlStateManager.scale(scale, scale, scale);
     }
 
-    private void func_178098_a(float p_178098_1_, AbstractClientPlayer clientPlayer)
+    private void doBowTransformations(float p_178098_1_, AbstractClientPlayer clientPlayer)
     {
         GlStateManager.rotate(-18.0F, 0.0F, 0.0F, 1.0F);
         GlStateManager.rotate(-12.0F, 0.0F, 1.0F, 0.0F);
@@ -315,7 +327,7 @@ public class ItemRenderer
         GlStateManager.scale(1.0F, 1.0F, 1.0F + f1 * 0.2F);
     }
 
-    private void func_178103_d()
+    private void doBlockTransformations()
     {
         GlStateManager.translate(-0.5F, 0.2F, 0.0F);
         GlStateManager.rotate(30.0F, 0.0F, 1.0F, 0.0F);
@@ -361,24 +373,46 @@ public class ItemRenderer
 
                         case EAT:
                         case DRINK:
-                            this.func_178104_a(abstractclientplayer, partialTicks);
+                            this.performDrinking(abstractclientplayer, partialTicks);
                             this.transformFirstPersonItem(f, 0.0F);
                             break;
 
                         case BLOCK:
-                            this.transformFirstPersonItem(f, 0.0F);
-                            this.func_178103_d();
+                            if(!ModuleStorage.getInstance().getByClass(BlockAnimations.class).isEnabled()) {
+                                this.transformFirstPersonItem(f, 0.0F);
+                                this.doBlockTransformations();
+                            } else {
+                                switch(ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.getValue()) {
+                                    case "1.7":
+                                        this.transformFirstPersonItem(f, f1);
+                                        this.doBlockTransformations();
+                                        break;
+                                }
+                            }
+
                             break;
 
                         case BOW:
-                            this.transformFirstPersonItem(f, 0.0F);
-                            this.func_178098_a(partialTicks, abstractclientplayer);
+                            if(ModuleStorage.getInstance().getByClass(BlockAnimations.class).isEnabled() &&
+                                    ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.compareValue("1.7")) {
+                                this.transformFirstPersonItem(f, f1);
+                                this.doBowTransformations(partialTicks, abstractclientplayer);
+                            } else {
+                                this.transformFirstPersonItem(f, 0.0F);
+                                this.doBowTransformations(partialTicks, abstractclientplayer);
+                            }
                     }
                 }
                 else
                 {
-                    this.func_178105_d(f1);
-                    this.transformFirstPersonItem(f, f1);
+                    if(ModuleStorage.getInstance().getByClass(HitAnimations.class).isEnabled() &&
+                            ModuleStorage.getInstance().getByClass(HitAnimations.class).smoothSwing.getValue()) {
+                        this.doItemUsedTransformations(0);
+                        this.transformFirstPersonItem(f, f1);
+                    } else {
+                        this.doItemUsedTransformations(f1);
+                        this.transformFirstPersonItem(f, f1);
+                    }
                 }
 
                 this.renderItem(abstractclientplayer, this.itemToRender, ItemCameraTransforms.TransformType.FIRST_PERSON);

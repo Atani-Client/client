@@ -45,4 +45,7 @@ public class StringBoxValue extends Value<String> {
     public String[] getValues() {
         return values;
     }
+
+
+    public boolean compareValue(String input) { return value.equalsIgnoreCase(input); }
 }

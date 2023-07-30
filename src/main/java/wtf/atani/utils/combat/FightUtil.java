@@ -10,6 +10,7 @@ import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
+import wtf.atani.combat.CombatManager;
 import wtf.atani.utils.interfaces.Methods;
 import wtf.atani.utils.player.RotationUtil;
 
@@ -39,6 +40,7 @@ public class FightUtil implements Methods {
                     || entityLivingBase instanceof EntityPlayer && !players
                     || entityLivingBase instanceof EntityMob && !mobs
                     || entityLivingBase instanceof EntitySlime && !mobs
+                    || CombatManager.getInstance().hasBot(entity)
                     || entityLivingBase.isInvisible() && !invis) continue;
             if (list.size() > 5)
                 continue;

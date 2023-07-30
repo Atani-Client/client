@@ -22,7 +22,7 @@ public class AntiBot extends Module {
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         switch (mode.getValue()) {
-            case "Hypixel":
+            case "Watchdog":
                 mc.theWorld.playerEntities.forEach(player -> {
                     final NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(player.getUniqueID());
                     if (info == null) {

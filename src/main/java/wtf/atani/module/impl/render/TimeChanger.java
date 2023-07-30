@@ -10,6 +10,7 @@ import wtf.atani.value.impl.SliderValue;
 
 @ModuleInfo(name = "TimeChanger", description = "Changes world time client side", category = Category.RENDER)
 public class TimeChanger extends Module {
+
     private final SliderValue time = new SliderValue("Time", "What should the time be?", this, 160, 0, 250, 0);
 
     @Listen

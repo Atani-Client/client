@@ -12,6 +12,7 @@ import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.crash.CrashReport;
@@ -47,6 +48,8 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import wtf.atani.event.events.SafeWalkEvent;
+import wtf.atani.module.impl.movement.SafeWalk;
+import wtf.atani.module.storage.ModuleStorage;
 
 public abstract class Entity implements ICommandSender
 {
@@ -614,7 +617,7 @@ public abstract class Entity implements ICommandSender
             double d3 = x;
             double d4 = y;
             double d5 = z;
-            boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
+            boolean flag = (this.onGround && this.isSneaking() && this instanceof EntityPlayer) || ((ModuleStorage.getInstance().getByClass(SafeWalk.class).isEnabled()) && Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.onGround);
 
             final SafeWalkEvent safewalkEvent = new SafeWalkEvent(flag).onFire();
 

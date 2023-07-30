@@ -47,7 +47,6 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import wtf.atani.command.storage.CommandStorage;
 import wtf.atani.event.events.*;
-import wtf.atani.module.Module;
 import wtf.atani.module.impl.movement.NoSlowdown;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.player.MoveUtil;

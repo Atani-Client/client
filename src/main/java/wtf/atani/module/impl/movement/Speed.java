@@ -21,7 +21,7 @@ public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim (Boost)", "Test", "WatchDog", "Intave"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "YPort"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
 
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
@@ -30,7 +30,7 @@ public class Speed extends Module {
     // Spartan
     private final TimeHelper spartanTimer = new TimeHelper();
     private boolean spartanBoost = true;
-    
+
     // Verus
     private int verusDamageTicks;
     private int verusTicks;
@@ -159,9 +159,22 @@ public class Speed extends Module {
                                 }
                                 break;
                             }
+                        case "YPort":
+                            if(mc.thePlayer.onGround) {
+                                mc.thePlayer.jump();
+                                mc.timer.timerSpeed = 1.2F;
+                                MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.485);
+                            } else {
+                                mc.timer.timerSpeed = 1;
+                            }
+
+                            if(mc.thePlayer.fallDistance > 0) {
+                                mc.thePlayer.motionY = -1337;
+                            }
+                            break;
                     }
                 }
-            break;
+                break;
             case "Verus":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     if(mc.thePlayer.onGround) {
@@ -238,7 +251,7 @@ public class Speed extends Module {
                             MoveUtil.strafe((float) MoveUtil.getSpeed());
                     }
                 }
-            break;
+                break;
             case "Spartan":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     switch (spartanMode.getValue()) {
@@ -301,7 +314,7 @@ public class Speed extends Module {
                             break;
                     }
                 }
-            break;
+                break;
             case "Old NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     mc.thePlayer.setSprinting(true);
@@ -387,7 +400,7 @@ public class Speed extends Module {
                         break;
                 }
                 break;
-                // Do not change the name I will be very made >:(
+            // Do not change the name I will be very made >:(
             case "WatchDog":
                 if(MoveUtil.getSpeed() == 0) {
                     mc.timer.timerSpeed = 1;
@@ -420,6 +433,18 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
+                if(mc.thePlayer.onGround) {
+                    mc.thePlayer.jump();
+                    mc.timer.timerSpeed = 1.2F;
+                    MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.485);
+                } else {
+                    mc.timer.timerSpeed = 1;
+                    mc.thePlayer.motionY = -1337;
+                }
+
+                if(mc.thePlayer.fallDistance > -0.2) {
+                    //    mc.thePlayer.motionY = -1337;
+                }
                 break;
         }
     }
@@ -456,6 +481,14 @@ public class Speed extends Module {
             case "Vulcan":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {
                     ((C03PacketPlayer) packetEvent.getPacket()).y = mc.thePlayer.posY + y;
+                    if(vulcanMode.is("YPort")) {
+                        ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
+                    }
+                }
+                break;
+            case "Test":
+                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                    ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
                 }
                 break;
         }

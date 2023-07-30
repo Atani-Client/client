@@ -1,13 +1,37 @@
 package wtf.atani.utils.render;
 
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
 import wtf.atani.utils.interfaces.Methods;
 
+import java.awt.*;
+
 public class RenderUtil implements Methods {
+
+    public static void drawSkinHead(EntityLivingBase player, double x, double y, int size) {
+        drawSkinHead(player, x, y, size, Color.WHITE);
+    }
+
+    public static void drawSkinHead(EntityLivingBase player, double x, double y, int size, Color color) {
+        if (!(player instanceof EntityPlayer))
+            return;
+
+        try {
+            GL11.glPushMatrix();
+            mc.getTextureManager().bindTexture(((AbstractClientPlayer) player).getLocationSkin());
+            GL11.glColor4f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+
+            Gui.drawScaledCustomSizeModalRect((int) x, (int) y, 8, 8, 8, 8, size, size, 64, 64);
+            GL11.glPopMatrix();
+        } catch (Exception ignored) {
+        }
+    }
 
     public static void drawRect(float x, float y, float width, float height, int colour) {
         Gui.drawRect(x, y, x + width, y + height, colour);

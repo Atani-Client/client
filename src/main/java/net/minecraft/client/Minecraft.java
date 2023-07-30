@@ -193,50 +193,50 @@ import wtf.atani.loader.ModificationLoader;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
-    public static final Logger logger = LogManager.getLogger();
-    private static final ResourceLocation locationMojangPng = new ResourceLocation("textures/gui/title/mojang.png");
-    public static final boolean isRunningOnMac = Util.getOSType() == Util.EnumOS.OSX;
+    public static Logger logger = LogManager.getLogger();
+    public static ResourceLocation locationMojangPng = new ResourceLocation("textures/gui/title/mojang.png");
+    public static boolean isRunningOnMac = Util.getOSType() == Util.EnumOS.OSX;
 
     /** A 10MiB preallocation to ensure the heap is reasonably sized. */
     public static byte[] memoryReserve = new byte[10485760];
-    private static final List<DisplayMode> macDisplayModes = Lists.newArrayList(new DisplayMode[] {new DisplayMode(2560, 1600), new DisplayMode(2880, 1800)});
-    private final File fileResourcepacks;
-    private final PropertyMap twitchDetails;
-    private final PropertyMap field_181038_N;
-    private ServerData currentServerData;
+    public static List<DisplayMode> macDisplayModes = Lists.newArrayList(new DisplayMode[] {new DisplayMode(2560, 1600), new DisplayMode(2880, 1800)});
+    public File fileResourcepacks;
+    public PropertyMap twitchDetails;
+    public PropertyMap field_181038_N;
+    public ServerData currentServerData;
 
     /** The RenderEngine instance used by Minecraft */
-    private TextureManager renderEngine;
+    public TextureManager renderEngine;
 
     /**
      * Set to 'this' in Minecraft constructor; used by some settings get methods
      */
-    private static Minecraft theMinecraft;
+    public static Minecraft theMinecraft;
     public PlayerControllerMP playerController;
-    private boolean fullscreen;
-    private boolean enableGLErrorChecking = true;
-    private boolean hasCrashed;
+    public boolean fullscreen;
+    public boolean enableGLErrorChecking = true;
+    public boolean hasCrashed;
 
     /** Instance of CrashReport. */
-    private CrashReport crashReporter;
+    public CrashReport crashReporter;
     public int displayWidth;
     public int displayHeight;
-    private boolean field_181541_X = false;
+    public boolean field_181541_X = false;
     public Timer timer = new Timer(20.0F);
 
     /** Instance of PlayerUsageSnooper. */
-    private PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getCurrentTimeMillis());
+    public PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getCurrentTimeMillis());
     public WorldClient theWorld;
     public RenderGlobal renderGlobal;
-    private RenderManager renderManager;
-    private RenderItem renderItem;
-    private ItemRenderer itemRenderer;
+    public RenderManager renderManager;
+    public RenderItem renderItem;
+    public ItemRenderer itemRenderer;
     public EntityPlayerSP thePlayer;
-    private Entity renderViewEntity;
+    public Entity renderViewEntity;
     public Entity pointedEntity;
     public EffectRenderer effectRenderer;
     public Session session;
-    private boolean isGamePaused;
+    public boolean isGamePaused;
 
     /** The font renderer used for displaying and measuring text */
     public FontRenderer fontRendererObj;
@@ -251,13 +251,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     public int leftClickCounter;
 
     /** Display width */
-    private int tempDisplayWidth;
+    public int tempDisplayWidth;
 
     /** Display height */
-    private int tempDisplayHeight;
+    public int tempDisplayHeight;
 
     /** Instance of IntegratedServer. */
-    private IntegratedServer theIntegratedServer;
+    public IntegratedServer theIntegratedServer;
 
     /** Gui achievement */
     public GuiAchievement guiAchievement;
@@ -274,24 +274,24 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     /** Mouse helper instance. */
     public MouseHelper mouseHelper;
-    public final File mcDataDir;
-    private final File fileAssets;
-    private final String launchedVersion;
-    private final Proxy proxy;
-    private ISaveFormat saveLoader;
+    public File mcDataDir;
+    public File fileAssets;
+    public String launchedVersion;
+    public Proxy proxy;
+    public ISaveFormat saveLoader;
 
     /**
      * This is set to fpsCounter every debug screen update, and is shown on the debug screen. It's also sent as part of
      * the usage snooping.
      */
-    private static int debugFPS;
+    public static int debugFPS;
 
     /**
      * When you place a block, it's set to 6, decremented once per tick, when it's 0, you can place another block.
      */
     public int rightClickDelayTimer;
-    private String serverName;
-    private int serverPort;
+    public String serverName;
+    public int serverPort;
 
     /**
      * Does the actual gameplay have focus. If so then mouse and keys will effect the player instead of menus.
@@ -300,49 +300,49 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     long systemTime = getSystemTime();
 
     /** Join player counter */
-    private int joinPlayerCounter;
-    public final FrameTimer field_181542_y = new FrameTimer();
+    public int joinPlayerCounter;
+    public FrameTimer field_181542_y = new FrameTimer();
     long field_181543_z = System.nanoTime();
-    private final boolean jvm64bit;
-    private final boolean isDemo;
-    private NetworkManager myNetworkManager;
-    private boolean integratedServerIsRunning;
+    public boolean jvm64bit;
+    public boolean isDemo;
+    public NetworkManager myNetworkManager;
+    public boolean integratedServerIsRunning;
 
     /** The profiler instance */
-    public final Profiler mcProfiler = new Profiler();
+    public Profiler mcProfiler = new Profiler();
 
     /**
      * Keeps track of how long the debug crash keycombo (F3+C) has been pressed for, in order to crash after 10 seconds.
      */
-    private long debugCrashKeyPressTime = -1L;
-    private IReloadableResourceManager mcResourceManager;
-    private final IMetadataSerializer metadataSerializer_ = new IMetadataSerializer();
-    private final List<IResourcePack> defaultResourcePacks = Lists.<IResourcePack>newArrayList();
-    private final DefaultResourcePack mcDefaultResourcePack;
-    private ResourcePackRepository mcResourcePackRepository;
-    private LanguageManager mcLanguageManager;
-    private IStream stream;
-    private Framebuffer framebufferMc;
-    private TextureMap textureMapBlocks;
-    private SoundHandler mcSoundHandler;
-    private MusicTicker mcMusicTicker;
-    private ResourceLocation mojangLogo;
-    private final MinecraftSessionService sessionService;
-    private SkinManager skinManager;
-    private final Queue < FutureTask<? >> scheduledTasks = Queues. < FutureTask<? >> newArrayDeque();
-    private long field_175615_aJ = 0L;
-    private final Thread mcThread = Thread.currentThread();
-    private ModelManager modelManager;
+    public long debugCrashKeyPressTime = -1L;
+    public IReloadableResourceManager mcResourceManager;
+    public IMetadataSerializer metadataSerializer_ = new IMetadataSerializer();
+    public List<IResourcePack> defaultResourcePacks = Lists.<IResourcePack>newArrayList();
+    public DefaultResourcePack mcDefaultResourcePack;
+    public ResourcePackRepository mcResourcePackRepository;
+    public LanguageManager mcLanguageManager;
+    public IStream stream;
+    public Framebuffer framebufferMc;
+    public TextureMap textureMapBlocks;
+    public SoundHandler mcSoundHandler;
+    public MusicTicker mcMusicTicker;
+    public ResourceLocation mojangLogo;
+    public MinecraftSessionService sessionService;
+    public SkinManager skinManager;
+    public Queue < FutureTask<? >> scheduledTasks = Queues. < FutureTask<? >> newArrayDeque();
+    public long field_175615_aJ = 0L;
+    public Thread mcThread = Thread.currentThread();
+    public ModelManager modelManager;
 
     /**
      * The BlockRenderDispatcher instance that will be used based off gamesettings
      */
-    private BlockRendererDispatcher blockRenderDispatcher;
+    public BlockRendererDispatcher blockRenderDispatcher;
 
     /**
      * Set to true to keep the game loop running. Set to false by shutdown() to allow the game loop to exit cleanly.
      */
-    volatile boolean running = true;
+    public volatile boolean running = true;
 
     /** String that shows the debug information */
     public String debug = "";
@@ -359,246 +359,9 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     long prevFrameTime = -1L;
 
     /** Profiler currently displayed in the debug screen pie chart */
-    private String debugProfilerName = "root";
+    public String debugProfilerName = "root";
 
-    public Minecraft(GameConfiguration gameConfig)
-    {
-        theMinecraft = this;
-        this.mcDataDir = gameConfig.folderInfo.mcDataDir;
-        this.fileAssets = gameConfig.folderInfo.assetsDir;
-        this.fileResourcepacks = gameConfig.folderInfo.resourcePacksDir;
-        this.launchedVersion = gameConfig.gameInfo.version;
-        this.twitchDetails = gameConfig.userInfo.userProperties;
-        this.field_181038_N = gameConfig.userInfo.field_181172_c;
-        this.mcDefaultResourcePack = new DefaultResourcePack((new ResourceIndex(gameConfig.folderInfo.assetsDir, gameConfig.folderInfo.assetIndex)).getResourceMap());
-        this.proxy = gameConfig.userInfo.proxy == null ? Proxy.NO_PROXY : gameConfig.userInfo.proxy;
-        this.sessionService = (new YggdrasilAuthenticationService(gameConfig.userInfo.proxy, UUID.randomUUID().toString())).createMinecraftSessionService();
-        this.session = gameConfig.userInfo.session;
-        logger.info("Setting user: " + this.session.getUsername());
-        logger.info("(Session ID is " + this.session.getSessionID() + ")");
-        this.isDemo = gameConfig.gameInfo.isDemo;
-        this.displayWidth = gameConfig.displayInfo.width > 0 ? gameConfig.displayInfo.width : 1;
-        this.displayHeight = gameConfig.displayInfo.height > 0 ? gameConfig.displayInfo.height : 1;
-        this.tempDisplayWidth = gameConfig.displayInfo.width;
-        this.tempDisplayHeight = gameConfig.displayInfo.height;
-        this.fullscreen = gameConfig.displayInfo.fullscreen;
-        this.jvm64bit = isJvm64bit();
-        this.theIntegratedServer = new IntegratedServer(this);
-
-        if (gameConfig.serverInfo.serverName != null)
-        {
-            this.serverName = gameConfig.serverInfo.serverName;
-            this.serverPort = gameConfig.serverInfo.serverPort;
-        }
-
-        ImageIO.setUseCache(false);
-        Bootstrap.register();
-    }
-
-    public void run()
-    {
-        this.running = true;
-
-        try
-        {
-            this.startGame();
-        }
-        catch (Throwable throwable)
-        {
-            CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Initializing game");
-            crashreport.makeCategory("Initialization");
-            this.displayCrashReport(this.addGraphicsAndWorldToCrashReport(crashreport));
-            return;
-        }
-
-        while (true)
-        {
-            try
-            {
-                while (this.running)
-                {
-                    if (!this.hasCrashed || this.crashReporter == null)
-                    {
-                        try
-                        {
-                            this.runGameLoop();
-                        }
-                        catch (OutOfMemoryError var10)
-                        {
-                            this.freeMemory();
-                            this.displayGuiScreen(new GuiMemoryErrorScreen());
-                            System.gc();
-                        }
-                    }
-                    else
-                    {
-                        this.displayCrashReport(this.crashReporter);
-                    }
-                }
-            }
-            catch (MinecraftError var12)
-            {
-                break;
-            }
-            catch (ReportedException reportedexception)
-            {
-                this.addGraphicsAndWorldToCrashReport(reportedexception.getCrashReport());
-                this.freeMemory();
-                logger.fatal((String)"Reported exception thrown!", (Throwable)reportedexception);
-                this.displayCrashReport(reportedexception.getCrashReport());
-                break;
-            }
-            catch (Throwable throwable1)
-            {
-                CrashReport crashreport1 = this.addGraphicsAndWorldToCrashReport(new CrashReport("Unexpected error", throwable1));
-                this.freeMemory();
-                logger.fatal("Unreported exception thrown!", throwable1);
-                this.displayCrashReport(crashreport1);
-                break;
-            }
-            finally
-            {
-                this.shutdownMinecraftApplet();
-            }
-
-            return;
-        }
-    }
-
-    /**
-     * Starts the game: initializes the canvas, the title, the settings, etcetera.
-     */
-    private void startGame() throws LWJGLException, IOException
-    {
-        this.gameSettings = new GameSettings(this, this.mcDataDir);
-        this.defaultResourcePacks.add(this.mcDefaultResourcePack);
-        this.startTimerHackThread();
-
-        if (this.gameSettings.overrideHeight > 0 && this.gameSettings.overrideWidth > 0)
-        {
-            this.displayWidth = this.gameSettings.overrideWidth;
-            this.displayHeight = this.gameSettings.overrideHeight;
-        }
-
-        logger.info("LWJGL Version: " + Sys.getVersion());
-        this.setWindowIcon();
-        this.setInitialDisplayMode();
-        this.createDisplay();
-        OpenGlHelper.initializeTextures();
-        this.framebufferMc = new Framebuffer(this.displayWidth, this.displayHeight, true);
-        this.framebufferMc.setFramebufferColor(0.0F, 0.0F, 0.0F, 0.0F);
-        this.registerMetadataSerializers();
-        this.mcResourcePackRepository = new ResourcePackRepository(this.fileResourcepacks, new File(this.mcDataDir, "server-resource-packs"), this.mcDefaultResourcePack, this.metadataSerializer_, this.gameSettings);
-        this.mcResourceManager = new SimpleReloadableResourceManager(this.metadataSerializer_);
-        this.mcLanguageManager = new LanguageManager(this.metadataSerializer_, this.gameSettings.language);
-        this.mcResourceManager.registerReloadListener(this.mcLanguageManager);
-        this.refreshResources();
-        this.renderEngine = new TextureManager(this.mcResourceManager);
-        this.mcResourceManager.registerReloadListener(this.renderEngine);
-        this.drawSplashScreen(this.renderEngine);
-        this.initStream();
-        this.skinManager = new SkinManager(this.renderEngine, new File(this.fileAssets, "skins"), this.sessionService);
-        this.saveLoader = new AnvilSaveConverter(new File(this.mcDataDir, "saves"));
-        this.mcSoundHandler = new SoundHandler(this.mcResourceManager, this.gameSettings);
-        this.mcResourceManager.registerReloadListener(this.mcSoundHandler);
-        this.mcMusicTicker = new MusicTicker(this);
-        this.fontRendererObj = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii.png"), this.renderEngine, false);
-
-        if (this.gameSettings.language != null)
-        {
-            this.fontRendererObj.setUnicodeFlag(this.isUnicode());
-            this.fontRendererObj.setBidiFlag(this.mcLanguageManager.isCurrentLanguageBidirectional());
-        }
-
-        this.standardGalacticFontRenderer = new FontRenderer(this.gameSettings, new ResourceLocation("textures/font/ascii_sga.png"), this.renderEngine, false);
-        this.mcResourceManager.registerReloadListener(this.fontRendererObj);
-        this.mcResourceManager.registerReloadListener(this.standardGalacticFontRenderer);
-        this.mcResourceManager.registerReloadListener(new GrassColorReloadListener());
-        this.mcResourceManager.registerReloadListener(new FoliageColorReloadListener());
-        AchievementList.openInventory.setStatStringFormatter(new IStatStringFormat()
-        {
-            public String formatString(String p_74535_1_)
-            {
-                try
-                {
-                    return String.format(p_74535_1_, new Object[] {GameSettings.getKeyDisplayString(Minecraft.this.gameSettings.keyBindInventory.getKeyCode())});
-                }
-                catch (Exception exception)
-                {
-                    return "Error: " + exception.getLocalizedMessage();
-                }
-            }
-        });
-        this.mouseHelper = new MouseHelper();
-        this.checkGLError("Pre startup");
-        GlStateManager.enableTexture2D();
-        GlStateManager.shadeModel(7425);
-        GlStateManager.clearDepth(1.0D);
-        GlStateManager.enableDepth();
-        GlStateManager.depthFunc(515);
-        GlStateManager.enableAlpha();
-        GlStateManager.alphaFunc(516, 0.1F);
-        GlStateManager.cullFace(1029);
-        GlStateManager.matrixMode(5889);
-        GlStateManager.loadIdentity();
-        GlStateManager.matrixMode(5888);
-        this.checkGLError("Startup");
-        this.textureMapBlocks = new TextureMap("textures");
-        this.textureMapBlocks.setMipmapLevels(this.gameSettings.mipmapLevels);
-        this.renderEngine.loadTickableTexture(TextureMap.locationBlocksTexture, this.textureMapBlocks);
-        this.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-        this.textureMapBlocks.setBlurMipmapDirect(false, this.gameSettings.mipmapLevels > 0);
-        this.modelManager = new ModelManager(this.textureMapBlocks);
-        this.mcResourceManager.registerReloadListener(this.modelManager);
-        this.renderItem = new RenderItem(this.renderEngine, this.modelManager);
-        this.renderManager = new RenderManager(this.renderEngine, this.renderItem);
-        this.itemRenderer = new ItemRenderer(this);
-        this.mcResourceManager.registerReloadListener(this.renderItem);
-        this.entityRenderer = new EntityRenderer(this, this.mcResourceManager);
-        this.mcResourceManager.registerReloadListener(this.entityRenderer);
-        this.blockRenderDispatcher = new BlockRendererDispatcher(this.modelManager.getBlockModelShapes(), this.gameSettings);
-        this.mcResourceManager.registerReloadListener(this.blockRenderDispatcher);
-        this.renderGlobal = new RenderGlobal(this);
-        this.mcResourceManager.registerReloadListener(this.renderGlobal);
-        this.guiAchievement = new GuiAchievement(this);
-        GlStateManager.viewport(0, 0, this.displayWidth, this.displayHeight);
-        this.effectRenderer = new EffectRenderer(this.theWorld, this.renderEngine);
-        this.checkGLError("Post startup");
-        new ModificationLoader().start();
-        this.ingameGUI = new GuiIngame(this);
-
-        if (this.serverName != null)
-        {
-            this.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), this, this.serverName, this.serverPort));
-        }
-        else
-        {
-            this.displayGuiScreen(new GuiMainMenu());
-        }
-
-        this.renderEngine.deleteTexture(this.mojangLogo);
-        this.mojangLogo = null;
-        this.loadingScreen = new LoadingScreenRenderer(this);
-
-        if (this.gameSettings.fullScreen && !this.fullscreen)
-        {
-            this.toggleFullscreen();
-        }
-
-        try
-        {
-            Display.setVSyncEnabled(this.gameSettings.enableVsync);
-        }
-        catch (OpenGLException var2)
-        {
-            this.gameSettings.enableVsync = false;
-            this.gameSettings.saveOptions();
-        }
-
-        this.renderGlobal.makeEntityOutlineShader();
-    }
-
-    private void registerMetadataSerializers()
+    public void registerMetadataSerializers()
     {
         this.metadataSerializer_.registerMetadataSectionType(new TextureMetadataSectionSerializer(), TextureMetadataSection.class);
         this.metadataSerializer_.registerMetadataSectionType(new FontMetadataSectionSerializer(), FontMetadataSection.class);
@@ -607,7 +370,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.metadataSerializer_.registerMetadataSectionType(new LanguageMetadataSectionSerializer(), LanguageMetadataSection.class);
     }
 
-    private void initStream()
+    public void initStream()
     {
         try
         {
@@ -620,7 +383,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private void createDisplay() throws LWJGLException
+    public void createDisplay() throws LWJGLException
     {
         Display.setResizable(true);
         Display.setTitle("Minecraft 1.8.9");
@@ -651,7 +414,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private void setInitialDisplayMode() throws LWJGLException
+    public void setInitialDisplayMode() throws LWJGLException
     {
         if (this.fullscreen)
         {
@@ -666,7 +429,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private void setWindowIcon()
+    public void setWindowIcon()
     {
         Util.EnumOS util$enumos = Util.getOSType();
 
@@ -697,7 +460,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private static boolean isJvm64bit()
+    public static boolean isJvm64bit()
     {
         String[] astring = new String[] {"sun.arch.data.model", "com.ibm.vm.bitmode", "os.arch"};
 
@@ -724,7 +487,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         return this.launchedVersion;
     }
 
-    private void startTimerHackThread()
+    public void startTimerHackThread()
     {
         Thread thread = new Thread("Timer hack thread")
         {
@@ -822,7 +585,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private ByteBuffer readImageToBuffer(InputStream imageStream) throws IOException
+    public ByteBuffer readImageToBuffer(InputStream imageStream) throws IOException
     {
         BufferedImage bufferedimage = ImageIO.read(imageStream);
         int[] aint = bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), (int[])null, 0, bufferedimage.getWidth());
@@ -837,7 +600,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         return bytebuffer;
     }
 
-    private void updateDisplayMode() throws LWJGLException
+    public void updateDisplayMode() throws LWJGLException
     {
         Set<DisplayMode> set = Sets.<DisplayMode>newHashSet();
         Collections.addAll(set, Display.getAvailableDisplayModes());
@@ -890,7 +653,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.displayHeight = displaymode.getHeight();
     }
 
-    private void drawSplashScreen(TextureManager textureManagerInstance) throws LWJGLException
+    public void drawSplashScreen(TextureManager textureManagerInstance) throws LWJGLException
     {
         ScaledResolution scaledresolution = new ScaledResolution(this);
         int i = scaledresolution.getScaleFactor();
@@ -1011,7 +774,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Checks for an OpenGL error. If there is one, prints the error ID and error string.
      */
-    private void checkGLError(String message)
+    public void checkGLError(String message)
     {
         if (this.enableGLErrorChecking)
         {
@@ -1065,7 +828,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Called repeatedly from run()
      */
-    private void runGameLoop() throws IOException
+    public void runGameLoop() throws IOException
     {
         long i = System.nanoTime();
         this.mcProfiler.startSection("root");
@@ -1273,7 +1036,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Update debugProfilerName in response to number keys in debug screen
      */
-    private void updateDebugProfilerName(int keyCount)
+    public void updateDebugProfilerName(int keyCount)
     {
         List<Profiler.Result> list = this.mcProfiler.getProfilingData(this.debugProfilerName);
 
@@ -1313,7 +1076,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Parameter appears to be unused
      */
-    private void displayDebugInfo(long elapsedTicksTime)
+    public void displayDebugInfo(long elapsedTicksTime)
     {
         if (this.mcProfiler.profilingEnabled)
         {
@@ -1552,7 +1315,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Called when user clicked he's mouse right button (place)
      */
-    private void rightClickMouse()
+    public void rightClickMouse()
     {
         if (!this.playerController.func_181040_m())
         {
@@ -1687,7 +1450,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Called to resize the current screen.
      */
-    private void resize(int width, int height)
+    public void resize(int width, int height)
     {
         this.displayWidth = Math.max(1, width);
         this.displayHeight = Math.max(1, height);
@@ -1702,7 +1465,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         this.updateFramebufferSize();
     }
 
-    private void updateFramebufferSize()
+    public void updateFramebufferSize()
     {
         this.framebufferMc.createBindFramebuffer(this.displayWidth, this.displayHeight);
 
@@ -2485,7 +2248,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Called when user clicked he's mouse middle button (pick block)
      */
-    private void middleClickMouse()
+    public void middleClickMouse()
     {
         if (this.objectMouseOver != null)
         {
@@ -2623,7 +2386,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private ItemStack func_181036_a(Item p_181036_1_, int p_181036_2_, TileEntity p_181036_3_)
+    public ItemStack func_181036_a(Item p_181036_1_, int p_181036_2_, TileEntity p_181036_3_)
     {
         ItemStack itemstack = new ItemStack(p_181036_1_, 1, p_181036_2_);
         NBTTagCompound nbttagcompound = new NBTTagCompound();
@@ -2801,7 +2564,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
     }
 
-    private String func_181538_aA()
+    public String func_181538_aA()
     {
         return this.theIntegratedServer != null ? (this.theIntegratedServer.getPublic() ? "hosting_lan" : "singleplayer") : (this.currentServerData != null ? (this.currentServerData.func_181041_d() ? "playing_lan" : "multiplayer") : "out_of_game");
     }

@@ -19,7 +19,7 @@ public class NoSlowDown extends Module {
 
     //Hooked in EntityLivingBase class & EntityPlayerSP class
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this,  new String[]{"Vanilla", "Spoof", "NCP", "WatchDog", "Old Intave"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this,  new String[]{"Vanilla", "Spoof", "Old NCP", "WatchDog", "Old Intave"});
 
     // Spoof
     private int spoofSlot;
@@ -44,11 +44,11 @@ public class NoSlowDown extends Module {
                         spoofSlot += 1;
                     }
 
-                    if(mc.thePlayer.isUsingItem() || mc.thePlayer.isBlocking() || mc.thePlayer.isEating()) {
+                    if(mc.thePlayer.isUsingItem()) {
                         mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(spoofSlot));
                     }
                     break;
-                case "NCP":
+                case "Old NCP":
                     if (mc.thePlayer.isBlocking()) {
                         mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                     }
@@ -69,7 +69,7 @@ public class NoSlowDown extends Module {
                             mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(watchDogSlot));
                         }
 
-                        if(mc.thePlayer.isEating() || mc.thePlayer.isUsingItem() && !mc.thePlayer.isBlocking()) {
+                        if(mc.thePlayer.isUsingItem()) {
                             if(mc.thePlayer.ticksExisted % 2 + Math.round(Math.random()) == 0) {
                                 mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(null));
                             }
@@ -87,7 +87,7 @@ public class NoSlowDown extends Module {
 
         if(event.getType() == UpdateMotionEvent.Type.POST) {
             switch(mode.getValue()) {
-                case "NCP":
+                case "Old NCP":
                     if (mc.thePlayer.isBlocking()) {
                         mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
                     }

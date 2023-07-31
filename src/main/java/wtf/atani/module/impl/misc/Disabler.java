@@ -9,7 +9,7 @@ import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.value.impl.CheckBoxValue;
 
-@ModuleInfo(name = "Disabler", description = "Disable anticheats", category = Category.MISCELLANEOUS)
+@ModuleInfo(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
 
     private final CheckBoxValue keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?", this, false);

@@ -20,7 +20,7 @@ public class Disabler extends Module {
 
             Packet<?> packet = event.getPacket();
 
-            if(event.getPacket() instanceof C00PacketKeepAlive) {
+            if(event.getPacket() instanceof C00PacketKeepAlive && keepAlive.getValue()) {
                 event.setCancelled(true);
             }
         }

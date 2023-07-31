@@ -161,15 +161,22 @@ public class Speed extends Module {
                             }
                         case "YPort":
                             if(mc.thePlayer.onGround) {
+                                vulcanTicks = 0;
                                 mc.thePlayer.jump();
-                                mc.timer.timerSpeed = 1.2F;
+                                mc.timer.timerSpeed = 1.02F;
                                 MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.485);
                             } else {
+                                vulcanTicks++;
                                 mc.timer.timerSpeed = 1;
                             }
 
-                            if(mc.thePlayer.fallDistance > 0) {
+                            if(mc.thePlayer.fallDistance > 0.1) {
+                                mc.timer.timerSpeed = 1.3F;
                                 mc.thePlayer.motionY = -1337;
+                            }
+
+                            if(3 > vulcanTicks) {
+                                MoveUtil.strafe();
                             }
                             break;
                     }

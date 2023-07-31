@@ -4,8 +4,6 @@ import net.minecraft.network.play.client.C01PacketChatMessage;
 import wtf.atani.command.Command;
 import wtf.atani.command.data.CommandInfo;
 
-import java.util.Arrays;
-
 @CommandInfo(name = "say", description = "Say stuff")
 public class Say extends Command {
     @Override

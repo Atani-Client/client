@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomUtil {
 
-    private static SecureRandom secureRandom = new SecureRandom();
+    public static SecureRandom secureRandom = new SecureRandom();
 
     public static double randomBetween(final double min, final double max) {
         return min + (secureRandom.nextDouble() * (max - min));

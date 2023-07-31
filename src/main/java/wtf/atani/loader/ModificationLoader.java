@@ -13,6 +13,7 @@ import wtf.atani.event.handling.EventHandling;
 import wtf.atani.file.storage.FileStorage;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.security.checks.manager.ProtectionManager;
 import wtf.atani.utils.interfaces.ClientInformationAccess;
 import wtf.atani.value.storage.ValueStorage;
 
@@ -40,6 +41,7 @@ public class ModificationLoader implements ClientInformationAccess {
 
     private void setupManagers() {
         new EventHandling();
+        new ProtectionManager();
         new FontStorage();
         new ValueStorage();
         new ModuleStorage();

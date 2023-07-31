@@ -233,8 +233,10 @@ public class KillAura extends Module {
     }
 
     private void calculateCps() {
-        // Temporarily removed legit cps calc
-        cpsDelay = 1000 / RandomUtil.randomBetween(this.minCps.getValue().floatValue(), this.maxCps.getValue().floatValue());
+        final int maxValue = (int) ((this.minCps.getMaximum() - this.maxCps.getValue()) * 20);
+        final int minValue = (int) ((this.minCps.getMaximum() - this.minCps.getValue()) * 20);
+
+        cpsDelay = (int) (RandomUtil.randomBetween(minValue, maxValue) - RandomUtil.secureRandom.nextInt(10) + RandomUtil.secureRandom.nextInt(10));
     }
 
     @Override

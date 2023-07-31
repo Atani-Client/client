@@ -3,6 +3,7 @@ package wtf.atani.screen.click.simple;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.input.Mouse;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.impl.hud.ClickGui;
 import wtf.atani.module.storage.ModuleStorage;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 public class SimpleClickGuiScreen extends GuiScreen {
     private ArrayList<Frame> frames = new ArrayList<>();
+    private float scroll = 0;
 
     @Override
     public void initGui() {
@@ -22,6 +24,7 @@ public class SimpleClickGuiScreen extends GuiScreen {
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        scroll += Mouse.getDWheel() / 10F;
         if(frames.isEmpty()) {
             float y = 50, width = 130, height = 15, x = (this.width - (Category.values().length * (width + 5))) / 2; /* The X is made like that so categories will be in the middle*/
             for(Category category : Category.values()) {
@@ -32,6 +35,7 @@ public class SimpleClickGuiScreen extends GuiScreen {
 
         RenderableShaders.renderAndRun(() -> {
             for(Frame frame : frames) {
+                frame.scroll = scroll;
                 frame.drawScreen(mouseX, mouseY);
             }
         });

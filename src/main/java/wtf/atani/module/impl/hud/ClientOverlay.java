@@ -86,6 +86,8 @@ public class ClientOverlay extends Module {
 
         switch (moduleListMode.getValue()) {
             case "Golden": {
+                if(leftY.get() == 0)
+                    leftY.set(6);
                 FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
                 RenderableShaders.renderAndRun(() -> {
                     float moduleY = leftY.get();
@@ -110,6 +112,8 @@ public class ClientOverlay extends Module {
             case "Simple":
                 FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
                 RenderableShaders.renderAndRun(() -> {
+                    if(leftY.get() == 0)
+                        leftY.set(8);
                     float moduleY = leftY.get();
                     for(Module module : moduleHashMap.keySet()) {
                         float moduleHeight = roboto17.FONT_HEIGHT + 8;

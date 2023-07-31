@@ -56,17 +56,17 @@ public class NoSlowDown extends Module {
                 case "WatchDog":
                     if(this.isMoving()) {
                         if (mc.thePlayer.isBlocking()) {
-                            spoofSlot += 1;
+                            watchDogSlot += 1;
 
-                            if (1 > spoofSlot || spoofSlot > 8) {
-                                spoofSlot = 1;
+                            if (1 > watchDogSlot || watchDogSlot > 8) {
+                                watchDogSlot = 1;
                             }
 
-                            if (mc.thePlayer.inventory.currentItem == spoofSlot) {
-                                spoofSlot += 1;
+                            if (mc.thePlayer.inventory.currentItem == watchDogSlot) {
+                                watchDogSlot += 1;
                             }
 
-                            mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(spoofSlot));
+                            mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(watchDogSlot));
                         }
 
                         if(mc.thePlayer.isEating() || mc.thePlayer.isUsingItem() && !mc.thePlayer.isBlocking()) {

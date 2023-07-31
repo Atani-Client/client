@@ -47,7 +47,7 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import wtf.atani.command.storage.CommandStorage;
 import wtf.atani.event.events.*;
-import wtf.atani.module.impl.movement.NoSlowdown;
+import wtf.atani.module.impl.movement.NoSlowDown;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.player.MoveUtil;
 import wtf.atani.utils.player.PlayerHandler;
@@ -763,7 +763,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             --this.sprintingTicksLeft;
 
-            if (this.sprintingTicksLeft == 0 && !ModuleStorage.getInstance().getByClass(NoSlowdown.class).isEnabled())
+            if (this.sprintingTicksLeft == 0 && !ModuleStorage.getInstance().getByClass(NoSlowDown.class).isEnabled())
             {
                 this.setSprinting(false);
             }
@@ -859,7 +859,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
         }
 
-        if (this.isUsingItem() && !this.isRiding() && !ModuleStorage.getInstance().getByClass(NoSlowdown.class).isEnabled())
+        if (this.isUsingItem() && !this.isRiding() && !ModuleStorage.getInstance().getByClass(NoSlowDown.class).isEnabled())
         {
             this.movementInput.moveStrafe *= 0.2F;
             this.movementInput.moveForward *= 0.2F;

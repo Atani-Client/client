@@ -53,7 +53,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import wtf.atani.event.events.JumpEvent;
 import wtf.atani.module.impl.movement.NoJumpDelay;
-import wtf.atani.module.impl.movement.NoSlowdown;
+import wtf.atani.module.impl.movement.NoSlowDown;
 import wtf.atani.module.impl.render.HitAnimations;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.player.PlayerHandler;
@@ -532,7 +532,7 @@ public abstract class EntityLivingBase extends Entity
         tagCompound.setShort("DeathTime", (short)this.deathTime);
         tagCompound.setFloat("AbsorptionAmount", this.getAbsorptionAmount());
 
-        if(ModuleStorage.getInstance().getByClass(NoSlowdown.class).isEnabled()) {
+        if(ModuleStorage.getInstance().getByClass(NoSlowDown.class).isEnabled()) {
             return;
         }
 

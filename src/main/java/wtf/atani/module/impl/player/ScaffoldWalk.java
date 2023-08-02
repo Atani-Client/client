@@ -1,6 +1,5 @@
 package wtf.atani.module.impl.player;
 
-import com.sun.javafx.geom.Vec3d;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -14,7 +13,6 @@ import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
-import wtf.atani.utils.math.random.RandomUtil;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
@@ -22,7 +20,7 @@ import wtf.atani.value.impl.SliderValue;
 import java.util.concurrent.ThreadLocalRandom;
 
 @ModuleInfo(name = "ScaffoldWalk", description = "Bridging automatically", category = Category.PLAYER)
-public class ScaffoldWalkFeature extends Module {
+public class ScaffoldWalk extends Module {
 
     private final CheckBoxValue swinging = new CheckBoxValue("Swinging", "Swing when placing blocks?", this, true);
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
@@ -38,8 +36,6 @@ public class ScaffoldWalkFeature extends Module {
         rotationEvent.setPitch(randomizePitch.getValue() && isMoving() ? (float) ThreadLocalRandom.current().nextDouble(83, 83.3) : 83);
         rotationEvent.setYaw(mc.thePlayer.rotationYaw + 180);
     }
-
-    ;
 
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {

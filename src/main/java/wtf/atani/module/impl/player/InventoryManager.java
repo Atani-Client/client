@@ -19,7 +19,7 @@ import wtf.atani.value.impl.SliderValue;
 import java.util.Arrays;
 import java.util.List;
 
-@ModuleInfo(name = "InventoryManagers", description = "Cleans and sorts your inventory", category = Category.PLAYER)
+@ModuleInfo(name = "InventoryManager", description = "Cleans and sorts your inventory", category = Category.PLAYER)
 public class InventoryManager extends Module {
 
     private final CheckBoxValue openInventory = new CheckBoxValue("Open Inventory", "Operate only with open inventory?", this, true);

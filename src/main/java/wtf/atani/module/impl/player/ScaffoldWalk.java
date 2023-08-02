@@ -5,6 +5,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import wtf.atani.event.events.ClickingEvent;
 import wtf.atani.event.events.RotationEvent;
@@ -14,6 +15,7 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.math.time.TimeHelper;
+import wtf.atani.utils.player.rayTrace.RaytraceUtil;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 
@@ -79,18 +81,52 @@ public class ScaffoldWalk extends Module {
 
                             if (mc.objectMouseOver.sideHit == EnumFacing.UP && !getGameSettings().keyBindJump.pressed)
                                 break;
+
+                            EnumFacing enumFacing = mc.objectMouseOver.sideHit;
+
+                            /* */
+                            Vec3 hitVec = new Vec3(blockpos.getX() + Math.random(), blockpos.getY() + Math.random(), blockpos.getZ() + Math.random());
+
+                            final MovingObjectPosition movingObjectPosition = mc.objectMouseOver;
+
+                            switch (enumFacing) {
+                                case DOWN:
+                                    hitVec.yCoord = blockpos.getY() + 0;
+                                    break;
+
+                                case UP:
+                                    hitVec.yCoord = blockpos.getY() + 1;
+                                    break;
+
+                                case NORTH:
+                                    hitVec.zCoord = blockpos.getZ() + 0;
+                                    break;
+
+                                case EAST:
+                                    hitVec.xCoord = blockpos.getX() + 1;
+                                    break;
+
+                                case SOUTH:
+                                    hitVec.zCoord = blockpos.getZ() + 1;
+                                    break;
+
+                                case WEST:
+                                    hitVec.xCoord = blockpos.getX() + 0;
+                                    break;
+                            }
+
+                            if (movingObjectPosition != null && movingObjectPosition.getBlockPos().equals(blockpos) &&
+                                    movingObjectPosition.sideHit == enumFacing) {
+                                hitVec = movingObjectPosition.hitVec;
+                            }
+                            /* */
+
                             if (getWorld().getBlockState(blockpos).getBlock().getMaterial() != Material.air) {
-                                boolean result = mc.playerController.onPlayerRightClick(getPlayer(), getWorld(), mc.thePlayer.getHeldItem(), blockpos, mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec);
+                                boolean result = mc.playerController.onPlayerRightClick(getPlayer(), getWorld(), mc.thePlayer.getHeldItem(), blockpos, enumFacing, hitVec);
 
                                 if (result) {
                                     if (swinging.getValue())
                                         getPlayer().swingItem();
-
-                                    /*
-                                    if (!itemstack.func_190926_b() && (itemstack.func_190916_E() != i || mc.playerController.isInCreativeMode())) {
-                                        mc.entityRenderer.itemRenderer.resetEquippedProgress();
-                                    }
-                                    */
                                     return;
                                 } else {
                                     timeHelper.reset();
@@ -100,14 +136,6 @@ public class ScaffoldWalk extends Module {
                         }
                     }
                 }
-
-                /*
-                if (ThreadLocalRandom.current().nextInt(100) <= 40) {
-                    if (!itemstack.func_190926_b() && mc.playerController.processRightClick(getPlayer(), getWorld(), enumhand) == EnumActionResult.SUCCESS) {
-                        mc.entityRenderer.itemRenderer.resetEquippedProgress();
-                    }
-                }
-                 */
             }
         }
     }

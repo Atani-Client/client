@@ -2,6 +2,7 @@ package wtf.atani.module.impl.hud;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.util.StringUtils;
@@ -15,6 +16,7 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.utils.interfaces.ColorPalette;
 import wtf.atani.utils.java.StringUtil;
 import wtf.atani.utils.math.atomic.AtomicFloat;
 import wtf.atani.utils.render.GradientUtil;
@@ -22,6 +24,7 @@ import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.RoundedUtil;
 import wtf.atani.utils.render.animation.Direction;
 import wtf.atani.utils.render.animation.impl.DecelerateAnimation;
+import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.StringBoxValue;
@@ -32,28 +35,44 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @ModuleInfo(name = "ClientOverlay", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
-public class ClientOverlay extends Module {
+public class ClientOverlay extends Module implements ColorPalette {
 
-    private StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus"});
-    private StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus"}, new ValueChangeListener[]{new ValueChangeListener() {
+    private StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality"});
+    private StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality"}, new ValueChangeListener[]{new ValueChangeListener() {
         @Override
         public void onChange(Stage stage, Value value, Object oldValue, Object newValue) {
             moduleHashMap.clear();
         }
     }});
+    private StringBoxValue releaseString = new StringBoxValue("Release String Mode", "Which release string will be displayed?", this, new String[]{"None", "Fatality"});
 
     private LinkedHashMap<Module, DecelerateAnimation> moduleHashMap = new LinkedHashMap<>();
 
     @Listen
     public final void on2D(Render2DEvent render2DEvent) {
         ScaledResolution sr = render2DEvent.getScaledResolution();
-
         // When making a watermark update these values (including the margins!) so that we can have arraylist and watermark on the same side without
         // having 100 if else statements
         // - Tabio
         AtomicFloat leftY = new AtomicFloat(0);
         AtomicFloat rightY = new AtomicFloat(0);
         switch (watermarkMode.getValue()) {
+            case "Fatality": {
+                // TODO: implement usernames
+                // Pasted this from some random radium paste since this client's not expensive enough for me to do random themes of dead, nn clients like this and do shit like remake the entire style of skeet fucking watermark for it
+                final String text = String.format("$$$ %s.vip $$$ | %s | %s", CLIENT_NAME.toLowerCase(), "idk", mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP);
+                final float width2 = (float) (FontStorage.getInstance().findFont("Roboto", 15).getStringWidth(text) + 8);
+                final int height2 = 20;
+                final int posX2 = 2;
+                final int posY1 = 2;
+                Gui.drawRect(posX2, posY1, posX2 + width2 + 2.0f, posY1 + height2, new Color(5, 5, 5, 255).getRGB());
+                RenderUtil.drawBorderedRect(posX2 + 0.5f, posY1 + 0.5f, posX2 + width2 + 1.5f, posY1 + height2 - 0.5f, 0.5f, new Color(40, 40, 40, 255).getRGB(), new Color(60, 60, 60, 255).getRGB(), true);
+                RenderUtil.drawBorderedRect(posX2 + 2, posY1 + 2, posX2 + width2, posY1 + height2 - 2, 0.5f, new Color(22, 22, 22, 255).getRGB(), new Color(60, 60, 60, 255).getRGB(), true);
+                Gui.drawRect(posX2 + 2.5, posY1 + 2.5, posX2 + width2 - 0.5, posY1 + 4.5, new Color(9, 9, 9, 255).getRGB());
+                GradientUtil.drawGradientLR(4.0f, posY1 + 3, width2 - 2, 1, 1, new Color(FATALITY_FIRST), new Color(FATALITY_SECOND));
+                FontStorage.getInstance().findFont("Roboto", 15).drawStringWithShadow(text, 7.5F, 10.0f, Color.white.getRGB());
+                break;
+            }
             case "Icarus": {
                 FontRenderer fontRenderer = FontStorage.getInstance().findFont("Pangram Bold", 80);
                 fontRenderer.drawStringWithShadow(CLIENT_NAME, 8, 0, -1);
@@ -69,7 +88,7 @@ public class ClientOverlay extends Module {
                     // Rendering with the regular version of the font to fix a weird bug with the medium font where it looks shitty
                     FontStorage.getInstance().findFont("Roboto", 17).drawString(StringUtil.removeFormattingCodes(text), 3, 3, new Color(0, 0, 0).getRGB());
                 });
-                fontRenderer.drawString(text, 3, 3, new Color(81, 81, 255).getRGB());
+                fontRenderer.drawString(text, 3, 3, RYU);
                 leftY.set(fontRenderer.FONT_HEIGHT + 6);
                 break;
             }
@@ -91,7 +110,7 @@ public class ClientOverlay extends Module {
                     float rectX = 10, rectY = 10;
                     float textX = rectX + 4, textY = rectY + 4.5f;
                     float rectWidth = 8 + length, rectHeight = roboto17.FONT_HEIGHT + 8;
-                    RenderUtil.drawRect(rectX, rectY, rectWidth, rectHeight, new Color(0, 0, 0, 180).getRGB());
+                    RenderUtil.drawRect(rectX, rectY, rectWidth, rectHeight, BACK_TRANS_180);
                     roboto17.drawStringWithShadow(text, textX, textY, -1);
                     leftY.set(rectY + rectHeight + 10);
                 });
@@ -102,14 +121,24 @@ public class ClientOverlay extends Module {
                     FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
                     float length = roboto17.getStringWidth(text);
                     float x = 5 + 2, y = 5, lineHeight = 2;
-                    GradientUtil.drawGradientLR(x, y, length + 5, lineHeight, 1, new Color(255, 202, 3), new Color(255, 84, 3));
+                    GradientUtil.drawGradientLR(x, y, length + 5, lineHeight, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
                     RenderUtil.drawRect(x - 2, y, 2, roboto17.FONT_HEIGHT + 4, new Color(255, 202, 3).getRGB());
-                    RenderUtil.drawRect(x, y + lineHeight, length + 5, roboto17.FONT_HEIGHT + 4 - lineHeight, new Color(20, 20, 20).getRGB());
+                    RenderUtil.drawRect(x, y + lineHeight, length + 5, roboto17.FONT_HEIGHT + 4 - lineHeight, BACK_GRAY_20);
                     roboto17.drawStringWithShadow(text, x + 2.5f, y + lineHeight + 2, -1);
                     leftY.set(y + lineHeight + roboto17.FONT_HEIGHT + 4 + y);
                 });
                 break;
         }
+
+        switch (this.releaseString.getValue()) {
+            case "Fatality":
+                String releaseType = DEVELOPMENT_SWITCH ? "Dev" : BETA_SWITCH ? "Beta" : "Release";
+                // TODO: WE NEED TO IMPLEMENT THE FUCKING USERNAMES
+                String text = ChatFormatting.GRAY + releaseType + " - " + ChatFormatting.WHITE + "idk" + ChatFormatting.GRAY + " - " + VERSION;
+                mc.fontRendererObj.drawStringWithShadow(text, sr.getScaledWidth() - mc.fontRendererObj.getStringWidth(text) - 2, sr.getScaledHeight() - mc.fontRendererObj.FONT_HEIGHT - 2, -1);
+                break;
+        }
+
         for(Module module : ModuleStorage.getInstance().getList()) {
             if(!moduleHashMap.containsKey(module)) {
                 switch (this.moduleListMode.getValue()) {
@@ -132,6 +161,7 @@ public class ClientOverlay extends Module {
                     case "Icarus":
                         fontRenderer = FontStorage.getInstance().findFont("Pangram Regular", 17);
                         break;
+                    case "Fatality":
                     case "Augustus 2.6":
                         fontRenderer = mc.fontRendererObj;
                         break;
@@ -150,6 +180,23 @@ public class ClientOverlay extends Module {
         moduleHashMap = sortedMap;
 
         switch (moduleListMode.getValue()) {
+            case "Fatality": {
+                if(rightY.get() == 0)
+                    rightY.set(1);
+                FontRenderer fontRenderer = mc.fontRendererObj;
+                float moduleY = rightY.get();
+                int counter = 0;
+                for (Module module : moduleHashMap.keySet()) {
+                    if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
+                        float moduleHeight = fontRenderer.FONT_HEIGHT;
+                        float rectLength = (float) ((fontRenderer.getStringWidth(module.getName()) + 1) * moduleHashMap.get(module).getOutput());
+                        fontRenderer.drawStringWithShadow(module.getName(), sr.getScaledWidth() - rectLength - 1, moduleY + moduleHeight / 2 - fontRenderer.FONT_HEIGHT / 2, ColorUtil.fadeBetween(FATALITY_FIRST, FATALITY_SECOND, counter * 150L));
+                        moduleY += moduleHeight;
+                        counter++;
+                    }
+                }
+                break;
+            }
             case "Icarus": {
                 FontRenderer fontRenderer = FontStorage.getInstance().findFont("Pangram Regular", 17);
                 float moduleY = rightY.get();
@@ -164,7 +211,7 @@ public class ClientOverlay extends Module {
                         moduleY += moduleHeight;
                     }
                 }
-                GradientUtil.drawGradientTB(sr.getScaledWidth() - gradientWidth, rightY.get(), gradientWidth, moduleY, 1, new Color(255, 0, 127), new Color(127, 0, 255));
+                GradientUtil.drawGradientTB(sr.getScaledWidth() - gradientWidth, rightY.get(), gradientWidth, moduleY, 1, new Color(ICARUS_FIRST), new Color(ICARUS_SECOND));
                 break;
             }
             case "Augustus 2.6": {
@@ -248,7 +295,7 @@ public class ClientOverlay extends Module {
                         }
                     }
                     RenderUtil.endScissorBox();
-                    GradientUtil.drawGradientTB(5, leftY.get(), 2, moduleY - leftY.get(), 1, new Color(255, 202, 3), new Color(255, 84, 3));
+                    GradientUtil.drawGradientTB(5, leftY.get(), 2, moduleY - leftY.get(), 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
                 });
                 break;
             }
@@ -264,7 +311,7 @@ public class ClientOverlay extends Module {
                             String name = module.getName();
                             float rectWidth = roboto17.getStringWidth(name) + 10;
                             float moduleX = 10 - (rectWidth + 10) + (float) (moduleHashMap.get(module).getOutput() * (rectWidth + 10));
-                            RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(0, 0, 0, 180).getRGB());
+                            RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, BACK_TRANS_180);
                             roboto17.drawTotalCenteredStringWithShadow(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, -1);
                             moduleY += moduleHeight;
                         }

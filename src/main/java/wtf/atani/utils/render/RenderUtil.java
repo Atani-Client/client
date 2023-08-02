@@ -22,6 +22,10 @@ import java.awt.*;
 
 public class RenderUtil implements Methods {
 
+    public static void drawBorderedRect(final float left, final float top, final float right, final float bottom, final float borderWidth, final int insideColor, final int borderColor, final boolean borderIncludedInBounds) {
+        Gui.drawRect(left - (borderIncludedInBounds ? 0.0f : borderWidth), top - (borderIncludedInBounds ? 0.0f : borderWidth), right + (borderIncludedInBounds ? 0.0f : borderWidth), bottom + (borderIncludedInBounds ? 0.0f : borderWidth), borderColor);
+        Gui.drawRect(left + (borderIncludedInBounds ? borderWidth : 0.0f), top + (borderIncludedInBounds ? borderWidth : 0.0f), right - (borderIncludedInBounds ? borderWidth : 0.0f), bottom - (borderIncludedInBounds ? borderWidth : 0.0f), insideColor);
+    }
     public static void renderESP(Entity entity, boolean hurtTime, AxisAlignedBB boundingBox, boolean outline, boolean fill, Color color) {
         GL11.glPushMatrix();
         GlStateManager.enableBlend();

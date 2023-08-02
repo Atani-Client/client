@@ -3,6 +3,7 @@ package wtf.atani.module.impl.player;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
@@ -70,70 +71,13 @@ public class ScaffoldWalk extends Module {
             final ItemStack itemstack = getPlayer().getHeldItem();
             if (itemstack != null && itemstack.getItem() instanceof ItemBlock) {
                 if (mc.objectMouseOver != null) {
-                    switch (mc.objectMouseOver.typeOfHit) {
-                        case ENTITY:
-                            if (mc.playerController.interactWithEntitySendPacket(getPlayer(), mc.objectMouseOver.entityHit)) {
-                                return;
-                            }
-                            break;
-                        case BLOCK: {
-                            final BlockPos blockpos = mc.objectMouseOver.getBlockPos();
-
-                            if (mc.objectMouseOver.sideHit == EnumFacing.UP && !getGameSettings().keyBindJump.pressed)
-                                break;
-
-                            EnumFacing enumFacing = mc.objectMouseOver.sideHit;
-
-                            /* */
-                            Vec3 hitVec = new Vec3(blockpos.getX() + Math.random(), blockpos.getY() + Math.random(), blockpos.getZ() + Math.random());
-
-                            final MovingObjectPosition movingObjectPosition = mc.objectMouseOver;
-
-                            switch (enumFacing) {
-                                case DOWN:
-                                    hitVec.yCoord = blockpos.getY() + 0;
-                                    break;
-
-                                case UP:
-                                    hitVec.yCoord = blockpos.getY() + 1;
-                                    break;
-
-                                case NORTH:
-                                    hitVec.zCoord = blockpos.getZ() + 0;
-                                    break;
-
-                                case EAST:
-                                    hitVec.xCoord = blockpos.getX() + 1;
-                                    break;
-
-                                case SOUTH:
-                                    hitVec.zCoord = blockpos.getZ() + 1;
-                                    break;
-
-                                case WEST:
-                                    hitVec.xCoord = blockpos.getX() + 0;
-                                    break;
-                            }
-
-                            if (movingObjectPosition != null && movingObjectPosition.getBlockPos().equals(blockpos) &&
-                                    movingObjectPosition.sideHit == enumFacing) {
-                                hitVec = movingObjectPosition.hitVec;
-                            }
-                            /* */
-
-                            if (getWorld().getBlockState(blockpos).getBlock().getMaterial() != Material.air) {
-                                boolean result = mc.playerController.onPlayerRightClick(getPlayer(), getWorld(), mc.thePlayer.getHeldItem(), blockpos, enumFacing, hitVec);
-
-                                if (result) {
-                                    if (swinging.getValue())
-                                        getPlayer().swingItem();
-                                    return;
-                                } else {
-                                    timeHelper.reset();
-                                }
-                            }
-                            break;
+                    final BlockPos blockpos = mc.objectMouseOver.getBlockPos();
+                    if (mc.theWorld.getBlockState(blockpos).getBlock().getMaterial() != Material.air) {
+                        if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem(), blockpos, mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec)) {
+                            if (this.swinging.getValue())
+                                mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
                         }
+                        this.timeHelper.reset();
                     }
                 }
             }

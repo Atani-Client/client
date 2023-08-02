@@ -31,7 +31,7 @@ public class Stealer extends Module {
     private final SliderValue<Long> minGrabDelay = new SliderValue<>("Minimum Grab Delay", "What will be the minimum delay between grabbing each item?", this, 250L, 0L, 1000L, 0);
     private final SliderValue<Long> maxGrabDelay = new SliderValue<>("Maximum Grab Delay", "What will be the maximum delay between grabbing each item?", this, 300L, 0L, 1000L, 0);
     private final CheckBoxValue intelligent = new CheckBoxValue("Intelligent", "Pick items intelligently?", this, true);
-    private final CheckBoxValue stackItems = new CheckBoxValue("Stack items", "Stack items?", this, true);
+    private final CheckBoxValue stackItems = new CheckBoxValue("Stack items", "Steal items of the same type without reseting the timer?", this, false);
     private final CheckBoxValue randomPick = new CheckBoxValue("Random Pick", "Pick items randomly?", this, true);
     private final CheckBoxValue autoClose = new CheckBoxValue("Auto Close", "Close automatically?", this, true);
 

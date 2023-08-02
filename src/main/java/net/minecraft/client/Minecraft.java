@@ -184,10 +184,7 @@ import org.lwjgl.opengl.GLContext;
 import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
-import wtf.atani.event.events.ClickingEvent;
-import wtf.atani.event.events.KeyInputEvent;
-import wtf.atani.event.events.TickEvent;
-import wtf.atani.event.events.WorldLoadEvent;
+import wtf.atani.event.events.*;
 import wtf.atani.event.handling.EventHandling;
 import wtf.atani.loader.ModificationLoader;
 import wtf.atani.module.impl.render.BlockAnimations;
@@ -1599,6 +1596,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 }
             }
         }
+
+        new GuiHandleEvent().onFire();
 
         if (this.currentScreen == null || this.currentScreen.allowUserInput)
         {

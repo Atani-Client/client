@@ -157,8 +157,8 @@ public class Speed extends Module {
 
                                     mc.timer.timerSpeed = 1.1F;
                                 }
-                                break;
                             }
+                            break;
                         case "YPort":
                             if(mc.thePlayer.onGround) {
                                 vulcanTicks = 0;

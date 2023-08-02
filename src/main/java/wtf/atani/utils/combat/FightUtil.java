@@ -58,6 +58,9 @@ public class FightUtil implements Methods {
                 || entityLivingBase instanceof EntityAnimal && !animals
                 || entityLivingBase instanceof EntityMob && !mobs
                 || entityLivingBase.isInvisible() && !invis
+                || mc.theWorld.getEntityByID(entityLivingBase.getEntityId()) != entityLivingBase
+                || entityLivingBase == mc.thePlayer
+                ||  entityLivingBase == null
                 || entityLivingBase.getEntityId() == mc.thePlayer.getEntityId());
     }
 

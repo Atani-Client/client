@@ -214,11 +214,11 @@ public class KillAura extends Module {
 
     @Listen
     public final void onClick(ClickingEvent clickingEvent) {
-        if(this.curEntity != null) {
+        if(this.curEntity != null && FightUtil.isValid(curEntity, attackRange.getMaximum(), invisible.getValue(), players.getValue(), animals.getValue(), monsters.getValue())) {
             MovingObjectPosition movingObjectPosition = RaytraceUtil.rayCast(1.0F, new float[] {PlayerHandler.yaw, PlayerHandler.pitch}, this.attackRange.getValue().floatValue(), 0.10000000149011612);
             if(!this.rayTrace.getValue() || movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
                 Entity attackEntity = rayTrace.getValue() ? movingObjectPosition.entityHit : curEntity;
-                if(attackEntity != null && FightUtil.getRange(attackEntity) <= this.attackRange.getValue()) {
+                if(attackEntity != null && attackEntity instanceof EntityLivingBase && FightUtil.isValid((EntityLivingBase) attackEntity, attackRange.getMaximum(), invisible.getValue(), players.getValue(), animals.getValue(), monsters.getValue()) && FightUtil.getRange(attackEntity) <= this.attackRange.getValue()) {
                     if(this.attackTimer.hasReached(cpsDelay)) {
                         mc.thePlayer.swingItem();
                         mc.playerController.attackEntity(mc.thePlayer, attackEntity);

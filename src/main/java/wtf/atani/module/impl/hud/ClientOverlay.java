@@ -197,9 +197,9 @@ public class ClientOverlay extends Module {
                             String name = module.getName();
                             float rectWidth = (roboto17.getStringWidth(name) + 4);
                             float moduleX = 2 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth);
-                            RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(0, 0, 0, 80).getRGB());
-                            moduleY += moduleHeight;
-                        }
+                        RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(0, 0, 0, 80).getRGB());
+                        moduleY += moduleHeight;
+                    }
                     }
                 });
                 RenderableShaders.renderAndRun(true, false, () -> {

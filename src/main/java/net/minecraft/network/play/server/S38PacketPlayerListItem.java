@@ -18,6 +18,14 @@ public class S38PacketPlayerListItem implements Packet<INetHandlerPlayClient>
     private S38PacketPlayerListItem.Action action;
     private final List<S38PacketPlayerListItem.AddPlayerData> players = Lists.<S38PacketPlayerListItem.AddPlayerData>newArrayList();
 
+    public Action getAction() {
+        return action;
+    }
+
+    public List<AddPlayerData> getPlayers() {
+        return players;
+    }
+
     public S38PacketPlayerListItem()
     {
     }

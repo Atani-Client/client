@@ -25,8 +25,11 @@ public class RotationUtil implements Methods {
         return new Vec3(f2 * f3, f4, f * f3);
     }
 
-    public static float[] getRotation(Entity entity, boolean mouseFix, boolean heuristics, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
+    public static float[] getRotation(Entity entity, boolean mouseFix, boolean heuristics, double minRandomYaw, double maxRandomYaw, double minRandomPitch, double maxRandomPitch, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
         final Vec3 bestVector = getBestVector(mc.thePlayer.getPositionEyes(1F), entity.getEntityBoundingBox());
+        bestVector.xCoord += RandomUtil.randomBetween(minRandomYaw, maxRandomYaw);
+        bestVector.yCoord += RandomUtil.randomBetween(minRandomPitch, maxRandomPitch);
+        bestVector.zCoord += RandomUtil.randomBetween(minRandomYaw, maxRandomYaw);
         double x = bestVector.xCoord - mc.thePlayer.posX;
         double y = bestVector.yCoord - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
         double z = bestVector.zCoord - mc.thePlayer.posZ;

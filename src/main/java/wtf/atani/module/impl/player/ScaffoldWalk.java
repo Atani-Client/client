@@ -35,7 +35,7 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
-        rotationEvent.setPitch(randomizePitch.getValue() && isMoving() ? (float) ThreadLocalRandom.current().nextDouble(83, 83.3) : 83);
+        rotationEvent.setPitch(randomizePitch.getValue() ? (float) ThreadLocalRandom.current().nextDouble(83, 83.3) : 83);
         rotationEvent.setYaw(mc.thePlayer.rotationYaw + 180);
     }
 

@@ -1,6 +1,7 @@
 package wtf.atani.module.impl.combat;
 
 import com.google.common.base.Supplier;
+import javafx.scene.control.Slider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
@@ -53,6 +54,10 @@ public class KillAura extends Module {
     public SliderValue<Float> maxPitch = new SliderValue<>("Maximum Pitch", "How much will be the maximum of randomized Pitch limit?", this, 180F, 0F, 180F, 1, new Supplier[]{() -> !snapPitch.getValue()});
     public CheckBoxValue mouseFix = new CheckBoxValue("Mouse Fix", "Apply GCD Fix to rotations?", this, true);
     public CheckBoxValue heuristics = new CheckBoxValue("Heuristics", "Apply Heuristics bypass to rotations?", this, true);
+    public SliderValue<Float> minYawRandom = new SliderValue<>("Minimum Yaw Random", "What will be the minimum value for randomizing yaw?", this, 0F, -2F, 2F, 2);
+    public SliderValue<Float> maxYawRandom = new SliderValue<>("Maximum Yaw Random", "What will be the maximum value for randomizing yaw?", this, 0F, -10F, 10F, 2);
+    public SliderValue<Float> minPitchRandom = new SliderValue<>("Minimum Pitch Random", "What will be the minimum value for randomizing pitch?", this, 0F, -2F, 2F, 2);
+    public SliderValue<Float> maxPitchRandom = new SliderValue<>("Maximum Pitch Random", "What will be the maximum value for randomizing pitch?", this, 0F, -10F, 10F, 2);
     public CheckBoxValue prediction = new CheckBoxValue("Prediction", "Predict players position?", this, false);
     public CheckBoxValue necessaryRotations = new CheckBoxValue("Necessary Rotations", "Rotate only if necessary?", this, false);
     public StringBoxValue necessaryMode = new StringBoxValue("Necessary Mode", "What rotations will rotate only if necessary?", this, new String[]{"Pitch", "Yaw", "Both"}, new Supplier[]{() -> necessaryRotations.getValue()});
@@ -181,7 +186,7 @@ public class KillAura extends Module {
 
             float[] rots = null;
             if (FightUtil.getRange(curEntity) <= this.rotationRange.getValue().doubleValue()) {
-                rots = RotationUtil.getRotation(curEntity, mouseFix.getValue(), heuristics.getValue(), prediction.getValue(), this.minYaw.getValue().floatValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), this.snapYaw.getValue(), this.snapPitch.getValue());
+                rots = RotationUtil.getRotation(curEntity, mouseFix.getValue(), heuristics.getValue(), minYawRandom.getValue(), maxYawRandom.getValue(), minPitchRandom.getValue(), maxPitchRandom.getValue(), prediction.getValue(), this.minYaw.getValue().floatValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), this.snapYaw.getValue(), this.snapPitch.getValue());
             }
 
             if (rots != null) {

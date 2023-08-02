@@ -39,7 +39,18 @@ public class StringBoxValue extends Value<String> {
 
     @Override
     public void setValue(String string) {
+        Object curValue = value;
+        if(this.getValueChangeListeners() != null) {
+            for(ValueChangeListener valueChangeListener : this.getValueChangeListeners()) {
+                valueChangeListener.onChange(ValueChangeListener.Stage.PRE, this, curValue, value);
+            }
+        }
         this.value = string;
+        if(this.getValueChangeListeners() != null) {
+            for(ValueChangeListener valueChangeListener : this.getValueChangeListeners()) {
+                valueChangeListener.onChange(ValueChangeListener.Stage.POST, this, curValue, value);
+            }
+        }
     }
 
     public String[] getValues() {

@@ -103,7 +103,7 @@ public abstract class Module implements Methods {
         if (values != null && !values.isEmpty()) {
             JsonObject propertiesObject = new JsonObject();
             for (Value property : values) {
-                propertiesObject.addProperty(property.getName(), property.getValueAsString());
+                propertiesObject.addProperty(property.getIdName(), property.getValueAsString());
             }
             object.add("Values", propertiesObject);
         }
@@ -126,8 +126,8 @@ public abstract class Module implements Methods {
         if (object.has("Values") && values != null && !values.isEmpty()) {
             JsonObject propertiesObject = object.getAsJsonObject("Values");
             for (Value property : values) {
-                if (propertiesObject.has(property.getName())) {
-                    property.setValue(propertiesObject.get(property.getName()).getAsString());
+                if (propertiesObject.has(property.getIdName())) {
+                    property.setValue(propertiesObject.get(property.getIdName()).getAsString());
                 }
             }
         }

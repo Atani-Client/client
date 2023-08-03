@@ -3,6 +3,7 @@ package wtf.atani.screen.click.simple;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Mouse;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.impl.hud.ClickGui;
@@ -60,29 +61,58 @@ public class SimpleClickGuiScreen extends GuiScreen {
         ScaledResolution sr = new ScaledResolution(mc);
 
         RenderableShaders.renderAndRun(() -> {
+            float animationLeftRight = 0, animationUpDown = 0;
             for(Frame frame : framesAnimations.keySet()) {
                 if(clickGui.openingAnimation.getValue()) {
-                    switch (clickGui.animation.getValue()) {
-                        case "Simple":
+                    switch (clickGui.dropdownAnimation.getValue()) {
+                        case "Left to Right":
+                            animationLeftRight = (float) (sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                            if(openingAnimation.getDirection() == Direction.FORWARDS) {
+                                animationLeftRight = (float) -(sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                            }
+                            break;
+                        case "Right to Left":
+                            animationLeftRight = (float) (sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                            if(openingAnimation.getDirection() == Direction.BACKWARDS) {
+                                animationLeftRight = (float) -(sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                            }
+                            break;
+                        case "Up to Down":
+                            animationUpDown = (float) (sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
+                            if(openingAnimation.getDirection() == Direction.FORWARDS) {
+                                animationUpDown = (float) -(sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
+                            }
+                            break;
+                        case "Down to Up":
+                            animationUpDown = (float) (sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
+                            if(openingAnimation.getDirection() == Direction.BACKWARDS) {
+                                animationUpDown = (float) -(sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
+                            }
+                            break;
+                        case "Scale-In":
                             RenderUtil.scaleStart(sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f, openingAnimation.getOutput().floatValue());
                             break;
-                        case "Each Frame":
+                        case "Frame Scale-In":
                             RenderUtil.scaleStart(frame.getPosX() + frame.getFinalWidth() / 2, frame.getPosY() + frame.getFinalHeight() / 2, framesAnimations.get(frame).getOutput().floatValue());
                             break;
                     }
                 }
-                frame.scroll = scroll;
+                frame.addY = scroll + animationUpDown;
                 frame.drawScreen(mouseX, mouseY);
                 RenderUtil.scaleEnd();
             }
         });
         if(clickGui.openingAnimation.getValue()) {
-            switch (clickGui.animation.getValue()) {
-                case "Simple":
+            switch (clickGui.dropdownAnimation.getValue()) {
+                case "Up to Down":
+                case "Down to Up":
+                case "Left to Right":
+                case "Right to Left":
+                case "Scale-In":
                     if(this.openingAnimation.finished(Direction.BACKWARDS))
                         mc.displayGuiScreen(null);
                     break;
-                case "Each Frame":
+                case "Frame Scale-In":
                     boolean unfinished = false;
                     for(Animation animation : framesAnimations.values()) {
                         if(!animation.finished(Direction.BACKWARDS)) {

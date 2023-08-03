@@ -15,11 +15,14 @@ public class ClickGui extends Module {
 
     public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality"});
     public final CheckBoxValue openingAnimation = new CheckBoxValue("Opening Animation", "Animate the opening and closing of the gui?", this, true);
-    public final StringBoxValue animation = new StringBoxValue("Animation Mode", "How will the opening animation look like", this, new String[]{"Simple", "Each Frame"}, new Supplier[]{() ->
+    public final StringBoxValue dropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like", this, new String[]{"Scale-In", "Frame Scale-In", "Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
             mode.getValue().equalsIgnoreCase("Simple") || // Dropdown guis go here
             mode.getValue().equalsIgnoreCase("Augustus 2.6") ||
             mode.getValue().equalsIgnoreCase("Ryu") ||
-            mode.getValue().equalsIgnoreCase("Icarus")});
+            mode.getValue().equalsIgnoreCase("Icarus")}).setIdName("Dropdown Animation Mode");
+    public final StringBoxValue nonDropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like", this, new String[]{"Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
+            mode.getValue().equalsIgnoreCase("Golden") || // Non-Dropdown guis go here
+                    mode.getValue().equalsIgnoreCase("Fatality")}).setIdName("Non-Dropdown Animation Mode");
 
     public static SimpleClickGuiScreen clickGuiScreenSimple;
     public static GoldenClickGuiScreen clickGuiScreenGolden;

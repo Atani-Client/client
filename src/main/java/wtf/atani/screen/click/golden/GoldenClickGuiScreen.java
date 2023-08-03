@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.Module;
@@ -40,7 +41,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
     ArrayList<Value> expandedValues = new ArrayList<>();
     int moduleScroll = 0;
     int valueScroll = 0;
-    DecelerateAnimation openingAnimation = new DecelerateAnimation(2000, 1, Direction.BACKWARDS);
+    DecelerateAnimation openingAnimation = new DecelerateAnimation(600, 1, Direction.BACKWARDS);
     ClickGui clickGui;
 
     @Override
@@ -57,25 +58,54 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
             this.y = super.height / 2 - this.height / 2;
         }
         ScaledResolution sr = new ScaledResolution(mc);
-        RenderUtil.scaleStart(sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f, openingAnimation.getOutput().floatValue());
+        float animationLeftRight = 0;
+        float animationUpDown = 0;
+        if(clickGui.openingAnimation.getValue()) {
+            switch (clickGui.nonDropdownAnimation.getValue()) {
+                case "Left to Right":
+                    animationLeftRight = (float) ((width + x) * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.FORWARDS) {
+                        animationLeftRight = (float) -((width + x) * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+                case "Right to Left":
+                    animationLeftRight = (float) (sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.BACKWARDS) {
+                        animationLeftRight = (float) -(sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+                case "Up to Down":
+                    animationUpDown = (float) ((height + y) * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.FORWARDS) {
+                        animationUpDown = (float) -((height + y) * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+                case "Down to Up":
+                    animationUpDown = (float) (sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.BACKWARDS) {
+                        animationUpDown = (float) -(sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+            }
+        }
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto", 21);
-        RenderUtil.drawRect(x, y, width, height, BACK_GRAY_20);
-        GradientUtil.drawGradientLR(x, y, width, 2, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
-        fontRenderer.drawTotalCenteredStringWithShadow("Atani Client", x + width / 2, y + 13, -1);
-        RenderUtil.drawRect(x + 30, y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3, width - 60, 1, new Color(40, 40, 40).getRGB());
+        RenderUtil.drawRect(x + animationLeftRight, y + animationUpDown, width, height, BACK_GRAY_20);
+        GradientUtil.drawGradientLR(x + animationLeftRight, y + animationUpDown, width, 2, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
+        fontRenderer.drawTotalCenteredStringWithShadow("Atani Client", x + width / 2 + animationLeftRight, y + 13 + animationUpDown, -1);
+        RenderUtil.drawRect(x + 30 + animationLeftRight, y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + animationUpDown, width - 60, 1, new Color(40, 40, 40).getRGB());
         float categoryX = 0;
         for (Category category : Category.values()) {
             categoryX += fontRenderer.getStringWidth(category.getName().toUpperCase()) + 10;
         }
         categoryX -= 10;
-        categoryX = x + width / 2 - categoryX / 2;
+        categoryX = x + width / 2 - categoryX / 2 + animationLeftRight;
         float startX = categoryX;
         for (Category category : Category.values()) {
-            fontRenderer.drawStringWithShadow(category.getName().toUpperCase(), categoryX, y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + 10, -1);
+            fontRenderer.drawStringWithShadow(category.getName().toUpperCase(), categoryX, y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + 10 + animationUpDown, -1);
             categoryX += fontRenderer.getStringWidth(category.getName().toUpperCase()) + 10;
         }
         float endX = categoryX;
-        float moduleY = y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + 10 + fontRenderer.FONT_HEIGHT + 10;
+        float moduleY = y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + 10 + fontRenderer.FONT_HEIGHT + 10  + animationUpDown;
         float startY = moduleY;
         moduleY += moduleScroll;
         ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.selectedCategory);
@@ -90,7 +120,6 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
         }
         float scissorY = startY;
         float scissorHeight = height - (scissorY - y) - 0.5f;
-        RenderUtil.drawRect(0, scissorY, super.width, height - (scissorY - y), new Color(255, 0, 0, 100).getRGB());
         RenderUtil.startScissorBox();
         RenderUtil.drawScissorBox(0, scissorY, super.width, scissorHeight);
         for (Module module : modules) {
@@ -98,10 +127,10 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
             moduleY += fontRenderer.FONT_HEIGHT + 2;
             counter++;
         }
-        RenderUtil.drawRect(x + width / 2 - 0.5f, startY, 1f, y + height - startY - 15, new Color(40, 40, 40).getRGB());
+        RenderUtil.drawRect(x + width / 2 - 0.5f + animationLeftRight, startY, 1f, y + height - startY - 15 + animationUpDown, new Color(40, 40, 40).getRGB());
         float valueY = startY + valueScroll;
         int counterVal = 0;
-        float halfX = x + width / 2 - 0.5f + 10;
+        float halfX = x + width / 2 - 0.5f + 10 + animationLeftRight;
         for (Value value : ValueStorage.getInstance().getValues(selectedModule)) {
             if (!value.isVisible())
                 continue;
@@ -147,7 +176,6 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
             counterVal++;
         }
         RenderUtil.endScissorBox();
-        RenderUtil.scaleEnd();
         if (clickGui.openingAnimation.getValue()) {
             if (this.openingAnimation.finished(Direction.BACKWARDS))
                 mc.displayGuiScreen(null);

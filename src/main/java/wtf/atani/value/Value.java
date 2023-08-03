@@ -5,10 +5,12 @@ import wtf.atani.value.interfaces.ValueChangeListener;
 import wtf.atani.value.storage.ValueStorage;
 
 import javax.swing.text.LabelView;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public abstract class Value<T> {
     private final String name, description;
+    private String idName;
     private final Object owner;
     protected T value;
 
@@ -17,6 +19,7 @@ public abstract class Value<T> {
 
     public Value(String name, String description, Object owner, T value, ArrayList<ValueChangeListener> valueChangeListeners, ArrayList<Supplier<Boolean>> suppliers) {
         this.name = name;
+        this.idName = name;
         this.description = description;
         this.owner = owner;
         this.value = value;
@@ -29,6 +32,7 @@ public abstract class Value<T> {
 
     public Value(String name, String description, Object owner, T value, ValueChangeListener[] valueChangeListeners, Supplier<Boolean>[] suppliers) {
         this.name = name;
+        this.idName = name;
         this.description = description;
         this.owner = owner;
         this.value = value;
@@ -56,6 +60,7 @@ public abstract class Value<T> {
 
     public Value(String name, String description, Object owner, T value) {
         this.name = name;
+        this.idName = name;
         this.description = description;
         this.owner = owner;
         this.value = value;
@@ -66,8 +71,17 @@ public abstract class Value<T> {
         ValueStorage.getInstance().add(this);
     }
 
+    public <T extends Value> T setIdName(String name) {
+        this.idName = name;
+        return (T) this;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String getIdName() {
+        return idName;
     }
 
     public String getDescription() {

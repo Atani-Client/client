@@ -2736,13 +2736,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
         if (this.mc.theWorld != null && Config.isShowGlErrors() && TimedEvent.isActive("CheckGlErrorFrameFinish", 10000L))
         {
             int i = GlStateManager.glGetError();
-
-            if (i != 0 && GlErrors.isEnabled(i))
-            {
-                String s = Config.getGlErrorString(i);
-                ChatComponentText chatcomponenttext = new ChatComponentText(I18n.format("of.message.openglError", new Object[] {Integer.valueOf(i), s}));
-                this.mc.ingameGUI.getChatGUI().printChatMessage(chatcomponenttext);
-            }
         }
     }
 

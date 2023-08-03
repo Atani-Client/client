@@ -781,10 +781,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
             if (i != 0)
             {
-                String s = GLU.gluErrorString(i);
-                logger.error("########## GL ERROR ##########");
-                logger.error("@ " + message);
-                logger.error(i + ": " + s);
+
             }
         }
     }

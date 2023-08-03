@@ -92,8 +92,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
         float scissorHeight = height - (scissorY - y) - 0.5f;
         RenderUtil.drawRect(0, scissorY, super.width, height - (scissorY - y), new Color(255, 0, 0, 100).getRGB());
         RenderUtil.startScissorBox();
-        float factor = (float) (scissorHeight * (1 - openingAnimation.getOutput()));
-        RenderUtil.drawScissorBox(0, scissorY + factor, super.width, scissorHeight - factor * 2);
+        RenderUtil.drawScissorBox(0, scissorY, super.width, scissorHeight);
         for (Module module : modules) {
             fontRenderer.drawStringWithShadow(module.getName(), startX, moduleY, module.isEnabled() ? ColorUtil.fadeBetween(GOLDEN_FIRST, GOLDEN_SECOND, counter * 150L) : -1);
             moduleY += fontRenderer.FONT_HEIGHT + 2;

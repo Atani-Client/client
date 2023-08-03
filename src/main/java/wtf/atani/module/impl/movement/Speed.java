@@ -18,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim (Boost)", "Test", "WatchDog", "Intave"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim (Boost)", "Test", "WatchDog", "Intave", "MineMenClub"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "YPort"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
@@ -76,7 +76,7 @@ public class Speed extends Module {
                     if(isMoving()) {
                         MoveUtil.strafe(null);
 
-                        if (mc.thePlayer.onGround) {
+                        if (mc.thePlayer.onGround && this.isMoving()) {
                             mc.thePlayer.jump();
                         }
                     }
@@ -96,7 +96,8 @@ public class Speed extends Module {
                         case "Normal":
                             switch (vulcanTicks) {
                                 case 0:
-                                    mc.thePlayer.jump();
+                                    if(this.isMoving())
+                                        mc.thePlayer.jump();
 
                                     MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6F : 0.485F);
                                     break;
@@ -121,7 +122,8 @@ public class Speed extends Module {
                             }
                             switch(vulcanTicks) {
                                 case 0:
-                                    mc.thePlayer.jump();
+                                    if(this.isMoving())
+                                        mc.thePlayer.jump();
 
                                     MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6F : 0.485F);
                                     break;
@@ -190,7 +192,7 @@ public class Speed extends Module {
                         verusTicks++;
                     }
 
-                    if(mc.thePlayer.hurtTime > 1 && !mc.thePlayer.isBurning() && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava() && true && verusDamageTicks > 30) {
+                    if(mc.thePlayer.hurtTime > 1 && !mc.thePlayer.isBurning() && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava() && verusDamageTicks > 30) {
                         MoveUtil.strafe(5);
                         mc.thePlayer.motionX *= 1.2F;
                         mc.thePlayer.motionZ *= 1.2F;
@@ -440,17 +442,26 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                if(mc.thePlayer.onGround) {
+                mc.thePlayer.setSprinting(this.isMoving());
+
+                if (mc.thePlayer.onGround && this.isMoving()){
                     mc.thePlayer.jump();
-                    mc.timer.timerSpeed = 1.2F;
-                    MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.485);
-                } else {
-                    mc.timer.timerSpeed = 1;
-                    mc.thePlayer.motionY = -1337;
                 }
 
-                if(mc.thePlayer.fallDistance > -0.2) {
-                    //    mc.thePlayer.motionY = -1337;
+
+
+                break;
+            case "MineMenClub":
+                if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                    mc.thePlayer.setSprinting(this.isMoving());
+
+                    if (mc.thePlayer.onGround && this.isMoving()){
+                        mc.thePlayer.jump();
+                    } else {
+                        if (mc.thePlayer.hurtTime <= 6) {
+                            MoveUtil.strafe();
+                        }
+                    }
                 }
                 break;
         }

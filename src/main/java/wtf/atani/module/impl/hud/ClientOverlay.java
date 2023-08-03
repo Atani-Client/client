@@ -1,5 +1,6 @@
 package wtf.atani.module.impl.hud;
 
+import com.google.common.base.Supplier;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -47,7 +48,9 @@ public class ClientOverlay extends Module implements ColorPalette {
         }
     }});
     private StringBoxValue releaseString = new StringBoxValue("Release String Mode", "Which release string will be displayed?", this, new String[]{"None", "Fatality"});
+
     private CheckBoxValue hideRenderModules = new CheckBoxValue("Hide Render Modules", "Should the module list hide visual modules?", this, false);
+    private CheckBoxValue augustusAnimation = new CheckBoxValue("Text Gradient", "Should the module list have a colour gradient?", this, false, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Augustus 2.6")});
 
     private LinkedHashMap<Module, DecelerateAnimation> moduleHashMap = new LinkedHashMap<>();
 
@@ -227,14 +230,16 @@ public class ClientOverlay extends Module implements ColorPalette {
                     rightY.set(1);
                 FontRenderer fontRenderer = mc.fontRendererObj;
                 float moduleY = rightY.get();
+                int counter = 0;
                 for (Module module : moduleHashMap.keySet()) {
                     if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                         float moduleHeight = fontRenderer.FONT_HEIGHT + 2;
                         float rectLength = (float) ((fontRenderer.getStringWidth(module.getName()) + 1) * moduleHashMap.get(module).getOutput());
                         RenderUtil.drawRect(sr.getScaledWidth() - rectLength, moduleY, rectLength, moduleHeight, new Color(0, 0, 0, 100).getRGB());
-                        fontRenderer.drawStringWithShadow(module.getName(), sr.getScaledWidth() - rectLength + 0.5f, moduleY + moduleHeight / 2 - fontRenderer.FONT_HEIGHT / 2, new Color(0, 0, 255).getRGB());
+                        fontRenderer.drawStringWithShadow(module.getName(), sr.getScaledWidth() - rectLength + 0.5f, moduleY + moduleHeight / 2 - fontRenderer.FONT_HEIGHT / 2, augustusAnimation.getValue() ? ColorUtil.fadeBetween(AUGUSTUS_FIRST, AUGUSTUS_SECOND, counter * 150L) :  new Color(0, 0, 255).getRGB());
                         // The 20 is there so the rect goes out of the screen and therefore the right part's not rounded
                         moduleY += moduleHeight;
+                        counter++;
                     }
                 }
                 break;

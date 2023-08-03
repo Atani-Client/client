@@ -126,6 +126,10 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
                         secondPage = new AccountPage(this, rectX, rectY, rectWidth, rectHeight, this.width, this.height);
                         secondPage.refresh();
                         break;
+                    case "Quit":
+                        mc.shutdown();
+                        secondPage = null;
+                        break;
                     default:
                         secondPage = null;
                         break;

@@ -57,6 +57,7 @@ public class FirstPage extends Page implements ClientInformationAccess {
         buttons.add("Account Manager");
         buttons.add("Client Settings");
         buttons.add("License");
+        buttons.add("Quit");
         for(String button : buttons) {
             this.menuButtons.add(new SimpleButton(button, pageX + 1, buttonY, pageWidth - 2, () ->  selected = button));
             buttonY += 15;

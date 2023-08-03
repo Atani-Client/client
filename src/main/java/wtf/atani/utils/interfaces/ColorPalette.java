@@ -12,4 +12,7 @@ public interface ColorPalette {
     int ICARUS_SECOND = new Color(127, 0, 255).getRGB();
     int FATALITY_FIRST = new Color(54, 41, 160).getRGB();
     int FATALITY_SECOND = new Color(147, 28, 95).getRGB();
+    // I will make a newer augustus overlay later for these values
+    int AUGUSTUS_FIRST = new Color(0, 0, 255).getRGB();
+    int AUGUSTUS_SECOND = new Color(49, 148, 255).getRGB();
 }

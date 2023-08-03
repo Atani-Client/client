@@ -27,12 +27,14 @@ import wtf.atani.utils.render.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 import wtf.atani.value.Value;
+import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.StringBoxValue;
 import wtf.atani.value.interfaces.ValueChangeListener;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 @ModuleInfo(name = "ClientOverlay", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
 public class ClientOverlay extends Module implements ColorPalette {
@@ -45,6 +47,7 @@ public class ClientOverlay extends Module implements ColorPalette {
         }
     }});
     private StringBoxValue releaseString = new StringBoxValue("Release String Mode", "Which release string will be displayed?", this, new String[]{"None", "Fatality"});
+    private CheckBoxValue hideRenderModules = new CheckBoxValue("Hide Render Modules", "Should the module list hide visual modules?", this, false);
 
     private LinkedHashMap<Module, DecelerateAnimation> moduleHashMap = new LinkedHashMap<>();
 
@@ -54,6 +57,13 @@ public class ClientOverlay extends Module implements ColorPalette {
         // When making a watermark update these values (including the margins!) so that we can have arraylist and watermark on the same side without
         // having 100 if else statements
         // - Tabio
+
+        List<Module> modulesToShow = new ArrayList<>();
+        for (Module module : ModuleStorage.getInstance().getList()) {
+            if (!hideRenderModules.getValue() || module.getCategory() != Category.RENDER) {
+                modulesToShow.add(module);
+            }
+        }
         AtomicFloat leftY = new AtomicFloat(0);
         AtomicFloat rightY = new AtomicFloat(0);
         switch (watermarkMode.getValue()) {
@@ -139,8 +149,8 @@ public class ClientOverlay extends Module implements ColorPalette {
                 break;
         }
 
-        for(Module module : ModuleStorage.getInstance().getList()) {
-            if(!moduleHashMap.containsKey(module)) {
+        for (Module module : modulesToShow) {
+            if (!moduleHashMap.containsKey(module)) {
                 switch (this.moduleListMode.getValue()) {
                     case "Augustus 2.6":
                         moduleHashMap.put(module, new DecelerateAnimation(1, 1, module.isEnabled() ? Direction.FORWARDS : Direction.BACKWARDS));
@@ -152,29 +162,27 @@ public class ClientOverlay extends Module implements ColorPalette {
             }
         }
 
-        LinkedHashMap<Module, DecelerateAnimation> sortedMap = new LinkedHashMap<>();
-        ArrayList<Module> keys = new ArrayList(moduleHashMap.keySet());
-        Collections.sort(keys, new Comparator<Module>() {
-            public int compare(Module mod1, Module mod2) {
-                FontRenderer fontRenderer;
-                switch (moduleListMode.getValue()) {
-                    case "Icarus":
-                        fontRenderer = FontStorage.getInstance().findFont("Pangram Regular", 17);
-                        break;
-                    case "Fatality":
-                    case "Augustus 2.6":
-                        fontRenderer = mc.fontRendererObj;
-                        break;
-                    default:
-                        fontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
-                        break;
-                }
-                String name1 = mod1.getName();
-                String name2 = mod2.getName();
-                return fontRenderer.getStringWidth(name2) - fontRenderer.getStringWidth(name1);
+        List<Module> sortedModules = new ArrayList<>(modulesToShow);
+        Collections.sort(sortedModules, (mod1, mod2) -> {
+            FontRenderer fontRenderer;
+            switch (moduleListMode.getValue()) {
+                case "Icarus":
+                    fontRenderer = FontStorage.getInstance().findFont("Pangram Regular", 17);
+                    break;
+                case "Fatality":
+                case "Augustus 2.6":
+                    fontRenderer = mc.fontRendererObj;
+                    break;
+                default:
+                    fontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
+                    break;
             }
+            String name1 = mod1.getName();
+            String name2 = mod2.getName();
+            return fontRenderer.getStringWidth(name2) - fontRenderer.getStringWidth(name1);
         });
-        for (Module module : keys) {
+        LinkedHashMap<Module, DecelerateAnimation> sortedMap = new LinkedHashMap<>();
+        for (Module module : sortedModules) {
             sortedMap.put(module, moduleHashMap.get(module));
         }
         moduleHashMap = sortedMap;

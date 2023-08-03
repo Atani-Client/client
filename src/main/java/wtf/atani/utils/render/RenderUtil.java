@@ -22,6 +22,18 @@ import java.awt.*;
 
 public class RenderUtil implements Methods {
 
+    public static void scaleStart(float x, float y, float scale) {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, 0);
+        GL11.glScalef(scale, scale, 1);
+        GL11.glTranslatef(-x, -y, 0);
+    }
+
+    public static void scaleEnd() {
+        GL11.glPopMatrix();
+    }
+
+
     public static void drawBorderedRect(final float left, final float top, final float right, final float bottom, final float borderWidth, final int insideColor, final int borderColor, final boolean borderIncludedInBounds) {
         Gui.drawRect(left - (borderIncludedInBounds ? 0.0f : borderWidth), top - (borderIncludedInBounds ? 0.0f : borderWidth), right + (borderIncludedInBounds ? 0.0f : borderWidth), bottom + (borderIncludedInBounds ? 0.0f : borderWidth), borderColor);
         Gui.drawRect(left + (borderIncludedInBounds ? borderWidth : 0.0f), top + (borderIncludedInBounds ? borderWidth : 0.0f), right - (borderIncludedInBounds ? borderWidth : 0.0f), bottom - (borderIncludedInBounds ? borderWidth : 0.0f), insideColor);
@@ -164,6 +176,21 @@ public class RenderUtil implements Methods {
         GL11.glScissor((int) x, (int) (y - height), (int) width, (int) height);
     }
 
+    public static void drawScissorBox(double x, double y, double width, double height, double scale) {
+        width = Math.max(width, 0.1);
+
+        ScaledResolution sr = new ScaledResolution(mc);
+
+        y = sr.getScaledHeight() - y;
+
+        x *= scale;
+        y *= scale;
+        width *= scale;
+        height *= scale;
+
+        GL11.glScissor((int) x, (int) (y - height), (int) width, (int) height);
+    }
+
     public static void endScissorBox() {
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         GL11.glPopMatrix();
@@ -192,16 +219,10 @@ public class RenderUtil implements Methods {
         GlStateManager.alphaFunc(GL11.GL_GREATER, (float) (limit * .01));
     }
 
-    /**
-     * Bind a texture using the specified integer refrence to the texture.
-     *
-     * @see org.lwjgl.opengl.GL13 for more information about texture bindings
-     */
     public static void bindTexture(int texture) {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
     }
 
-    // Sometimes colors get messed up in for loops, so we use this method to reset it to allow new colors to be used
     public static void resetColor() {
         GlStateManager.color(1, 1, 1, 1);
     }

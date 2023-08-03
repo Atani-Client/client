@@ -1,26 +1,37 @@
 package wtf.atani.screen.click.simple;
 
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import org.lwjgl.input.Mouse;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.impl.hud.ClickGui;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.screen.click.simple.frame.Frame;
+import wtf.atani.utils.render.RenderUtil;
+import wtf.atani.utils.render.animation.Animation;
+import wtf.atani.utils.render.animation.Direction;
+import wtf.atani.utils.render.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SimpleClickGuiScreen extends GuiScreen {
     private ArrayList<Frame> frames = new ArrayList<>();
+    private HashMap<Frame, Animation> framesAnimations = new HashMap<>();
     private float scroll = 0;
+    private ClickGui clickGui;
+    private DecelerateAnimation openingAnimation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
 
     @Override
     public void initGui() {
+        this.framesAnimations.clear();
         this.buttonList.clear();
         this.buttonList.add(new GuiButton(0, this.width - 60, this.height - 25, 55, 20, "Reset Gui"));
+        this.clickGui = ModuleStorage.getInstance().getByClass(ClickGui.class);
+        openingAnimation.setDirection(Direction.FORWARDS);
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
@@ -28,17 +39,62 @@ public class SimpleClickGuiScreen extends GuiScreen {
         if(frames.isEmpty()) {
             float y = 50, width = 130, height = 15, x = (this.width - (Category.values().length * (width + 5))) / 2; /* The X is made like that so categories will be in the middle*/
             for(Category category : Category.values()) {
-                this.frames.add(new Frame(category, x, y, width, height, height));
+                Frame frame = new Frame(category, x, y, width, height, height);
+                Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
+                this.frames.add(frame);
+                this.framesAnimations.put(frame, animation);
+                // We need to set the direction backwards at first so it will start at 0, then to forwards so it will animate upwards
+                animation.setDirection(Direction.FORWARDS);
                 x += width + 5;
             }
         }
+        if(framesAnimations.isEmpty()) {
+            for(Frame frame : frames) {
+                Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
+                this.framesAnimations.put(frame, animation);
+                // We need to set the direction backwards at first so it will start at 0, then to forwards so it will animate upwards
+                animation.setDirection(Direction.FORWARDS);
+            }
+        }
+
+        ScaledResolution sr = new ScaledResolution(mc);
 
         RenderableShaders.renderAndRun(() -> {
-            for(Frame frame : frames) {
+            for(Frame frame : framesAnimations.keySet()) {
+                if(clickGui.openingAnimation.getValue()) {
+                    switch (clickGui.animation.getValue()) {
+                        case "Simple":
+                            RenderUtil.scaleStart(sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f, openingAnimation.getOutput().floatValue());
+                            break;
+                        case "Each Frame":
+                            RenderUtil.scaleStart(frame.getPosX() + frame.getFinalWidth() / 2, frame.getPosY() + frame.getFinalHeight() / 2, framesAnimations.get(frame).getOutput().floatValue());
+                            break;
+                    }
+                }
                 frame.scroll = scroll;
                 frame.drawScreen(mouseX, mouseY);
+                RenderUtil.scaleEnd();
             }
         });
+        if(clickGui.openingAnimation.getValue()) {
+            switch (clickGui.animation.getValue()) {
+                case "Simple":
+                    if(this.openingAnimation.finished(Direction.BACKWARDS))
+                        mc.displayGuiScreen(null);
+                    break;
+                case "Each Frame":
+                    boolean unfinished = false;
+                    for(Animation animation : framesAnimations.values()) {
+                        if(!animation.finished(Direction.BACKWARDS)) {
+                            unfinished = true;
+                        }
+                    }
+                    if(!unfinished) {
+                        mc.displayGuiScreen(null);
+                    }
+                    break;
+            }
+        }
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -47,16 +103,30 @@ public class SimpleClickGuiScreen extends GuiScreen {
         switch (button.id){
             case 0:
                 mc.displayGuiScreen(null);
-                ClickGui.clickGuiScreen = null;
+                ClickGui.clickGuiScreenSimple = null;
                 ModuleStorage.getInstance().getByClass(ClickGui.class).toggle();
                 break;
         }
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for(Frame frame : frames) {
+        for(Frame frame : framesAnimations.keySet()) {
             frame.mouseClick(mouseX, mouseY, mouseButton);
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    @Override
+    protected void keyTyped(char key, int code) {
+        if(code == 1) {
+            if(clickGui.openingAnimation.getValue()) {
+                this.openingAnimation.setDirection(Direction.BACKWARDS);
+                for(Animation animation : framesAnimations.values()) {
+                    animation.setDirection(Direction.BACKWARDS);
+                }
+            } else {
+                mc.displayGuiScreen(null);
+            }
+        }
     }
 }

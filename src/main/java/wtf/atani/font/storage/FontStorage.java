@@ -29,6 +29,7 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Tahoma", 16),
                 this.createFontEntry("Pangram Bold", 80), // Skidded from Icarus file cloud :troll:
                 this.createFontEntry("Pangram Regular", 17),
+                this.createFontEntry("Product Sans", 17),
                 this.createFontEntry("Android 101", 100, true));
     }
 

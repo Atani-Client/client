@@ -376,10 +376,14 @@ public class Speed extends Module {
                             case 4:
                             case 5:
                                 mc.thePlayer.motionY -= 0.007;
-                                MoveUtil.strafe(MoveUtil.getSpeed() * 1.02);
+                                MoveUtil.strafe(MoveUtil.getSpeed() * 1.0175);
                                 break;
                             case 6:
                                 mc.thePlayer.motionY = MoveUtil.getPredictedMotion(mc.thePlayer.motionY, 1);
+                                break;
+                                // You can yport at tick 8, but then it flags after a few hops!
+                            case 8:
+                                // Maybe doing something here? idk (DO. NOT. DELETE. STILL. TESTING!)
                                 break;
                         }
                     }

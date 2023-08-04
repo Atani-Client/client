@@ -66,7 +66,6 @@ public class ClientOverlay extends Module implements ColorPalette {
         }
         AtomicFloat leftY = new AtomicFloat(0);
         AtomicFloat rightY = new AtomicFloat(0);
-        int vCounter = 0;
         switch (watermarkMode.getValue()) {
             case "Monsoon 1.2": {
                 String watermark = CLIENT_NAME + " " + VERSION + " | " + mc.getDebugFPS() + " FPS | " + mc.session.getUsername();
@@ -74,6 +73,7 @@ public class ClientOverlay extends Module implements ColorPalette {
                 Gui.drawRect(4, 4, (fr.getStringWidth(watermark) + 7), 17.5, (new Color(30, 30, 30)).getRGB());
                 Gui.drawRect(4, 4, (fr.getStringWidth(watermark) + 7), 5, new Color(0, 170, 255).getRGB());
                 fr.drawStringWithShadow(watermark, 6, 8, -1);
+                leftY.set(fr.getStringWidth(watermark) + 9 + 4);
                 break;
             }
             case "Vestige 2.0.2": {
@@ -85,10 +85,10 @@ public class ClientOverlay extends Module implements ColorPalette {
                 RoundedUtil.drawRound(6,3, textWidth + 4, 15, 2, new Color(0, 0, 0, 150));
                 RoundedUtil.drawGradientHorizontal(8,5, textWidth, 1, 1, new Color(VESTIGE_FIRST), new Color(VESTIGE_SECOND));
 
-                fontRenderer.drawString(text.substring(0, 1), 8, 9, ColorUtil.fadeBetween(VESTIGE_FIRST, VESTIGE_SECOND, vCounter * 100L));
-                fontRenderer.drawString(text.substring(1), 14, 9, -1);
+                fontRenderer.drawString(text.substring(0, 1), 8, 9, ColorUtil.fadeBetween(VESTIGE_FIRST, VESTIGE_SECOND, 100L));
 
-                vCounter++;
+                fontRenderer.drawString(text.substring(1), 14, 9, -1);
+                leftY.set(fontRenderer.FONT_HEIGHT + 21);
                 break;
             }
             case "Fatality": {
@@ -105,6 +105,7 @@ public class ClientOverlay extends Module implements ColorPalette {
                 Gui.drawRect(posX2 + 2.5, posY1 + 2.5, posX2 + width2 - 0.5, posY1 + 4.5, new Color(9, 9, 9, 255).getRGB());
                 GradientUtil.drawGradientLR(4.0f, posY1 + 3, width2 - 2, 1, 1, new Color(FATALITY_FIRST), new Color(FATALITY_SECOND));
                 FontStorage.getInstance().findFont("Roboto", 15).drawStringWithShadow(text, 7.5F, 10.0f, Color.white.getRGB());
+                leftY.set(24);
                 break;
             }
             case "Icarus": {
@@ -196,6 +197,7 @@ public class ClientOverlay extends Module implements ColorPalette {
                 case "Icarus":
                     fontRenderer = FontStorage.getInstance().findFont("Pangram Regular", 17);
                     break;
+                case "Monsoon 1.2":
                 case "Fatality":
                 case "Augustus 2.6":
                     fontRenderer = mc.fontRendererObj;

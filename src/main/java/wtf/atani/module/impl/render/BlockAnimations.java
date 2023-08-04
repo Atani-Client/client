@@ -3,8 +3,6 @@ package wtf.atani.module.impl.render;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
-import wtf.atani.value.impl.CheckBoxValue;
-import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "BlockAnimations", description = "Changes your item blocking animation", category = Category.RENDER)

@@ -1,4 +1,3 @@
-
 package wtf.atani.module.impl.misc;
 
 import net.minecraft.network.play.server.S02PacketChat;

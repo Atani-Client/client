@@ -6,7 +6,6 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.value.impl.CheckBoxValue;
-import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "AutoRespawn", description = "Automatically respawn after dying.", category = Category.PLAYER)
 public class AutoRespawn extends Module {

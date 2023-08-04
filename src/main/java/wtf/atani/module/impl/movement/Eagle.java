@@ -1,6 +1,5 @@
 package wtf.atani.module.impl.movement;
 
-import com.google.common.base.Supplier;
 import net.minecraft.block.BlockAir;
 import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Keyboard;

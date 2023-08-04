@@ -1,4 +1,5 @@
 package wtf.atani.module.impl.movement;
+
 import com.google.common.base.Supplier;
 import wtf.atani.event.events.UpdateMotionEvent;
 import wtf.atani.event.radbus.Listen;

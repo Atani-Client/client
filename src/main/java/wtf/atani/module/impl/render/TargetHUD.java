@@ -5,7 +5,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import wtf.atani.event.events.Render2DEvent;
-import wtf.atani.event.events.UpdateEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.Module;
@@ -17,7 +16,6 @@ import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.math.MathUtil;
 import wtf.atani.utils.render.GradientUtil;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;

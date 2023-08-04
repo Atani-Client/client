@@ -1,4 +1,3 @@
-
 package wtf.atani.module.impl.render;
 
 import net.minecraft.potion.Potion;

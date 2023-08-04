@@ -332,10 +332,12 @@ public class Speed extends Module {
                             mc.thePlayer.jump();
                             mc.thePlayer.motionX *= 0.75;
                             mc.thePlayer.motionZ *= 0.75;
+                            mc.timer.timerSpeed = 1;
                         } else {
                             if (mc.thePlayer.motionY < 0.4) {
                                 mc.thePlayer.motionY = -1337.0;
-                                MoveUtil.setMoveSpeed(null, 0.26);
+                                MoveUtil.setMoveSpeed(null, 0.261);
+                                mc.timer.timerSpeed = (float) (1.07 + Math.random() / 33);
                             }
                         }
                     }

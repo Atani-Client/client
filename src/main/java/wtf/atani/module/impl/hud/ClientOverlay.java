@@ -60,6 +60,9 @@ public class ClientOverlay extends Module implements ColorPalette {
             if (!hideRenderModules.getValue() || module.getCategory() != Category.RENDER) {
                 modulesToShow.add(module);
             }
+            if(module.getName().equalsIgnoreCase("ClickGui")){
+                modulesToShow.remove(module);
+            }
         }
         AtomicFloat leftY = new AtomicFloat(0);
         AtomicFloat rightY = new AtomicFloat(0);

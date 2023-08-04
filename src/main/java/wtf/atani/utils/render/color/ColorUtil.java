@@ -3,9 +3,9 @@ package wtf.atani.utils.render.color;
 import wtf.atani.utils.math.MathUtil;
 
 import java.awt.*;
+import java.util.Random;
 
 public class ColorUtil {
-
 
     private static final int[] CZECHIA_COLOURS = {
             0xFF11457E, 0xFF11457E, 0xFFD7141A, 0xFFD7141A, 0xFFFFFFFF, 0xFF11457E,
@@ -36,6 +36,18 @@ public class ColorUtil {
             n2 |= 0xFF000000;
         }
         return new float[]{(float)(n2 >> 16 & 0xFF) / 255.0f, (float)(n2 >> 8 & 0xFF) / 255.0f, (float)(n2 & 0xFF) / 255.0f, (float)(n2 >> 24 & 0xFF) / 255.0f};
+    }
+
+    public static Color generateRandomTonedColor(int baseHue, int minValue, int maxValue, int alpha) {
+        Random random = new Random();
+
+        int hue = baseHue; // Keep the hue constant for the same tone
+
+        // Generate random saturation and value within the given range
+        float saturation = random.nextFloat();
+        float value = minValue + random.nextInt(maxValue - minValue + 1) / 255.0f;
+
+        return Color.getHSBColor(hue / 360.0f, saturation, value).darker();
     }
 
     public static Color getGradientOffset(Color color1, Color color2, double offset) {

@@ -5,6 +5,8 @@ import org.lwjgl.input.Keyboard;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
+import wtf.atani.screen.click.augustus.AugustusClickGuiScreen;
+import wtf.atani.screen.click.xave.XaveClickGuiScreen;
 import wtf.atani.screen.click.golden.GoldenClickGuiScreen;
 import wtf.atani.screen.click.simple.SimpleClickGuiScreen;
 import wtf.atani.value.impl.CheckBoxValue;
@@ -13,11 +15,12 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "ClickGui", description = "A clicky gui", category = Category.HUD, key = Keyboard.KEY_RSHIFT)
 public class ClickGui extends Module {
 
-    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality"});
+    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality"});
     public final CheckBoxValue openingAnimation = new CheckBoxValue("Opening Animation", "Animate the opening and closing of the gui?", this, true);
     public final StringBoxValue dropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like", this, new String[]{"Scale-In", "Frame Scale-In", "Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
             mode.getValue().equalsIgnoreCase("Simple") || // Dropdown guis go here
             mode.getValue().equalsIgnoreCase("Augustus 2.6") ||
+            mode.getValue().equalsIgnoreCase("Xave") ||
             mode.getValue().equalsIgnoreCase("Ryu") ||
             mode.getValue().equalsIgnoreCase("Icarus")}).setIdName("Dropdown Animation Mode");
     public final StringBoxValue nonDropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like", this, new String[]{"Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
@@ -26,6 +29,8 @@ public class ClickGui extends Module {
 
     public static SimpleClickGuiScreen clickGuiScreenSimple;
     public static GoldenClickGuiScreen clickGuiScreenGolden;
+    public static AugustusClickGuiScreen clickGuiScreenAugustus;
+    public static XaveClickGuiScreen clickGuiScreenXave;
 
     @Override
     public void onEnable() {
@@ -41,6 +46,18 @@ public class ClickGui extends Module {
                     clickGuiScreenGolden = new GoldenClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenGolden);
+                break;
+            case "Augustus 2.6":
+                if(clickGuiScreenAugustus == null) {
+                    clickGuiScreenAugustus = new AugustusClickGuiScreen();
+                }
+                mc.displayGuiScreen(clickGuiScreenAugustus);
+                break;
+            case "Xave":
+                if(clickGuiScreenXave == null) {
+                    clickGuiScreenXave = new XaveClickGuiScreen();
+                }
+                mc.displayGuiScreen(clickGuiScreenXave);
                 break;
         }
         this.setEnabled(false);

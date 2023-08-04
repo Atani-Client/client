@@ -20,6 +20,7 @@ public class FontStorage extends Storage<FontEntry> {
     @Override
     public void init() {
         this.add(this.createFontEntry("Roboto", 21),
+                this.createFontEntry("Roboto", 18),
                 this.createFontEntry("Roboto", 19),
                 this.createFontEntry("Roboto Medium", 17),
                 this.createFontEntry("Roboto", 16),
@@ -27,6 +28,7 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Roboto", 15),
                 this.createFontEntry("Roboto", 14),
                 this.createFontEntry("Tahoma", 16),
+                this.createFontEntry("ESP", 80),
                 this.createFontEntry("Pangram Bold", 80), // Skidded from Icarus file cloud :troll:
                 this.createFontEntry("Pangram Regular", 17),
                 this.createFontEntry("Product Sans", 17),

@@ -36,8 +36,8 @@ import java.util.List;
 @ModuleInfo(name = "ClientOverlay", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
 public class ClientOverlay extends Module implements ColorPalette {
 
-    private StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality"});
-    private StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality"}, new ValueChangeListener[]{new ValueChangeListener() {
+    private StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality"});
+    private StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality"}, new ValueChangeListener[]{new ValueChangeListener() {
         @Override
         public void onChange(Stage stage, Value value, Object oldValue, Object newValue) {
             moduleHashMap.clear();
@@ -47,6 +47,7 @@ public class ClientOverlay extends Module implements ColorPalette {
     private CheckBoxValue hideRenderModules = new CheckBoxValue("Hide Render Modules", "Should the module list hide visual modules?", this, false);
 
     private LinkedHashMap<Module, DecelerateAnimation> moduleHashMap = new LinkedHashMap<>();
+    private LinkedHashMap<Module, Color> moduleColorHashMap = new LinkedHashMap<>();
 
     @Listen
     public final void on2D(Render2DEvent render2DEvent) {
@@ -58,6 +59,14 @@ public class ClientOverlay extends Module implements ColorPalette {
         AtomicFloat rightY = new AtomicFloat(0);
 
         switch (watermarkMode.getValue()) {
+            case "Xave": {
+                FontRenderer fontRenderer = FontStorage.getInstance().findFont("ESP", 80);
+                String text = CLIENT_NAME.toUpperCase() + "+";
+                Gui.drawRect(sr.getScaledWidth() - fontRenderer.getStringWidth(text) - 1, fontRenderer.FONT_HEIGHT - 4, sr.getScaledWidth(), 0, new Color(0, 0, 0, 180).getRGB());
+                fontRenderer.drawStringWithShadow(text, sr.getScaledWidth() - fontRenderer.getStringWidth(text) + 2, 4, -1);
+                rightY.set(fontRenderer.FONT_HEIGHT - 4);
+                break;
+            }
             case "Fatality": {
                 // TODO: implement usernames
                 // Pasted this from some random radium paste since this client's not expensive enough for me to do random themes of dead, nn clients like this and do shit like remake the entire style of skeet fucking watermark for it
@@ -146,7 +155,7 @@ public class ClientOverlay extends Module implements ColorPalette {
             if (!hideRenderModules.getValue() || module.getCategory() != Category.RENDER) {
                 modulesToShow.add(module);
             }
-            if(module.getName().equalsIgnoreCase("ClickGui")){
+            if (module.getName().equalsIgnoreCase("ClickGui")) {
                 modulesToShow.remove(module);
             }
         }
@@ -178,6 +187,9 @@ public class ClientOverlay extends Module implements ColorPalette {
                 case "Augustus 2.6":
                     fontRenderer = mc.fontRendererObj;
                     break;
+                case "Xave":
+                    fontRenderer = FontStorage.getInstance().findFont("Roboto", 18);
+                    break;
                 default:
                     fontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
                     break;
@@ -193,8 +205,34 @@ public class ClientOverlay extends Module implements ColorPalette {
         moduleHashMap = sortedMap;
 
         switch (moduleListMode.getValue()) {
+            case "Xave": {
+                if (leftY.get() == 0)
+                    leftY.set(3);
+                FontRenderer roboto18 = FontStorage.getInstance().findFont("Roboto", 18);
+                float moduleY = leftY.get();
+                for (Module module : moduleHashMap.keySet()) {
+                    float moduleHeight = roboto18.FONT_HEIGHT + 1;
+                    if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
+                        if(!moduleColorHashMap.containsKey(module)) {
+                            int baseHue = 15;
+                            int minValue = 150;
+                            int maxValue = 255;
+                            int alpha = 255;
+                            moduleColorHashMap.put(module, ColorUtil.generateRandomTonedColor(baseHue, minValue, maxValue, alpha));
+                        }
+                        int color = moduleColorHashMap.get(module).getRGB();
+                        String name = module.getName();
+                        float rectWidth = (roboto18.getStringWidth(name) + 4);
+                        float moduleX = 2 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth) - 2;
+                        RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(0, 0, 0, 180).getRGB());
+                        roboto18.drawTotalCenteredStringWithShadow(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, color);
+                        moduleY += moduleHeight;
+                    }
+                }
+                break;
+            }
             case "Fatality": {
-                if(rightY.get() == 0)
+                if (rightY.get() == 0)
                     rightY.set(1);
                 FontRenderer fontRenderer = mc.fontRendererObj;
                 float moduleY = rightY.get();
@@ -228,7 +266,7 @@ public class ClientOverlay extends Module implements ColorPalette {
                 break;
             }
             case "Augustus 2.6": {
-                if(rightY.get() == 0)
+                if (rightY.get() == 0)
                     rightY.set(1);
                 FontRenderer fontRenderer = mc.fontRendererObj;
                 float moduleY = rightY.get();
@@ -257,9 +295,9 @@ public class ClientOverlay extends Module implements ColorPalette {
                             String name = module.getName();
                             float rectWidth = (roboto17.getStringWidth(name) + 4);
                             float moduleX = 2 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth);
-                        RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(0, 0, 0, 80).getRGB());
-                        moduleY += moduleHeight;
-                    }
+                            RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(0, 0, 0, 80).getRGB());
+                            moduleY += moduleHeight;
+                        }
                     }
                 });
                 RenderableShaders.renderAndRun(true, false, () -> {
@@ -289,7 +327,7 @@ public class ClientOverlay extends Module implements ColorPalette {
                 break;
             }
             case "Golden": {
-                if(leftY.get() == 0)
+                if (leftY.get() == 0)
                     leftY.set(6);
                 FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
                 RenderableShaders.renderAndRun(() -> {
@@ -315,12 +353,12 @@ public class ClientOverlay extends Module implements ColorPalette {
             case "Simple":
                 FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
                 RenderableShaders.renderAndRun(() -> {
-                    if(leftY.get() == 0)
+                    if (leftY.get() == 0)
                         leftY.set(8);
                     float moduleY = leftY.get();
-                    for(Module module : moduleHashMap.keySet()) {
+                    for (Module module : moduleHashMap.keySet()) {
                         float moduleHeight = roboto17.FONT_HEIGHT + 8;
-                        if(!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
+                        if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                             String name = module.getName();
                             float rectWidth = roboto17.getStringWidth(name) + 10;
                             float moduleX = 10 - (rectWidth + 10) + (float) (moduleHashMap.get(module).getOutput() * (rectWidth + 10));
@@ -336,9 +374,9 @@ public class ClientOverlay extends Module implements ColorPalette {
 
     @Listen
     public final void onModuleEnable(EnableModuleEvent enableModuleEvent) {
-        if(enableModuleEvent.getType() == EnableModuleEvent.Type.PRE)
+        if (enableModuleEvent.getType() == EnableModuleEvent.Type.PRE)
             return;
-        if(this.moduleHashMap.containsKey(enableModuleEvent.getModule())) {
+        if (this.moduleHashMap.containsKey(enableModuleEvent.getModule())) {
             this.moduleHashMap.get(enableModuleEvent.getModule()).setDirection(Direction.FORWARDS);
         } else {
             switch (this.moduleListMode.getValue()) {
@@ -346,7 +384,7 @@ public class ClientOverlay extends Module implements ColorPalette {
                     moduleHashMap.put(enableModuleEvent.getModule(), new DecelerateAnimation(1, 1, Direction.FORWARDS));
                     break;
                 default:
-                    moduleHashMap.put(enableModuleEvent.getModule(), new DecelerateAnimation(200, 1,Direction.FORWARDS));
+                    moduleHashMap.put(enableModuleEvent.getModule(), new DecelerateAnimation(200, 1, Direction.FORWARDS));
                     break;
             }
         }
@@ -354,9 +392,9 @@ public class ClientOverlay extends Module implements ColorPalette {
 
     @Listen
     public final void onModuleDisable(DisableModuleEvent disableModuleEvent) {
-        if(disableModuleEvent.getType() == DisableModuleEvent.Type.PRE)
+        if (disableModuleEvent.getType() == DisableModuleEvent.Type.PRE)
             return;
-        if(this.moduleHashMap.containsKey(disableModuleEvent.getModule())) {
+        if (this.moduleHashMap.containsKey(disableModuleEvent.getModule())) {
             this.moduleHashMap.get(disableModuleEvent.getModule()).setDirection(Direction.BACKWARDS);
         } else {
             switch (this.moduleListMode.getValue()) {
@@ -364,7 +402,7 @@ public class ClientOverlay extends Module implements ColorPalette {
                     moduleHashMap.put(disableModuleEvent.getModule(), new DecelerateAnimation(1, 1, Direction.BACKWARDS));
                     break;
                 default:
-                    moduleHashMap.put(disableModuleEvent.getModule(), new DecelerateAnimation(200, 1,Direction.BACKWARDS));
+                    moduleHashMap.put(disableModuleEvent.getModule(), new DecelerateAnimation(200, 1, Direction.BACKWARDS));
                     break;
             }
         }

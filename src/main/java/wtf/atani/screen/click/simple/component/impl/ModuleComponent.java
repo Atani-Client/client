@@ -28,8 +28,8 @@ public class ModuleComponent extends Component {
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
-        RenderUtil.drawRect(getPosX(), getPosY(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
-        normal.drawTotalCenteredStringWithShadow(module.getName(), getPosX() + getBaseWidth() / 2, getPosY() + getBaseHeight() / 2, !module.isEnabled() ? new Color(200, 200, 200).getRGB() : -1);
+        RenderUtil.drawRect(getPosX() + getAddX(), getPosY(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
+        normal.drawTotalCenteredStringWithShadow(module.getName(), getPosX() + getBaseWidth() / 2 + getAddX(), getPosY() + getBaseHeight() / 2, !module.isEnabled() ? new Color(200, 200, 200).getRGB() : -1);
         if(expanded && this.subComponents.isEmpty()) {
             for(Value value : ValueStorage.getInstance().getValues(module)) {
                 float valueY = this.getPosY() + this.getBaseHeight();
@@ -55,6 +55,7 @@ public class ModuleComponent extends Component {
             for(Component component : this.subComponents) {
                 if(component instanceof ValueComponent) {
                     ValueComponent valueComponent = (ValueComponent) component;
+                    valueComponent.setAddX(this.getAddX());
                     valueComponent.setPosY(valueY);
                     Value value = valueComponent.getValue();
                     valueComponent.setVisible(value.isVisible());

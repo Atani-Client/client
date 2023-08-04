@@ -41,6 +41,8 @@ public class Speed extends Module {
 
     // WatchDog
     private int watchDogTicks;
+    // NCP
+    private int ncpTicks;
     private TimeHelper vulcanTimer;
 
     @Listen
@@ -345,6 +347,14 @@ public class Speed extends Module {
                 break;
             case "NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                    mc.gameSettings.keyBindJump.pressed = false;
+
+                    if(mc.thePlayer.onGround) {
+                        ncpTicks = 0;
+                    } else {
+                        ncpTicks++;
+                    }
+
                     if(mc.thePlayer.fallDistance > 0.75) {
                         mc.timer.timerSpeed = 1.07F;
                     } else {
@@ -352,12 +362,25 @@ public class Speed extends Module {
                     }
                     if (mc.thePlayer.onGround && isMoving()) {
                         mc.thePlayer.jump();
-                        MoveUtil.strafe((float) (0.433 + MoveUtil.getSpeedBoost(0.6F) + Math.random() / 40 + mc.thePlayer.moveForward / 30));
+                        mc.thePlayer.motionY *= 0.995;
+                        MoveUtil.strafe((float) (0.43 + MoveUtil.getSpeedBoost(2) + Math.random() / 40 + mc.thePlayer.moveForward / 30));
                     } else if(isMoving()) {
                         if(mc.thePlayer.moveForward == 0) {
                             MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
                         } else {
+                            mc.thePlayer.speedInAir = 0.02025F;
                             MoveUtil.strafe();
+                        }
+                        switch(ncpTicks) {
+                            case 3:
+                            case 4:
+                            case 5:
+                                mc.thePlayer.motionY -= 0.007;
+                                MoveUtil.strafe(MoveUtil.getSpeed() * 1.02);
+                                break;
+                            case 6:
+                                mc.thePlayer.motionY = MoveUtil.getPredictedMotion(mc.thePlayer.motionY, 1);
+                                break;
                         }
                     }
                 }

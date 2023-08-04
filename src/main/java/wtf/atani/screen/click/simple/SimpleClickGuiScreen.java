@@ -97,7 +97,8 @@ public class SimpleClickGuiScreen extends GuiScreen {
                             break;
                     }
                 }
-                frame.addY = scroll + animationUpDown;
+                frame.setAddY(scroll + animationUpDown);
+                frame.setAddX(animationLeftRight);
                 frame.drawScreen(mouseX, mouseY);
                 RenderUtil.scaleEnd();
             }

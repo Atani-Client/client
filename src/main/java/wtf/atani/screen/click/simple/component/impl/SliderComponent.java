@@ -22,17 +22,17 @@ public class SliderComponent extends ValueComponent {
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 17);
-        RenderUtil.drawRect(getPosX(), getPosY(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
-        normal.drawStringWithShadow(value.getName(), getPosX() + 5, getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
-        normal.drawStringWithShadow(((Number)value.getValue()).floatValue() + "", getPosX() + this.getBaseWidth() - 5 - normal.getStringWidth(((Number)value.getValue()).floatValue() + ""), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
+        RenderUtil.drawRect(getPosX() + getAddX(), getPosY(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
+        normal.drawStringWithShadow(value.getName(), getPosX() + 5 + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
+        normal.drawStringWithShadow(((Number)value.getValue()).floatValue() + "", getPosX() + this.getBaseWidth() - 5 - normal.getStringWidth(((Number)value.getValue()).floatValue() + "") + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
         if(this.expanded) {
-            RenderUtil.drawRect(getPosX(), getPosY() + getBaseHeight(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
+            RenderUtil.drawRect(getPosX() + getAddX(), getPosY() + getBaseHeight(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
             SliderValue sliderValue = (SliderValue) value;
             String min = sliderValue.getMinimum().floatValue() + "";
             String max = sliderValue.getMaximum().floatValue() + "";
-            normal.drawStringWithShadow(min, getPosX() + 5, getPosY() + getBaseHeight() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
-            normal.drawStringWithShadow(max, getPosX() + this.getBaseWidth() - 5 - normal.getStringWidth(max), getPosY() + getBaseHeight() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
-            float sliderX = getPosX() + 5 + normal.getStringWidth(min) + 3;
+            normal.drawStringWithShadow(min, getPosX() + 5 + getAddX(), getPosY() + getBaseHeight() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
+            normal.drawStringWithShadow(max, getPosX() + this.getBaseWidth() - 5 - normal.getStringWidth(max) + getAddX(), getPosY() + getBaseHeight() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
+            float sliderX = getPosX() + 5 + normal.getStringWidth(min) + 3 + getAddX();
             float sliderWidth = getBaseWidth() - (5 + normal.getStringWidth(min) + 3) - (5 + normal.getStringWidth(max) + 3);
             float sliderY = getPosY() + getBaseHeight() + getBaseHeight() / 4 - 1;
             float sliderHeight = getBaseHeight() / 4 * 2;
@@ -41,7 +41,7 @@ public class SliderComponent extends ValueComponent {
                     .floor_double(((sliderValue.getValue()).floatValue() - sliderValue.getMinimum().floatValue())
                             / (sliderValue.getMaximum().floatValue() - sliderValue.getMinimum().floatValue()) * sliderWidth);
             RenderUtil.drawRect(sliderX, sliderY, length, sliderHeight, new Color(0, 0, 0, 90).getRGB());
-            if(Mouse.isButtonDown(0) && RenderUtil.isHovered(mouseX, mouseY, this.getPosX(), this.getPosY() + this.getBaseHeight(), this.getBaseWidth(), this.getBaseHeight())) {
+            if(Mouse.isButtonDown(0) && RenderUtil.isHovered(mouseX, mouseY, this.getPosX() + getAddX(), this.getPosY() + this.getBaseHeight(), this.getBaseWidth(), this.getBaseHeight())) {
                 double min1 = sliderValue.getMinimum().floatValue();
                 double max1 = sliderValue.getMaximum().floatValue();
                 double newValue = MathUtil.round((mouseX - sliderX) * (max1 - min1) / (sliderWidth - 1.0f) + min1, sliderValue.getDecimalPlaces());

@@ -17,7 +17,6 @@ public class Frame extends Component {
 
     private final Category category;
     private final float moduleHeight;
-    public float addY = 0, addX = 0;
 
     public Frame(Category category, float posX, float posY, float width, float height, float moduleHeight) {
         super(posX, posY, width, height);
@@ -37,13 +36,14 @@ public class Frame extends Component {
 
     @Override
     public void drawScreen(int mouseX, int mouseY) {
-        RenderUtil.drawRect(getPosX(), getPosY() + addY, getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
-        FontStorage.getInstance().findFont("Roboto", 19).drawTotalCenteredStringWithShadow(category.getName(), this.getPosX() + this.getBaseWidth() / 2 + addX, this.getPosY() + this.getBaseHeight() / 2 + addY, -1);
+        RenderUtil.drawRect(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
+        FontStorage.getInstance().findFont("Roboto", 19).drawTotalCenteredStringWithShadow(category.getName(), this.getPosX() + this.getBaseWidth() / 2 + getAddX(), this.getPosY() + this.getBaseHeight() / 2 + getAddY(), -1);
         float moduleY = this.getPosY() + this.getBaseHeight();
         for(Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
                 component.setPosX(component.getPosX());
-                component.setPosY(moduleY + addY);
+                component.setPosY(moduleY + getAddY());
+                component.setAddX(this.getAddX());
                 component.drawScreen(mouseX, mouseY);
                 moduleY += component.getFinalHeight();
             }
@@ -64,7 +64,7 @@ public class Frame extends Component {
         float moduleY = this.getPosY() + this.getBaseHeight();
         for(Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
-                component.setPosY(moduleY + addY);
+                component.setPosY(moduleY + getAddY());
                 component.mouseClick(mouseX, mouseY, mouseButton);
                 moduleY += component.getFinalHeight();
             }

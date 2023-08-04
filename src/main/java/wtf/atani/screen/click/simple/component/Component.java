@@ -6,7 +6,7 @@ public abstract class Component {
 
     protected final ArrayList<Component> subComponents = new ArrayList<>();
     private float posX, posY, baseWidth, baseHeight;
-    private int scroll;
+    private float addY, addX;
     private boolean visible = true;
 
     public Component(float posX, float posY, float baseWidth, float baseHeight) {
@@ -14,6 +14,14 @@ public abstract class Component {
         this.posY = posY;
         this.baseWidth = baseWidth;
         this.baseHeight = baseHeight;
+    }
+
+    public float getAddX() {
+        return addX;
+    }
+
+    public void setAddX(float addX) {
+        this.addX = addX;
     }
 
     public abstract void drawScreen(int mouseX, int mouseY);
@@ -43,8 +51,8 @@ public abstract class Component {
         return baseHeight;
     }
 
-    public int getScroll() {
-        return scroll;
+    public float getAddY() {
+        return addY;
     }
 
     public boolean isVisible() {
@@ -67,8 +75,8 @@ public abstract class Component {
         this.baseHeight = baseHeight;
     }
 
-    public void setScroll(int scroll) {
-        this.scroll = scroll;
+    public void setAddY(float addY) {
+        this.addY = addY;
     }
 
     public void setVisible(boolean visible) {

@@ -54,18 +54,9 @@ public class ClientOverlay extends Module implements ColorPalette {
         // When making a watermark update these values (including the margins!) so that we can have arraylist and watermark on the same side without
         // having 100 if else statements
         // - Tabio
-
-        List<Module> modulesToShow = new ArrayList<>();
-        for (Module module : ModuleStorage.getInstance().getList()) {
-            if (!hideRenderModules.getValue() || module.getCategory() != Category.RENDER) {
-                modulesToShow.add(module);
-            }
-            if(module.getName().equalsIgnoreCase("ClickGui")){
-                modulesToShow.remove(module);
-            }
-        }
         AtomicFloat leftY = new AtomicFloat(0);
         AtomicFloat rightY = new AtomicFloat(0);
+
         switch (watermarkMode.getValue()) {
             case "Monsoon 1.2": {
                 String watermark = CLIENT_NAME + " " + VERSION + " | " + mc.getDebugFPS() + " FPS | " + mc.session.getUsername();
@@ -172,6 +163,16 @@ public class ClientOverlay extends Module implements ColorPalette {
                 String text = ChatFormatting.GRAY + releaseType + " - " + ChatFormatting.WHITE + "idk" + ChatFormatting.GRAY + " - " + VERSION;
                 mc.fontRendererObj.drawStringWithShadow(text, sr.getScaledWidth() - mc.fontRendererObj.getStringWidth(text) - 2, sr.getScaledHeight() - mc.fontRendererObj.FONT_HEIGHT - 2, -1);
                 break;
+        }
+
+        List<Module> modulesToShow = new ArrayList<>();
+        for (Module module : ModuleStorage.getInstance().getList()) {
+            if (!hideRenderModules.getValue() || module.getCategory() != Category.RENDER) {
+                modulesToShow.add(module);
+            }
+            if(module.getName().equalsIgnoreCase("ClickGui")){
+                modulesToShow.remove(module);
+            }
         }
 
         for (Module module : modulesToShow) {

@@ -344,12 +344,12 @@ public class ItemRenderer
     {
         if (!Config.isShaders() || !Shaders.isSkipRenderHand())
         {
-            float f = 1.0F - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);
+            float equippedProgress = 1.0F - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);
             AbstractClientPlayer abstractclientplayer = this.mc.thePlayer;
-            float f1 = abstractclientplayer.getSwingProgress(partialTicks);
-            float f2 = abstractclientplayer.prevRotationPitch + (abstractclientplayer.rotationPitch - abstractclientplayer.prevRotationPitch) * partialTicks;
-            float f3 = abstractclientplayer.prevRotationYaw + (abstractclientplayer.rotationYaw - abstractclientplayer.prevRotationYaw) * partialTicks;
-            this.func_178101_a(f2, f3);
+            float swingProgress = abstractclientplayer.getSwingProgress(partialTicks);
+            float rotationPitch = abstractclientplayer.prevRotationPitch + (abstractclientplayer.rotationPitch - abstractclientplayer.prevRotationPitch) * partialTicks;
+            float rotationYaw = abstractclientplayer.prevRotationYaw + (abstractclientplayer.rotationYaw - abstractclientplayer.prevRotationYaw) * partialTicks;
+            this.func_178101_a(rotationPitch, rotationYaw);
             this.func_178109_a(abstractclientplayer);
             this.func_178110_a((EntityPlayerSP)abstractclientplayer, partialTicks);
             GlStateManager.enableRescaleNormal();
@@ -359,7 +359,7 @@ public class ItemRenderer
             {
                 if (this.itemToRender.getItem() instanceof ItemMap)
                 {
-                    this.renderItemMap(abstractclientplayer, f2, f, f1);
+                    this.renderItemMap(abstractclientplayer, rotationPitch, equippedProgress, swingProgress);
                 }
                 else if (abstractclientplayer.getItemInUseCount() > 0)
                 {
@@ -368,23 +368,27 @@ public class ItemRenderer
                     switch (enumaction)
                     {
                         case NONE:
-                            this.transformFirstPersonItem(f, 0.0F);
+                            this.transformFirstPersonItem(equippedProgress, 0.0F);
                             break;
 
                         case EAT:
                         case DRINK:
                             this.performDrinking(abstractclientplayer, partialTicks);
-                            this.transformFirstPersonItem(f, 0.0F);
+                            this.transformFirstPersonItem(equippedProgress, 0.0F);
                             break;
 
                         case BLOCK:
                             if(!ModuleStorage.getInstance().getByClass(BlockAnimations.class).isEnabled()) {
-                                this.transformFirstPersonItem(f, 0.0F);
+                                this.transformFirstPersonItem(equippedProgress, 0.0F);
                                 this.doBlockTransformations();
                             } else {
                                 switch(ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.getValue()) {
                                     case "1.7":
-                                        this.transformFirstPersonItem(f, f1);
+                                        this.transformFirstPersonItem(equippedProgress, swingProgress);
+                                        this.doBlockTransformations();
+                                        break;
+                                    case "Atani":
+                                        this.transformFirstPersonItem(equippedProgress, swingProgress - 0.07f);
                                         this.doBlockTransformations();
                                         break;
                                 }
@@ -394,11 +398,11 @@ public class ItemRenderer
 
                         case BOW:
                             if(ModuleStorage.getInstance().getByClass(BlockAnimations.class).isEnabled() &&
-                                    ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.compareValue("1.7")) {
-                                this.transformFirstPersonItem(f, f1);
+                                    (ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.compareValue("1.7") || ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.compareValue("Atani"))) {
+                                this.transformFirstPersonItem(equippedProgress, swingProgress);
                                 this.doBowTransformations(partialTicks, abstractclientplayer);
                             } else {
-                                this.transformFirstPersonItem(f, 0.0F);
+                                this.transformFirstPersonItem(equippedProgress, 0.0F);
                                 this.doBowTransformations(partialTicks, abstractclientplayer);
                             }
                     }
@@ -408,10 +412,10 @@ public class ItemRenderer
                     if(ModuleStorage.getInstance().getByClass(HitAnimations.class).isEnabled() &&
                             ModuleStorage.getInstance().getByClass(HitAnimations.class).smoothSwing.getValue()) {
                         this.doItemUsedTransformations(0);
-                        this.transformFirstPersonItem(f, f1);
+                        this.transformFirstPersonItem(equippedProgress, swingProgress);
                     } else {
-                        this.doItemUsedTransformations(f1);
-                        this.transformFirstPersonItem(f, f1);
+                        this.doItemUsedTransformations(swingProgress);
+                        this.transformFirstPersonItem(equippedProgress, swingProgress);
                     }
                 }
 
@@ -419,7 +423,7 @@ public class ItemRenderer
             }
             else if (!abstractclientplayer.isInvisible())
             {
-                this.func_178095_a(abstractclientplayer, f, f1);
+                this.func_178095_a(abstractclientplayer, equippedProgress, swingProgress);
             }
 
             GlStateManager.popMatrix();

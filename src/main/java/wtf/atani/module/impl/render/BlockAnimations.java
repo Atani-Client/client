@@ -12,7 +12,7 @@ public class BlockAnimations extends Module {
 
     //Hooked in ItemRenderer class && Minecraft class
 
-    public final StringBoxValue mode = new StringBoxValue("Style", "What animation should the sword use?", this, new String[]{"1.7"});
+    public final StringBoxValue mode = new StringBoxValue("Style", "What animation should the sword use?", this, new String[]{"1.7", "Atani"});
 
     @Override
     public void onEnable() {}

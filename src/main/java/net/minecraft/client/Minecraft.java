@@ -1245,7 +1245,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         }
 
         if(ModuleStorage.getInstance().getByClass(BlockAnimations.class).isEnabled() &&
-                ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.compareValue("1.7")) {
+                (ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.compareValue("1.7") || ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.compareValue("Atani"))) {
             if (this.leftClickCounter <= 0)
             {
                 if (leftClick && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK)

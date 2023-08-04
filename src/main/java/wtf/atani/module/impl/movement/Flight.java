@@ -17,9 +17,9 @@ import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "GrimAC"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim"});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-    private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("GrimAC")});
+    private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Grim")});
     private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
     private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
     private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan") || mode.getValue().equalsIgnoreCase("Vanilla")});
@@ -41,9 +41,9 @@ public class Flight extends Module {
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {
             case "Grim":
-                switch(grimMode.getValue()) {
-                    case "Explosion":
-                        if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                    switch (grimMode.getValue()) {
+                        case "Explosion":
                             if (velo) {
                                 if (mc.thePlayer.hurtTime != 0) {
                                     mc.thePlayer.posY -= 100;
@@ -55,13 +55,12 @@ public class Flight extends Module {
                                 }
                                 velo = false;
                             }
-                        }
-                        break;
-                    case "Boat":
-                        if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                            mc.thePlayer.motionY = 1F;
-                        }
-                        break;
+                            break;
+                        case "Boat":
+                            mc.thePlayer.motionY = 0;
+                            mc.thePlayer.onGround = true;
+                            break;
+                    }
                 }
                 break;
             case "Vanilla":
@@ -151,11 +150,13 @@ public class Flight extends Module {
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
         switch (mode.getValue()) {
-            case "Grim Explosion":
-                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
-                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
-                    if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
-                        velo = true;
+            case "Grim":
+                if(grimMode.compareValue("Explosion")) {
+                    if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                        S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
+                        if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                            velo = true;
+                        }
                     }
                 }
                 break;

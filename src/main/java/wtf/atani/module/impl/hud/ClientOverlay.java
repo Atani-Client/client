@@ -36,8 +36,8 @@ import java.util.List;
 @ModuleInfo(name = "ClientOverlay", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
 public class ClientOverlay extends Module implements ColorPalette {
 
-    private StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality", "Vestige 2.0.2"});
-    private StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality", "Vestige 2.0.2"}, new ValueChangeListener[]{new ValueChangeListener() {
+    private StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality", "Vestige 2.0.2", "Monsoon 1.2"});
+    private StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Ryu", "Icarus", "Fatality", "Vestige 2.0.2", "Monsoon 1.2"}, new ValueChangeListener[]{new ValueChangeListener() {
         @Override
         public void onChange(Stage stage, Value value, Object oldValue, Object newValue) {
             moduleHashMap.clear();
@@ -65,6 +65,14 @@ public class ClientOverlay extends Module implements ColorPalette {
         AtomicFloat rightY = new AtomicFloat(0);
         int vCounter = 0;
         switch (watermarkMode.getValue()) {
+            case "Monsoon 1.2": {
+                String watermark = CLIENT_NAME + " " + VERSION + " | " + mc.getDebugFPS() + " FPS | " + mc.session.getUsername();
+                Gui.drawRect(2, 2, (fr.getStringWidth(watermark) + 9), 19.5, (new Color(20, 20, 20)).getRGB());
+                Gui.drawRect(4, 4, (fr.getStringWidth(watermark) + 7), 17.5, (new Color(30, 30, 30)).getRGB());
+                Gui.drawRect(4, 4, (fr.getStringWidth(watermark) + 7), 5, new Color(0, 170, 255).getRGB());
+                fr.drawStringWithShadow(watermark, 6, 8, -1);
+                break;
+            }
             case "Vestige 2.0.2": {
                 FontRenderer fontRenderer = FontStorage.getInstance().findFont("Product Sans", 17);
                 String text = CLIENT_NAME + " " + VERSION + " | " + mc.getDebugFPS() + "FPS | " + mc.session.getUsername();
@@ -72,7 +80,7 @@ public class ClientOverlay extends Module implements ColorPalette {
                 final float textWidth = fontRenderer.getStringWidth(text);
 
                 RoundedUtil.drawRound(6,3, textWidth + 4, 15, 2, new Color(0, 0, 0, 150));
-                RoundedUtil.drawGradientHorizontal(8,4, textWidth, 2, 1, new Color(VESTIGE_FIRST), new Color(VESTIGE_SECOND));
+                RoundedUtil.drawGradientHorizontal(8,5, textWidth, 1, 1, new Color(VESTIGE_FIRST), new Color(VESTIGE_SECOND));
 
                 fontRenderer.drawString(text.substring(0, 1), 8, 9, ColorUtil.fadeBetween(VESTIGE_FIRST, VESTIGE_SECOND, vCounter * 100L));
                 fontRenderer.drawString(text.substring(1), 14, 9, -1);
@@ -204,6 +212,21 @@ public class ClientOverlay extends Module implements ColorPalette {
         moduleHashMap = sortedMap;
 
         switch (moduleListMode.getValue()) {
+            case "Monsoon 1.2": {
+                if(rightY.get() == 0)
+                    rightY.set(1);
+                FontRenderer fontRenderer = mc.fontRendererObj;
+                float moduleY = rightY.get();
+                for (Module module : moduleHashMap.keySet()) {
+                    if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
+                        float moduleHeight = fontRenderer.FONT_HEIGHT;
+                        float rectLength = (float) ((fontRenderer.getStringWidth(module.getName()) + 1) * moduleHashMap.get(module).getOutput());
+                        fontRenderer.drawStringWithShadow(module.getName(), sr.getScaledWidth() - rectLength - 1, moduleY + moduleHeight / 2 - fontRenderer.FONT_HEIGHT / 2, new Color(0, 170, 255).getRGB());
+                        moduleY += moduleHeight;
+                    }
+                }
+                break;
+            }
             case "Vestige 2.0.2": {
                 FontRenderer fontRenderer = FontStorage.getInstance().findFont("Product Sans", 17);
                 float moduleY = rightY.get() + 8;
@@ -213,7 +236,7 @@ public class ClientOverlay extends Module implements ColorPalette {
                         float moduleHeight = fontRenderer.FONT_HEIGHT + 4;
                         float rectLength = (float) ((fontRenderer.getStringWidth(module.getName() + 3) * moduleHashMap.get(module).getOutput()) - 2F);
 
-                        RenderUtil.drawRect(sr.getScaledWidth() - rectLength - 2F, moduleY, 1.5F, moduleHeight, ColorUtil.fadeBetween(VESTIGE_FIRST, VESTIGE_SECOND, counter * 100L));
+                        RenderUtil.drawRect(sr.getScaledWidth() - rectLength - 1.5F, moduleY, 1.5F, moduleHeight, ColorUtil.fadeBetween(VESTIGE_FIRST, VESTIGE_SECOND, counter * 100L));
 
                         RenderUtil.drawRect(sr.getScaledWidth() - rectLength, moduleY, rectLength + 20, moduleHeight, new Color(0, 0, 0, 150).getRGB());
                         fontRenderer.drawString(module.getName(), sr.getScaledWidth() - rectLength + 1.5f, moduleY + moduleHeight / 2 - fontRenderer.FONT_HEIGHT / 2, ColorUtil.fadeBetween(VESTIGE_FIRST, VESTIGE_SECOND, counter * 100L));

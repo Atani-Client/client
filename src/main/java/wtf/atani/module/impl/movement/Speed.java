@@ -55,7 +55,7 @@ public class Speed extends Module {
 
                     mc.gameSettings.keyBindJump.pressed = true;
 
-                    mc.thePlayer.speedInAir = 0.0203F;
+                    mc.thePlayer.speedInAir = 0.0204F;
 
                     if(mc.thePlayer.motionY > 0.4) {
                         mc.thePlayer.motionX *= 1.003F;
@@ -63,11 +63,11 @@ public class Speed extends Module {
                     }
 
                     if(mc.thePlayer.onGround) {
-                        mc.timer.timerSpeed = (float) (1.1 + Math.random() / 50 - Math.random() / 50);
+                        mc.timer.timerSpeed = (float) (1.1 - Math.random() / 10);
                         mc.thePlayer.motionX *= 1.0045F;
                         mc.thePlayer.motionZ *= 1.0045F;
                     } else {
-                        mc.timer.timerSpeed = (float) (1 - Math.random() / 500);
+                        mc.timer.timerSpeed = Math.random() > 0.95 ? 1.03F : (float) (1 - Math.random() / 500);
                     }
                 }
                 break;
@@ -344,7 +344,7 @@ public class Speed extends Module {
             case "NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     if(mc.thePlayer.fallDistance > 0.75) {
-                        mc.timer.timerSpeed = 1.23F;
+                        mc.timer.timerSpeed = 1.07F;
                     } else {
                         mc.timer.timerSpeed = 1;
                     }
@@ -352,7 +352,11 @@ public class Speed extends Module {
                         mc.thePlayer.jump();
                         MoveUtil.strafe((float) (0.433 + MoveUtil.getSpeedBoost(0.6F) + Math.random() / 40 + mc.thePlayer.moveForward / 30));
                     } else if(isMoving()) {
-                        MoveUtil.strafe((float) MoveUtil.getSpeed());
+                        if(mc.thePlayer.moveForward == 0) {
+                            MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
+                        } else {
+                            MoveUtil.strafe();
+                        }
                     }
                 }
                 break;

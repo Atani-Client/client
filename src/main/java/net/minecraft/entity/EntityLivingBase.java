@@ -56,12 +56,13 @@ import wtf.atani.module.impl.movement.NoJumpDelay;
 import wtf.atani.module.impl.movement.NoSlowDown;
 import wtf.atani.module.impl.render.HitAnimations;
 import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.performance.FastUUID;
 import wtf.atani.utils.player.PlayerHandler;
 
 public abstract class EntityLivingBase extends Entity
 {
     public double realPosX, realPosY, realPosZ;
-    private static final UUID sprintingSpeedBoostModifierUUID = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
+    private static final UUID sprintingSpeedBoostModifierUUID = FastUUID.parseUUID("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
     private static final AttributeModifier sprintingSpeedBoostModifier = (new AttributeModifier(sprintingSpeedBoostModifierUUID, "Sprinting speed boost", 0.30000001192092896D, 2)).setSaved(false);
     private BaseAttributeMap attributeMap;
     private final CombatTracker _combatTracker = new CombatTracker(this);

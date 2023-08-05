@@ -13,6 +13,7 @@ import java.lang.reflect.Type;
 import java.util.UUID;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.JsonUtils;
+import wtf.atani.performance.FastUUID;
 
 public class ServerStatusResponse
 {
@@ -151,7 +152,7 @@ public class ServerStatusResponse
                         {
                             JsonObject jsonobject1 = JsonUtils.getJsonObject(jsonarray.get(i), "player[" + i + "]");
                             String s = JsonUtils.getString(jsonobject1, "id");
-                            agameprofile[i] = new GameProfile(UUID.fromString(s), JsonUtils.getString(jsonobject1, "name"));
+                            agameprofile[i] = new GameProfile(FastUUID.parseUUID(s), JsonUtils.getString(jsonobject1, "name"));
                         }
 
                         serverstatusresponse$playercountdata.setPlayers(agameprofile);

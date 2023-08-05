@@ -16,6 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
+import wtf.atani.performance.FastUUID;
 
 public class Potion
 {
@@ -333,7 +334,7 @@ public class Potion
      */
     public Potion registerPotionAttributeModifier(IAttribute p_111184_1_, String p_111184_2_, double p_111184_3_, int p_111184_5_)
     {
-        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(p_111184_2_), this.getName(), p_111184_3_, p_111184_5_);
+        AttributeModifier attributemodifier = new AttributeModifier(FastUUID.parseUUID(p_111184_2_), this.getName(), p_111184_3_, p_111184_5_);
         this.attributeModifierMap.put(p_111184_1_, attributemodifier);
         return this;
     }

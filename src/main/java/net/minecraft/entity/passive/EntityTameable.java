@@ -11,6 +11,7 @@ import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
+import wtf.atani.performance.FastUUID;
 
 public abstract class EntityTameable extends EntityAnimal implements IEntityOwnable
 {
@@ -171,7 +172,7 @@ public abstract class EntityTameable extends EntityAnimal implements IEntityOwna
     {
         try
         {
-            UUID uuid = UUID.fromString(this.getOwnerId());
+            UUID uuid = FastUUID.parseUUID(this.getOwnerId());
             return uuid == null ? null : this.worldObj.getPlayerEntityByUUID(uuid);
         }
         catch (IllegalArgumentException var2)

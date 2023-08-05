@@ -22,6 +22,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import wtf.atani.performance.FastUUID;
 
 public class Village
 {
@@ -479,7 +480,7 @@ public class Village
             if (nbttagcompound1.hasKey("UUID"))
             {
                 PlayerProfileCache playerprofilecache = MinecraftServer.getServer().getPlayerProfileCache();
-                GameProfile gameprofile = playerprofilecache.getProfileByUUID(UUID.fromString(nbttagcompound1.getString("UUID")));
+                GameProfile gameprofile = playerprofilecache.getProfileByUUID(FastUUID.parseUUID(nbttagcompound1.getString("UUID")));
 
                 if (gameprofile != null)
                 {

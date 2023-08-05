@@ -5,13 +5,11 @@ import javafx.scene.control.Slider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import org.lwjgl.input.Keyboard;
-import wtf.atani.event.events.ClickingEvent;
-import wtf.atani.event.events.Render3DEvent;
-import wtf.atani.event.events.RotationEvent;
-import wtf.atani.event.events.UpdateMotionEvent;
+import wtf.atani.event.events.*;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
@@ -67,6 +65,7 @@ public class KillAura extends Module {
     public StringBoxValue resetMode = new StringBoxValue("Reset Mode", "How will the rotations reset?", this, new String[]{"Silent", "Locked"}, new Supplier[]{resetRotations::getValue});
     public CheckBoxValue rayTrace = new CheckBoxValue("Ray Trace", "Ray Trace?",this, true);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
+    public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Server-Side Misplace", "Fix Server-Side Misplace?", this, true);
     public SliderValue<Float> minCps = new SliderValue<>("Min CPS", "Minimum CPS", this, 10f, 0f, 20f, 1);
     public SliderValue<Float> maxCps = new SliderValue<>("Max CPS", "Maximum CPS", this, 12f, 0f, 20f, 1);
     public CheckBoxValue targetESP = new CheckBoxValue("Target ESP", "Show which entity you're attacking?", this, true);
@@ -86,6 +85,9 @@ public class KillAura extends Module {
     private double cpsDelay = 0;
     private TimeHelper cpsTimeHelper = new TimeHelper();
     private boolean wasCPSDrop = false;
+    
+    // Range
+    private double correctedRange = 0D;
 
     private final class AttackRangeSorter implements Comparator<EntityLivingBase> {
         public int compare(EntityLivingBase o1, EntityLivingBase o2) {
@@ -107,6 +109,19 @@ public class KillAura extends Module {
         }
     }
 
+    @Listen
+    public void onRayTrace(RayTraceRangeEvent rayTraceRangeEvent) {
+        correctedRange = this.attackRange.getValue() + 0.00256f;
+        if (this.fixServersSideMisplace.getValue()) {
+            final float n = 0.010625f;
+            if (mc.thePlayer.getHorizontalFacing() == EnumFacing.NORTH || mc.thePlayer.getHorizontalFacing() == EnumFacing.WEST) {
+                correctedRange += n * 2.0f;
+            }
+        }
+        rayTraceRangeEvent.setRange((float) correctedRange);
+        rayTraceRangeEvent.setBlockReachDistance((float) Math.max(mc.playerController.getBlockReachDistance(), correctedRange));
+    }
+    
     @Listen
     public final void on3D(Render3DEvent render3DEvent) {
         if(curEntity != null && targetESP.getValue()) {
@@ -229,7 +244,7 @@ public class KillAura extends Module {
     @Listen
     public final void onClick(ClickingEvent clickingEvent) {
         if(this.curEntity != null && FightUtil.isValid(curEntity, attackRange.getMaximum(), invisible.getValue(), players.getValue(), animals.getValue(), monsters.getValue())) {
-            MovingObjectPosition movingObjectPosition = RaytraceUtil.rayCast(1.0F, new float[] {PlayerHandler.yaw, PlayerHandler.pitch}, this.attackRange.getValue().floatValue(), 0.10000000149011612);
+            MovingObjectPosition movingObjectPosition = mc.objectMouseOver;
             if(!this.rayTrace.getValue() || (movingObjectPosition != null && movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY)) {
                 Entity attackEntity = rayTrace.getValue() ? movingObjectPosition.entityHit : curEntity;
                 if(attackEntity != null && attackEntity instanceof EntityLivingBase && FightUtil.isValid((EntityLivingBase) attackEntity, attackRange.getMaximum(), invisible.getValue(), players.getValue(), animals.getValue(), monsters.getValue()) && FightUtil.getRange(attackEntity) <= this.attackRange.getValue()) {

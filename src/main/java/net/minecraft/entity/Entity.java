@@ -50,6 +50,7 @@ import net.minecraft.world.WorldServer;
 import wtf.atani.event.events.SafeWalkEvent;
 import wtf.atani.module.impl.movement.SafeWalk;
 import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.performance.FastUUID;
 
 public abstract class Entity implements ICommandSender
 {
@@ -1717,7 +1718,7 @@ public abstract class Entity implements ICommandSender
             }
             else if (tagCompund.hasKey("UUID", 8))
             {
-                this.entityUniqueID = UUID.fromString(tagCompund.getString("UUID"));
+                this.entityUniqueID = FastUUID.parseUUID(tagCompund.getString("UUID"));
             }
 
             this.setPosition(this.posX, this.posY, this.posZ);

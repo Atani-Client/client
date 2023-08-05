@@ -39,6 +39,7 @@ import java.util.UUID;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import org.apache.commons.io.IOUtils;
+import wtf.atani.performance.FastUUID;
 
 public class PlayerProfileCache
 {
@@ -387,7 +388,7 @@ public class PlayerProfileCache
 
                         try
                         {
-                            uuid = UUID.fromString(s);
+                            uuid = FastUUID.parseUUID(s);
                         }
                         catch (Throwable var13)
                         {

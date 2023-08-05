@@ -44,13 +44,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import wtf.atani.performance.FastUUID;
 import wtf.atani.utils.player.PlayerHandler;
 
 public class Item
 {
     public static final RegistryNamespaced<ResourceLocation, Item> itemRegistry = new RegistryNamespaced();
     private static final Map<Block, Item> BLOCK_TO_ITEM = Maps.<Block, Item>newHashMap();
-    protected static final UUID itemModifierUUID = UUID.fromString("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
+    protected static final UUID itemModifierUUID = FastUUID.parseUUID("CB3F55D3-645C-4F38-A497-9C13A33DB5CF");
     private CreativeTabs tabToDisplayOn;
 
     /** The RNG used by the Item subclasses. */

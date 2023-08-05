@@ -2,6 +2,8 @@ package net.minecraft.server.management;
 
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
+import wtf.atani.performance.FastUUID;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -41,7 +43,7 @@ public class UserListBansEntry extends BanEntry<GameProfile>
 
             try
             {
-                uuid = UUID.fromString(s);
+                uuid = FastUUID.parseUUID(s);
             }
             catch (Throwable var4)
             {

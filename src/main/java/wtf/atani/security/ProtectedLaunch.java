@@ -40,6 +40,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.OpenGLException;
+import wtf.atani.performance.memory.TextureFix;
 import wtf.atani.loader.ModificationLoader;
 
 import javax.imageio.ImageIO;
@@ -352,6 +353,9 @@ public class ProtectedLaunch {
         mc.checkGLError("Post startup");
         new ModificationLoader().start();
         mc.ingameGUI = new GuiIngame(mc);
+
+        TextureFix textureFix = new TextureFix();
+        textureFix.runFix();
 
         if (mc.serverName != null)
         {

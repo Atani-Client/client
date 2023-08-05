@@ -19,6 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import wtf.atani.performance.FastUUID;
 import wtf.atani.utils.player.PlayerHandler;
 
 public abstract class EntityThrowable extends Entity implements IProjectile
@@ -371,7 +372,7 @@ public abstract class EntityThrowable extends Entity implements IProjectile
             {
                 try
                 {
-                    Entity entity = ((WorldServer)this.worldObj).getEntityFromUuid(UUID.fromString(this.throwerName));
+                    Entity entity = ((WorldServer)this.worldObj).getEntityFromUuid(FastUUID.parseUUID(this.throwerName));
 
                     if (entity instanceof EntityLivingBase)
                     {

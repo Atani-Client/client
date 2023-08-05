@@ -82,7 +82,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
     private final ReentrantReadWriteLock field_181680_j = new ReentrantReadWriteLock();
 
     /** The active channel */
-    private Channel channel;
+    public Channel channel;
 
     /** The address of the remote party */
     private SocketAddress socketAddress;

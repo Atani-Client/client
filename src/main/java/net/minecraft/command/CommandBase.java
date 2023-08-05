@@ -18,6 +18,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
+import wtf.atani.performance.FastUUID;
 
 public abstract class CommandBase implements ICommand
 {
@@ -208,7 +209,7 @@ public abstract class CommandBase implements ICommand
         {
             try
             {
-                entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerByUUID(UUID.fromString(username));
+                entityplayermp = MinecraftServer.getServer().getConfigurationManager().getPlayerByUUID(FastUUID.parseUUID(username));
             }
             catch (IllegalArgumentException var4)
             {
@@ -250,7 +251,7 @@ public abstract class CommandBase implements ICommand
         {
             try
             {
-                UUID uuid = UUID.fromString(p_175759_1_);
+                UUID uuid = FastUUID.parseUUID(p_175759_1_);
                 entity = minecraftserver.getEntityFromUuid(uuid);
 
                 if (entity == null)

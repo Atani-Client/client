@@ -50,6 +50,10 @@ public class Frame extends Component implements ColorPalette {
                 moduleY += component.getFinalHeight();
             }
         }
+        final float finalY = moduleY;
+        RenderableShaders.render(true, false, () -> {
+            RoundedUtil.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), finalY - getPosY(), 7,  2, new Color(0, 0, 0, 0), new Color(0, 0, 0, 255));
+        });
         RoundedUtil.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), moduleY - getPosY(), 7,  2, new Color(RYU), new Color(-1));
         RoundedUtil.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY() + getBaseHeight(), getBaseWidth(), moduleY - getPosY() - getBaseHeight(), 7,  2, new Color(36, 37, 41), new Color(36, 37, 41, 0));
         FontRenderer medium24 = FontStorage.getInstance().findFont("Roboto Medium", 24);
@@ -64,7 +68,6 @@ public class Frame extends Component implements ColorPalette {
                 component.drawScreen(mouseX, mouseY);
             }
         }
-        RoundedUtil.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), moduleY - getPosY(), 7,  2, new Color(255, 255, 255, 0), new Color(-1));
     }
 
     @Override

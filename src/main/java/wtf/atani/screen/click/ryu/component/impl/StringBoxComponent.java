@@ -21,10 +21,11 @@ public class StringBoxComponent extends ValueComponent {
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto Medium", 17);
-        RenderUtil.drawRect(getPosX() + 1 + getAddX(), getPosY() + getAddY(), getBaseWidth() - 2, getFinalHeight(), new Color(22, 22, 25).getRGB());
+        RenderUtil.drawRect(getPosX() + 1 + getAddX(), getPosY() + getAddY(), getBaseWidth() - 2, getBaseHeight(), new Color(22, 22, 25).getRGB());
         RenderUtil.startScissorBox();
         RenderUtil.drawScissorBox(getPosX() + 1 + getAddX(), getPosY() + getAddY(), getBaseWidth() - 2, getBaseHeight());
         normal.drawString(value.getName(), getPosX() + 10, getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
+        RenderUtil.endScissorBox();
         if(expanded) {
             float y = this.getPosY() + this.getBaseHeight();
             for(String string : stringBoxValue.getValues()) {
@@ -33,7 +34,6 @@ public class StringBoxComponent extends ValueComponent {
                 y += this.getBaseHeight();
             }
         }
-        RenderUtil.endScissorBox();
     }
 
     @Override

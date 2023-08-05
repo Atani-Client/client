@@ -24,7 +24,9 @@ public class SliderComponent extends ValueComponent {
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto Medium", 16);
-        RenderUtil.drawRect(getPosX() + 1, getPosY(), getBaseWidth() - 2, getBaseHeight(), new Color(22, 22, 25).getRGB());
+        RenderUtil.drawRect(getPosX() + 1 + getAddX(), getPosY() + getAddY(), getBaseWidth() - 2, getBaseHeight(), new Color(22, 22, 25).getRGB());
+        RenderUtil.startScissorBox();
+        RenderUtil.drawScissorBox(getPosX() + 1 + getAddX(), getPosY() + getAddY(), getBaseWidth() - 2, getBaseHeight());
         normal.drawString(value.getName(), getPosX() + 5 + getAddX(), getPosY() + 2f, -1);
         SliderValue sliderValue = (SliderValue) value;
         float sliderX = getPosX() + 7, sliderY = getPosY() + 10, sliderWidth = getBaseWidth() - 14, sliderHeight = 1.5f;
@@ -35,6 +37,7 @@ public class SliderComponent extends ValueComponent {
         RoundedUtil.drawRound(sliderX + length - 2, sliderY - 2 + 1, 4, 4, 2, new Color(-1));
         FontRenderer small = FontStorage.getInstance().findFont("Roboto Medium", 15);
         small.drawString(sliderValue.getValue().floatValue() + "", sliderX + length - small.getStringWidth(sliderValue.getValue().floatValue() + "") / 2, sliderY + 4, -1);
+        RenderUtil.endScissorBox();
     }
 
     @Override

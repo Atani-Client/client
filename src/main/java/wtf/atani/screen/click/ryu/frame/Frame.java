@@ -64,6 +64,7 @@ public class Frame extends Component implements ColorPalette {
                 component.drawScreen(mouseX, mouseY);
             }
         }
+        RoundedUtil.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), moduleY - getPosY(), 7,  2, new Color(255, 255, 255, 0), new Color(-1));
     }
 
     @Override

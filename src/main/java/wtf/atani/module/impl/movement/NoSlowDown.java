@@ -2,6 +2,7 @@ package wtf.atani.module.impl.movement;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
@@ -19,7 +20,7 @@ public class NoSlowDown extends Module {
 
     //Hooked in EntityLivingBase class & EntityPlayerSP class
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this,  new String[]{"Vanilla", "Spoof", "Old NCP", "WatchDog", "Old Intave"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this,  new String[]{"Vanilla", "Spoof", "Old NCP", "WatchDog", "Old Intave", "Placement"});
 
     // Spoof
     private int spoofSlot;
@@ -82,6 +83,11 @@ public class NoSlowDown extends Module {
                         mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(getIndexOfItem()));
                     }
                     break;
+                case "Placement":
+                    if (mc.thePlayer.isUsingItem() && mc.thePlayer.getItemInUse().getItem() instanceof ItemSword) {
+                        mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());
+                        this.sendPacketUnlogged(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                    }
             }
         }
 

@@ -252,11 +252,11 @@
             <version>20100824</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.mojang</groupId>-->
-<!--            <artifactId>realmsclient</artifactId>-->
-<!--            <version>1.7.59</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>realmsclient</artifactId>
+            <version>1.7.59</version>
+        </dependency>
 
         <dependency>
             <groupId>com.mojang</groupId>

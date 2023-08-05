@@ -13,6 +13,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetHandler;
 import net.minecraft.network.Packet;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.Timer;
 import org.lwjgl.input.Keyboard;
@@ -95,6 +96,18 @@ public interface Methods extends ClientInformationAccess {
 
     default boolean isMoving() {
         return getPlayer().moveForward != 0 || getPlayer().moveStrafing != 0;
+    }
+
+    default boolean isVoidBelow(BlockPos pos) {
+        int air = 0;
+
+        for(int y = 0; y < pos.getY(); y++) {
+            if(mc.theWorld.isAirBlock(pos)) {
+                air++;
+            }
+        }
+
+        return air >= pos.getY();
     }
 
     default boolean isMoving(Entity entity) {

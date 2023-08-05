@@ -87,6 +87,14 @@ public class KillAura extends Module {
     private TimeHelper cpsTimeHelper = new TimeHelper();
     private boolean wasCPSDrop = false;
 
+    private final class AttackRangeSorter implements Comparator<EntityLivingBase> {
+        public int compare(EntityLivingBase o1, EntityLivingBase o2) {
+            int first = FightUtil.getRange(o1) <= attackRange.getValue() ? 0 : 1;
+            int second = FightUtil.getRange(o2) <= attackRange.getValue() ? 0 : 1;
+            return Double.compare(first, second);
+        }
+    }
+
     private final class HealthSorter implements Comparator<EntityLivingBase> {
         public int compare(EntityLivingBase o1, EntityLivingBase o2) {
             return Double.compare(FightUtil.getEffectiveHealth(o1), FightUtil.getEffectiveHealth(o2));
@@ -137,6 +145,7 @@ public class KillAura extends Module {
                     targets.sort(new HealthSorter());
                     break;
             }
+            targets.sort(new AttackRangeSorter());
             if (targets.isEmpty() || (curEntity != null && !targets.contains(curEntity))) {
                 curEntity = null;
                 return;

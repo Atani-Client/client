@@ -24,12 +24,15 @@ public class ScaffoldWalk extends Module {
 
     private final CheckBoxValue swinging = new CheckBoxValue("Swinging", "Swing when placing blocks?", this, true);
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
+    private final CheckBoxValue switchItems = new CheckBoxValue("Switch Items", "Switch to blocks?", this, true);
     private final CheckBoxValue reverseMovement = new CheckBoxValue("Reverse Movement", "Reverse your movement?", this, false);
     private final CheckBoxValue randomizePitch = new CheckBoxValue("Randomize Pitch", "Randomize pitch rotation?", this, false);
     private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0);
     private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0);
 
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper();
+
+    private int lastItem = -1;
 
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
@@ -39,6 +42,21 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
+
+        if (switchItems.getValue()) {
+            if ((mc.thePlayer.getHeldItem() != null && !(mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)) || mc.thePlayer.getHeldItem() == null) {
+                for (int i = 0; i < 9; i++) {
+                    ItemStack stack = mc.thePlayer.inventory.getStackInSlot(i);
+
+                    if (stack != null && stack.stackSize != 0 && stack.getItem() instanceof ItemBlock) {
+                        if(lastItem == -1)
+                            lastItem = mc.thePlayer.inventory.currentItem;
+                        mc.thePlayer.inventory.currentItem = i;
+                    }
+                }
+            }
+        }
+
         getPlayer().setSprinting(sprint.getValue());
         getGameSettings().keyBindSprint.pressed = sprint.getValue();
 
@@ -69,7 +87,7 @@ public class ScaffoldWalk extends Module {
             if (itemstack != null && itemstack.getItem() instanceof ItemBlock) {
                 if (mc.objectMouseOver != null) {
                     final BlockPos blockpos = mc.objectMouseOver.getBlockPos();
-                    if (mc.theWorld.getBlockState(blockpos).getBlock().getMaterial() != Material.air) {
+                    if (mc.theWorld.getBlockState(blockpos) != null && mc.theWorld.getBlockState(blockpos).getBlock() != null && mc.theWorld.getBlockState(blockpos).getBlock().getMaterial() != Material.air) {
                         if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem(), blockpos, mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec)) {
                             if (this.swinging.getValue())
                                 mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
@@ -92,6 +110,10 @@ public class ScaffoldWalk extends Module {
 
     @Override
     public void onDisable() {
+        if(this.lastItem != -1) {
+            mc.thePlayer.inventory.currentItem = this.lastItem;
+            this.lastItem = -1;
+        }
         getGameSettings().keyBindSneak.pressed = isKeyDown(getGameSettings().keyBindSneak.getKeyCode());
         getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindBack.getKeyCode());
         getGameSettings().keyBindForward.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());

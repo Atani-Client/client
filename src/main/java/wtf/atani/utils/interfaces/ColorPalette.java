@@ -8,8 +8,8 @@ public interface ColorPalette {
     int RYU = new Color(81, 81, 255).getRGB();
     int GOLDEN_FIRST = new Color(255, 202, 3).getRGB();
     int GOLDEN_SECOND = new Color(255, 84, 3).getRGB();
-    int ICARUS_FIRST = new Color(255, 0, 127).getRGB();
-    int ICARUS_SECOND = new Color(127, 0, 255).getRGB();
+    int ICARUS_FIRST = new Color(253, 0, 144).getRGB();
+    int ICARUS_SECOND = new Color(125, 18, 255).getRGB();
     int FATALITY_FIRST = new Color(54, 41, 160).getRGB();
     int FATALITY_SECOND = new Color(147, 28, 95).getRGB();
     int VESTIGE_FIRST = new Color(255, 35, 230).getRGB();

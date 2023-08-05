@@ -6,6 +6,7 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.screen.click.augustus.AugustusClickGuiScreen;
+import wtf.atani.screen.click.icarus.IcarusClickGuiScreen;
 import wtf.atani.screen.click.ryu.RyuClickGuiScreen;
 import wtf.atani.screen.click.xave.XaveClickGuiScreen;
 import wtf.atani.screen.click.golden.GoldenClickGuiScreen;
@@ -33,6 +34,7 @@ public class ClickGui extends Module {
     public static AugustusClickGuiScreen clickGuiScreenAugustus;
     public static XaveClickGuiScreen clickGuiScreenXave;
     public static RyuClickGuiScreen clickGuiScreenRyu;
+    public static IcarusClickGuiScreen clickGuiScreenIcarus;
 
     @Override
     public void onEnable() {
@@ -62,10 +64,16 @@ public class ClickGui extends Module {
                 mc.displayGuiScreen(clickGuiScreenXave);
                 break;
             case "Ryu":
-                if(clickGuiScreenRyu == null || true) {
+                if(clickGuiScreenRyu == null) {
                     clickGuiScreenRyu = new RyuClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenRyu);
+                break;
+            case "Icarus":
+                if(clickGuiScreenIcarus == null) {
+                    clickGuiScreenIcarus = new IcarusClickGuiScreen();
+                }
+                mc.displayGuiScreen(clickGuiScreenIcarus);
                 break;
         }
         this.setEnabled(false);

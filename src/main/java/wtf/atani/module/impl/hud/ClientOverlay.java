@@ -190,6 +190,9 @@ public class ClientOverlay extends Module implements ColorPalette {
                 case "Xave":
                     fontRenderer = FontStorage.getInstance().findFont("Roboto", 18);
                     break;
+                case "Ryu":
+                    fontRenderer = FontStorage.getInstance().findFont("Roboto Medium", 17);
+                    break;
                 default:
                     fontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
                     break;

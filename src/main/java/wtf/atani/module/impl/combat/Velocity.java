@@ -22,7 +22,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Polar Under-Block"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar Under-Block"});
     public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple") || mode.getValue().equalsIgnoreCase("Reverse")});
     public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple") || mode.getValue().equalsIgnoreCase("Reverse")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("AAC v4")});
@@ -103,17 +103,18 @@ public class Velocity extends Module {
             }
         }
         switch (mode.getValue()) {
-            case "Polar Under-Block":
+            case "Polar Under-Block": {
                 Packet packet = packetEvent.getPacket();
                 AxisAlignedBB axisAlignedBB = mc.thePlayer.getEntityBoundingBox().offset(0.0, 1.0, 0.0);
 
                 if (!mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, axisAlignedBB).isEmpty()) {
-                    if(packet instanceof S12PacketEntityVelocity) {
+                    if (packet instanceof S12PacketEntityVelocity) {
                         packetEvent.setCancelled(true);
-                        mc.thePlayer.motionY = ((S12PacketEntityVelocity)packet).getMotionY() / 8000.0; // only use under blocks
+                        mc.thePlayer.motionY = ((S12PacketEntityVelocity) packet).getMotionY() / 8000.0;
                     }
                 }
                 break;
+            }
             case "Grim Flag":
                 if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
                     Packet p = packetEvent.getPacket();
@@ -182,6 +183,14 @@ public class Velocity extends Module {
                 if(packetEvent.getPacket() instanceof S32PacketConfirmTransaction && grimCancel > 0) {
                     packetEvent.setCancelled(true);
                     grimCancel--;
+                }
+                break;
+            case "Matrix Reverse":
+                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                    if (mc.thePlayer.hurtTime > 0) {
+                        mc.thePlayer.motionX *= -0.3;
+                        mc.thePlayer.motionZ *= -0.3;
+                    }
                 }
                 break;
             case "Matrix Semi":

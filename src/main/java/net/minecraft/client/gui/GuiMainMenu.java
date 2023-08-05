@@ -96,68 +96,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 
     public GuiMainMenu()
     {
-        this.openGLWarning2 = field_96138_a;
-        this.field_183502_L = false;
-        this.splashText = "missingno";
-        BufferedReader bufferedreader = null;
 
-        try
-        {
-            List<String> list = Lists.<String>newArrayList();
-            bufferedreader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(splashTexts).getInputStream(), Charsets.UTF_8));
-            String s;
-
-            while ((s = bufferedreader.readLine()) != null)
-            {
-                s = s.trim();
-
-                if (!s.isEmpty())
-                {
-                    list.add(s);
-                }
-            }
-
-            if (!list.isEmpty())
-            {
-                while (true)
-                {
-                    this.splashText = (String)list.get(RANDOM.nextInt(list.size()));
-
-                    if (this.splashText.hashCode() != 125780783)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-        catch (IOException var12)
-        {
-            ;
-        }
-        finally
-        {
-            if (bufferedreader != null)
-            {
-                try
-                {
-                    bufferedreader.close();
-                }
-                catch (IOException var11)
-                {
-                    ;
-                }
-            }
-        }
-
-        this.updateCounter = RANDOM.nextFloat();
-        this.openGLWarning1 = "";
-
-        if (!GLContext.getCapabilities().OpenGL20 && !OpenGlHelper.areShadersSupported())
-        {
-            this.openGLWarning1 = I18n.format("title.oldgl1", new Object[0]);
-            this.openGLWarning2 = I18n.format("title.oldgl2", new Object[0]);
-            this.openGLWarningLink = "https://help.mojang.com/customer/portal/articles/325948?ref=game";
-        }
     }
 
     private boolean func_183501_a()
@@ -201,66 +140,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     public void initGui()
     {
         mc.displayGuiScreen(new AtaniMainMenu());
-
-        this.viewportTexture = new DynamicTexture(256, 256);
-        this.backgroundTexture = this.mc.getTextureManager().getDynamicTextureLocation("background", this.viewportTexture);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(new Date());
-
-        if (calendar.get(2) + 1 == 12 && calendar.get(5) == 24)
-        {
-            this.splashText = "Merry X-mas!";
-        }
-        else if (calendar.get(2) + 1 == 1 && calendar.get(5) == 1)
-        {
-            this.splashText = "Happy new year!";
-        }
-        else if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31)
-        {
-            this.splashText = "OOoooOOOoooo! Spooky!";
-        }
-
-        int i = 24;
-        int j = this.height / 4 + 48;
-
-        if (this.mc.isDemo())
-        {
-            this.addDemoButtons(j, 24);
-        }
-        else
-        {
-            this.addSingleplayerMultiplayerButtons(j, 24);
-        }
-
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, j + 72 + 12, 98, 20, I18n.format("menu.options", new Object[0])));
-        this.buttonList.add(new GuiButton(4, this.width / 2 + 2, j + 72 + 12, 98, 20, I18n.format("menu.quit", new Object[0])));
-        this.buttonList.add(new GuiButtonLanguage(5, this.width / 2 - 124, j + 72 + 12));
-
-        synchronized (this.threadLock)
-        {
-            this.field_92023_s = this.fontRendererObj.getStringWidth(this.openGLWarning1);
-            this.field_92024_r = this.fontRendererObj.getStringWidth(this.openGLWarning2);
-            int k = Math.max(this.field_92023_s, this.field_92024_r);
-            this.field_92022_t = (this.width - k) / 2;
-            this.field_92021_u = ((GuiButton)this.buttonList.get(0)).yPosition - 24;
-            this.field_92020_v = this.field_92022_t + k;
-            this.field_92019_w = this.field_92021_u + 24;
-        }
-
-        this.mc.func_181537_a(false);
-
-        if (Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && !this.field_183502_L)
-        {
-            RealmsBridge realmsbridge = new RealmsBridge();
-            this.field_183503_M = realmsbridge.getNotificationScreen(this);
-            this.field_183502_L = true;
-        }
-
-        if (this.func_183501_a())
-        {
-            this.field_183503_M.func_183500_a(this.width, this.height);
-            this.field_183503_M.initGui();
-        }
     }
 
     /**

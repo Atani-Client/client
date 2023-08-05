@@ -11,8 +11,8 @@ import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.player.PlayerHandler;
 import wtf.atani.value.impl.StringBoxValue;
 
-@ModuleInfo(name = "W-Tap", description = "Helps you give people more knockback", category = Category.COMBAT)
-public class WTap extends Module {
+@ModuleInfo(name = "MoreKnockback", description = "Helps you give people more knockback", category = Category.COMBAT)
+public class MoreKnockback extends Module {
 
     public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Sprint Reset", "Single Packet", "Normal Packet", "Double Packet"});
 

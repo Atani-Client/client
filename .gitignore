@@ -5,10 +5,4 @@ test_natives/*
 test_run/*
 test_logs/*
 *.gz
-usercache.json
-optionsof.txt
-options.txt
-logs/latest.log
-Atani/accounts.json
-saves/*
-Atani/modules.json
+test_run/Atani/modules.json

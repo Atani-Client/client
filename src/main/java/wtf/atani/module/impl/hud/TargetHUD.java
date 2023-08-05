@@ -1,4 +1,4 @@
-package wtf.atani.module.impl.render;
+package wtf.atani.module.impl.hud;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
@@ -20,7 +20,7 @@ import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
 
-@ModuleInfo(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.RENDER)
+@ModuleInfo(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)
 public class TargetHUD extends Module {
 
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Golden"});

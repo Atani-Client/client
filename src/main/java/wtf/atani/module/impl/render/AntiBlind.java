@@ -10,6 +10,8 @@ import wtf.atani.module.data.enums.Category;
 @ModuleInfo(name = "AntiBlind", description = "Removes bad effects from the player.", category = Category.RENDER)
 public class AntiBlind extends Module {
 
+    // Hooked in Entity class
+
     @Listen
     public void onUpdateEvent(UpdateEvent updateEvent) {
         if (mc.thePlayer.getActivePotionEffect(Potion.blindness) != null) {

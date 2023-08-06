@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -49,6 +50,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import wtf.atani.event.events.SafeWalkEvent;
 import wtf.atani.module.impl.movement.SafeWalk;
+import wtf.atani.module.impl.render.AntiBlind;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.performance.FastUUID;
 
@@ -478,7 +480,7 @@ public abstract class Entity implements ICommandSender
         {
             this.fire = 0;
         }
-        else if (this.fire > 0)
+        else if (this.fire > 0 && !ModuleStorage.getInstance().getByClass(AntiBlind.class).isEnabled())
         {
             if (this.isImmuneToFire)
             {
@@ -533,7 +535,7 @@ public abstract class Entity implements ICommandSender
      */
     protected void setOnFireFromLava()
     {
-        if (!this.isImmuneToFire)
+        if (!this.isImmuneToFire && !ModuleStorage.getInstance().getByClass(AntiBlind.class).isEnabled())
         {
             this.attackEntityFrom(DamageSource.lava, 4.0F);
             this.setFire(15);
@@ -545,12 +547,14 @@ public abstract class Entity implements ICommandSender
      */
     public void setFire(int seconds)
     {
-        int i = seconds * 20;
-        i = EnchantmentProtection.getFireTimeForEntity(this, i);
+        if(!ModuleStorage.getInstance().getByClass(AntiBlind.class).isEnabled()) {
+            int i = seconds * 20;
+            i = EnchantmentProtection.getFireTimeForEntity(this, i);
 
-        if (this.fire < i)
-        {
-            this.fire = i;
+            if (this.fire < i)
+            {
+                this.fire = i;
+            }
         }
     }
 
@@ -902,7 +906,8 @@ public abstract class Entity implements ICommandSender
 
             boolean flag2 = this.isWet();
 
-            if (this.worldObj.isFlammableWithin(this.getEntityBoundingBox().contract(0.001D, 0.001D, 0.001D)))
+            if (this.worldObj.isFlammableWithin(this.getEntityBoundingBox().contract(0.001D, 0.001D, 0.001D))
+            && !ModuleStorage.getInstance().getByClass(AntiBlind.class).isEnabled())
             {
                 this.dealFireDamage(1);
 
@@ -1091,7 +1096,9 @@ public abstract class Entity implements ICommandSender
      */
     public boolean isWet()
     {
-        return this.inWater || this.worldObj.canLightningStrike(new BlockPos(this.posX, this.posY, this.posZ)) || this.worldObj.canLightningStrike(new BlockPos(this.posX, this.posY + (double)this.height, this.posZ));
+        return ModuleStorage.getInstance().getByClass(AntiBlind.class).isEnabled() || this.inWater ||
+                this.worldObj.canLightningStrike(new BlockPos(this.posX, this.posY, this.posZ)) ||
+                this.worldObj.canLightningStrike(new BlockPos(this.posX, this.posY + (double)this.height, this.posZ));
     }
 
     /**
@@ -2137,6 +2144,9 @@ public abstract class Entity implements ICommandSender
      */
     public boolean isBurning()
     {
+        if(ModuleStorage.getInstance().getByClass(AntiBlind.class).isEnabled()) {
+            return false;
+        }
         boolean flag = this.worldObj != null && this.worldObj.isRemote;
         return !this.isImmuneToFire && (this.fire > 0 || flag && this.getFlag(0));
     }

@@ -86,6 +86,32 @@ public class AxisAlignedBB
         return new AxisAlignedBB(d0, d1, d2, d3, d4, d5);
     }
 
+    public AxisAlignedBB expand(float f)
+    {
+        double x = f, y = f, z = f;
+        double d0 = this.minX - x;
+        double d1 = this.minY - y;
+        double d2 = this.minZ - z;
+        double d3 = this.maxX + x;
+        double d4 = this.maxY + y;
+        double d5 = this.maxZ + z;
+        return new AxisAlignedBB(d0, d1, d2, d3, d4, d5);
+    }
+
+    public AxisAlignedBB expand(Vec3 vec3)
+    {
+        double x = vec3.xCoord;
+        double y = vec3.yCoord;
+        double z = vec3.zCoord;
+        double d0 = this.minX - x;
+        double d1 = this.minY - y;
+        double d2 = this.minZ - z;
+        double d3 = this.maxX + x;
+        double d4 = this.maxY + y;
+        double d5 = this.maxZ + z;
+        return new AxisAlignedBB(d0, d1, d2, d3, d4, d5);
+    }
+
     public AxisAlignedBB union(AxisAlignedBB other)
     {
         double d0 = Math.min(this.minX, other.minX);

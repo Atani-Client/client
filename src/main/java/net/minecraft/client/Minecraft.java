@@ -1500,6 +1500,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     /**
      * Runs the current tick.
      */
+
     public void runTick() throws IOException
     {
         EventHandling.getInstance().publishEvent(new TickEvent());

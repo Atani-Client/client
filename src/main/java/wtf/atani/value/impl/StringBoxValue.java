@@ -31,6 +31,9 @@ public class StringBoxValue extends Value<String> {
     public boolean is(String string) {
         return this.getValue().equalsIgnoreCase(string);
     }
+    public boolean is(int index) {
+        return this.getValue().equalsIgnoreCase(values[index]);
+    }
 
     @Override
     public String getValueAsString() {

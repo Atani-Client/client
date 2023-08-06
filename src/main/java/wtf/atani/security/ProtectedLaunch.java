@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
 import com.mojang.realmsclient.util.UploadTokenCache;
+import de.florianmichael.rclasses.ArrayUtils;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
@@ -56,7 +57,10 @@ import java.util.UUID;
 // mc whole class will be obfuscated natively
 public class ProtectedLaunch {
 
+    private static String[] args;
+
     public void runMain(String[] args) {
+        this.args = args;
         System.setProperty("java.net.preferIPv4Stack", "true");
         final OptionParser optionparser = new OptionParser();
         optionparser.allowsUnrecognizedOptions();
@@ -354,8 +358,10 @@ public class ProtectedLaunch {
         new ModificationLoader().start();
         mc.ingameGUI = new GuiIngame(mc);
 
-        TextureFix textureFix = new TextureFix();
-        textureFix.runFix();
+        if(!ArrayUtils.contains(args, "stopTextureFix")) {
+            TextureFix textureFix = new TextureFix();
+            textureFix.runFix();
+        }
 
         if (mc.serverName != null)
         {

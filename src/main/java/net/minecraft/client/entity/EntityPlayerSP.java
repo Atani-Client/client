@@ -194,6 +194,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
         if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ))) {
             new UpdateEvent().onFire();
             final UpdateMotionEvent updateMotionEvent = new UpdateMotionEvent(UpdateMotionEvent.Type.PRE, this.isCurrentViewEntity()).onFire();
+            if(updateMotionEvent.isCancelled())
+                return;
             super.onUpdate();
             new UpdateMotionEvent(UpdateMotionEvent.Type.MID, updateMotionEvent.isCurrentView()).onFire();
             if (this.isRiding()) {

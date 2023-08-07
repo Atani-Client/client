@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
+import wtf.atani.screen.click.astolfo.AstolfoClickGuiScreen;
 import wtf.atani.screen.click.augustus.AugustusClickGuiScreen;
 import wtf.atani.screen.click.icarus.IcarusClickGuiScreen;
 import wtf.atani.screen.click.ryu.RyuClickGuiScreen;
@@ -17,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "ClickGui", description = "A clicky gui", category = Category.HUD, key = Keyboard.KEY_RSHIFT)
 public class ClickGui extends Module {
 
-    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality"});
+    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Astolfo"});
     public final CheckBoxValue openingAnimation = new CheckBoxValue("Opening Animation", "Animate the opening and closing of the gui?", this, true);
     public final StringBoxValue dropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like", this, new String[]{"Scale-In", "Frame Scale-In", "Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
             mode.getValue().equalsIgnoreCase("Simple") || // Dropdown guis go here
@@ -35,6 +36,7 @@ public class ClickGui extends Module {
     public static XaveClickGuiScreen clickGuiScreenXave;
     public static RyuClickGuiScreen clickGuiScreenRyu;
     public static IcarusClickGuiScreen clickGuiScreenIcarus;
+    public static AstolfoClickGuiScreen astolfoGui;
 
     @Override
     public void onEnable() {
@@ -74,6 +76,12 @@ public class ClickGui extends Module {
                     clickGuiScreenIcarus = new IcarusClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenIcarus);
+                break;
+            case "Astolfo":
+                if(astolfoGui == null) {
+                    astolfoGui = new AstolfoClickGuiScreen();
+                }
+                mc.displayGuiScreen(astolfoGui);
                 break;
         }
         this.setEnabled(false);

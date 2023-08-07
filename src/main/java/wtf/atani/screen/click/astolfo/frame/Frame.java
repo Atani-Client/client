@@ -1,8 +1,10 @@
 package wtf.atani.screen.click.astolfo.frame;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import org.lwjgl.input.Keyboard;
+import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.Module;
 import wtf.atani.screen.click.astolfo.frame.component.Component;
 import wtf.atani.screen.click.astolfo.frame.component.impl.BooleanButton;
@@ -60,13 +62,13 @@ public class Frame extends Component {
         else
             Gui.drawRect(x + 2, y, x + width - 2, y + height, module.isEnabled() ? hovered ? color.darker().getRGB() : color.getRGB() : hovered ? new Color(0xff232623).darker().getRGB() : 0xff232623);
 
-        Minecraft.getMinecraft().fontRendererObj.drawCenteredStringWithShadow(module.getName().toLowerCase(Locale.ROOT),
+        fontRenderer.drawCenteredStringWithShadow(module.getName().toLowerCase(Locale.ROOT),
                 x + width - Minecraft.getMinecraft().fontRendererObj.getStringWidth(module.getName().toLowerCase(Locale.ROOT)) - 4, y + height / 2 + 1.5f, expanded ? module.isEnabled() ? color.getRGB() : 0xffffffff : 0xffffffff);
 
         if(module.getKey() != 0 && !module.isListening()) {
-            mc.fontRendererObj.drawCenteredStringWithShadow("[" + Keyboard.getKeyName(module.getKey()) + "]".toUpperCase(), x + width - 95, y + height / 2 + 1.5f, new Color(73, 75, 85).getRGB());
+            fontRenderer.drawCenteredStringWithShadow("[" + Keyboard.getKeyName(module.getKey()) + "]".toUpperCase(), x + width - 95, y + height / 2 + 1.5f, new Color(73, 75, 85).getRGB());
         }else if(module.isListening()) {
-            mc.fontRendererObj.drawCenteredStringWithShadow("[...]".toUpperCase(), x + width - 95, y + height / 2 + 1.5f, new Color(73, 75, 85).getRGB());
+            fontRenderer.drawCenteredStringWithShadow("[...]".toUpperCase(), x + width - 95, y + height / 2 + 1.5f, new Color(73, 75, 85).getRGB());
         }
 
         float sexyMethod = 0;

@@ -21,8 +21,8 @@ public class ModeButton extends Component {
     @Override
     public void drawScreen(int mx, int my) {
         Gui.drawRect(x, y, x + width, y + height, 0xff181A17);
-        mc.fontRendererObj.drawCenteredStringWithShadow(setting.getName(), x + 4, y + height / 2, -1);
-        mc.fontRendererObj.drawCenteredStringWithShadow(setting.getValue(), x + 4 + 93 - mc.fontRendererObj.getStringWidth(setting.getValue()), y +height / 2, -1);
+        fontRenderer.drawCenteredStringWithShadow(setting.getName(), x + 4, y + height / 2, -1);
+        fontRenderer.drawCenteredStringWithShadow(setting.getValue(), x + 4 + 93 - mc.fontRendererObj.getStringWidth(setting.getValue()), y +height / 2, -1);
     }
 
     @Override

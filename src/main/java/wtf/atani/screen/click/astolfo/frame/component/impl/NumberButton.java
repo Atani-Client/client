@@ -7,8 +7,6 @@ import wtf.atani.value.impl.SliderValue;
 
 import java.awt.*;
 
-import static wtf.atani.utils.interfaces.Methods.mc;
-
 public class NumberButton extends Component {
     public SliderValue setting;
     public Color color;
@@ -38,7 +36,7 @@ public class NumberButton extends Component {
         Gui.drawRect(this.x + 1, this.y, this.x + (int)(widthPrec * (width - 2)) + 1, this.y + height, color.getRGB());
 
 
-        mc.fontRendererObj.drawCenteredStringWithShadow(setting.getName() + ": " + Math.round(setting.getValue().doubleValue() * 100D) / 100D, this.x + 4, this.y + height / 2, -1);
+        fontRenderer.drawCenteredStringWithShadow(setting.getName() + ": " + Math.round(setting.getValue().doubleValue() * 100D) / 100D, this.x + 4, this.y + height / 2, -1);
     }
 
 

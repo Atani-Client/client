@@ -1,15 +1,20 @@
 package wtf.atani.module.impl.player;
 
+import org.apache.commons.codec.digest.Md5Crypt;
+
 import com.google.common.base.Supplier;
 
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import wtf.atani.event.events.PacketEvent;
 import wtf.atani.event.events.TickEvent;
+import wtf.atani.event.events.UpdateEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.math.time.TickHelper;
+import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
@@ -19,7 +24,7 @@ import com.google.common.base.Supplier;
 public class NoFall extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Edit", "Vulcan", "Verus", "Spartan"});
     private final CheckBoxValue modulo = new CheckBoxValue("Modulo", "Set on ground only every 3 blocks?", this, true, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Edit")});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[] {"Instant Motion", "Gradual Motion"});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[] {"Instant Motion"});
 
     private final TickHelper spartanTimer = new TickHelper();
 
@@ -39,17 +44,18 @@ public class NoFall extends Module {
                     }
                     break;
                 case "Vulcan":
-                    if(packetEvent.getPacket() instanceof C03PacketPlayer && correctModulo) {
+                    if(packetEvent.getPacket() instanceof C03PacketPlayer) {
                         C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
-                        switch(this.vulcanMode.getValue()) {
-                        case "Instant Motion":
-                            mc.thePlayer.motionY = -500;
-                        	break;
-                        case "Gradual Motion":
-                            mc.thePlayer.motionY = -0.1F;
-                        	break;
+                        if(correctModulo) {
+                            switch(this.vulcanMode.getValue()) {
+                            case "Instant Motion":
+                                mc.thePlayer.motionY = -500;
+                                packet.setOnGround(true);
+                            	break;
+                            }
+                        } else {
+                        	mc.timer.timerSpeed = 1f;
                         }
-                        packet.setOnGround(true);
                     }
                     break;
                 case "Verus":
@@ -67,7 +73,8 @@ public class NoFall extends Module {
 
     @Listen
     public void onTickEvent(TickEvent tickEvent) {
-        if(mode.getValue().equals("Spartan")) {
+    	switch(mode.getValue()) {
+    	case "Spartan":
             spartanTimer.update();
 
             if(mc.thePlayer.fallDistance > 1.5 && spartanTimer.hasReached(10)) {
@@ -75,7 +82,10 @@ public class NoFall extends Module {
                 mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY - 10, mc.thePlayer.posZ, true));
                 spartanTimer.reset();
             }
-        }
+    		break;
+    	case "Vulcan":
+    		break;
+    	}
     }
 
     @Override

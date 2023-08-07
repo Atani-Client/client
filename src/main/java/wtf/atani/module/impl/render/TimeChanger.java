@@ -15,7 +15,7 @@ public class TimeChanger extends Module {
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
-        if(packetEvent.getPacket() instanceof S03PacketTimeUpdate) {
+        if(packetEvent.getPacket() instanceof S03PacketTimeUpdate && mc.theWorld != null) {
             mc.theWorld.setWorldTime((int)time.getValue() * 100L);
             packetEvent.setCancelled(true);
         }

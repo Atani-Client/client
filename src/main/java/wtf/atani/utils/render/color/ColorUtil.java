@@ -7,24 +7,36 @@ import java.util.Random;
 
 public class ColorUtil {
 
-    private static final int[] CZECHIA_COLOURS = {
+    public static final int[] RAINBOW_COLORS = {
+            0xfffc6a8c, 0xfffc6ad5, 0xffda6afc, 0xff916afc, 0xff6a8cfc, 0xff6ad5fc, 0xffda6afc, 0xfffc6a8c,
+    };
+
+    public static final int[] CZECHIA_COLORS = {
             0xFF11457E, 0xFF11457E, 0xFFD7141A, 0xFFD7141A, 0xFFFFFFFF, 0xFF11457E,
     };
 
-    private static final int[] GERMAN_COLOURS = {
+    public static final int[] GERMAN_COLORS = {
             0xFF000000, 0xFFFE0000, 0xFFFFCF00, 0xFF000000,
     };
 
     public static int blendCzechiaColours(final double progress) {
-        return blendColours(CZECHIA_COLOURS, progress);
+        return blendColours(CZECHIA_COLORS, progress);
     }
 
     public static int blendCzechiaColours(final long offset) {
         return blendCzechiaColours(getFadingFromSysTime(offset));
     }
 
+    public static int blendRainbowColours(final double progress) {
+        return blendColours(RAINBOW_COLORS, progress);
+    }
+
+    public static int blendRainbowColours(final long offset) {
+        return blendRainbowColours(getFadingFromSysTime(offset));
+    }
+
     public static int blendGermanColours(final double progress) {
-        return blendColours(GERMAN_COLOURS, progress);
+        return blendColours(GERMAN_COLORS, progress);
     }
 
     public static int blendGermanColours(final long offset) {
@@ -48,6 +60,14 @@ public class ColorUtil {
         float value = minValue + random.nextInt(maxValue - minValue + 1) / 255.0f;
 
         return Color.getHSBColor(hue / 360.0f, saturation, value).darker();
+    }
+
+    public static int darken(final int color, final float factor) {
+        final int r = (int)((color >> 16 & 0xFF) * factor);
+        final int g = (int)((color >> 8 & 0xFF) * factor);
+        final int b = (int)((color & 0xFF) * factor);
+        final int a = color >> 24 & 0xFF;
+        return (r & 0xFF) << 16 | (g & 0xFF) << 8 | (b & 0xFF) | (a & 0xFF) << 24;
     }
 
     public static Color getGradientOffset(Color color1, Color color2, double offset) {
@@ -77,6 +97,10 @@ public class ColorUtil {
         return fadeTo(startColour, endColour, progress);
     }
 
+    public static int fadeBetween(int[] colors, int endColour, long offset) {
+        return blendColours(colors, ((System.currentTimeMillis() + offset) % 2000L) / 1000.0);
+    }
+
     public static int fadeBetween(int startColour, int endColour, long offset) {
         return fadeBetween(startColour, endColour, ((System.currentTimeMillis() + offset) % 2000L) / 1000.0);
     }
@@ -103,6 +127,12 @@ public class ColorUtil {
 
     public static double getFadingFromSysTime(final long offset) {
         return ((System.currentTimeMillis() + offset) % 2000L) / 2000.0;
+    }
+
+    public static int getRainbow(int speed, int offset) {
+        float hue = (System.currentTimeMillis() + offset) % speed;
+        hue /= speed;
+        return Color.getHSBColor(hue, 0.85f, 1f).getRGB();
     }
 
     public static int interpolateColor(int color1, int color2, float amount) {

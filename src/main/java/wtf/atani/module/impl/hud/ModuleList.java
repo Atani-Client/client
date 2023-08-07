@@ -139,8 +139,8 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                         fontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
                         break;
                 }
-                String name1 = moduleListMode.is("Custom") ? suffixMode.getValue().replace("nm", mod1.getName()).replace("sfx", mod1.getSuffix() == null ? "" : mod1.getSuffix()) : mod1.getName();
-                String name2 = moduleListMode.is("Custom") ? suffixMode.getValue().replace("nm", mod2.getName()).replace("sfx", mod2.getSuffix() == null ? "" : mod2.getSuffix()) : mod2.getName();
+                String name1 = moduleListMode.is("Custom") ? suffixMode.getValue().replace("nm", mod1.getName()).replace(" sfx", mod1.getSuffix() == null ? "" : " " + mod1.getSuffix()) : mod1.getName();
+                String name2 = moduleListMode.is("Custom") ? suffixMode.getValue().replace("nm", mod2.getName()).replace(" sfx", mod2.getSuffix() == null ? "" : " " + mod2.getSuffix()) : mod2.getName();
                 return fontRenderer.getStringWidth(name2) - fontRenderer.getStringWidth(name1);
             });
             LinkedHashMap<Module, DecelerateAnimation> sortedMap = new LinkedHashMap<>();

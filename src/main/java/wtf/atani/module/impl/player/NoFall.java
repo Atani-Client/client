@@ -1,5 +1,7 @@
 package wtf.atani.module.impl.player;
 
+import com.google.common.base.Supplier;
+
 import net.minecraft.network.play.client.C03PacketPlayer;
 import wtf.atani.event.events.PacketEvent;
 import wtf.atani.event.events.TickEvent;
@@ -11,11 +13,13 @@ import wtf.atani.utils.math.time.TickHelper;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
+import com.google.common.base.Supplier;
 
 @ModuleInfo(name = "NoFall", description = "Reduces fall damage", category = Category.PLAYER)
 public class NoFall extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Edit", "Vulcan", "Verus", "Spartan"});
-    private final CheckBoxValue modulo = new CheckBoxValue("Modulo", "Set on ground only every 3 blocks?", this, true);
+    private final CheckBoxValue modulo = new CheckBoxValue("Modulo", "Set on ground only every 3 blocks?", this, true, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Edit")});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[] {"Instant Motion", "Gradual Motion"});
 
     private final TickHelper spartanTimer = new TickHelper();
 
@@ -37,7 +41,14 @@ public class NoFall extends Module {
                 case "Vulcan":
                     if(packetEvent.getPacket() instanceof C03PacketPlayer && correctModule) {
                         C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
-                        mc.thePlayer.motionY -= (packet.getPositionY() - 0.001f);
+                        switch(this.vulcanMode.getValue()) {
+                        case "Instant Motion":
+                            mc.thePlayer.motionY = -500;
+                        	break;
+                        case "Gradual Motion":
+                            mc.thePlayer.motionY = -0.1F;
+                        	break;
+                        }
                         packet.setOnGround(true);
                     }
                     break;

@@ -19,6 +19,7 @@ public abstract class Module implements Methods {
     private int key;
     private boolean enabled;
     private boolean alwaysEnabled;
+    private boolean listening;
 
     public Module() {
         ModuleInfo moduleInfo = this.getClass().getAnnotation(ModuleInfo.class);
@@ -133,5 +134,11 @@ public abstract class Module implements Methods {
         }
     }
 
+    public boolean isListening() {
+        return listening;
+    }
 
+    public void setListening(boolean listening) {
+        this.listening = listening;
+    }
 }

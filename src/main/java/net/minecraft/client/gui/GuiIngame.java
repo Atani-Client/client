@@ -346,7 +346,7 @@ public class GuiIngame extends Gui
             this.overlayPlayerList.updatePlayerList(false);
         }
 
-        new Render2DEvent(scaledresolution).onFire();
+        new Render2DEvent(scaledresolution, partialTicks).onFire();
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();

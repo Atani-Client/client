@@ -13,10 +13,10 @@ public class AntiTabComplete extends Module {
 
     @Listen
     public void onPacket(PacketEvent event) {
-        if(mc.thePlayer != null || mc.theWorld != null) {
-            if (event.getPacket() instanceof C14PacketTabComplete || event.getPacket() instanceof S3APacketTabComplete) {
-                event.setCancelled(true);
-            }
+    	if(mc.thePlayer == null || mc.theWorld == null)
+    		return;
+        if (event.getPacket() instanceof C14PacketTabComplete || event.getPacket() instanceof S3APacketTabComplete) {
+            event.setCancelled(true);
         }
     }
 

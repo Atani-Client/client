@@ -2,6 +2,7 @@ package wtf.atani.module.impl.render;
 
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import wtf.atani.event.events.PacketEvent;
+import wtf.atani.event.events.UpdateEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
@@ -14,9 +15,13 @@ public class TimeChanger extends Module {
     private final SliderValue time = new SliderValue("Time", "What should the time be?", this, 160, 0, 250, 0);
 
     @Listen
+    public void onUpdate(UpdateEvent updateEvent) {
+        mc.theWorld.setWorldTime((int)time.getValue() * 100L);
+    }
+    
+    @Listen
     public void onPacket(PacketEvent packetEvent) {
         if(packetEvent.getPacket() instanceof S03PacketTimeUpdate && mc.theWorld != null) {
-            mc.theWorld.setWorldTime((int)time.getValue() * 100L);
             packetEvent.setCancelled(true);
         }
     }

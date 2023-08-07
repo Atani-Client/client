@@ -23,7 +23,7 @@ public class NoFall extends Module {
     public void onPacket(PacketEvent packetEvent) {
         if(mc.thePlayer != null && mc.theWorld != null) {
             float modulo =  mc.thePlayer.fallDistance % 3;
-            boolean correctModule = modulo < 1f;
+            boolean correctModule = modulo < 1f && mc.thePlayer.fallDistance > 3;
             boolean editGround = this.modulo.getValue() ? correctModule : mc.thePlayer.fallDistance > 3;
             switch(mode.getValue()) {
                 case "Edit":
@@ -37,7 +37,7 @@ public class NoFall extends Module {
                 case "Vulcan":
                     if(packetEvent.getPacket() instanceof C03PacketPlayer && correctModule) {
                         C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
-                        packet.setY(packet.getPositionY() - 0.1f);
+                        mc.thePlayer.motionY -= (packet.getPositionY() - 0.001f);
                         packet.setOnGround(true);
                     }
                     break;

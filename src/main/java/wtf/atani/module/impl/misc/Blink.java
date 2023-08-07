@@ -1,7 +1,6 @@
 package wtf.atani.module.impl.misc;
 
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C03PacketPlayer;
 import wtf.atani.event.events.PacketEvent;
 import wtf.atani.event.events.UpdateEvent;
 import wtf.atani.event.radbus.Listen;

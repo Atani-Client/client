@@ -288,4 +288,11 @@ public class RenderUtil implements Methods {
         return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
     }
 
+    public static void drawAstolfoBorderedRect(float left, float top, float right, float bottom, float thickness, int color) {
+        Gui.drawRect(left - thickness, top, left, bottom + 1.f, color);
+        Gui.drawRect(right, top, right + thickness, bottom + 1.f, color);
+        Gui.drawRect(left, top + thickness, right, top, color);
+        Gui.drawRect(left, bottom, right, bottom + thickness, color);
+    }
+
 }

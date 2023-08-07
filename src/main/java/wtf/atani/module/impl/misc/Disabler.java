@@ -16,12 +16,14 @@ public class Disabler extends Module {
 
     @Listen
     public void onPacketEvent(PacketEvent event) {
-        if(event.getType() == PacketEvent.Type.OUTGOING) {
+        if(mc.thePlayer != null || mc.theWorld != null) {
+            if (event.getType() == PacketEvent.Type.OUTGOING) {
 
-            Packet<?> packet = event.getPacket();
+                Packet<?> packet = event.getPacket();
 
-            if(event.getPacket() instanceof C00PacketKeepAlive && keepAlive.getValue()) {
-                event.setCancelled(true);
+                if (event.getPacket() instanceof C00PacketKeepAlive && keepAlive.getValue()) {
+                    event.setCancelled(true);
+                }
             }
         }
     }

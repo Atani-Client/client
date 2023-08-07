@@ -1,16 +1,22 @@
 package wtf.atani.screen.click.astolfo.frame.component;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import wtf.atani.font.storage.FontStorage;
 
 public abstract class Component {
 
-    public FontRenderer fontRenderer = FontStorage.getInstance().findFont("Arial", 16);
+    public FontRenderer fontRenderer = Minecraft.getMinecraft().fontRendererObj;
 
     public Component(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         this.width = width;
+        this.height = height;
+    }
+
+    public Component(float posX, float posY, float height) {
+        this.x = posX;
+        this.y = posY;
         this.height = height;
     }
 

@@ -274,6 +274,14 @@ public class FontRenderer
         return n3;
     }
 
+    public void drawHeightCenteredStringWithShadow(String text, float x, float y, int color) {
+        drawStringWithShadow(text, x, y -this.FONT_HEIGHT / 2f, color);
+    }
+
+    public void drawHeightCenteredString(String text, float x, float y, int color) {
+        drawString(text, x, y -this.FONT_HEIGHT / 2f, color);
+    }
+
     private String bidiReorder(String string) {
         try {
             Bidi bidi = new Bidi(new ArabicShaping(8).shape(string), 127);

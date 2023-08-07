@@ -8,7 +8,7 @@ import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.value.impl.SliderValue;
 
-@ModuleInfo(name = "Fast Break", description = "Break blocks faster", category = Category.PLAYER)
+@ModuleInfo(name = "FastBreak", description = "Break blocks faster", category = Category.PLAYER)
 public class FastBreak extends Module {
 
     private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast should the breaking speed be?", this, 4F, 0F, 10F, 1);

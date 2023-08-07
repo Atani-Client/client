@@ -13,6 +13,11 @@ public class NoWeb extends Module {
 
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Intave", "Fast Fall", "AAC 4", "AAC 5"});
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         if (!mc.thePlayer.isInWeb) {

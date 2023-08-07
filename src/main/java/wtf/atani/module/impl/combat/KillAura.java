@@ -92,6 +92,11 @@ public class KillAura extends Module {
     // Range
     private double correctedRange = 0D;
 
+    @Override
+    public String getSuffix() {
+    	return targetMode.getValue();
+    }
+    
     private final class AttackRangeSorter implements Comparator<EntityLivingBase> {
         public int compare(EntityLivingBase o1, EntityLivingBase o2) {
             int first = FightUtil.getRange(o1) <= attackRange.getValue() ? 0 : 1;

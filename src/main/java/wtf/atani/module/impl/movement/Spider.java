@@ -14,6 +14,11 @@ public class Spider extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Jump"});
     private final CheckBoxValue jumpOnly = new CheckBoxValue("Jump Only", "Should the module only work when pressing the jump key?", this, false);
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
     @Listen
     public void onMotion(UpdateMotionEvent updateMotionEvent) {
         if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {

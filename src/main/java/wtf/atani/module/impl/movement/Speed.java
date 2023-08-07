@@ -42,10 +42,16 @@ public class Speed extends Module {
 
     // WatchDog
     private int watchDogTicks;
+    
     // NCP
     private int ncpTicks;
     private TimeHelper vulcanTimer;
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {

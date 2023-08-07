@@ -35,6 +35,11 @@ public class MoreKnockback extends Module {
 
     private long delay = 0L;
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {

@@ -59,7 +59,10 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
     private CheckBoxValue renderShaders = new CheckBoxValue("Render Shaders", "Render shaders on the module list?", this, true, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
     private CheckBoxValue renderBlur = new CheckBoxValue("Render Blur", "Render blur on the module list?", this, true, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && renderShaders.getValue()});
     private CheckBoxValue renderBloom = new CheckBoxValue("Render Bloom", "Render bloom on the module list?", this, true, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && renderShaders.getValue()});
-    private StringBoxValue fontMode = new StringBoxValue("Font", "Which font will render the module name?", this, new String[]{"Minecraft", "Roboto", "Roboto Medium"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
+    private CheckBoxValue suffix = new CheckBoxValue("Suffix", "Display module's mode?", this, true);
+    private StringBoxValue suffixMode = new StringBoxValue("Suffix Mode", "How will modes be displayed?", this, new String[] {"nm sfx", "nm - sfx", "nm # sfx", "nm (sfx)", "nm [sfx]", "nm {sfx}", "nm - (sfx)", "nm - [sfx]", "nm - {sfx}", "nm # (sfx)", "nm # [sfx]", "nm # {sfx}"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && suffix.getValue()});
+    private StringBoxValue suffixColor = new StringBoxValue("Suffix Color", "How will modes be colored?", this, new String[] {"Gray", "Dark Gray", "White", "None"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
+    private StringBoxValue fontMode = new StringBoxValue("Font", "Which font will render the module name?", this, new String[]{"Minecraft", "Roboto", "Roboto Medium"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && suffix.getValue()});
     private SliderValue<Integer> fontSize = new SliderValue<>("Font Size", "How large will the font be?", this, 19, 17, 21, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && !fontMode.getValue().equalsIgnoreCase("Minecraft")});
     private SliderValue<Integer> brightness = new SliderValue<>("Background Brightness", "What will be the brightness of the background?", this, 0, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
     private SliderValue<Integer> opacity = new SliderValue<>("Background Opacity", "What will be the opacity of the background?", this, 180, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
@@ -136,8 +139,8 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                         fontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
                         break;
                 }
-                String name1 = mod1.getName();
-                String name2 = mod2.getName();
+                String name1 = moduleListMode.is("Custom") ? suffixMode.getValue().replace("nm", mod1.getName()).replace("sfx", mod1.getSuffix() == null ? "" : mod1.getSuffix()) : mod1.getName();
+                String name2 = moduleListMode.is("Custom") ? suffixMode.getValue().replace("nm", mod2.getName()).replace("sfx", mod2.getSuffix() == null ? "" : mod2.getSuffix()) : mod2.getName();
                 return fontRenderer.getStringWidth(name2) - fontRenderer.getStringWidth(name1);
             });
             LinkedHashMap<Module, DecelerateAnimation> sortedMap = new LinkedHashMap<>();
@@ -214,6 +217,24 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                                     color = ColorUtil.blendGermanColours(counter * 150L);
                                 }
                                 String name = module.getName();
+                                if(module.getSuffix() != null && suffix.getValue()) {
+                                	ChatFormatting chatFormatting = null;
+                                	switch(this.suffixColor.getValue()) {
+                                	case "White":
+                                		chatFormatting = ChatFormatting.WHITE;
+                                		break;
+                                	case "Gray":
+                                		chatFormatting = ChatFormatting.GRAY;
+                                		break;
+                                	case "Dark Gray":
+                                		chatFormatting = ChatFormatting.DARK_GRAY;
+                                		break;
+                                	case "None":
+                                		chatFormatting = ChatFormatting.RESET;
+                                		break;
+                                	}
+                                	name = suffixMode.getValue().replace("nm", module.getName()).replace("sfx", chatFormatting.toString() + module.getSuffix());
+                                }
                                 float rectWidth = (fontRenderer.getStringWidth(name) + this.rectWidth.getValue());
                                 float moduleX = this.arrayListPosition.getValue().equalsIgnoreCase("Left") ? (0 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue()) : sr.getScaledWidth() - ((float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue());
                                 RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(brightness.getValue(), brightness.getValue(), brightness.getValue(), opacity.getValue()).getRGB());

@@ -19,6 +19,11 @@ public class Step extends Module {
     // NCP
     private boolean hasStepped;
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
         if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {

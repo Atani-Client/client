@@ -28,6 +28,11 @@ public class NoSlowDown extends Module {
     // WatchDog
     private int watchDogSlot;
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
     @Listen
     public void onMotionEvent(UpdateMotionEvent event) {
         if(event.getType() == UpdateMotionEvent.Type.MID) {

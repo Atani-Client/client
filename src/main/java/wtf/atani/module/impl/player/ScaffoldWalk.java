@@ -82,6 +82,8 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public void onClicking(ClickingEvent clickingEvent) {
+    	if(mc.theWorld == null)
+    		return;
         if (delay.getValue() == 0 || timeHelper.hasReached((long) (delay.getValue()))) {
             final ItemStack itemstack = getPlayer().getHeldItem();
             if (itemstack != null && itemstack.getItem() instanceof ItemBlock) {

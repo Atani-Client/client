@@ -26,6 +26,11 @@ public class NTickBase extends Module {
 
     private TimeHelper delayTimer = new TimeHelper();
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
 	@Listen
 	public void onTick(TickEvent tickEvent) {
 		if(mode.getValue().equalsIgnoreCase("Legit")) {

@@ -27,6 +27,11 @@ public class AntiBot extends Module {
 
     private boolean wasAdded = false;
     private String name;
+    
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
 
     @Listen
     public final void onPacket(PacketEvent packetEvent) {

@@ -47,6 +47,11 @@ public class Velocity extends Module {
     // Grim Flag
     private boolean grimFlag;
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         switch (mode.getValue()) {

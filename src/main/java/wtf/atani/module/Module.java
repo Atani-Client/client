@@ -71,6 +71,10 @@ public abstract class Module implements Methods {
 
     public abstract void onEnable();
     public abstract void onDisable();
+    
+    public String getSuffix() {
+		return null;
+	}
 
     public String getName() {
         return name;

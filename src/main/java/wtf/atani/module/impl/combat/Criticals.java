@@ -14,6 +14,11 @@ public class Criticals extends Module {
 
     public StringBoxValue mode = new StringBoxValue("Mode", "Which mode should the module use?", this, new String[]{"Packet", "AAC v5.0.4", "AAC v5", "NCP Latest", "Vulcan"});
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
     private int attacked = 0;
 
     // We love skidded offsets

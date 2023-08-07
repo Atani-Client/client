@@ -37,6 +37,11 @@ public class Flight extends Module {
     // Grim
     boolean velo = false;
 
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
+    }
+    
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {

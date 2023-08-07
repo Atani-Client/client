@@ -234,9 +234,9 @@ public class WorldClient extends World
     /**
      * Add an ID to Entity mapping to entityHashSet
      */
-    public void addEntityToWorld(int p_73027_1_, Entity p_73027_2_)
+    public void addEntityToWorld(int entityID, Entity p_73027_2_)
     {
-        Entity entity = this.getEntityByID(p_73027_1_);
+        Entity entity = this.getEntityByID(entityID);
 
         if (entity != null)
         {
@@ -244,14 +244,14 @@ public class WorldClient extends World
         }
 
         this.entityList.add(p_73027_2_);
-        p_73027_2_.setEntityId(p_73027_1_);
+        p_73027_2_.setEntityId(entityID);
 
         if (!this.spawnEntityInWorld(p_73027_2_))
         {
             this.entitySpawnQueue.add(p_73027_2_);
         }
 
-        this.entitiesById.addKey(p_73027_1_, p_73027_2_);
+        this.entitiesById.addKey(entityID, p_73027_2_);
     }
 
     /**
@@ -262,9 +262,9 @@ public class WorldClient extends World
         return (Entity)(id == this.mc.thePlayer.getEntityId() ? this.mc.thePlayer : super.getEntityByID(id));
     }
 
-    public Entity removeEntityFromWorld(int p_73028_1_)
+    public Entity removeEntityFromWorld(int entityID)
     {
-        Entity entity = (Entity)this.entitiesById.removeObject(p_73028_1_);
+        Entity entity = (Entity)this.entitiesById.removeObject(entityID);
 
         if (entity != null)
         {

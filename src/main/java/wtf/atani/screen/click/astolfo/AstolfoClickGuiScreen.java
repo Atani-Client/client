@@ -1,7 +1,5 @@
 package wtf.atani.screen.click.astolfo;
 
-import net.minecraft.client.gui.FontRenderer;
-import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.screen.click.astolfo.frame.Frame;
 import net.minecraft.client.gui.GuiScreen;

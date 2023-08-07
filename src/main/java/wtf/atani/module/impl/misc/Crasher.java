@@ -26,6 +26,8 @@ public class Crasher extends Module {
 
     @Listen
     public void onUpdate(UpdateEvent updateEvent) {
+    	if(mc.thePlayer == null || mc.theWorld == null)
+    		return;
         switch (mode.getValue()) {
             case "Swing":
                 for (int i = 0; i < 300; i++)

@@ -97,6 +97,8 @@ public class Velocity extends Module {
 
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
+    	if(mc.thePlayer == null || mc.theWorld == null)
+    		return;
         if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
             S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
             if(packet.getEntityID() == mc.thePlayer.getEntityId()) {

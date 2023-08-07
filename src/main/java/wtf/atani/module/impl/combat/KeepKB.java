@@ -20,8 +20,8 @@ import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
-@ModuleInfo(name = "MoreKnockback", description = "Helps you give people more knockback", category = Category.COMBAT)
-public class MoreKnockback extends Module {
+@ModuleInfo(name = "KeepKB", description = "Helps you get people in combos", category = Category.COMBAT)
+public class KeepKB extends Module {
 
     public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Sprint Reset", "Legit", "Legit Fast", "Single Packet", "Normal Packet", "Double Packet"});
     public CheckBoxValue auraOnly = new CheckBoxValue("KillAura Only", "Operate only if the target is attacked by KillAura?", this, true);

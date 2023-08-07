@@ -12,26 +12,28 @@ import wtf.atani.value.impl.CheckBoxValue;
 @ModuleInfo(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
 
-    private final CheckBoxValue keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?", this, false);
+	private final CheckBoxValue keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?",
+			this, false);
 
-    @Listen
-    public void onPacketEvent(PacketEvent event) {
-        if(mc.thePlayer != null || mc.theWorld != null) {
-            if (event.getType() == PacketEvent.Type.OUTGOING) {
+	@Listen
+	public void onPacketEvent(PacketEvent event) {
+		if (mc.thePlayer == null || mc.theWorld == null)
+			return;
+		if (event.getType() == PacketEvent.Type.OUTGOING) {
+			Packet<?> packet = event.getPacket();
 
-                Packet<?> packet = event.getPacket();
+			if (event.getPacket() instanceof C00PacketKeepAlive && keepAlive.getValue()) {
+				event.setCancelled(true);
+			}
+		}
+	}
 
-                if (event.getPacket() instanceof C00PacketKeepAlive && keepAlive.getValue()) {
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
+	@Override
+	public void onEnable() {
+	}
 
-    @Override
-    public void onEnable() {}
-
-    @Override
-    public void onDisable() {}
+	@Override
+	public void onDisable() {
+	}
 
 }

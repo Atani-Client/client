@@ -20,6 +20,8 @@ public class PingSpoof extends Module {
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
+    	if(mc.thePlayer == null || mc.theWorld == null)
+    		return;
         if(packetEvent.getType() == PacketEvent.Type.OUTGOING) {
             final Packet packet = packetEvent.getPacket();
             if (packet instanceof C00PacketKeepAlive || packet instanceof C01PacketPing || packet instanceof C0FPacketConfirmTransaction) {

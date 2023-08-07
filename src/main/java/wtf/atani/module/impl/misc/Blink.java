@@ -37,6 +37,8 @@ public class Blink extends Module {
 
     @Listen
     public void onPacket(PacketEvent event) {
+    	if(mc.thePlayer == null || mc.theWorld == null)
+    		this.setEnabled(false);
         if (active && (event.getType() == PacketEvent.Type.OUTGOING || incoming.getValue())) {
             outPacketDeque.add(event.getPacket());
             if (pulse.getValue() && fakeLagTimer.hasReached(pulseDelay.getValue().longValue())) {

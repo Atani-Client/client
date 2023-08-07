@@ -82,14 +82,14 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public void onClicking(ClickingEvent clickingEvent) {
-    	if(mc.theWorld == null)
+    	if(mc.thePlayer == null || mc.theWorld == null)
     		return;
         if (delay.getValue() == 0 || timeHelper.hasReached((long) (delay.getValue()))) {
             final ItemStack itemstack = getPlayer().getHeldItem();
             if (itemstack != null && itemstack.getItem() instanceof ItemBlock) {
                 if (mc.objectMouseOver != null) {
                     final BlockPos blockpos = mc.objectMouseOver.getBlockPos();
-                    if (mc.theWorld.getBlockState(blockpos) != null && mc.theWorld.getBlockState(blockpos).getBlock() != null && mc.theWorld.getBlockState(blockpos).getBlock().getMaterial() != Material.air) {
+                    if (blockpos != null && mc.theWorld.getBlockState(blockpos) != null && mc.theWorld.getBlockState(blockpos).getBlock() != null && mc.theWorld.getBlockState(blockpos).getBlock().getMaterial() != Material.air) {
                         if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem(), blockpos, mc.objectMouseOver.sideHit, mc.objectMouseOver.hitVec)) {
                             if (this.swinging.getValue())
                                 mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());

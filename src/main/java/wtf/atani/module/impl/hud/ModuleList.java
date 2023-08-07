@@ -139,8 +139,8 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                         fontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
                         break;
                 }
-                String name1 = moduleListMode.is("Custom") ? suffixMode.getValue().replace("nm", mod1.getName()).replace(" sfx", mod1.getSuffix() == null ? "" : " " + mod1.getSuffix()) : mod1.getName();
-                String name2 = moduleListMode.is("Custom") ? suffixMode.getValue().replace("nm", mod2.getName()).replace(" sfx", mod2.getSuffix() == null ? "" : " " + mod2.getSuffix()) : mod2.getName();
+                String name1 = moduleListMode.is("Custom") ? getModuleName(mod1, false) : mod1.getName();
+                String name2 = moduleListMode.is("Custom") ?getModuleName(mod2, false) : mod2.getName();
                 return fontRenderer.getStringWidth(name2) - fontRenderer.getStringWidth(name1);
             });
             LinkedHashMap<Module, DecelerateAnimation> sortedMap = new LinkedHashMap<>();
@@ -216,25 +216,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                                 if(calendar.get(Calendar.DAY_OF_MONTH) == 3 && calendar.get(Calendar.MONTH) == Calendar.OCTOBER) {
                                     color = ColorUtil.blendGermanColours(counter * 150L);
                                 }
-                                String name = module.getName();
-                                if(module.getSuffix() != null && suffix.getValue()) {
-                                	ChatFormatting chatFormatting = null;
-                                	switch(this.suffixColor.getValue()) {
-                                	case "White":
-                                		chatFormatting = ChatFormatting.WHITE;
-                                		break;
-                                	case "Gray":
-                                		chatFormatting = ChatFormatting.GRAY;
-                                		break;
-                                	case "Dark Gray":
-                                		chatFormatting = ChatFormatting.DARK_GRAY;
-                                		break;
-                                	case "None":
-                                		chatFormatting = ChatFormatting.RESET;
-                                		break;
-                                	}
-                                	name = suffixMode.getValue().replace("nm", module.getName()).replace("sfx", chatFormatting.toString() + module.getSuffix());
-                                }
+                                String name = getModuleName(module, true);
                                 float rectWidth = (fontRenderer.getStringWidth(name) + this.rectWidth.getValue());
                                 float moduleX = this.arrayListPosition.getValue().equalsIgnoreCase("Left") ? (0 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue()) : sr.getScaledWidth() - ((float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue());
                                 RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(brightness.getValue(), brightness.getValue(), brightness.getValue(), opacity.getValue()).getRGB());
@@ -415,6 +397,31 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
             }
         }
     }
+    
+    public String getModuleName(Module module, boolean colors) {
+        String name = module.getName();
+        if(module.getSuffix() != null && suffix.getValue()) {
+        	ChatFormatting chatFormatting = null;
+        	if(colors) {
+            	switch(this.suffixColor.getValue()) {
+            	case "White":
+            		chatFormatting = ChatFormatting.WHITE;
+            		break;
+            	case "Gray":
+            		chatFormatting = ChatFormatting.GRAY;
+            		break;
+            	case "Dark Gray":
+            		chatFormatting = ChatFormatting.DARK_GRAY;
+            		break;
+            	case "None":
+            		chatFormatting = ChatFormatting.RESET;
+            		break;
+            	}
+        	}
+        	name = suffixMode.getValue().replace("nm", module.getName() + (chatFormatting == null ? "" : chatFormatting.toString())).replace("sfx",  module.getSuffix());
+        }
+        return name;
+	}
 
     @Override
     public int getPriority() {

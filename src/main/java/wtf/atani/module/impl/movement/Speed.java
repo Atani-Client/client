@@ -18,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-
+    
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim (Boost)", "Test", "WatchDog", "Intave", "MineMenClub", "Polar Test"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
@@ -373,46 +373,42 @@ public class Speed extends Module {
                 break;
             case "NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                    if(!isMoving()) {
+                        MoveUtil.strafe(0);
+                    }
+
                     mc.gameSettings.keyBindJump.pressed = false;
 
                     if(mc.thePlayer.onGround) {
                         ncpTicks = 0;
+                        mc.timer.timerSpeed = 1.11F;
+                        if(isMoving()) {
+                            mc.thePlayer.jump();
+                        }
+
+                        MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
                     } else {
+                        mc.timer.timerSpeed = 1;
+                        if(mc.thePlayer.moveForward < 0 || MoveUtil.getBaseMoveSpeed() - 0.005 > MoveUtil.getSpeed()) {
+                            MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
+                        }
                         ncpTicks++;
                     }
 
-                    if(mc.thePlayer.fallDistance > 0.75) {
-                        mc.timer.timerSpeed = 1.07F;
-                    } else {
-                        mc.timer.timerSpeed = 1;
+                    if(mc.thePlayer.hurtTime > 2) {
+                        mc.timer.timerSpeed = 1.1F;
+                        MoveUtil.strafe(MoveUtil.getSpeed() * 1.007);
                     }
-                    if (mc.thePlayer.onGround && isMoving()) {
-                        mc.thePlayer.jump();
-                        mc.thePlayer.motionY *= 0.995;
-                        MoveUtil.strafe((float) (0.43 + MoveUtil.getSpeedBoost(2) + Math.random() / 40 + mc.thePlayer.moveForward / 30));
-                    } else if(isMoving()) {
-                        if(mc.thePlayer.moveForward == 0) {
-                            MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
-                        } else {
-                            mc.thePlayer.speedInAir = 0.02025F;
-                            MoveUtil.strafe();
-                        }
-                        switch(ncpTicks) {
-                            case 3:
-                            case 4:
-                            case 5:
-                                mc.thePlayer.motionY -= 0.007;
-                                MoveUtil.strafe(MoveUtil.getSpeed() * 1.0175);
-                                break;
-                            case 6:
-                                mc.thePlayer.motionY = MoveUtil.getPredictedMotion(mc.thePlayer.motionY, 1);
-                                break;
-                                // You can yport at tick 8, but then it flags after a few hops!
-                            case 8:
-                                // Maybe doing something here? idk (DO. NOT. DELETE. STILL. TESTING!)
-                                break;
-                        }
+
+                    switch(ncpTicks) {
+                        case 1:
+                            MoveUtil.strafe(MoveUtil.getSpeed() * 1.02);
+                            break;
+                        case 5:
+                            mc.thePlayer.motionY -= 0.007;
+                            break;
                     }
+
                 }
                 break;
             case "Karhu":
@@ -498,6 +494,10 @@ public class Speed extends Module {
                     mc.timer.timerSpeed = 1.07F;
                 } else {
                     mc.timer.timerSpeed = (float) (1 + Math.random() / 1200);
+                }
+
+                if(mc.thePlayer.hurtTime != 0) {
+                    mc.timer.timerSpeed = 1.21F;
                 }
                 break;
             case "Test":

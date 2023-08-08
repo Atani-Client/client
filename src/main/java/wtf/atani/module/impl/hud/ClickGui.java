@@ -42,7 +42,7 @@ public class ClickGui extends Module {
     public void onEnable() {
         switch (this.mode.getValue()) {
             case "Astolfo":
-                if(clickGuiScreenAstolfo == null || true) {
+                if(clickGuiScreenAstolfo == null) {
                     clickGuiScreenAstolfo = new AstolfoClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenAstolfo);

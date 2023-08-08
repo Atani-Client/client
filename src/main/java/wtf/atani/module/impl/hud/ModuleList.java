@@ -62,7 +62,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
     private CheckBoxValue suffix = new CheckBoxValue("Suffix", "Display module's mode?", this, true);
     private StringBoxValue suffixMode = new StringBoxValue("Suffix Mode", "How will modes be displayed?", this, new String[] {"nm sfx", "nm - sfx", "nm # sfx", "nm (sfx)", "nm [sfx]", "nm {sfx}", "nm - (sfx)", "nm - [sfx]", "nm - {sfx}", "nm # (sfx)", "nm # [sfx]", "nm # {sfx}"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && suffix.getValue()});
     private StringBoxValue suffixColor = new StringBoxValue("Suffix Color", "How will modes be colored?", this, new String[] {"Gray", "Dark Gray", "White", "None"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
-    private StringBoxValue fontMode = new StringBoxValue("Font", "Which font will render the module name?", this, new String[]{"Minecraft", "Roboto", "Roboto Medium"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && suffix.getValue()});
+    private StringBoxValue fontMode = new StringBoxValue("Font", "Which font will render the module name?", this, new String[]{"Minecraft", "Roboto", "Roboto Medium", "Product Sans", "Arial"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && suffix.getValue()});
     private SliderValue<Integer> fontSize = new SliderValue<>("Font Size", "How large will the font be?", this, 19, 17, 21, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && !fontMode.getValue().equalsIgnoreCase("Minecraft")});
     private SliderValue<Integer> brightness = new SliderValue<>("Background Brightness", "What will be the brightness of the background?", this, 0, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
     private SliderValue<Integer> opacity = new SliderValue<>("Background Opacity", "What will be the opacity of the background?", this, 180, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
@@ -130,6 +130,12 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                             case "Roboto Medium":
                                 fontRenderer = FontStorage.getInstance().findFont("Roboto Medium", this.fontSize.getValue());
                                 break;
+                            case "Product Sans":
+                                fontRenderer = FontStorage.getInstance().findFont("Product Sans", this.fontSize.getValue());
+                                break;
+                            case "Arial":
+                                fontRenderer = FontStorage.getInstance().findFont("Arial", this.fontSize.getValue());
+                                break;
                             default:
                                 fontRenderer = mc.fontRendererObj;
                                 break;
@@ -167,6 +173,12 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                                 break;
                             case "Roboto Medium":
                                 fontRenderer = FontStorage.getInstance().findFont("Roboto Medium", this.fontSize.getValue());
+                                break;
+                            case "Product Sans":
+                                fontRenderer = FontStorage.getInstance().findFont("Product Sans", this.fontSize.getValue());
+                                break;
+                            case "Arial":
+                                fontRenderer = FontStorage.getInstance().findFont("Arial", this.fontSize.getValue());
                                 break;
                             default:
                                 fontRenderer = mc.fontRendererObj;
@@ -466,12 +478,8 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
 
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 }

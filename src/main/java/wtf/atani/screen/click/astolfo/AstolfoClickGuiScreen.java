@@ -39,7 +39,7 @@ public class AstolfoClickGuiScreen extends GuiScreen {
                 for(Frame moduleButton : categoryPanel.moduleButtons) {
                     moduleButton.actionPerformed(mouseX, mouseY, true, mouseButton);
                     if(moduleButton.expanded) {
-                        for(Component panel : moduleButton.buttons) {
+                        for(Component panel : moduleButton.components) {
                             panel.actionPerformed(mouseX, mouseY, true, mouseButton);
                         }
                     }
@@ -54,7 +54,7 @@ public class AstolfoClickGuiScreen extends GuiScreen {
             for(Frame moduleButton : categoryPanel.moduleButtons) {
                 moduleButton.actionPerformed(mouseX, mouseY, false, state);
                 if(moduleButton.expanded) {
-                    for(Component panel : moduleButton.buttons) {
+                    for(Component panel : moduleButton.components) {
                         panel.actionPerformed(mouseX, mouseY, false, state);
                     }
                 }
@@ -68,7 +68,7 @@ public class AstolfoClickGuiScreen extends GuiScreen {
         super.keyTyped(typedChar, keyCode);
         for (Window categoryPanel : categoryPanels) {
             for (Frame modulePanel : categoryPanel.moduleButtons) {
-                modulePanel.key(typedChar, keyCode);
+                modulePanel.keyTyped(typedChar, keyCode);
             }
         }
 

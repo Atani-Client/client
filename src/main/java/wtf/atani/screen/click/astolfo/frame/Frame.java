@@ -4,13 +4,9 @@ import net.minecraft.client.gui.Gui;
 import org.lwjgl.input.Keyboard;
 import wtf.atani.module.Module;
 import wtf.atani.screen.click.astolfo.frame.component.Component;
-import wtf.atani.screen.click.astolfo.frame.component.impl.CheckboxComponent;
-import wtf.atani.screen.click.astolfo.frame.component.impl.ModeComponent;
-import wtf.atani.screen.click.astolfo.frame.component.impl.SliderComponent;
+import wtf.atani.screen.click.astolfo.frame.component.impl.*;
 import wtf.atani.value.Value;
-import wtf.atani.value.impl.CheckBoxValue;
-import wtf.atani.value.impl.SliderValue;
-import wtf.atani.value.impl.StringBoxValue;
+import wtf.atani.value.impl.*;
 import wtf.atani.value.storage.ValueStorage;
 
 import java.awt.*;
@@ -18,7 +14,7 @@ import java.util.ArrayList;
 
 public class Frame extends Component {
 
-    public ArrayList<Component> buttons = new ArrayList<>();
+    public final ArrayList<ValueComponent> components = new ArrayList<>();
 
     public Module module;
     public Color color;
@@ -38,11 +34,14 @@ public class Frame extends Component {
 
         for(Value value : ValueStorage.getInstance().getValues(mod)) {
             if (value instanceof StringBoxValue) {
-                buttons.add(new ModeComponent(x, startModuleHeight + 18, width, 9f, (StringBoxValue) value, color));
+                ModeComponent component = new ModeComponent((StringBoxValue) value, x, startModuleHeight + 18, width, 9f);
+                this.components.add(component);
             } else if (value instanceof CheckBoxValue) {
-                buttons.add(new CheckboxComponent(x, startModuleHeight + 18, width, 9f, (CheckBoxValue) value, color));
+                CheckboxComponent component = new CheckboxComponent((CheckBoxValue) value, x, startModuleHeight + 18, width, 9f);
+                this.components.add(component);
             } else if (value instanceof SliderValue) {
-                buttons.add(new SliderComponent(x, startModuleHeight + 18, width, 9f, (SliderValue) value, color));
+                SliderComponent component = new SliderComponent((SliderValue) value, x, startModuleHeight + 18, width, 9f);
+                this.components.add(component);
             }
         }
     }
@@ -70,12 +69,15 @@ public class Frame extends Component {
 
         if(expanded) {
             final float startY = y + height;
-            for(Component button : buttons) {
-                button.x = x;
-                button.y = startY + button.height * count;
-                button.drawScreen(mouseX, mouseY);
+            for(ValueComponent component : this.components) {
+                if(!component.getValue().isVisible())
+                    continue;
+
+                component.x = x;
+                component.y = startY + component.height * count;
+                component.drawScreen(mouseX, mouseY);
                 count++;
-                sexyMethod = button.height;
+                sexyMethod = component.height;
             }
         }
 
@@ -88,7 +90,7 @@ public class Frame extends Component {
             if (button == 0) {
                 module.toggle();
             } else if(button == 1) {
-                if(!buttons.isEmpty())
+                if(!components.isEmpty())
                     expanded = !expanded;
             } else {
                 module.setListening(!module.isListening());
@@ -97,7 +99,7 @@ public class Frame extends Component {
     }
 
     @Override
-    public void key(char typedChar, int key) {
+    public void keyTyped(char typedChar, int key) {
         if (module.isListening()) {
             this.module.setKey(key);
 

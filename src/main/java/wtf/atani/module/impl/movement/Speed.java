@@ -18,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    
+
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim (Boost)", "Test", "WatchDog", "Intave", "MineMenClub", "Polar Test"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
@@ -373,40 +373,16 @@ public class Speed extends Module {
                 break;
             case "NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    if(!isMoving()) {
-                        MoveUtil.strafe(0);
-                    }
-
-                    mc.gameSettings.keyBindJump.pressed = false;
+                    if(!isMoving())
+                        return;
 
                     if(mc.thePlayer.onGround) {
-                        ncpTicks = 0;
-                        mc.timer.timerSpeed = 1.11F;
-                        if(isMoving()) {
-                            mc.thePlayer.jump();
-                        }
-
+                        mc.timer.timerSpeed = 1.1F;
+                        mc.thePlayer.motionY = 0.419;
                         MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
                     } else {
                         mc.timer.timerSpeed = 1;
-                        if(mc.thePlayer.moveForward < 0 || MoveUtil.getBaseMoveSpeed() - 0.005 > MoveUtil.getSpeed()) {
-                            MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
-                        }
-                        ncpTicks++;
-                    }
-
-                    if(mc.thePlayer.hurtTime > 2) {
-                        mc.timer.timerSpeed = 1.1F;
-                        MoveUtil.strafe(MoveUtil.getSpeed() * 1.007);
-                    }
-
-                    switch(ncpTicks) {
-                        case 1:
-                            MoveUtil.strafe(MoveUtil.getSpeed() * 1.02);
-                            break;
-                        case 5:
-                            mc.thePlayer.motionY -= 0.007;
-                            break;
+                        MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.3F));
                     }
 
                 }
@@ -501,14 +477,9 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                mc.thePlayer.setSprinting(this.isMoving());
-
-                if (mc.thePlayer.onGround && this.isMoving()){
-                    mc.thePlayer.jump();
+                if(mc.thePlayer.motionY < 0) {
+                    mc.thePlayer.motionY = 0.42;
                 }
-
-
-
                 break;
             case "MineMenClub":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
@@ -565,7 +536,7 @@ public class Speed extends Module {
                 break;
             case "Test":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                    ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
+                //    ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
                 }
                 break;
         }

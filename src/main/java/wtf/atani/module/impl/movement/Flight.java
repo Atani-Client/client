@@ -2,6 +2,10 @@ package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import wtf.atani.event.events.MoveEntityEvent;
 import wtf.atani.event.events.PacketEvent;
@@ -17,7 +21,7 @@ import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Test"});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
     private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Grim")});
     private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
@@ -80,6 +84,19 @@ public class Flight extends Module {
                     mc.thePlayer.motionY = 0;
 
                 MoveUtil.strafe(moveSpeed);
+                break;
+            case "Test":
+                mc.thePlayer.motionY = 0;
+                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging());
+                if(mc.gameSettings.keyBindJump.pressed) {
+                    mc.timer.timerSpeed = 10;
+                    mc.thePlayer.cameraPitch = 0.1F;
+                    mc.thePlayer.cameraYaw = 0.1F;
+                    mc.gameSettings.viewBobbing = true;
+                } else {
+                    mc.timer.timerSpeed = 0.2F;
+                    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() * 5);
+                }
                 break;
             case "Old NCP":
                 if (mc.thePlayer.onGround && !jumped) {
@@ -176,8 +193,24 @@ public class Flight extends Module {
                     }
                 }
                 break;
+            case "Test":
+                if(packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {
+                    packetEvent.setCancelled(true);
+                }
+
+                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                    if(10 > Math.random() * 100) {
+                    //    packetEvent.setCancelled(true);
+                        for(int i=0; i<10;i++) {
+                            mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement());
+                        }
+                    }
+
+                }
+                break;
         }
     }
+
 
     @Listen
     public final void onMove(MoveEntityEvent moveEntityEvent) {

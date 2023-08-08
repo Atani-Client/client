@@ -1,9 +1,6 @@
 package wtf.atani.module.impl.combat;
 
 import com.google.common.base.Supplier;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
@@ -11,7 +8,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
 import wtf.atani.event.events.*;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;

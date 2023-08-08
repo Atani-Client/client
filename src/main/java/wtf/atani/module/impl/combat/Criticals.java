@@ -2,7 +2,6 @@ package wtf.atani.module.impl.combat;
 
 import net.minecraft.network.play.client.C03PacketPlayer;
 import wtf.atani.event.events.AttackEvent;
-import wtf.atani.event.events.ClickingEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;

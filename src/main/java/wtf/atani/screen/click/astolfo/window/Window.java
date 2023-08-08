@@ -36,10 +36,11 @@ public class Window extends Component {
         }
     }
 
+    @Override
     public void drawScreen(int mouseX, int mouseY) {
         Gui.drawRect(x, y, x + width, y + height, 0xff181A17);
 
-        fontRenderer.drawString(category.getName().toLowerCase(), x + 4.5f, (float) (y + height / 2 - 2.5), 0xffffffff);
+        fontRenderer.drawString(category.getName().toLowerCase(), x + 4.5f, (float) (y + height / 2 - 2.5), -1);
 
         count = 0;
 
@@ -57,8 +58,8 @@ public class Window extends Component {
     }
 
     @Override
-    public void actionPerformed(int x, int y, boolean click, int button) {}
+    public void actionPerformed(int mouseX, int mouseY, boolean click, int button) {}
 
     @Override
-    public void key(char typedChar, int key) {}
+    public void keyTyped(char typedChar, int key) {}
 }

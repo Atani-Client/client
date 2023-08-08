@@ -5,7 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S38PacketPlayerListItem;
 import net.minecraft.network.play.server.S41PacketServerDifficulty;
-import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.world.WorldSettings;
 import wtf.atani.combat.CombatManager;
 import wtf.atani.event.events.PacketEvent;

@@ -1,5 +1,6 @@
 package wtf.atani.module.impl.combat;
 
+import wtf.atani.event.events.TickEvent;
 import wtf.atani.event.events.TimeEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
@@ -10,51 +11,74 @@ import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
+import wtf.atani.value.impl.StringBoxValue;
 
-@ModuleInfo(name = "TickBase", description = "Shifts time in combat", category = Category.COMBAT)
+@ModuleInfo(name = "TickBase", description = "Tick Base Manipulation", category = Category.COMBAT)
 public class TickBase extends Module {
 
+	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Normal", "Legit"});
+	private final SliderValue<Integer> ticks = new SliderValue<Integer>("Ticks", "How many ticks will be tickbase charge?", this, 5, 0, 40, 0);
     private SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the minimum delay between shifting?", this, 500L, 0L, 2000L, 1);
     private CheckBoxValue onlyWhenOutOfReach = new CheckBoxValue("Only When Out of Reach", "Shift only if the target is out of reach?", this, false);
-    private SliderValue<Integer> chargeTicks = new SliderValue<>("Charge Ticks", "How many ticks will TickBase charge?", this, 5, 1, 80, 0);
-    private SliderValue<Integer> minimumDischargeTicks = new SliderValue<>("Minimum Discharge Ticks", "How many ticks will TickBase discharge at minimum?", this, 5, 1, 80, 0);
-    private SliderValue<Integer> maximumDischargeTicks = new SliderValue<>("Maximum Discharge Ticks", "How many ticks will TickBase discharge at maximum?", this, 5, 1, 80, 0);
-
+    
+	private KillAura killAura;
     private long shifted, previousTime;
-    private KillAura killAura;
+
     private TimeHelper delayTimer = new TimeHelper();
 
-    @Listen
-    public final void onTime(TimeEvent timeEvent) {
-        if(shouldCharge()) {
-            shifted += timeEvent.getTime() - previousTime;
-            this.delayTimer.reset();
-        }
-
-        if(shouldDischarge()) {
-            shifted = Math.max(0, shifted - maximumDischargeTicks.getValue().intValue() * 20);
-        }
-
-        previousTime = timeEvent.getTime();
-        timeEvent.setTime(timeEvent.getTime() - shifted);
+    @Override
+    public String getSuffix() {
+    	return mode.getValue();
     }
+    
+	@Listen
+	public void onTick(TickEvent tickEvent) {
+		if(mode.getValue().equalsIgnoreCase("Legit")) {
+	        if(shouldCharge()) {
+	        	try {
+					Thread.sleep(ticks.getValue() * 20);
+		            this.delayTimer.reset();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+	        }
+		}
+	}
+    
+	@Listen
+	public void onTime(TimeEvent timeEvent) {
+		if(mode.getValue().equalsIgnoreCase("Normal")) {
+	        if(shouldCharge()) {
+	            shifted += timeEvent.getTime() - previousTime;
+	            this.delayTimer.reset();
+	        }
 
+	        if(shouldDischarge()) {
+	            shifted = 0;
+	        }
+
+	        previousTime = timeEvent.getTime();
+	        timeEvent.setTime(timeEvent.getTime() - shifted);
+		}
+	}
+	
     private boolean shouldCharge() {
-        return  killAura.isEnabled() && killAura.curEntity != null && this.delayTimer.hasReached(delay.getValue().longValue()) && (!this.onlyWhenOutOfReach.getValue() || FightUtil.getRange(KillAura.curEntity) > 3.0);
+        return  killAura.isEnabled() && KillAura.curEntity != null && this.delayTimer.hasReached(delay.getValue().longValue()) && (!this.onlyWhenOutOfReach.getValue() || FightUtil.getRange(KillAura.curEntity) > 3.0);
     }
 
     private boolean shouldDischarge() {
-        return this.shifted > this.minimumDischargeTicks.getValue() * 20;
+        return this.shifted > this.ticks.getValue() * 20;
+    }
+
+	
+    @Override
+    public void onDisable() {
+
     }
 
     @Override
     public void onEnable() {
-        killAura = ModuleStorage.getInstance().getByClass(KillAura.class);
-    }
-
-    @Override
-    public void onDisable() {
-
+    	this.killAura = ModuleStorage.getInstance().getByClass(KillAura.class);
     }
 
 }

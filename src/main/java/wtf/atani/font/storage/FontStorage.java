@@ -45,7 +45,15 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Pangram Regular", 16),
                 this.createFontEntry("Pangram Regular", 17),
                 this.createFontEntry("Product Sans", 17),
-                this.createFontEntry("Arial", 16),
+                this.createFontEntry("Product Sans", 18),
+                this.createFontEntry("Product Sans", 19),
+                this.createFontEntry("Product Sans", 20),
+                this.createFontEntry("Product Sans", 21),
+                this.createFontEntry("Arial", 17),
+                this.createFontEntry("Arial", 18),
+                this.createFontEntry("Arial", 19),
+                this.createFontEntry("Arial", 20),
+                this.createFontEntry("Arial", 21),
                 this.createFontEntry("Android 101", 100, true));
     }
 

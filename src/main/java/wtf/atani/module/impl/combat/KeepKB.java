@@ -1,6 +1,5 @@
 package wtf.atani.module.impl.combat;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.util.MovingObjectPosition;
@@ -14,7 +13,6 @@ import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.math.random.RandomUtil;
 import wtf.atani.utils.math.time.TimeHelper;
-import wtf.atani.utils.player.MoveUtil;
 import wtf.atani.utils.player.PlayerHandler;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;

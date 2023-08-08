@@ -14,18 +14,12 @@ public abstract class Component {
         this.height = height;
     }
 
-    public Component(float posX, float posY, float height) {
-        this.x = posX;
-        this.y = posY;
-        this.height = height;
-    }
-
     public float x, y, width, height;
 
     public abstract void drawScreen(int mouseX, int mouseY);
 
     public abstract void actionPerformed(int x, int y, boolean click, int button);
-    public abstract void key(char typedChar, int key);
+    public abstract void keyTyped(char typedChar, int key);
 
     public boolean isHovered(int mouseX, int mouseY) {
         return mouseX >= x && mouseX <= x + width && mouseY > y && mouseY < y + height;

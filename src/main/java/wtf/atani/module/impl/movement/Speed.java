@@ -23,7 +23,7 @@ public class Speed extends Module {
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "YPort"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-
+    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Normal", "Stable"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
     private SliderValue<Float> jumpheight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
@@ -68,6 +68,7 @@ public class Speed extends Module {
                             mc.thePlayer.motionX *= 1.01;
                             mc.thePlayer.motionZ *= 1.01;
                         } else if (mc.thePlayer.motionY < 0.0029) {
+                            // This dont do shit?
                             mc.thePlayer.motionX *= 1.0;
                             mc.thePlayer.motionZ *= 1.0;
                         }
@@ -373,18 +374,34 @@ public class Speed extends Module {
                 break;
             case "NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    if(!isMoving())
-                        return;
+                    switch (ncpMode.getValue()) {
+                        case "Normal":
+                            if(!isMoving())
+                                return;
 
-                    if(mc.thePlayer.onGround) {
-                        mc.timer.timerSpeed = 1.1F;
-                        mc.thePlayer.motionY = 0.419;
-                        MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
-                    } else {
-                        mc.timer.timerSpeed = 1;
-                        MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.3F));
+                            if(mc.thePlayer.onGround) {
+                                mc.timer.timerSpeed = 1.1F;
+                                mc.thePlayer.motionY = 0.419;
+                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
+                            } else {
+                                mc.timer.timerSpeed = 1;
+                                MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.3F));
+                            }
+                            break;
+                        case "Stable":
+                            if(!isMoving())
+                                return;
+
+                            if(mc.thePlayer.onGround) {
+                                mc.timer.timerSpeed = 1.1F;
+                                mc.thePlayer.motionY = 0.419;
+                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
+                            } else {
+                                mc.timer.timerSpeed = 1;
+                                MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
+                            }
+                            break;
                     }
-
                 }
                 break;
             case "Karhu":

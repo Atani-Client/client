@@ -12,7 +12,6 @@ import wtf.atani.utils.player.MoveUtil;
 import wtf.atani.utils.player.RotationUtil;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
-import wtf.atani.value.storage.ValueStorage;
 
 @ModuleInfo(name = "TargetStrafe", description = "Strafe around entities", category = Category.MOVEMENT)
 public class TargetStrafe extends Module {

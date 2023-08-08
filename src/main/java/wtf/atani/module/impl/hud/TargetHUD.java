@@ -23,6 +23,7 @@ import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
 
+@SuppressWarnings("UnnecessaryUnicodeEscape")
 @ModuleInfo(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)
 public class TargetHUD extends Module {
 

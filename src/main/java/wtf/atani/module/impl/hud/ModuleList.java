@@ -3,7 +3,6 @@ package wtf.atani.module.impl.hud;
 import com.google.common.base.Supplier;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import wtf.atani.event.events.DisableModuleEvent;
 import wtf.atani.event.events.EnableModuleEvent;
@@ -16,7 +15,6 @@ import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.impl.hud.clientOverlay.IClientOverlayComponent;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.interfaces.ColorPalette;
-import wtf.atani.utils.java.StringUtil;
 import wtf.atani.utils.math.atomic.AtomicFloat;
 import wtf.atani.utils.render.GradientUtil;
 import wtf.atani.utils.render.RenderUtil;
@@ -32,10 +30,8 @@ import wtf.atani.value.impl.StringBoxValue;
 import wtf.atani.value.interfaces.ValueChangeListener;
 
 import java.awt.*;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @ModuleInfo(name = "ModuleList", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
 public class ModuleList extends Module implements ColorPalette, IClientOverlayComponent {

@@ -1,22 +1,14 @@
 package wtf.atani.module.impl.player;
 
-import org.apache.commons.codec.digest.Md5Crypt;
-
-import com.google.common.base.Supplier;
-
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import wtf.atani.event.events.PacketEvent;
 import wtf.atani.event.events.TickEvent;
-import wtf.atani.event.events.UpdateEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.math.time.TickHelper;
-import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.value.impl.CheckBoxValue;
-import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 import com.google.common.base.Supplier;
 

@@ -1,38 +1,25 @@
 package wtf.atani.module.impl.hud;
 
-import com.google.common.base.Supplier;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import wtf.atani.event.events.DisableModuleEvent;
-import wtf.atani.event.events.EnableModuleEvent;
 import wtf.atani.event.events.Render2DEvent;
-import wtf.atani.event.radbus.Listen;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.impl.hud.clientOverlay.IClientOverlayComponent;
-import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.interfaces.ColorPalette;
 import wtf.atani.utils.java.StringUtil;
 import wtf.atani.utils.math.atomic.AtomicFloat;
 import wtf.atani.utils.render.GradientUtil;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
-import wtf.atani.utils.render.animation.Direction;
-import wtf.atani.utils.render.animation.impl.DecelerateAnimation;
-import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
-import wtf.atani.value.Value;
-import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.StringBoxValue;
-import wtf.atani.value.interfaces.ValueChangeListener;
 
 import java.awt.*;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.*;
 
 @ModuleInfo(name = "WaterMark", description = "A nice little overlay that shows you info about the client", category = Category.HUD)

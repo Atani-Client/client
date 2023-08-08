@@ -1,6 +1,5 @@
 package wtf.atani.module.impl.combat;
 
-import com.sun.jna.platform.win32.WinUser;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C0APacketAnimation;
@@ -8,7 +7,6 @@ import net.minecraft.util.MovingObjectPosition;
 import wtf.atani.event.events.AttackEvent;
 import wtf.atani.event.events.MoveFlyingEvent;
 import wtf.atani.event.events.RotationEvent;
-import wtf.atani.event.events.UpdateEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;

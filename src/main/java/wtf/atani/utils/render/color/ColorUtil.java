@@ -1,5 +1,6 @@
 package wtf.atani.utils.render.color;
 
+import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.math.MathUtil;
 
 import java.awt.*;
@@ -107,6 +108,24 @@ public class ColorUtil {
 
     public static int fadeBetween(int startColour, int endColour) {
         return fadeBetween(startColour, endColour, 0L);
+    }
+
+    public static int getAstolfoColor(Category category) {
+        switch (category) {
+            case COMBAT:
+                return new Color(230, 77, 62).getRGB();
+            case MOVEMENT:
+                return new Color(48, 203, 116).getRGB();
+            case PLAYER:
+                return new Color(141, 67, 169).getRGB();
+            case MISCELLANEOUS:
+                return new Color(75, 145, 190).getRGB();
+            case RENDER:
+                return new Color(245, 155, 27).getRGB();
+            case HUD:
+                return new Color(56, 0, 196).getRGB();
+        }
+        return -1;
     }
 
     public static int fadeTo(int startColour, int endColour, double progress) {

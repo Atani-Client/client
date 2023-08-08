@@ -49,6 +49,7 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Product Sans", 19),
                 this.createFontEntry("Product Sans", 20),
                 this.createFontEntry("Product Sans", 21),
+                this.createFontEntry("SFUI Medium", 16),
                 this.createFontEntry("Arial", 17),
                 this.createFontEntry("Arial", 18),
                 this.createFontEntry("Arial", 19),

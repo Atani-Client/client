@@ -1,7 +1,7 @@
 package wtf.atani.module.data.enums;
 
 public enum Category {
-    COMBAT("Combat"), PLAYER("Player"), MOVEMENT("Movement"), MISCELLANEOUS("Miscellaneous"), RENDER("Render"), HUD("HUD and GUIs");
+    COMBAT("Combat"), MOVEMENT("Movement"), PLAYER("Player"),MISCELLANEOUS("Miscellaneous"), RENDER("Render"), HUD("HUD and GUIs");
 
     private final String name;
 

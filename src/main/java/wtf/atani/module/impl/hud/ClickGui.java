@@ -7,11 +7,11 @@ import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.screen.click.astolfo.AstolfoClickGuiScreen;
 import wtf.atani.screen.click.augustus.AugustusClickGuiScreen;
+import wtf.atani.screen.click.golden.GoldenClickGuiScreen;
 import wtf.atani.screen.click.icarus.IcarusClickGuiScreen;
 import wtf.atani.screen.click.ryu.RyuClickGuiScreen;
-import wtf.atani.screen.click.xave.XaveClickGuiScreen;
-import wtf.atani.screen.click.golden.GoldenClickGuiScreen;
 import wtf.atani.screen.click.simple.SimpleClickGuiScreen;
+import wtf.atani.screen.click.xave.XaveClickGuiScreen;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.StringBoxValue;
 
@@ -36,11 +36,17 @@ public class ClickGui extends Module {
     public static XaveClickGuiScreen clickGuiScreenXave;
     public static RyuClickGuiScreen clickGuiScreenRyu;
     public static IcarusClickGuiScreen clickGuiScreenIcarus;
-    public static AstolfoClickGuiScreen astolfoGui;
+    public static AstolfoClickGuiScreen clickGuiScreenAstolfo;
 
     @Override
     public void onEnable() {
         switch (this.mode.getValue()) {
+            case "Astolfo":
+                if(clickGuiScreenAstolfo == null || true) {
+                    clickGuiScreenAstolfo = new AstolfoClickGuiScreen();
+                }
+                mc.displayGuiScreen(clickGuiScreenAstolfo);
+                break;
             case "Simple":
                 if(clickGuiScreenSimple == null) {
                     clickGuiScreenSimple = new SimpleClickGuiScreen();
@@ -76,12 +82,6 @@ public class ClickGui extends Module {
                     clickGuiScreenIcarus = new IcarusClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenIcarus);
-                break;
-            case "Astolfo":
-                if(astolfoGui == null) {
-                    astolfoGui = new AstolfoClickGuiScreen();
-                }
-                mc.displayGuiScreen(astolfoGui);
                 break;
         }
         this.setEnabled(false);

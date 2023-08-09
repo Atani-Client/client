@@ -8,6 +8,8 @@ import wtf.atani.value.impl.CheckBoxValue;
 @ModuleInfo(name = "CustomChat", description = "Improves the minecraft default chat.", category = Category.HUD)
 public class CustomChat extends Module {
 
+    // Hooked in GuiChat class & GuiNewChat class
+
     public final CheckBoxValue noBackground = new CheckBoxValue("No Background", "Should the chat have no background?", this, false);
     public final CheckBoxValue customFont = new CheckBoxValue("Custom Font", "Should the chat have a custom font?", this, false);
 

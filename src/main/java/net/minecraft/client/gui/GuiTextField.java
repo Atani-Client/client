@@ -636,13 +636,13 @@ public class GuiTextField extends Gui
         GlStateManager.enableTexture2D();
     }
 
-    public void setMaxStringLength(int p_146203_1_)
+    public void setMaxStringLength(int maxStringLength)
     {
-        this.maxStringLength = p_146203_1_;
+        this.maxStringLength = maxStringLength;
 
-        if (this.text.length() > p_146203_1_)
+        if (this.text.length() > maxStringLength)
         {
-            this.text = this.text.substring(0, p_146203_1_);
+            this.text = this.text.substring(0, maxStringLength);
         }
     }
 

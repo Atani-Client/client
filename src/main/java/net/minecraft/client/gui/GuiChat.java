@@ -64,7 +64,12 @@ public class GuiChat extends GuiScreen
         } else {
             this.inputField = new GuiTextField(0, this.fontRendererObj, 4, this.height - 12, this.width - 4, 12);
         }
-        this.inputField.setMaxStringLength(100);
+        if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).unlimitedChat.isEnabled()) {
+            this.inputField.setMaxStringLength(Integer.MAX_VALUE);
+        } else {
+            this.inputField.setMaxStringLength(100);
+        }
+
         this.inputField.setEnableBackgroundDrawing(false);
         this.inputField.setFocused(true);
         this.inputField.setText(this.defaultInputFieldText);

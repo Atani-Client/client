@@ -11,6 +11,7 @@ public class CustomChat extends Module {
     // Hooked in GuiChat class & GuiNewChat class
 
     public final CheckBoxValue noBackground = new CheckBoxValue("No Background", "Should the chat have no background?", this, false);
+    public final CheckBoxValue unlimitedChat = new CheckBoxValue("Unlimited Chat", "Should the module remove chat box character limit??", this, false);
     public final CheckBoxValue customFont = new CheckBoxValue("Custom Font", "Should the chat have a custom font?", this, false);
 
     @Override

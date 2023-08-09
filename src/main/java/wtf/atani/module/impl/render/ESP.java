@@ -86,15 +86,25 @@ public class ESP extends Module {
                     if (!FightUtil.isValidWithPlayer(entity, rangeLimited.getValue() ? range.getValue() : 1000000, invisible.getValue(), players.getValue(), animals.getValue(), monsters.getValue())) continue;
                     final double[] coords = new double[4];
                     InterpolationUtil.convertBox(coords, entity);
-                    RenderUtil.drawLine(coords[0], coords[1], coords[2], coords[1], 2.0f, Color.BLACK.getRGB());
-                    RenderUtil.drawLine(coords[0], coords[1], coords[0], coords[3], 2.0f, Color.BLACK.getRGB());
-                    RenderUtil.drawLine(coords[0], coords[3], coords[2], coords[3], 2.0f, Color.BLACK.getRGB());
-                    RenderUtil.drawLine(coords[2], coords[1], coords[2], coords[3], 2.0f, Color.BLACK.getRGB());
+                    float x = (float)coords[0];
+                    float y = (float)coords[1];
+                    float width = (float)(coords[2] - coords[0]);
+                    float height = (float)(coords[3] - coords[1]);
 
-                    RenderUtil.drawLine(coords[0], coords[1], coords[2], coords[1], 1.0f, color.getValue() ? getColor(1) : Color.WHITE.getRGB());
-                    RenderUtil.drawLine(coords[0], coords[1], coords[0], coords[3], 1.0f, color.getValue() ? getColor(2) : Color.WHITE.getRGB());
-                    RenderUtil.drawLine(coords[0], coords[3], coords[2], coords[3], 1.0f, color.getValue() ? getColor(3) : Color.WHITE.getRGB());
-                    RenderUtil.drawLine(coords[2], coords[1], coords[2], coords[3], 1.0f, color.getValue() ? getColor(4) : Color.WHITE.getRGB());
+                    // Back
+                    RenderUtil.drawRect(x, y, width, height, new Color(0, 0, 0, 110).getRGB());
+
+                    // Top
+                    RenderUtil.drawRect(x - 0.5f, y - 0.5f, width + 1, 0.5f, -1);
+
+                    // Left
+                    RenderUtil.drawRect(x - 0.5f, y, 0.5f, height, -1);
+
+                    // Right
+                    RenderUtil.drawRect(x + width, y, 0.5f, height, -1);
+
+                    // Bottom
+                    RenderUtil.drawRect(x - 0.5f, y + height, width + 1, 0.5f, -1);
 
                     GlStateManager.resetColor();
                 }

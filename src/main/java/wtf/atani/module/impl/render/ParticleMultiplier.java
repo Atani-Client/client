@@ -7,7 +7,7 @@ import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.value.impl.SliderValue;
 
-@ModuleInfo(name = "ParticleMultplier", description = "Multiplies particles", category = Category.RENDER)
+@ModuleInfo(name = "ParticleMultiplier", description = "Multiplies particles", category = Category.RENDER)
 public class ParticleMultiplier extends Module {
 
     private final SliderValue<Integer> multiplier = new SliderValue<>("Multiplier", "What will be the multiplier for particles?", this, 1, 1, 10, 0);

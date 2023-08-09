@@ -10,6 +10,7 @@ import wtf.atani.utils.math.random.RandomUtil;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RotationUtil implements Methods {
 
@@ -99,6 +100,14 @@ public class RotationUtil implements Methods {
         return new float[]{endYaw, endPitch};
     }
 
+    public static float[] updateRotationAdvanced(float newYaw, float newPitch, float speed) {
+        return RotationUtil.updateRotationAdvanced(PlayerHandler.yaw, newYaw, speed, PlayerHandler.pitch, newPitch, speed);
+    }
+
+    public static float[] updateRotationSimple(float newYaw, float newPitch, float speed) {
+        return RotationUtil.updateRotationSimple(PlayerHandler.yaw, newYaw, speed, PlayerHandler.pitch, newPitch, speed);
+    }
+
     public static float[] updateRotationAdvanced(float oldYaw, float newYaw, float yawSpeed, float oldPitch, float newPitch, float pitchSpeed) {
         final int fps = (int) (Minecraft.getDebugFPS() / 20.0F);
         final float deltaYaw = (((newYaw - oldYaw) + 540) % 360) - 180;
@@ -109,6 +118,11 @@ public class RotationUtil implements Methods {
         float calcPitch = oldPitch + pitchDistance;
         return new float[] {calcYaw, calcPitch};
     }
+
+    public static float[] updateRotationSimple(float oldYaw, float newYaw, float yawSpeed, float oldPitch, float newPitch, float pitchSpeed) {
+        return new float[] {updateRotation(oldYaw, newYaw, yawSpeed), updateRotation(oldPitch, newPitch, pitchSpeed)};
+    }
+
 
     public static float getSimpleScaffoldYaw() {
         boolean forward = mc.gameSettings.keyBindForward.isKeyDown();
@@ -142,6 +156,10 @@ public class RotationUtil implements Methods {
         return mc.thePlayer.rotationYaw + yaw;
     }
 
+    public static float getDistanceToLastPitch(final float pitch) {
+        return Math.abs(pitch - PlayerHandler.pitch);
+    }
+
     public static void resetRotations(float yaw, float pitch, boolean silent) {
         if(silent) {
             mc.thePlayer.rotationYaw = yaw - yaw % 360 + mc.thePlayer.rotationYaw % 360;
@@ -151,8 +169,8 @@ public class RotationUtil implements Methods {
         }
     }
 
-    public static float updateRotation(float p_75652_1_, float p_75652_2_, float speed) {
-        float f = MathHelper.wrapDegrees(p_75652_2_ - p_75652_1_);
+    public static float updateRotation(float oldRot, float newRot, float speed) {
+        float f = MathHelper.wrapDegrees(newRot - oldRot);
 
         if (f > (float) speed) {
             f = (float) speed;
@@ -162,11 +180,11 @@ public class RotationUtil implements Methods {
             f = -(float) speed;
         }
 
-        return p_75652_1_ + f;
+        return oldRot + f;
     }
 
-    public static float updateRotation(float p_75652_1_, float p_75652_2_) {
-        float f = MathHelper.wrapDegrees(p_75652_2_ - p_75652_1_);
+    public static float updateRotation(float oldRot, float newRot) {
+        float f = MathHelper.wrapDegrees(newRot - oldRot);
 
         if (f > (float) 180) {
             f = (float) 180;
@@ -176,7 +194,7 @@ public class RotationUtil implements Methods {
             f = -(float) 180;
         }
 
-        return p_75652_1_ + f;
+        return oldRot + f;
     }
 
 }

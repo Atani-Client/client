@@ -30,6 +30,7 @@ import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.optifine.reflect.Reflector;
+import wtf.atani.event.events.EmitParticleEvent;
 
 public class EffectRenderer
 {
@@ -113,9 +114,12 @@ public class EffectRenderer
         this.particleTypes.put(Integer.valueOf(id), particleFactory);
     }
 
+
     public void emitParticleAtEntity(Entity entityIn, EnumParticleTypes particleTypes)
     {
-        this.particleEmitters.add(new EntityParticleEmitter(this.worldObj, entityIn, particleTypes));
+        final EmitParticleEvent emitParticleEvent = new EmitParticleEvent(1, particleTypes).onFire();
+        for (int i = 0; i < emitParticleEvent.multiplier; i++)
+            this.particleEmitters.add(new EntityParticleEmitter(this.worldObj, entityIn, particleTypes));
     }
 
     /**

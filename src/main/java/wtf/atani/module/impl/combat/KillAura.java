@@ -57,7 +57,7 @@ public class KillAura extends Module {
     public CheckBoxValue prediction = new CheckBoxValue("Prediction", "Predict players position?", this, false);
     public CheckBoxValue necessaryRotations = new CheckBoxValue("Necessary Rotations", "Rotate only if necessary?", this, false);
     public StringBoxValue necessaryMode = new StringBoxValue("Necessary Mode", "What rotations will rotate only if necessary?", this, new String[]{"Pitch", "Yaw", "Both"}, new Supplier[]{() -> necessaryRotations.getValue()});
-    public CheckBoxValue nearRotate = new CheckBoxValue("Near Rotate", "Don't rotate if near to the entity?", this, false, new Supplier[]{() -> necessaryRotations.getValue()});
+    public CheckBoxValue nearRotate = new CheckBoxValue("Stop if Near", "Don't rotate if near to the entity?", this, false, new Supplier[]{() -> necessaryRotations.getValue()});
     public SliderValue<Float> nearDistance = new SliderValue<>("Near Distance", "What will be the distance to stop rotating?", this, 0.5f, 0f, 0.5f, 1, new Supplier[]{() -> necessaryRotations.getValue() && nearRotate.getValue()});
     public CheckBoxValue resetRotations = new CheckBoxValue("Reset Rotations", "Reset Rotations properly?", this, true);
     public StringBoxValue resetMode = new StringBoxValue("Reset Mode", "How will the rotations reset?", this, new String[]{"Silent", "Locked"}, new Supplier[]{resetRotations::getValue});

@@ -14,9 +14,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import wtf.atani.font.storage.FontStorage;
+import wtf.atani.module.impl.hud.CustomChat;
+import wtf.atani.module.storage.ModuleStorage;
 
 public class GuiChat extends GuiScreen
 {
+    private final FontRenderer customFontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
     private static final Logger logger = LogManager.getLogger();
     private String historyBuffer = "";
 
@@ -55,8 +59,17 @@ public class GuiChat extends GuiScreen
     {
         Keyboard.enableRepeatEvents(true);
         this.sentHistoryCursor = this.mc.ingameGUI.getChatGUI().getSentMessages().size();
-        this.inputField = new GuiTextField(0, this.fontRendererObj, 4, this.height - 12, this.width - 4, 12);
-        this.inputField.setMaxStringLength(100);
+        if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled()) {
+            this.inputField = new GuiTextField(0, this.customFontRenderer, 4, this.height - 12, this.width - 4, 12);
+        } else {
+            this.inputField = new GuiTextField(0, this.fontRendererObj, 4, this.height - 12, this.width - 4, 12);
+        }
+        if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).unlimitedChat.isEnabled()) {
+            this.inputField.setMaxStringLength(Integer.MAX_VALUE);
+        } else {
+            this.inputField.setMaxStringLength(100);
+        }
+
         this.inputField.setEnableBackgroundDrawing(false);
         this.inputField.setFocused(true);
         this.inputField.setText(this.defaultInputFieldText);
@@ -305,7 +318,12 @@ public class GuiChat extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
+        if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).noBackground.isEnabled()) {
+            //don't draw background
+        } else {
+            drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
+        }
+
         this.inputField.drawTextBox();
         IChatComponent ichatcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
 

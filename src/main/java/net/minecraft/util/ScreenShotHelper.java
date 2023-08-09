@@ -67,7 +67,7 @@ public class ScreenShotHelper
                 GlStateManager.pushMatrix();
                 GlStateManager.clear(16640);
                 minecraft.getFramebuffer().bindFramebuffer(true);
-                minecraft.entityRenderer.func_181560_a(Config.renderPartialTicks, System.nanoTime());
+                minecraft.entityRenderer.func_181560_a(Config.renderPartialTicks, System.nanoTime(), Config.renderPartialTicks);
             }
 
             if (OpenGlHelper.isFramebufferEnabled())

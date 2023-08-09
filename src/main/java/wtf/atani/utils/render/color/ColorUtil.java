@@ -44,11 +44,11 @@ public class ColorUtil {
         return blendGermanColours(getFadingFromSysTime(offset));
     }
 
-    public static float[] getColor(int n2) {
-        if ((n2 & 0xFC000000) == 0) {
-            n2 |= 0xFF000000;
+    public static float[] colorToRGBA(int col) {
+        if ((col & 0xFC000000) == 0) {
+            col |= 0xFF000000;
         }
-        return new float[]{(float)(n2 >> 16 & 0xFF) / 255.0f, (float)(n2 >> 8 & 0xFF) / 255.0f, (float)(n2 & 0xFF) / 255.0f, (float)(n2 >> 24 & 0xFF) / 255.0f};
+        return new float[]{(float)(col >> 16 & 0xFF) / 255.0f, (float)(col >> 8 & 0xFF) / 255.0f, (float)(col & 0xFF) / 255.0f, (float)(col >> 24 & 0xFF) / 255.0f};
     }
 
     public static Color generateRandomTonedColor(int baseHue, int minValue, int maxValue, int alpha) {

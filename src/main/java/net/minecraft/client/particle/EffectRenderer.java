@@ -30,6 +30,7 @@ import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.optifine.reflect.Reflector;
+import wtf.atani.event.events.EmitParticleEvent;
 
 public class EffectRenderer
 {
@@ -113,9 +114,12 @@ public class EffectRenderer
         this.particleTypes.put(Integer.valueOf(id), particleFactory);
     }
 
+
     public void emitParticleAtEntity(Entity entityIn, EnumParticleTypes particleTypes)
     {
-        this.particleEmitters.add(new EntityParticleEmitter(this.worldObj, entityIn, particleTypes));
+        final EmitParticleEvent emitParticleEvent = new EmitParticleEvent(1, particleTypes).onFire();
+        for (int i = 0; i < emitParticleEvent.multiplier; i++)
+            this.particleEmitters.add(new EntityParticleEmitter(this.worldObj, entityIn, particleTypes));
     }
 
     /**
@@ -261,7 +265,7 @@ public class EffectRenderer
     /**
      * Renders all current particles. Args player, partialTickTime
      */
-    public void renderParticles(Entity entityIn, float partialTicks)
+    public void renderParticles(Entity entityIn, float partialTicks, float particlePartialTicks)
     {
         float f = ActiveRenderInfo.getRotationX();
         float f1 = ActiveRenderInfo.getRotationZ();
@@ -315,7 +319,7 @@ public class EffectRenderer
 
                         try
                         {
-                            entityfx.renderParticle(worldrenderer, entityIn, partialTicks, f, f4, f1, f2, f3);
+                            entityfx.renderParticle(worldrenderer, entityIn, particlePartialTicks, f, f4, f1, f2, f3);
                         }
                         catch (Throwable throwable)
                         {

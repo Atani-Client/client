@@ -884,7 +884,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GlStateManager.scale(this.cameraZoom, this.cameraZoom, 1.0D);
         }
 
-        Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance);
+        PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight).onFire();
+        Project.gluPerspective(this.getFOVModifier(partialTicks, true), perspectiveEvent.getAspect(), 0.05F, this.clipDistance);
         GlStateManager.matrixMode(5888);
         GlStateManager.loadIdentity();
 
@@ -974,7 +975,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 Shaders.applyHandDepth();
             }
 
-            Project.gluPerspective(this.getFOVModifier(p_renderHand_1_, false), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.farPlaneDistance * 2.0F);
+            PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight, true).onFire();
+            Project.gluPerspective(this.getFOVModifier(p_renderHand_1_, false), perspectiveEvent.getAspect(), 0.05F, this.farPlaneDistance * 2.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.loadIdentity();
 
@@ -1604,7 +1606,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("sky");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance);
+            PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight).onFire();
+            Project.gluPerspective(this.getFOVModifier(partialTicks, true), perspectiveEvent.getAspect(), 0.05F, this.clipDistance);
             GlStateManager.matrixMode(5888);
 
             if (flag)
@@ -1621,7 +1624,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance);
+            Project.gluPerspective(this.getFOVModifier(partialTicks, true), perspectiveEvent.getAspect(), 0.05F, this.clipDistance);
             GlStateManager.matrixMode(5888);
         }
         else
@@ -1928,7 +1931,8 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("clouds");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance * 4.0F);
+            PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight).onFire();
+            Project.gluPerspective(this.getFOVModifier(partialTicks, true), perspectiveEvent.getAspect(), 0.05F, this.clipDistance * 4.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.pushMatrix();
             this.setupFog(0, partialTicks);
@@ -1937,7 +1941,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GlStateManager.popMatrix();
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            Project.gluPerspective(this.getFOVModifier(partialTicks, true), (float)this.mc.displayWidth / (float)this.mc.displayHeight, 0.05F, this.clipDistance);
+            Project.gluPerspective(this.getFOVModifier(partialTicks, true), perspectiveEvent.getAspect(), 0.05F, this.clipDistance);
             GlStateManager.matrixMode(5888);
         }
     }

@@ -141,8 +141,8 @@ implements Methods {
         f3 = f3 * 2.0f - 4.0f;
         Glyph[] arrglyph = this.basicGlyphs;
         DynamicTexture dynamicTexture = this.basicTexture;
-        float f4 = ColorUtil.getColor(n2)[3];
-        this.setColor(ColorUtil.getColor(n2)[0], ColorUtil.getColor(n2)[1], ColorUtil.getColor(n2)[2], f4);
+        float f4 = ColorUtil.colorToRGBA(n2)[3];
+        this.setColor(ColorUtil.colorToRGBA(n2)[0], ColorUtil.colorToRGBA(n2)[1], ColorUtil.colorToRGBA(n2)[2], f4);
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.enableTexture2D();
@@ -160,7 +160,7 @@ implements Methods {
                     this.italicStyle = false;
                     arrglyph = this.basicGlyphs;
                     dynamicTexture = this.basicTexture;
-                    this.setColor(ColorUtil.getColor(n2)[0], ColorUtil.getColor(n2)[1], ColorUtil.getColor(n2)[2], f4);
+                    this.setColor(ColorUtil.colorToRGBA(n2)[0], ColorUtil.colorToRGBA(n2)[1], ColorUtil.colorToRGBA(n2)[2], f4);
                 }
                 if ((n4 = "0123456789abcdefklmnor".indexOf(string.toLowerCase().charAt(i2 + 1))) < 16) {
                     dynamicTexture = this.basicTexture;
@@ -172,7 +172,7 @@ implements Methods {
                     this.boldStyle = false;
                     n4 = n4 < 0 ? 15 : (bl2 ? n4 + 16 : n4);
                     n3 = Config.isCustomColors() ? CustomColors.getTextColor(n4, this.colorCode[n4]) : this.colorCode[n4];
-                    this.setColor(ColorUtil.getColor(n3)[0], ColorUtil.getColor(n3)[1], ColorUtil.getColor(n3)[2], f4);
+                    this.setColor(ColorUtil.colorToRGBA(n3)[0], ColorUtil.colorToRGBA(n3)[1], ColorUtil.colorToRGBA(n3)[2], f4);
                 } else {
                     switch (n4) {
                         case 16: {
@@ -217,7 +217,7 @@ implements Methods {
                             this.italicStyle = false;
                             arrglyph = this.basicGlyphs;
                             dynamicTexture = this.basicTexture;
-                            this.setColor(ColorUtil.getColor(n2)[0], ColorUtil.getColor(n2)[1], ColorUtil.getColor(n2)[2], f4);
+                            this.setColor(ColorUtil.colorToRGBA(n2)[0], ColorUtil.colorToRGBA(n2)[1], ColorUtil.colorToRGBA(n2)[2], f4);
                         }
                     }
                 }

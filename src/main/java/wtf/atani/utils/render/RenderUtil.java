@@ -17,6 +17,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
 import wtf.atani.utils.interfaces.Methods;
+import wtf.atani.utils.render.color.ColorUtil;
 
 import java.awt.*;
 
@@ -31,6 +32,21 @@ public class RenderUtil implements Methods {
 
     public static void scaleEnd() {
         GL11.glPopMatrix();
+    }
+
+    public static void drawLine(double x, double y, double x1, double y1, float width, int color) {
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glLineWidth(width);
+        float[] rgba = ColorUtil.colorToRGBA(color);
+        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex2d(x, y);
+        GL11.glVertex2d(x1, y1);
+        GL11.glEnd();
+        GL11.glDisable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
 

@@ -11,9 +11,13 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import wtf.atani.font.storage.FontStorage;
+import wtf.atani.module.impl.hud.CustomChat;
+import wtf.atani.module.storage.ModuleStorage;
 
 public class GuiNewChat extends Gui
 {
+    private final FontRenderer customFontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
     private static final Logger logger = LogManager.getLogger();
     private final Minecraft mc;
     private final List<String> sentMessages = Lists.<String>newArrayList();
@@ -52,7 +56,7 @@ public class GuiNewChat extends Gui
 
                 for (int i1 = 0; i1 + this.scrollPos < this.field_146253_i.size() && i1 < i; ++i1)
                 {
-                    ChatLine chatline = (ChatLine)this.field_146253_i.get(i1 + this.scrollPos);
+                    ChatLine chatline = this.field_146253_i.get(i1 + this.scrollPos);
 
                     if (chatline != null)
                     {
@@ -79,10 +83,19 @@ public class GuiNewChat extends Gui
                             {
                                 int i2 = 0;
                                 int j2 = -i1 * 9;
-                                drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
+                                if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).noBackground.isEnabled()) {
+                                    // don't draw background
+                                } else {
+                                    drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
+                                }
                                 String s = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled()) {
+                                    this.customFontRenderer.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                } else {
+                                    this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                }
+
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();
                             }
@@ -92,7 +105,13 @@ public class GuiNewChat extends Gui
 
                 if (flag)
                 {
-                    int k2 = this.mc.fontRendererObj.FONT_HEIGHT;
+                    int k2;
+                    if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled()) {
+                        k2 = this.customFontRenderer.FONT_HEIGHT;
+                    } else {
+                        k2 = this.mc.fontRendererObj.FONT_HEIGHT;
+                    }
+
                     GlStateManager.translate(-3.0F, 0.0F, 0.0F);
                     int l2 = k * k2 + k;
                     int i3 = j * k2 + j;
@@ -137,15 +156,15 @@ public class GuiNewChat extends Gui
         logger.info("[CHAT] " + p_146234_1_.getUnformattedText());
     }
 
-    private void setChatLine(IChatComponent p_146237_1_, int p_146237_2_, int p_146237_3_, boolean p_146237_4_)
+    private void setChatLine(IChatComponent chatComponent, int chatLine, int p_146237_3_, boolean p_146237_4_)
     {
-        if (p_146237_2_ != 0)
+        if (chatLine != 0)
         {
-            this.deleteChatLine(p_146237_2_);
+            this.deleteChatLine(chatLine);
         }
 
         int i = MathHelper.floor_float((float)this.getChatWidth() / this.getChatScale());
-        List<IChatComponent> list = GuiUtilRenderComponents.func_178908_a(p_146237_1_, i, this.mc.fontRendererObj, false, false);
+        List<IChatComponent> list = GuiUtilRenderComponents.func_178908_a(chatComponent, i, this.mc.fontRendererObj, false, false);
         boolean flag = this.getChatOpen();
 
         for (IChatComponent ichatcomponent : list)
@@ -156,7 +175,7 @@ public class GuiNewChat extends Gui
                 this.scroll(1);
             }
 
-            this.field_146253_i.add(0, new ChatLine(p_146237_3_, ichatcomponent, p_146237_2_));
+            this.field_146253_i.add(0, new ChatLine(p_146237_3_, ichatcomponent, chatLine));
         }
 
         while (this.field_146253_i.size() > 100)
@@ -166,7 +185,7 @@ public class GuiNewChat extends Gui
 
         if (!p_146237_4_)
         {
-            this.chatLines.add(0, new ChatLine(p_146237_3_, p_146237_1_, p_146237_2_));
+            this.chatLines.add(0, new ChatLine(p_146237_3_, chatComponent, chatLine));
 
             while (this.chatLines.size() > 100)
             {
@@ -237,59 +256,62 @@ public class GuiNewChat extends Gui
      */
     public IChatComponent getChatComponent(int p_146236_1_, int p_146236_2_)
     {
-        if (!this.getChatOpen())
-        {
-            return null;
-        }
-        else
-        {
+        if (this.getChatOpen()) {
             ScaledResolution scaledresolution = new ScaledResolution(this.mc);
             int i = scaledresolution.getScaleFactor();
             float f = this.getChatScale();
             int j = p_146236_1_ / i - 3;
             int k = p_146236_2_ / i - 27;
-            j = MathHelper.floor_float((float)j / f);
-            k = MathHelper.floor_float((float)k / f);
+            j = MathHelper.floor_float((float) j / f);
+            k = MathHelper.floor_float((float) k / f);
 
-            if (j >= 0 && k >= 0)
-            {
+            if (j >= 0 && k >= 0) {
                 int l = Math.min(this.getLineCount(), this.field_146253_i.size());
 
-                if (j <= MathHelper.floor_float((float)this.getChatWidth() / this.getChatScale()) && k < this.mc.fontRendererObj.FONT_HEIGHT * l + l)
-                {
-                    int i1 = k / this.mc.fontRendererObj.FONT_HEIGHT + this.scrollPos;
+                if (ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled()) {
+                    if (j <= MathHelper.floor_float((float) this.getChatWidth() / this.getChatScale()) && k < this.customFontRenderer.FONT_HEIGHT * l + l) {
+                        int i1 = k / this.customFontRenderer.FONT_HEIGHT + this.scrollPos;
 
-                    if (i1 >= 0 && i1 < this.field_146253_i.size())
-                    {
-                        ChatLine chatline = (ChatLine)this.field_146253_i.get(i1);
-                        int j1 = 0;
+                        if (i1 >= 0 && i1 < this.field_146253_i.size()) {
+                            ChatLine chatline = this.field_146253_i.get(i1);
+                            int j1 = 0;
 
-                        for (IChatComponent ichatcomponent : chatline.getChatComponent())
-                        {
-                            if (ichatcomponent instanceof ChatComponentText)
-                            {
-                                j1 += this.mc.fontRendererObj.getStringWidth(GuiUtilRenderComponents.func_178909_a(((ChatComponentText)ichatcomponent).getChatComponentText_TextValue(), false));
+                            for (IChatComponent ichatcomponent : chatline.getChatComponent()) {
+                                if (ichatcomponent instanceof ChatComponentText) {
+                                    j1 += this.customFontRenderer.getStringWidth(GuiUtilRenderComponents.func_178909_a(((ChatComponentText) ichatcomponent).getChatComponentText_TextValue(), false));
 
-                                if (j1 > j)
-                                {
-                                    return ichatcomponent;
+                                    if (j1 > j) {
+                                        return ichatcomponent;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    return null;
+                    }
+                } else {
+                    if (j <= MathHelper.floor_float((float) this.getChatWidth() / this.getChatScale()) && k < this.mc.fontRendererObj.FONT_HEIGHT * l + l) {
+                        int i1 = k / this.mc.fontRendererObj.FONT_HEIGHT + this.scrollPos;
+
+                        if (i1 >= 0 && i1 < this.field_146253_i.size()) {
+                            ChatLine chatline = this.field_146253_i.get(i1);
+                            int j1 = 0;
+
+                            for (IChatComponent ichatcomponent : chatline.getChatComponent()) {
+                                if (ichatcomponent instanceof ChatComponentText) {
+                                    j1 += this.mc.fontRendererObj.getStringWidth(GuiUtilRenderComponents.func_178909_a(((ChatComponentText) ichatcomponent).getChatComponentText_TextValue(), false));
+
+                                    if (j1 > j) {
+                                        return ichatcomponent;
+                                    }
+                                }
+                            }
+                        }
+
+                    }
                 }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
             }
         }
+        return null;
     }
 
     /**

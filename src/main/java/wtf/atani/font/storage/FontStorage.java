@@ -19,7 +19,11 @@ public class FontStorage extends Storage<FontEntry> {
 
     @Override
     public void init() {
-        this.add(this.createFontEntry("Roboto", 21),
+        this.add(
+                this.createFontEntry("Roboto", 14),
+                this.createFontEntry("Roboto", 15),
+                this.createFontEntry("Roboto", 16),
+                this.createFontEntry("Roboto", 17),
                 this.createFontEntry("Roboto", 18),
                 this.createFontEntry("Roboto", 19),
                 this.createFontEntry("Roboto", 20),
@@ -33,11 +37,6 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Roboto Medium", 20),
                 this.createFontEntry("Roboto Medium", 21),
                 this.createFontEntry("Roboto Medium", 24),
-                this.createFontEntry("ArialMT", 16),
-                this.createFontEntry("Roboto", 16),
-                this.createFontEntry("Roboto", 17),
-                this.createFontEntry("Roboto", 15),
-                this.createFontEntry("Roboto", 14),
                 this.createFontEntry("Tahoma", 16),
                 this.createFontEntry("ESP", 80),
                 this.createFontEntry("Pangram Bold", 80),
@@ -55,6 +54,7 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Arial", 19),
                 this.createFontEntry("Arial", 20),
                 this.createFontEntry("Arial", 21),
+                this.createFontEntry("ArialMT", 16),
                 this.createFontEntry("Android 101", 100, true));
     }
 

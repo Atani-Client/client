@@ -91,7 +91,8 @@ public class FightUtil implements Methods {
                 || entityLivingBase.getEntityId() == mc.thePlayer.getEntityId());
     }
 
-    public static boolean isValid(Entity entity, boolean invis, boolean players, boolean animals, boolean mobs) {
+    // For esp
+    public static boolean isValidWithPlayer(Entity entity, boolean invis, boolean players, boolean animals, boolean mobs) {
         return !(entity.isDead
                 || entity instanceof EntityArmorStand
                 || entity instanceof EntityVillager
@@ -100,10 +101,23 @@ public class FightUtil implements Methods {
                 || entity instanceof EntityMob && !mobs
                 || entity.isInvisible() && !invis
                 || mc.theWorld.getEntityByID(entity.getEntityId()) != entity
-                || entity == mc.thePlayer
-                || entity == null
-                || entity.getEntityId() == mc.thePlayer.getEntityId());
+                || entity == null );
     }
+
+    public static boolean isValidWithPlayer(Entity entity, float range, boolean invis, boolean players, boolean animals, boolean mobs) {
+        return !(entity.isDead
+                || mc.thePlayer == entity && mc.gameSettings.thirdPersonView == 0
+                || getRange(entity) > range
+                || entity instanceof EntityArmorStand
+                || entity instanceof EntityVillager
+                || entity instanceof EntityPlayer && !players
+                || entity instanceof EntityAnimal && !animals
+                || entity instanceof EntityMob && !mobs
+                || entity.isInvisible() && !invis
+                || mc.theWorld.getEntityByID(entity.getEntityId()) != entity
+                || entity == null );
+    }
+
 
     public static double getRange(Entity entity) {
         if(mc.thePlayer == null)

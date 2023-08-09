@@ -261,7 +261,7 @@ public class EffectRenderer
     /**
      * Renders all current particles. Args player, partialTickTime
      */
-    public void renderParticles(Entity entityIn, float partialTicks)
+    public void renderParticles(Entity entityIn, float partialTicks, float particlePartialTicks)
     {
         float f = ActiveRenderInfo.getRotationX();
         float f1 = ActiveRenderInfo.getRotationZ();
@@ -315,7 +315,7 @@ public class EffectRenderer
 
                         try
                         {
-                            entityfx.renderParticle(worldrenderer, entityIn, partialTicks, f, f4, f1, f2, f3);
+                            entityfx.renderParticle(worldrenderer, entityIn, particlePartialTicks, f, f4, f1, f2, f3);
                         }
                         catch (Throwable throwable)
                         {

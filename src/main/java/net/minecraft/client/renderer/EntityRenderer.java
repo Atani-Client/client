@@ -1239,7 +1239,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         return i > 200 ? 1.0F : 0.7F + MathHelper.sin(((float)i - partialTicks) * (float)Math.PI * 0.2F) * 0.3F;
     }
 
-    public void func_181560_a(float p_181560_1_, long p_181560_2_)
+    public void func_181560_a(float p_181560_1_, long p_181560_2_, float particleTicks)
     {
         Config.renderPartialTicks = p_181560_1_;
         this.frameInit();
@@ -1325,7 +1325,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 j = Math.max(j, 60);
                 long k = System.nanoTime() - p_181560_2_;
                 long l = Math.max((long)(1000000000 / j / 4) - k, 0L);
-                this.renderWorld(p_181560_1_, System.nanoTime() + l);
+                this.renderWorld(p_181560_1_, System.nanoTime() + l, particleTicks);
 
                 if (OpenGlHelper.shadersSupported)
                 {
@@ -1499,7 +1499,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
     }
 
-    public void renderWorld(float partialTicks, long finishTimeNano)
+    public void renderWorld(float partialTicks, long finishTimeNano, float particleTicks)
     {
         this.updateLightmap(partialTicks);
 
@@ -1524,21 +1524,21 @@ public class EntityRenderer implements IResourceManagerReloadListener
         {
             anaglyphField = 0;
             GlStateManager.colorMask(false, true, true, false);
-            this.renderWorldPass(0, partialTicks, finishTimeNano);
+            this.renderWorldPass(0, partialTicks, particleTicks, finishTimeNano);
             anaglyphField = 1;
             GlStateManager.colorMask(true, false, false, false);
-            this.renderWorldPass(1, partialTicks, finishTimeNano);
+            this.renderWorldPass(1, partialTicks, particleTicks, finishTimeNano);
             GlStateManager.colorMask(true, true, true, false);
         }
         else
         {
-            this.renderWorldPass(2, partialTicks, finishTimeNano);
+            this.renderWorldPass(2, partialTicks, particleTicks, finishTimeNano);
         }
 
         this.mc.mcProfiler.endSection();
     }
 
-    private void renderWorldPass(int pass, float partialTicks, long finishTimeNano)
+    private void renderWorldPass(int pass, float partialTicks, float particleTicks, long finishTimeNano)
     {
         boolean flag = Config.isShaders();
 
@@ -1786,7 +1786,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 Shaders.beginLitParticles();
             }
 
-            effectrenderer.renderLitParticles(entity, partialTicks);
+            effectrenderer.renderLitParticles(entity, particleTicks);
             RenderHelper.disableStandardItemLighting();
             this.setupFog(0, partialTicks);
             this.mc.mcProfiler.endStartSection("particles");
@@ -1796,7 +1796,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 Shaders.beginParticles();
             }
 
-            effectrenderer.renderParticles(entity, partialTicks);
+            effectrenderer.renderParticles(entity, partialTicks, particleTicks);
 
             if (flag)
             {

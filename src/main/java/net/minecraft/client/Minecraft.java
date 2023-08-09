@@ -222,6 +222,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     public int displayHeight;
     public boolean field_181541_X = false;
     public Timer timer = new Timer(20.0F);
+    public Timer particleTimer = new Timer(20.0F);
 
     /** Instance of PlayerUsageSnooper. */
     public PlayerUsageSnooper usageSnooper = new PlayerUsageSnooper("client", this, MinecraftServer.getCurrentTimeMillis());
@@ -838,11 +839,13 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         {
             float f = this.timer.renderPartialTicks;
             this.timer.updateTimer();
+            this.particleTimer.updateTimer();
             this.timer.renderPartialTicks = f;
         }
         else
         {
             this.timer.updateTimer();
+            this.particleTimer.updateTimer();
         }
 
         this.mcProfiler.startSection("scheduledExecutables");
@@ -862,6 +865,10 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         for (int j = 0; j < this.timer.elapsedTicks; ++j)
         {
             this.runTick();
+        }
+
+        for (int j = 0; j < this.particleTimer.elapsedTicks; j++) {
+            this.runParticleTick();
         }
 
         this.mcProfiler.endStartSection("preRenderErrors");
@@ -887,7 +894,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
         if (!this.skipRenderWorld)
         {
             this.mcProfiler.endStartSection("gameRenderer");
-            this.entityRenderer.func_181560_a(this.timer.renderPartialTicks, i);
+            this.entityRenderer.func_181560_a(this.timer.renderPartialTicks, i, this.particleTimer.renderPartialTicks);
             this.mcProfiler.endSection();
         }
 
@@ -1501,6 +1508,14 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      * Runs the current tick.
      */
 
+    public void runParticleTick() {
+        if (this.theWorld != null) {
+            if (!this.isGamePaused) {
+                this.effectRenderer.updateEffects();
+            }
+        }
+    }
+
     public void runTick() throws IOException
     {
         EventHandling.getInstance().publishEvent(new TickEvent());
@@ -2024,12 +2039,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
                 this.theWorld.doVoidFogParticles(MathHelper.floor_double(this.thePlayer.posX), MathHelper.floor_double(this.thePlayer.posY), MathHelper.floor_double(this.thePlayer.posZ));
             }
 
-            this.mcProfiler.endStartSection("particles");
-
-            if (!this.isGamePaused)
-            {
-                this.effectRenderer.updateEffects();
-            }
         }
         else if (this.myNetworkManager != null)
         {

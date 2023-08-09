@@ -391,14 +391,19 @@ public class ItemRenderer
                                         this.transformFirstPersonItem(equippedProgress, swingProgress - 0.07f);
                                         this.doBlockTransformations();
                                         break;
+                                    case "Exhibition":
+                                        this.transformFirstPersonItem(equippedProgress, swingProgress - 0.07f);
+                                        this.doBlockTransformations();
+                                        GL11.glTranslated(1.0, -0.1, 0.5);
+                                        GL11.glTranslatef(-1.0f, this.mc.thePlayer.isSneaking() ? -0.2f : -0.3f, 0.1f);
+                                        break;
                                 }
                             }
 
                             break;
 
                         case BOW:
-                            if(ModuleStorage.getInstance().getByClass(BlockAnimations.class).isEnabled() &&
-                                    (ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.compareValue("1.7") || ModuleStorage.getInstance().getByClass(BlockAnimations.class).mode.compareValue("Atani"))) {
+                            if(ModuleStorage.getInstance().getByClass(BlockAnimations.class).isEnabled() && ModuleStorage.getInstance().getByClass(BlockAnimations.class).blockHit.isEnabled()) {
                                 this.transformFirstPersonItem(equippedProgress, swingProgress);
                                 this.doBowTransformations(partialTicks, abstractclientplayer);
                             } else {

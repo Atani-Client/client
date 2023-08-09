@@ -2,6 +2,7 @@ package wtf.atani.module.impl.movement;
 
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.network.play.client.C0DPacketCloseWindow;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
 import net.minecraft.network.play.server.S2EPacketCloseWindow;
 import org.lwjgl.input.Keyboard;
@@ -17,6 +18,7 @@ import wtf.atani.value.impl.CheckBoxValue;
 public class InventoryMove extends Module {
 
     private final CheckBoxValue openPacket = new CheckBoxValue("No Open Packet", "Should the module send open packets?", this, false);
+    private final CheckBoxValue carry = new CheckBoxValue("Carry", "Should the crafting table allow carrying items?", this, false);
 
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
@@ -44,9 +46,14 @@ public class InventoryMove extends Module {
 
     @Listen
     public final void onPacketEvent(PacketEvent packetEvent) {
-        if (packetEvent.getType() == PacketEvent.Type.OUTGOING && openPacket.getValue()
-                && (packetEvent.getPacket() instanceof S2DPacketOpenWindow || packetEvent.getPacket() instanceof S2EPacketCloseWindow)) {
-            packetEvent.setCancelled(true);
+        if (packetEvent.getType() == PacketEvent.Type.OUTGOING) {
+            if(openPacket.getValue() && (packetEvent.getPacket() instanceof S2DPacketOpenWindow || packetEvent.getPacket() instanceof S2EPacketCloseWindow)) {
+                packetEvent.setCancelled(true);
+            }
+
+            if(carry.getValue() && packetEvent.getPacket() instanceof C0DPacketCloseWindow) {
+                packetEvent.setCancelled(true);
+            }
         }
     }
 

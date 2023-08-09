@@ -380,12 +380,12 @@ public class Speed extends Module {
                                 return;
 
                             if(mc.thePlayer.onGround) {
-                                mc.timer.timerSpeed = 1.1F;
-                                mc.thePlayer.motionY = 0.419;
-                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
+                                mc.timer.timerSpeed = 1.2F;
+                                mc.thePlayer.motionY = 0.409;
+                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(4));
                             } else {
-                                mc.timer.timerSpeed = 1;
-                                MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.3F));
+                                mc.timer.timerSpeed = (float) (1.1 - Math.random() / 10);
+                                MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.375F));
                             }
                             break;
                         case "Stable":
@@ -394,7 +394,7 @@ public class Speed extends Module {
 
                             if(mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 1.1F;
-                                mc.thePlayer.motionY = 0.419;
+                                mc.thePlayer.motionY = 0.409;
                                 MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
                             } else {
                                 mc.timer.timerSpeed = 1;
@@ -485,8 +485,14 @@ public class Speed extends Module {
 
                 if(mc.thePlayer.onGround) {
                     mc.timer.timerSpeed = 1.07F;
+                    mc.thePlayer.motionX *= 1.0012;
+                    mc.thePlayer.motionZ *= 1.0012;
                 } else {
                     mc.timer.timerSpeed = (float) (1 + Math.random() / 1200);
+                }
+
+                if(mc.thePlayer.motionY > 0) {
+                    mc.timer.timerSpeed += 0.01;
                 }
 
                 if(mc.thePlayer.hurtTime != 0) {
@@ -494,8 +500,9 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                if(mc.thePlayer.motionY < 0) {
-                    mc.thePlayer.motionY = 0.42;
+                if(mc.thePlayer.hurtTime != 0) {
+                    mc.thePlayer.isInWeb = true;
+                    mc.thePlayer.setInWeb();
                 }
                 break;
             case "MineMenClub":

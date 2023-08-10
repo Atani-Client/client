@@ -2,10 +2,6 @@ package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import wtf.atani.event.events.MoveEntityEvent;
 import wtf.atani.event.events.PacketEvent;
@@ -205,13 +201,8 @@ public class Flight extends Module {
                         break;
                 }
                 break;
-            case "Test":
-
-
-                break;
         }
     }
-
 
     @Listen
     public final void onMove(MoveEntityEvent moveEntityEvent) {
@@ -235,7 +226,6 @@ public class Flight extends Module {
         }
     }
 
-
     @Override
     public void onEnable() {
         jumped = false;
@@ -257,7 +247,7 @@ public class Flight extends Module {
         jumped = false;
         jumps = 0;
 
-        if(mode.compareValue("Vulcan") & vulcanMode.compareValue("Vanilla")) {
+        if(mode.compareValue("Vulcan") && vulcanMode.compareValue("Vanilla")) {
             this.setPosition(mc.thePlayer.posX + 0.01, mc.thePlayer.posY, mc.thePlayer.posZ + 0.01);
         }
     }

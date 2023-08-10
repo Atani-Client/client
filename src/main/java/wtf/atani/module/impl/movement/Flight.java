@@ -21,7 +21,7 @@ public class Flight extends Module {
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.compareValue("Vulcan")});
     private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.compareValue("Grim")});
     private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.compareValue("Vulcan") && vulcanMode.compareValue("Normal")});
-    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.compareValue("Vulcan")});
+    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.compareValue("Vulcan") && vulcanMode.compareValue("Normal")});
     private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> mode.compareValue("Vulcan") || mode.compareValue("Vanilla")});
 
     // Old NCP
@@ -133,7 +133,7 @@ public class Flight extends Module {
                                         return;
                                     }
                                     mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY - 2, mc.thePlayer.posZ);
-                                    mc.timer.timerSpeed = (float) timer.getValue();
+                                    mc.timer.timerSpeed = timer.getValue();
                                     break;
                                 default:
                                     if (stage == 2 && mc.thePlayer.posY != startY) {

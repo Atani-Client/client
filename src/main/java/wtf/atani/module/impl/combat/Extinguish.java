@@ -6,6 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.BlockPos;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import org.lwjgl.Sys;
@@ -21,6 +22,9 @@ import wtf.atani.utils.player.PlayerHandler;
 @ModuleInfo(name = "Extinguish", description = "Automatically extinguishes fire under you", category = Category.COMBAT)
 public class Extinguish extends Module {
 
+    public boolean changed;
+    public int slotId;
+
     @Listen
     public void onUpdate(UpdateEvent updateEvent) {
         if(mc.thePlayer.isBurning()) {
@@ -28,7 +32,10 @@ public class Extinguish extends Module {
 
                 ItemStack itemStack = mc.thePlayer.inventory.getStackInSlot(i);
                 if (itemStack != null && itemStack.getItem().getIdFromItem(itemStack.getItem()) == 326) {
+                    if(!changed)
+                        slotId = mc.thePlayer.inventory.currentItem;
                     mc.thePlayer.inventory.currentItem = i;
+                    changed = true;
                 }
             }
         }
@@ -37,13 +44,6 @@ public class Extinguish extends Module {
     @Listen
     public void onRotate(RotationEvent rotationEvent) {
         if (mc.thePlayer.isBurning()) {
-            for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
-
-                ItemStack itemStack = mc.thePlayer.inventory.getStackInSlot(i);
-                if (itemStack != null && itemStack.getItem().getIdFromItem(itemStack.getItem()) == 326) {
-                    mc.thePlayer.inventory.currentItem = i;
-                }
-            }
             if(mc.thePlayer.getHeldItem() == null) {
                 return;
             }
@@ -59,7 +59,7 @@ public class Extinguish extends Module {
             if(mc.thePlayer.getHeldItem() == null) {
                 return;
             }
-            if (mc.thePlayer.getHeldItem().getItem().getIdFromItem(mc.thePlayer.getHeldItem().getItem()) == 326) {
+            if (mc.thePlayer.getHeldItem() != null && mc.thePlayer.getHeldItem().getItem().getIdFromItem(mc.thePlayer.getHeldItem().getItem()) == 326 && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava()) {
                 if(mc.thePlayer == null || mc.theWorld == null)
                     return;
 
@@ -71,11 +71,13 @@ public class Extinguish extends Module {
                     return;
                 }
 
-                sendMessage("Trying to place");
-                if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, blockpos, objectOver.sideHit, objectOver.hitVec)) {
-                    sendMessage("Placed ig");
-                    mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
-                }
+
+                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventory.getCurrentItem()));
+
+                //Reset to current hand.
+                mc.thePlayer.inventory.currentItem = slotId;
+                mc.playerController.updateController();
+
                 if (itemstack != null && itemstack.stackSize == 0) {
                     mc.thePlayer.inventory.mainInventory[mc.thePlayer.inventory.currentItem] = null;
                 }
@@ -83,11 +85,15 @@ public class Extinguish extends Module {
                 mc.sendClickBlockToController(mc.currentScreen == null && mc.gameSettings.keyBindAttack.isKeyDown() && mc.inGameHasFocus);
             }
         }
+        if(changed) {
+            mc.thePlayer.inventory.currentItem = slotId;
+            changed = false;
+        }
     }
 
     @Override
     public void onEnable() {
-
+        changed = false;
     }
 
     @Override

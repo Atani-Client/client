@@ -31,6 +31,7 @@ public class ItemBucket extends Item
      */
     public ItemStack onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn)
     {
+        System.out.println("SKDfj");
         boolean flag = this.isFull == Blocks.air;
         MovingObjectPosition movingobjectposition = this.getMovingObjectPositionFromPlayer(worldIn, playerIn, flag);
 

@@ -165,6 +165,7 @@ public class Flight extends Module {
                             }
                             break;
                         case "Vanilla":
+                            mc.thePlayer.onGround = true;
                             mc.thePlayer.motionY = 0.0;
                             break;
                     }

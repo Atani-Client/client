@@ -22,11 +22,11 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Test"});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-    private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Grim")});
-    private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-    private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan") || mode.getValue().equalsIgnoreCase("Vanilla")});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.compareValue("Vulcan")});
+    private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.compareValue("Grim")});
+    private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.compareValue("Vulcan") && vulcanMode.compareValue("Normal")});
+    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.compareValue("Vulcan")});
+    private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> mode.compareValue("Vulcan") || mode.compareValue("Vanilla")});
 
     // Old NCP
     private double moveSpeed;
@@ -164,6 +164,9 @@ public class Flight extends Module {
                                 }
                             }
                             break;
+                        case "Vanilla":
+                            mc.thePlayer.motionY = 0.0;
+                            break;
                     }
                 }
                 break;
@@ -184,14 +187,21 @@ public class Flight extends Module {
                 }
                 break;
             case "Vulcan":
-                if(this.vulcanMode.getValue().equalsIgnoreCase("Clip & Glide")) {
-                    if(jumped && packetEvent.getPacket() instanceof C03PacketPlayer) {
-                        C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
+                switch(vulcanMode.getValue()){
+                    case "Clip & Glide":
+                        if(jumped && packetEvent.getPacket() instanceof C03PacketPlayer) {
+                            C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
 
-                        if(mc.thePlayer.ticksExisted % 11 == 0) {
-                            packet.setOnGround(true);
+                            if(mc.thePlayer.ticksExisted % 11 == 0) {
+                                packet.setOnGround(true);
+                            }
                         }
-                    }
+                        break;
+                    case "Vanilla":
+                        if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                            packetEvent.setCancelled(true);
+                        }
+                        break;
                 }
                 break;
             case "Test":
@@ -245,5 +255,9 @@ public class Flight extends Module {
         mc.thePlayer.speedInAir = 0.02F;
         jumped = false;
         jumps = 0;
+
+        if(mode.compareValue("Vulcan") & vulcanMode.compareValue("Vanilla")) {
+            this.setPosition(mc.thePlayer.posX + 0.01, mc.thePlayer.posY, mc.thePlayer.posZ + 0.01);
+        }
     }
 }

@@ -1,12 +1,10 @@
 package wtf.atani.utils.render;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.entity.Entity;
@@ -14,24 +12,35 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.Config;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ResourceLocation;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
 import wtf.atani.utils.interfaces.Methods;
 import wtf.atani.utils.render.color.ColorUtil;
+import wtf.atani.utils.render.shader.shaders.AcrylBlurShader;
 
 import java.awt.*;
+import java.nio.FloatBuffer;
+import java.util.Random;
 
 public class RenderUtil implements Methods {
 
-    public static void scaleStart(float x, float y, float scale) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(x, y, 0);
-        GL11.glScalef(scale, scale, 1);
-        GL11.glTranslatef(-x, -y, 0);
+    public static AcrylBlurShader acrylBlurShader = new AcrylBlurShader();
+
+    public static void drawAcrylicBlur() {
+        acrylBlurShader.draw();
     }
 
-    public static void scaleEnd() {
-        GL11.glPopMatrix();
+    public static void drawAcrylicBlurStencil() {
+        StencilUtil.init();
+    }
+
+    public static void stopAcrylicBlurStencil() {
+        StencilUtil.readBuffer(1);
+        acrylBlurShader.draw();
+        StencilUtil.uninit();
+        GlStateManager.enableBlend();
+        mc.entityRenderer.setupOverlayRendering();
     }
 
     public static void drawLine(double x, double y, double x1, double y1, float width, int color) {
@@ -49,11 +58,55 @@ public class RenderUtil implements Methods {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
-
     public static void drawBorderedRect(final float left, final float top, final float right, final float bottom, final float borderWidth, final int insideColor, final int borderColor, final boolean borderIncludedInBounds) {
         Gui.drawRect(left - (borderIncludedInBounds ? 0.0f : borderWidth), top - (borderIncludedInBounds ? 0.0f : borderWidth), right + (borderIncludedInBounds ? 0.0f : borderWidth), bottom + (borderIncludedInBounds ? 0.0f : borderWidth), borderColor);
         Gui.drawRect(left + (borderIncludedInBounds ? borderWidth : 0.0f), top + (borderIncludedInBounds ? borderWidth : 0.0f), right - (borderIncludedInBounds ? borderWidth : 0.0f), bottom - (borderIncludedInBounds ? borderWidth : 0.0f), insideColor);
     }
+
+    public static void drawSkinHead(EntityLivingBase player, double x, double y, int size) {
+        drawSkinHead(player, x, y, size, Color.WHITE);
+    }
+
+    public static void drawSkinHead(EntityLivingBase player, double x, double y, int size, Color color) {
+        if (!(player instanceof EntityPlayer))
+            return;
+
+        try {
+            GL11.glPushMatrix();
+            mc.getTextureManager().bindTexture(((AbstractClientPlayer) player).getLocationSkin());
+            GL11.glColor4f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+
+            Gui.drawScaledCustomSizeModalRect((int) x, (int) y, 8, 8, 8, 8, size, size, 64, 64);
+            GL11.glPopMatrix();
+        } catch (Exception ignored) {
+        }
+    }
+
+    public static void drawRect(float x, float y, float width, float height, int colour) {
+        Gui.drawRect(x, y, x + width, y + height, colour);
+    }
+
+    public static void drawCheckMark(float x, float y, int width, int color) {
+        float f = (color >> 24 & 255) / 255.0f;
+        float f1 = (color >> 16 & 255) / 255.0f;
+        float f2 = (color >> 8 & 255) / 255.0f;
+        float f3 = (color & 255) / 255.0f;
+        GL11.glPushMatrix();
+        GL11.glDisable(3553);
+        GL11.glEnable(2848);
+        GL11.glBlendFunc(770, 771);
+        GL11.glLineWidth(2.2f);
+        GL11.glBegin(3);
+        GL11.glColor4f(f1, f2, f3, f);
+        GL11.glVertex2d(x + width - 6.5, y + 3);
+        GL11.glVertex2d(x + width - 11.5, y + 10);
+        GL11.glVertex2d(x + width - 13.5, y + 8);
+        GL11.glEnd();
+        GL11.glEnable(3553);
+        GL11.glPopMatrix();
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
     public static void renderESP(Entity entity, boolean hurtTime, AxisAlignedBB boundingBox, boolean outline, boolean fill, Color color) {
         GL11.glPushMatrix();
         GlStateManager.enableBlend();
@@ -127,49 +180,10 @@ public class RenderUtil implements Methods {
         tessellator.draw();
     }
 
-    public static void drawSkinHead(EntityLivingBase player, double x, double y, int size) {
-        drawSkinHead(player, x, y, size, Color.WHITE);
+    public static boolean isHovered(float mouseX, float mouseY, float x, float y, float width, float height) {
+        return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
     }
 
-    public static void drawSkinHead(EntityLivingBase player, double x, double y, int size, Color color) {
-        if (!(player instanceof EntityPlayer))
-            return;
-
-        try {
-            GL11.glPushMatrix();
-            mc.getTextureManager().bindTexture(((AbstractClientPlayer) player).getLocationSkin());
-            GL11.glColor4f(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
-
-            Gui.drawScaledCustomSizeModalRect((int) x, (int) y, 8, 8, 8, 8, size, size, 64, 64);
-            GL11.glPopMatrix();
-        } catch (Exception ignored) {
-        }
-    }
-
-    public static void drawRect(float x, float y, float width, float height, int colour) {
-        Gui.drawRect(x, y, x + width, y + height, colour);
-    }
-
-    public static void drawCheckMark(float x, float y, int width, int color) {
-        float f = (color >> 24 & 255) / 255.0f;
-        float f1 = (color >> 16 & 255) / 255.0f;
-        float f2 = (color >> 8 & 255) / 255.0f;
-        float f3 = (color & 255) / 255.0f;
-        GL11.glPushMatrix();
-        GL11.glDisable(3553);
-        GL11.glEnable(2848);
-        GL11.glBlendFunc(770, 771);
-        GL11.glLineWidth(2.2f);
-        GL11.glBegin(3);
-        GL11.glColor4f(f1, f2, f3, f);
-        GL11.glVertex2d(x + width - 6.5, y + 3);
-        GL11.glVertex2d(x + width - 11.5, y + 10);
-        GL11.glVertex2d(x + width - 13.5, y + 8);
-        GL11.glEnd();
-        GL11.glEnable(3553);
-        GL11.glPopMatrix();
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    }
 
     public static void startScissorBox() {
         GL11.glPushMatrix();
@@ -300,15 +314,15 @@ public class RenderUtil implements Methods {
         GlStateManager.popMatrix();
     }
 
-    public static boolean isHovered(float mouseX, float mouseY, float x, float y, float width, float height) {
-        return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
+    public static void scaleStart(float x, float y, float scale) {
+        GL11.glPushMatrix();
+        GL11.glTranslatef(x, y, 0);
+        GL11.glScalef(scale, scale, 1);
+        GL11.glTranslatef(-x, -y, 0);
     }
 
-    public static void drawAstolfoBorderedRect(float left, float top, float right, float bottom, float thickness, int color) {
-        Gui.drawRect(left - thickness, top, left, bottom + 1.f, color);
-        Gui.drawRect(right, top, right + thickness, bottom + 1.f, color);
-        Gui.drawRect(left, top + thickness, right, top, color);
-        Gui.drawRect(left, bottom, right, bottom + thickness, color);
+    public static void scaleEnd() {
+        GL11.glPopMatrix();
     }
 
 }

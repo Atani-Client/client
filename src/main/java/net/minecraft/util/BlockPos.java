@@ -224,6 +224,14 @@ public class BlockPos extends Vec3i
         return new BlockPos(i, j, k);
     }
 
+    public boolean equalsBlockPos(final BlockPos blockPos) {
+        return this.getX() == blockPos.getX() && this.getY() == blockPos.getY() && this.getZ() == blockPos.getZ();
+    }
+
+    public boolean equalsBlockPosXZ(final BlockPos blockPos) {
+        return this.getX() == blockPos.getX() && this.getZ() == blockPos.getZ();
+    }
+
     public static Iterable<BlockPos> getAllInBox(BlockPos from, BlockPos to)
     {
         final BlockPos blockpos = new BlockPos(Math.min(from.getX(), to.getX()), Math.min(from.getY(), to.getY()), Math.min(from.getZ(), to.getZ()));

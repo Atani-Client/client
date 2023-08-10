@@ -12,5 +12,12 @@ public class PlayerUtil implements Methods {
         return MathHelper.sqrt_double(d0 * d0 + d1 * d1 + d2 * d2);
     }
 
+    public static boolean canBuildForward() {
+        final float yaw = MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw);
+        return (yaw > 77.5 && yaw < 102.5)
+                || (yaw > 167.5 || yaw < -167.0f)
+                || (yaw < -77.5 && yaw > -102.5)
+                || (yaw > -12.5 && yaw < 12.5);
+    }
 
 }

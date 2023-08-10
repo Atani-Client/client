@@ -71,7 +71,10 @@ public class TargetHUD extends Module {
                     RenderUtil.drawRect(x, y, 156, 57, new Color(0,0,0, 170).getRGB());
 
                     mcRenderer.drawString(target.getCommandSenderName(), x + 33, y + 6, Color.WHITE.getRGB());
-                    mcRenderer.drawString(Math.round(target.getHealth() / 2.0f * 10) / 10 + " \u2764", x + 33, y + 20, new Color(ColorUtil.blendRainbowColours(counter * 150L)).getRGB());
+
+                    RenderUtil.scaleStart(x + 33, y + 20, 2.5f);
+                    mcRenderer.drawStringWithShadow(Math.round(target.getHealth() / 2.0f * 10) / 10 + " \u2764", x + 33, y + 20, new Color(ColorUtil.blendRainbowColours(counter * 150L)).getRGB());
+                    RenderUtil.scaleEnd();
 
                     GlStateManager.color(1.0f,1.0f,1.0f,1.0f);
                     GuiInventory.drawEntityOnScreen((int) (x + 17), (int) (y + 54), 25, target.rotationYaw, -target.rotationPitch, target);

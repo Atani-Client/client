@@ -1,5 +1,6 @@
 package wtf.atani.module.impl.player;
 
+import com.google.common.base.Supplier;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -27,13 +28,16 @@ import java.util.List;
 @ModuleInfo(name = "ScaffoldWalk", description = "Bridging automatically", category = Category.PLAYER)
 public class ScaffoldWalk extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Slowly", "Quickly", "Breezily", "Godly"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Slowly", "Quickly", "Breezily", "Godly", "Custom"});
     private final CheckBoxValue swinging = new CheckBoxValue("Swing Client-Side", "Swing client-side when placing blocks?", this, true);
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
     private final CheckBoxValue switchItems = new CheckBoxValue("Switch Items", "Switch to blocks?", this, true);
     private final CheckBoxValue reverseMovement = new CheckBoxValue("Reverse Movement", "Reverse your movement?", this, false);
-    private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0);
-    private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0);
+    private final CheckBoxValue addStrafe = new CheckBoxValue("Add Strafe", "Strafe a little?", this, false, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Custom")});
+    private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Quickly") || mode.getValue().equalsIgnoreCase("Custom")});
+    private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Custom")});
+    private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Custom") && sneak.getValue()});
+    private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Quickly") || (mode.getValue().equalsIgnoreCase("Custom") && sneak.getValue() && sneakMode.getValue().equalsIgnoreCase("Edge"))});
 
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper(), startingTimeHelper = new TimeHelper();
     private double[] lastPos = new double[3];
@@ -90,65 +94,60 @@ public class ScaffoldWalk extends Module {
             getGameSettings().keyBindForward.pressed = false;
         }
 
-        switch (this.mode.getValue()) {
-            case "Quickly":
-                if (unSneakDelay.getValue() == 0 || unsneakTimeHelper.hasReached((long) (unSneakDelay.getValue()))) {
-                    getGameSettings().keyBindSneak.pressed = false;
-                }
+        if(this.mode.getValue().equalsIgnoreCase("Quickly") || (this.mode.getValue().equalsIgnoreCase("Custom") && sneak.getValue() && sneakMode.getValue().equalsIgnoreCase("Edge"))) {
+            if (unSneakDelay.getValue() == 0 || unsneakTimeHelper.hasReached((long) (unSneakDelay.getValue()))) {
+                getGameSettings().keyBindSneak.pressed = false;
+            }
 
-                for (int y = -1; y < 0; y++) {
-                    final Vec3 pos = getPlayer().getPositionVector().addVector(0, y, 0);
-                    final BlockPos blockPos = new BlockPos(pos);
-                    if (getWorld().isAirBlock(blockPos)) {
-                        getGameSettings().keyBindSneak.pressed = true;
-                        unsneakTimeHelper.reset();
-                    }
+            for (int y = -1; y < 0; y++) {
+                final Vec3 pos = getPlayer().getPositionVector().addVector(0, y, 0);
+                final BlockPos blockPos = new BlockPos(pos);
+                if (getWorld().isAirBlock(blockPos)) {
+                    getGameSettings().keyBindSneak.pressed = true;
+                    unsneakTimeHelper.reset();
                 }
-                break;
-            case "Slowly":
-                getGameSettings().keyBindSneak.pressed = true;
-                break;
+            }
+        } else  if(this.mode.getValue().equalsIgnoreCase("Slowly") || (this.mode.getValue().equalsIgnoreCase("Custom") && sneak.getValue() && sneakMode.getValue().equalsIgnoreCase("Constant"))) {
+            getGameSettings().keyBindSneak.pressed = true;
         }
     }
 
     @Listen
     public void onSilent(SilentMoveEvent silentMoveEvent) {
-        switch (this.mode.getValue()) {
-            case "Breezily":
-                final BlockPos b = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 0.5, mc.thePlayer.posZ);
-                if (mc.theWorld.getBlockState(b).getBlock().getMaterial() == Material.air && mc.currentScreen == null && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCodeDefault()) && mc.thePlayer.movementInput.moveForward != 0.0f) {
-                    if (mc.thePlayer.getHorizontalFacing(PlayerHandler.yaw) == EnumFacing.EAST) {
-                        if (b.getZ() + 0.5 > mc.thePlayer.posZ) {
-                            mc.thePlayer.movementInput.moveStrafe = 1.0f;
-                        }
-                        else {
-                            mc.thePlayer.movementInput.moveStrafe = -1.0f;
-                        }
-                    }
-                    else if (mc.thePlayer.getHorizontalFacing(PlayerHandler.yaw) == EnumFacing.WEST) {
-                        if (b.getZ() + 0.5 < mc.thePlayer.posZ) {
-                            mc.thePlayer.movementInput.moveStrafe = 1.0f;
-                        }
-                        else {
-                            mc.thePlayer.movementInput.moveStrafe = -1.0f;
-                        }
-                    }
-                    else if (mc.thePlayer.getHorizontalFacing(PlayerHandler.yaw) == EnumFacing.SOUTH) {
-                        if (b.getX() + 0.5 < mc.thePlayer.posX) {
-                            mc.thePlayer.movementInput.moveStrafe = 1.0f;
-                        }
-                        else {
-                            mc.thePlayer.movementInput.moveStrafe = -1.0f;
-                        }
-                    }
-                    else if (b.getX() + 0.5 > mc.thePlayer.posX) {
+        if(this.mode.getValue().equalsIgnoreCase("Breezily") || (this.mode.getValue().equalsIgnoreCase("Custom") && addStrafe.getValue())) {
+            final BlockPos b = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 0.5, mc.thePlayer.posZ);
+            if (mc.theWorld.getBlockState(b).getBlock().getMaterial() == Material.air && mc.currentScreen == null && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCodeDefault()) && mc.thePlayer.movementInput.moveForward != 0.0f) {
+                if (mc.thePlayer.getHorizontalFacing(PlayerHandler.yaw) == EnumFacing.EAST) {
+                    if (b.getZ() + 0.5 > mc.thePlayer.posZ) {
                         mc.thePlayer.movementInput.moveStrafe = 1.0f;
                     }
                     else {
                         mc.thePlayer.movementInput.moveStrafe = -1.0f;
                     }
                 }
-                break;
+                else if (mc.thePlayer.getHorizontalFacing(PlayerHandler.yaw) == EnumFacing.WEST) {
+                    if (b.getZ() + 0.5 < mc.thePlayer.posZ) {
+                        mc.thePlayer.movementInput.moveStrafe = 1.0f;
+                    }
+                    else {
+                        mc.thePlayer.movementInput.moveStrafe = -1.0f;
+                    }
+                }
+                else if (mc.thePlayer.getHorizontalFacing(PlayerHandler.yaw) == EnumFacing.SOUTH) {
+                    if (b.getX() + 0.5 < mc.thePlayer.posX) {
+                        mc.thePlayer.movementInput.moveStrafe = 1.0f;
+                    }
+                    else {
+                        mc.thePlayer.movementInput.moveStrafe = -1.0f;
+                    }
+                }
+                else if (b.getX() + 0.5 > mc.thePlayer.posX) {
+                    mc.thePlayer.movementInput.moveStrafe = 1.0f;
+                }
+                else {
+                    mc.thePlayer.movementInput.moveStrafe = -1.0f;
+                }
+            }
         }
     }
 

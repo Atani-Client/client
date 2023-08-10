@@ -186,6 +186,11 @@ public class ScaffoldWalk extends Module {
     }
 
     @Override
+    public String getSuffix() {
+        return this.mode.getValue();
+    }
+
+    @Override
     public void onEnable() {
         timeHelper.reset();
         startingTimeHelper.reset();

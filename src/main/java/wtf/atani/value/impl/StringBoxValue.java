@@ -60,6 +60,4 @@ public class StringBoxValue extends Value<String> {
         return values;
     }
 
-
-    public boolean compareValue(String input) { return value.equalsIgnoreCase(input); }
 }

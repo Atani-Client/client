@@ -18,11 +18,11 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Test"});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.compareValue("Vulcan")});
-    private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.compareValue("Grim")});
-    private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.compareValue("Vulcan") && vulcanMode.compareValue("Normal")});
-    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.compareValue("Vulcan") && vulcanMode.compareValue("Normal")});
-    private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> mode.compareValue("Vulcan") || mode.compareValue("Vanilla")});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")});
+    private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")});
+    private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
+    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
+    private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> mode.is("Vulcan") || mode.is("Vanilla")});
 
     // Old NCP
     private double moveSpeed;
@@ -172,7 +172,7 @@ public class Flight extends Module {
     public final void onPacket(PacketEvent packetEvent) {
         switch (mode.getValue()) {
             case "Grim":
-                if(grimMode.compareValue("Explosion")) {
+                if(grimMode.is("Explosion")) {
                     if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                         S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
                         if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
@@ -245,7 +245,7 @@ public class Flight extends Module {
         jumped = false;
         jumps = 0;
 
-        if(mode.compareValue("Vulcan") && vulcanMode.compareValue("Vanilla")) {
+        if(mode.is("Vulcan") && vulcanMode.is("Vanilla")) {
             this.setPosition(mc.thePlayer.posX + 0.01, mc.thePlayer.posY, mc.thePlayer.posZ + 0.01);
         }
     }

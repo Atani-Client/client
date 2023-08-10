@@ -40,6 +40,8 @@ public class Flight extends Module {
 
     // Grim
     boolean velo = false;
+    private boolean launch;
+    private int launchTicks;
 
     @Override
     public String getSuffix() {
@@ -66,8 +68,16 @@ public class Flight extends Module {
                             }
                             break;
                         case "Boat":
-                            mc.thePlayer.motionY = 0;
-                            mc.thePlayer.onGround = true;
+                            if(mc.thePlayer.isRiding()) {
+                                launch = true;
+                            }
+                            if(launch && !mc.thePlayer.isRiding()) {
+                                launchTicks++;
+                            }
+
+                            if(!mc.thePlayer.isRiding() && !launch) {
+                                mc.timer.timerSpeed = 1;
+                            }
                             break;
                     }
                 }
@@ -87,16 +97,7 @@ public class Flight extends Module {
                 break;
             case "Test":
                 mc.thePlayer.motionY = 0;
-                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging());
-                if(mc.gameSettings.keyBindJump.pressed) {
-                    mc.timer.timerSpeed = 10;
-                    mc.thePlayer.cameraPitch = 0.1F;
-                    mc.thePlayer.cameraYaw = 0.1F;
-                    mc.gameSettings.viewBobbing = true;
-                } else {
-                    mc.timer.timerSpeed = 0.2F;
-                    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() * 5);
-                }
+                mc.thePlayer.onGround = true;
                 break;
             case "Old NCP":
                 if (mc.thePlayer.onGround && !jumped) {
@@ -194,19 +195,8 @@ public class Flight extends Module {
                 }
                 break;
             case "Test":
-                if(packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {
-                    packetEvent.setCancelled(true);
-                }
 
-                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                    if(10 > Math.random() * 100) {
-                    //    packetEvent.setCancelled(true);
-                        for(int i=0; i<10;i++) {
-                            mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement());
-                        }
-                    }
 
-                }
                 break;
         }
     }

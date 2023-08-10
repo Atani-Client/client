@@ -72,12 +72,10 @@ public class Flight extends Module {
                                 launch = true;
                             }
                             if(launch && !mc.thePlayer.isRiding()) {
-                                launchTicks++;
+                                mc.thePlayer.motionY = 1.5;
+                                MoveUtil.strafe(1.5);
                             }
 
-                            if(!mc.thePlayer.isRiding() && !launch) {
-                                mc.timer.timerSpeed = 1;
-                            }
                             break;
                     }
                 }

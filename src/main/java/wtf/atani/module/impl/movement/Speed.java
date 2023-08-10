@@ -485,14 +485,14 @@ public class Speed extends Module {
 
                 if(mc.thePlayer.onGround) {
                     mc.timer.timerSpeed = 1.07F;
-                    mc.thePlayer.motionX *= 1.0012;
-                    mc.thePlayer.motionZ *= 1.0012;
                 } else {
                     mc.timer.timerSpeed = (float) (1 + Math.random() / 1200);
                 }
 
                 if(mc.thePlayer.motionY > 0) {
                     mc.timer.timerSpeed += 0.01;
+                    mc.thePlayer.motionX *= 1.0004;
+                    mc.thePlayer.motionZ *= 1.0004;
                 }
 
                 if(mc.thePlayer.hurtTime != 0) {

@@ -51,6 +51,14 @@ public class ColorUtil {
         return new float[]{(float)(col >> 16 & 0xFF) / 255.0f, (float)(col >> 8 & 0xFF) / 255.0f, (float)(col & 0xFF) / 255.0f, (float)(col >> 24 & 0xFF) / 255.0f};
     }
 
+    public static Color setAlpha(final Color color, final int alpha) {
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+    }
+
+    public static Color setAlpha(final Color color, final float alpha) {
+        return new Color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, alpha);
+    }
+
     public static Color generateRandomTonedColor(int baseHue, int minValue, int maxValue, int alpha) {
         Random random = new Random();
 

@@ -13,6 +13,7 @@ import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.utils.player.MoveUtil;
+import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
@@ -24,6 +25,7 @@ public class Speed extends Module {
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "YPort"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
     private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Normal", "Stable"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
+    private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true);
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
     private SliderValue<Float> jumpheight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
@@ -168,14 +170,14 @@ public class Speed extends Module {
                             break;
                         case "Ground":
                             if (mc.thePlayer.onGround) {
-                                mc.timer.timerSpeed = 1.02F;
+                                mc.timer.timerSpeed = 1.05F;
                                 y = 0.01;
                                 mc.thePlayer.motionY = 0.01;
-                                MoveUtil.strafe((float) (0.4175 + MoveUtil.getSpeedBoost(1.5F)));
+                                MoveUtil.strafe((float) (0.4175 + MoveUtil.getSpeedBoost(1.53F)));
                             } else {
                                 mc.timer.timerSpeed = 1;
                                 if (y == 0.01) {
-                                    MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? MoveUtil.getBaseMoveSpeed() * 1.11F : MoveUtil.getBaseMoveSpeed() * 1.04F);
+                                    MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? MoveUtil.getBaseMoveSpeed() * 1.15F : MoveUtil.getBaseMoveSpeed() * 1.04F);
                                     y = 0;
                                 }
 
@@ -184,9 +186,9 @@ public class Speed extends Module {
                                     mc.thePlayer.motionX *= 1.00575;
                                     mc.thePlayer.motionZ *= 1.00575;
 
-                                    MoveUtil.strafe((float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? MoveUtil.getSpeed() * 1.04 : MoveUtil.getSpeed()));
+                                    MoveUtil.strafe((float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? MoveUtil.getSpeed() * 1.08 : MoveUtil.getSpeed()));
 
-                                    mc.timer.timerSpeed = 1.1F;
+                                    mc.timer.timerSpeed = 1.18F;
                                 }
                             }
                             break;
@@ -194,7 +196,7 @@ public class Speed extends Module {
                             if(mc.thePlayer.onGround) {
                                 vulcanTicks = 0;
                                 mc.thePlayer.jump();
-                                mc.timer.timerSpeed = 1.02F;
+                                mc.timer.timerSpeed = 1.07F;
                                 MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.485);
                             } else {
                                 vulcanTicks++;
@@ -374,18 +376,27 @@ public class Speed extends Module {
                 break;
             case "NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                    if(mc.thePlayer.onGround)
+                        ncpTicks = 0;
+                     else
+                        ncpTicks++;
+
                     switch (ncpMode.getValue()) {
                         case "Normal":
                             if(!isMoving())
                                 return;
 
                             if(mc.thePlayer.onGround) {
-                                mc.timer.timerSpeed = 1.2F;
+                                mc.timer.timerSpeed = 2F;
                                 mc.thePlayer.motionY = 0.409;
                                 MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(4));
                             } else {
-                                mc.timer.timerSpeed = (float) (1.1 - Math.random() / 10);
+                                mc.timer.timerSpeed = 1;
                                 MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.375F));
+                            }
+
+                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
+                                mc.thePlayer.motionY -= 0.1;
                             }
                             break;
                         case "Stable":
@@ -393,12 +404,17 @@ public class Speed extends Module {
                                 return;
 
                             if(mc.thePlayer.onGround) {
-                                mc.timer.timerSpeed = 1.1F;
+                                mc.timer.timerSpeed = 1F;
                                 mc.thePlayer.motionY = 0.409;
-                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
+                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(4));
                             } else {
-                                mc.timer.timerSpeed = 1;
-                                MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
+                                mc.timer.timerSpeed = (float) (1 + Math.random() / 7.5);
+                                // this can be patched any moment, currently works on eu.loyisa.cn
+                                    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02 + MoveUtil.getSpeedBoost(1.75F));
+                            }
+
+                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
+                                mc.thePlayer.motionY -= 0.1;
                             }
                             break;
                     }
@@ -554,7 +570,11 @@ public class Speed extends Module {
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {
                     ((C03PacketPlayer) packetEvent.getPacket()).y = mc.thePlayer.posY + y;
                     if(vulcanMode.is("YPort")) {
-                        ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
+                        if(0 > mc.thePlayer.fallDistance) {
+                            ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance - 1;
+                        } else {
+                            ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
+                        }
                     }
                 }
                 break;

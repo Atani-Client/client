@@ -1,6 +1,7 @@
 package wtf.atani.module.impl.render;
 
 import com.google.common.base.Supplier;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -17,6 +18,7 @@ import wtf.atani.utils.math.InterpolationUtil;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.StencilUtil;
 import wtf.atani.utils.render.color.ColorUtil;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 import wtf.atani.utils.render.shader.shaders.GLSLShader;
 import wtf.atani.utils.transform.Transormer;
 import wtf.atani.value.impl.CheckBoxValue;
@@ -77,6 +79,38 @@ public class ESP extends Module {
 
     @Listen
     public void on2D(Render2DEvent render2DEvent) {
+        int color = 0;
+        final int counter = 1;
+        switch (this.customColorMode.getValue()) {
+            case "Static":
+                color = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();
+                break;
+            case "Fade": {
+                int firstColor = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();
+                color = ColorUtil.fadeBetween(firstColor, ColorUtil.darken(firstColor, darkFactor.getValue()), counter * 150L);
+                break;
+            }
+            case "Gradient": {
+                int firstColor = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();
+                int secondColor = new Color(red2.getValue(), green2.getValue(), blue2.getValue()).getRGB();
+                color = ColorUtil.fadeBetween(firstColor, secondColor, counter * 150L);
+                break;
+            }
+            case "Rainbow":
+                color = ColorUtil.getRainbow(3000, (int) (counter * 150L));
+                break;
+            case "Astolfo Sky":
+                color = ColorUtil.blendRainbowColours(counter * 150L);
+                break;
+        }
+        if(calendar.get(Calendar.DAY_OF_MONTH) == 28 && calendar.get(Calendar.MONTH) == Calendar.OCTOBER) {
+            color = ColorUtil.blendCzechiaColours(counter * 150L);
+        }
+        if(calendar.get(Calendar.DAY_OF_MONTH) == 3 && calendar.get(Calendar.MONTH) == Calendar.OCTOBER) {
+            color = ColorUtil.blendGermanColours(counter * 150L);
+        }
+        float length = 0.5f;
+
         switch (mode.getValue()) {
             case "2D":
                 frustum.setPosition(mc.getRenderManager().renderPosX, mc.getRenderManager().renderPosY, mc.getRenderManager().renderPosZ);
@@ -91,21 +125,15 @@ public class ESP extends Module {
                     float width = (float)(coords[2] - coords[0]);
                     float height = (float)(coords[3] - coords[1]);
 
+                    /*
                     // Back
                     RenderUtil.drawRect(x, y, width, height, new Color(0, 0, 0, 110).getRGB());
+                     */
 
-                    // Top
-                    RenderUtil.drawRect(x - 0.5f, y - 0.5f, width + 1, 0.5f, -1);
-
-                    // Left
-                    RenderUtil.drawRect(x - 0.5f, y, 0.5f, height, -1);
-
-                    // Right
-                    RenderUtil.drawRect(x + width, y, 0.5f, height, -1);
-
-                    // Bottom
-                    RenderUtil.drawRect(x - 0.5f, y + height, width + 1, 0.5f, -1);
-
+                    // Border
+                    RenderUtil.drawBorderedRect(x, y, x + width, y + height, length, 0, color, true);
+                    RenderUtil.drawBorderedRect(x, y, x + width, y + height, length, 0, Color.black.getRGB(), false);
+                    RenderUtil.drawBorderedRect(x + length, y + length, (x - length) + width, (y - length) + height, length, 0, Color.black.getRGB(), true);
                     GlStateManager.resetColor();
                 }
                 break;

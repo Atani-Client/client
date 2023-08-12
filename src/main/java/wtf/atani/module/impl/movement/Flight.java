@@ -1,10 +1,9 @@
 package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import wtf.atani.event.events.MoveEntityEvent;
@@ -16,17 +15,18 @@ import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.utils.player.MoveUtil;
+import wtf.atani.utils.player.RotationUtil;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Test"});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-    private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Grim")});
-    private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-    private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan") || mode.getValue().equalsIgnoreCase("Vanilla")});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")});
+    private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")});
+    private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
+    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
+    private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> mode.is("Vulcan") || mode.is("Vanilla")});
 
     // Old NCP
     private double moveSpeed;
@@ -40,6 +40,8 @@ public class Flight extends Module {
 
     // Grim
     boolean velo = false;
+    private boolean launch;
+    private int launchTicks;
 
     @Override
     public String getSuffix() {
@@ -66,8 +68,42 @@ public class Flight extends Module {
                             }
                             break;
                         case "Boat":
-                            mc.thePlayer.motionY = 0;
-                            mc.thePlayer.onGround = true;
+                            if (mc.thePlayer.isRiding()) {
+                                launch = true;
+                            }
+
+                            if (launch && !mc.thePlayer.isRiding()) {
+                                EntityBoat closestBoat = null;
+                                double closestDistance = Double.MAX_VALUE;
+
+                                for (Entity entity : mc.theWorld.loadedEntityList) {
+                                    if (entity instanceof EntityBoat) {
+                                        double distanceToBoat = mc.thePlayer.getDistanceSqToEntity(entity);
+                                        if (distanceToBoat < closestDistance) {
+                                            closestDistance = distanceToBoat;
+                                            closestBoat = (EntityBoat) entity;
+                                        }
+                                    }
+                                }
+
+                                if (closestBoat != null) {
+                                    double deltaX = closestBoat.posX - mc.thePlayer.posX;
+                                    double deltaY = closestBoat.posY - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight());
+                                    double deltaZ = closestBoat.posZ - mc.thePlayer.posZ;
+
+                                    double horizontalDistance = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
+                                    float yaw = (float) (Math.atan2(deltaZ, deltaX) * 180.0 / Math.PI) - 90.0F;
+                                    float pitch = (float) (Math.atan2(deltaY, horizontalDistance) * 180.0 / Math.PI);
+
+                                    mc.thePlayer.rotationYaw = yaw;
+                                    mc.thePlayer.rotationPitch = pitch;
+
+                                    mc.thePlayer.motionY = 1.5;
+                                    MoveUtil.strafe(1.5);
+                                }
+
+                                launch = false;
+                            }
                             break;
                     }
                 }
@@ -87,16 +123,7 @@ public class Flight extends Module {
                 break;
             case "Test":
                 mc.thePlayer.motionY = 0;
-                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging());
-                if(mc.gameSettings.keyBindJump.pressed) {
-                    mc.timer.timerSpeed = 10;
-                    mc.thePlayer.cameraPitch = 0.1F;
-                    mc.thePlayer.cameraYaw = 0.1F;
-                    mc.gameSettings.viewBobbing = true;
-                } else {
-                    mc.timer.timerSpeed = 0.2F;
-                    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() * 5);
-                }
+                mc.thePlayer.onGround = true;
                 break;
             case "Old NCP":
                 if (mc.thePlayer.onGround && !jumped) {
@@ -136,7 +163,7 @@ public class Flight extends Module {
                                         return;
                                     }
                                     mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY - 2, mc.thePlayer.posZ);
-                                    mc.timer.timerSpeed = (float) timer.getValue();
+                                    mc.timer.timerSpeed = timer.getValue();
                                     break;
                                 default:
                                     if (stage == 2 && mc.thePlayer.posY != startY) {
@@ -163,6 +190,10 @@ public class Flight extends Module {
                                 }
                             }
                             break;
+                        case "Vanilla":
+                            mc.thePlayer.onGround = true;
+                            mc.thePlayer.motionY = 0.0;
+                            break;
                     }
                 }
                 break;
@@ -173,7 +204,7 @@ public class Flight extends Module {
     public final void onPacket(PacketEvent packetEvent) {
         switch (mode.getValue()) {
             case "Grim":
-                if(grimMode.compareValue("Explosion")) {
+                if(grimMode.is("Explosion")) {
                     if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                         S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
                         if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
@@ -183,34 +214,25 @@ public class Flight extends Module {
                 }
                 break;
             case "Vulcan":
-                if(this.vulcanMode.getValue().equalsIgnoreCase("Clip & Glide")) {
-                    if(jumped && packetEvent.getPacket() instanceof C03PacketPlayer) {
-                        C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
+                switch(vulcanMode.getValue()){
+                    case "Clip & Glide":
+                        if(jumped && packetEvent.getPacket() instanceof C03PacketPlayer) {
+                            C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
 
-                        if(mc.thePlayer.ticksExisted % 11 == 0) {
-                            packet.setOnGround(true);
+                            if(mc.thePlayer.ticksExisted % 11 == 0) {
+                                packet.setOnGround(true);
+                            }
                         }
-                    }
-                }
-                break;
-            case "Test":
-                if(packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {
-                    packetEvent.setCancelled(true);
-                }
-
-                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                    if(10 > Math.random() * 100) {
-                    //    packetEvent.setCancelled(true);
-                        for(int i=0; i<10;i++) {
-                            mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement());
+                        break;
+                    case "Vanilla":
+                        if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                            packetEvent.setCancelled(true);
                         }
-                    }
-
+                        break;
                 }
                 break;
         }
     }
-
 
     @Listen
     public final void onMove(MoveEntityEvent moveEntityEvent) {
@@ -234,7 +256,6 @@ public class Flight extends Module {
         }
     }
 
-
     @Override
     public void onEnable() {
         jumped = false;
@@ -243,6 +264,7 @@ public class Flight extends Module {
         stage = 0;
         jumped = false;
         jumps = 0;
+        launch = false;
     }
 
     @Override
@@ -251,9 +273,14 @@ public class Flight extends Module {
         jumped = false;
         MoveUtil.strafe(0);
         mc.timer.timerSpeed = 1f;
+        launch = false;
         stage = 0;
         mc.thePlayer.speedInAir = 0.02F;
         jumped = false;
         jumps = 0;
+
+        if(mode.is("Vulcan") && vulcanMode.is("Vanilla")) {
+            this.setPosition(mc.thePlayer.posX + 0.01, mc.thePlayer.posY, mc.thePlayer.posZ + 0.01);
+        }
     }
 }

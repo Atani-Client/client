@@ -335,6 +335,8 @@ public class ItemRenderer
         GlStateManager.rotate(60.0F, 0.0F, 1.0F, 0.0F);
     }
 
+    private BlockAnimations blockAnimations;
+
     /**
      * Renders the active item in the player's hand when in first person mode. Args: partialTickTime
      *  
@@ -342,6 +344,8 @@ public class ItemRenderer
      */
     public void renderItemInFirstPerson(float partialTicks)
     {
+        if(blockAnimations == null)
+            blockAnimations = ModuleStorage.getInstance().getByClass(BlockAnimations.class);
         if (!Config.isShaders() || !Shaders.isSkipRenderHand())
         {
             float equippedProgress = 1.0F - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);
@@ -361,7 +365,7 @@ public class ItemRenderer
                 {
                     this.renderItemMap(abstractclientplayer, rotationPitch, equippedProgress, swingProgress);
                 }
-                else if (abstractclientplayer.getItemInUseCount() > 0)
+                else if (abstractclientplayer.getItemInUseCount() > 0 || (blockAnimations.isEnabled() && blockAnimations.shouldFake()))
                 {
                     EnumAction enumaction = this.itemToRender.getItemUseAction();
 
@@ -378,7 +382,7 @@ public class ItemRenderer
                             break;
 
                         case BLOCK:
-                            if(!ModuleStorage.getInstance().getByClass(BlockAnimations.class).isEnabled()) {
+                            if(!blockAnimations.isEnabled()) {
                                 this.transformFirstPersonItem(equippedProgress, 0.0F);
                                 this.doBlockTransformations();
                             } else {

@@ -2,6 +2,7 @@ package wtf.atani.module.impl.combat;
 
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S38PacketPlayerListItem;
 import net.minecraft.network.play.server.S41PacketServerDifficulty;
@@ -16,13 +17,14 @@ import wtf.atani.module.data.enums.Category;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @ModuleInfo(name = "AntiBot", description = "Prevents you from attacking bots in your game", category = Category.COMBAT)
 public class AntiBot extends Module {
 
     private final ArrayList<Entity> bots = new ArrayList<>();
 
-    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Watchdog", "Matrix"});
+    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Watchdog", "Matrix", "Twerion"});
 
     private boolean wasAdded = false;
     private String name;
@@ -69,6 +71,16 @@ public class AntiBot extends Module {
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         switch (mode.getValue()) {
+            case "Twerion":
+                List<Entity> list = new ArrayList();
+                mc.theWorld.loadedEntityList.forEach(entity -> {
+                    if(entity instanceof EntityZombie) {
+                        list.add(entity);
+                    }
+                });
+                for(Entity entity : list)
+                    mc.theWorld.removeEntity(entity);
+                break;
             case "Watchdog":
                 mc.theWorld.playerEntities.forEach(player -> {
                     final NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(player.getUniqueID());

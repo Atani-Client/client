@@ -58,18 +58,22 @@ public class LongJump extends Module {
 
                 if(mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0) {
                     if(ncpSpeed < 0.2) {
-                        MoveUtil.strafe(0.2 + MoveUtil.getSpeedBoost(3));
+                        MoveUtil.strafe(0.2 + MoveUtil.getSpeedBoost(7));
                     }
-                        MoveUtil.strafe(ncpSpeed + MoveUtil.getSpeedBoost(3));
+                        MoveUtil.strafe(ncpSpeed + MoveUtil.getSpeedBoost(7));
                 }
 
                 switch(ncpTicks) {
                     case 4:
-                        ncpSpeed += 0.02;
+                        ncpSpeed += 0.07;
                         mc.thePlayer.motionY += 0.02;
                         break;
-                    case 10:
-                            mc.thePlayer.motionY += 0.20;
+                    case 6:
+                        mc.thePlayer.motionY += 0.02;
+                        break;
+                    case 8:
+                        mc.thePlayer.motionY += 0.1;
+                        ncpSpeed += 0.014;
                         break;
                 }
                 break;
@@ -78,7 +82,7 @@ public class LongJump extends Module {
 
     @Override
     public void onEnable() {
-        mc.timer.timerSpeed = 0.6F;
+    //    mc.timer.timerSpeed = 0.6F;
     }
 
     @Override

@@ -410,7 +410,7 @@ public class Speed extends Module {
                             } else {
                                 mc.timer.timerSpeed = (float) (1 + Math.random() / 7.5);
                                 // this can be patched any moment, currently works on eu.loyisa.cn
-                                    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02 + MoveUtil.getSpeedBoost(1));
+                                    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02 + MoveUtil.getSpeedBoost(1.75F));
                             }
 
                             if(ncpTicks == 5 && ncpMotionModify.getValue()) {

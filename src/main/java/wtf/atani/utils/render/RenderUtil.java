@@ -107,15 +107,11 @@ public class RenderUtil implements Methods {
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    public static void renderESP(Entity entity, boolean hurtTime, AxisAlignedBB boundingBox, boolean outline, boolean fill, Color color) {
+    public static void renderESP(AxisAlignedBB boundingBox, boolean outline, boolean fill, Color color) {
         GL11.glPushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        if (entity == null || !hurtTime || ((EntityLivingBase)entity).hurtTime == 0) {
-            GlStateManager.color(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, color.getAlpha() / 255.0F);
-        } else {
-            GlStateManager.color(1.0F, 0.0F, 0.0F, color.getAlpha() / 255.0F);
-        }
+        GlStateManager.color(color.getRed() / 255.0F, color.getGreen() / 255.0F, color.getBlue() / 255.0F, color.getAlpha() / 255.0F);
         GL11.glLineWidth(1.0F);
         GlStateManager.disableTexture2D();
         if (Config.isShaders())
@@ -124,7 +120,7 @@ public class RenderUtil implements Methods {
         GL11.glDepthMask(false);
         GlStateManager.disableDepth();
         if (outline)
-            drawOutline(entity, hurtTime, boundingBox, color);
+            drawOutline(boundingBox, color);
         if (fill)
             drawFill(boundingBox);
         GlStateManager.enableDepth();
@@ -137,15 +133,10 @@ public class RenderUtil implements Methods {
         GL11.glPopMatrix();
     }
 
-    private static void drawOutline(Entity entity, boolean hurtTime, AxisAlignedBB boundingBox, Color color) {
+    private static void drawOutline(AxisAlignedBB boundingBox, Color color) {
         int r = color.getRed();
         int g = color.getGreen();
         int b = color.getBlue();
-        if (entity != null && hurtTime && ((EntityLivingBase)entity).hurtTime != 0) {
-            r = 255;
-            g = 0;
-            b = 0;
-        }
         RenderGlobal.func_181563_a(boundingBox, r, g, b, 255);
     }
 
@@ -178,6 +169,127 @@ public class RenderUtil implements Methods {
         worldrenderer.pos(boundingBox.maxX, boundingBox.maxY, boundingBox.maxZ).endVertex();
         worldrenderer.pos(boundingBox.maxX, boundingBox.minY, boundingBox.maxZ).endVertex();
         tessellator.draw();
+    }
+
+    public static void renderRing(EntityLivingBase player, Color color) {
+        final float partialTicks = mc.timer.renderPartialTicks;
+
+        if (mc.getRenderManager() == null || player == null) return;
+
+        final double x = player.prevPosX + (player.posX - player.prevPosX) * partialTicks - (mc.getRenderManager()).renderPosX;
+        final double y = player.prevPosY + (player.posY - player.prevPosY) * partialTicks + Math.sin(System.currentTimeMillis() / 2E+2) + 1 - (mc.getRenderManager()).renderPosY;
+        final double z = player.prevPosZ + (player.posZ - player.prevPosZ) * partialTicks - (mc.getRenderManager()).renderPosZ;
+
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+        GL11.glEnable(GL11.GL_VERTEX_ARRAY);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
+        GL11.glDepthMask(false);
+        GL11.glAlphaFunc(GL11.GL_GREATER, 0.0F);
+        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
+
+        for (float i = 0; i <= Math.PI * 2 + ((Math.PI * 2) / 32.F); i += (Math.PI * 2) / 32.F) {
+            double vecX = x + 0.67 * Math.cos(i);
+            double vecZ = z + 0.67 * Math.sin(i);
+
+            RenderUtil.color(ColorUtil.setAlpha(color, (int) (255 * 0.25)));
+            GL11.glVertex3d(vecX, y, vecZ);
+        }
+
+        for (float i = 0; i <= Math.PI * 2 + (Math.PI * 2) / 32.F; i += (Math.PI * 2) / 32.F) {
+            double vecX = x + 0.67 * Math.cos(i);
+            double vecZ = z + 0.67 * Math.sin(i);
+
+            RenderUtil.color(ColorUtil.setAlpha(color, (int) (255 * 0.25)));
+            GL11.glVertex3d(vecX, y, vecZ);
+
+            RenderUtil.color(ColorUtil.setAlpha(color, 0));
+            GL11.glVertex3d(vecX, y - Math.cos(System.currentTimeMillis() / 2E+2) / 2.0F, vecZ);
+        }
+
+        GL11.glEnd();
+        GL11.glShadeModel(GL11.GL_FLAT);
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+        GL11.glDisable(GL11.GL_POLYGON_OFFSET_LINE);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPopMatrix();
+        RenderUtil.color(Color.WHITE);
+    }
+
+    private static void drawCircle(final Entity entity, final double rad, final int color, final boolean shade) {
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glEnable(GL11.GL_POLYGON_OFFSET_FILL);
+        GL11.glEnable(GL11.GL_VERTEX_ARRAY);
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glHint(GL11.GL_POLYGON_SMOOTH_HINT, GL11.GL_NICEST);
+        GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
+        GL11.glDepthMask(false);
+        GL11.glAlphaFunc(GL11.GL_GREATER, 0.0F);
+
+        if (shade) {
+            GL11.glShadeModel(GL11.GL_SMOOTH);
+        }
+
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
+
+        final double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * mc.timer.renderPartialTicks - (mc.getRenderManager()).renderPosX;
+        final double y = (entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * mc.timer.renderPartialTicks - (mc.getRenderManager()).renderPosY) + Math.sin(System.currentTimeMillis() / 2E+2) + 1;
+        final double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * mc.timer.renderPartialTicks - (mc.getRenderManager()).renderPosZ;
+
+        Color c;
+
+        for (float i = 0; i < Math.PI * 2; i += Math.PI * 2 / 64.F) {
+            final double vecX = x + rad * Math.cos(i);
+            final double vecZ = z + rad * Math.sin(i);
+
+            c = Color.WHITE;
+
+            if (shade) {
+                GL11.glColor4f(c.getRed() / 255.F,
+                        c.getGreen() / 255.F,
+                        c.getBlue() / 255.F,
+                        0
+                );
+                GL11.glVertex3d(vecX, y - Math.cos(System.currentTimeMillis() / 2E+2) / 2.0F, vecZ);
+                GL11.glColor4f(c.getRed() / 255.F,
+                        c.getGreen() / 255.F,
+                        c.getBlue() / 255.F,
+                        0.85F
+                );
+            }
+            GL11.glVertex3d(vecX, y, vecZ);
+        }
+
+        GL11.glEnd();
+
+        if (shade) {
+            GL11.glShadeModel(GL11.GL_FLAT);
+        }
+
+        GL11.glDepthMask(true);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GL11.glAlphaFunc(GL11.GL_GREATER, 0.1F);
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_POLYGON_OFFSET_FILL);
+        GL11.glDisable(GL11.GL_POLYGON_OFFSET_LINE);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glPopMatrix();
+        GL11.glColor3f(255, 255, 255);
     }
 
     public static boolean isHovered(float mouseX, float mouseY, float x, float y, float width, float height) {
@@ -251,6 +363,26 @@ public class RenderUtil implements Methods {
 
     public static void bindTexture(int texture) {
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, texture);
+    }
+
+    public static void color(final double red, final double green, final double blue, final double alpha) {
+        GL11.glColor4d(red, green, blue, alpha);
+    }
+
+    public static void color(final double red, final double green, final double blue) {
+        color(red, green, blue, 1);
+    }
+
+    public static void color(Color color) {
+        if (color == null)
+            color = Color.white;
+        color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, color.getAlpha() / 255F);
+    }
+
+    public static void color(Color color, final int alpha) {
+        if (color == null)
+            color = Color.white;
+        color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 0.5);
     }
 
     public static void resetColor() {

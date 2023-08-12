@@ -168,14 +168,14 @@ public class Speed extends Module {
                             break;
                         case "Ground":
                             if (mc.thePlayer.onGround) {
-                                mc.timer.timerSpeed = 1.02F;
+                                mc.timer.timerSpeed = 1.05F;
                                 y = 0.01;
                                 mc.thePlayer.motionY = 0.01;
-                                MoveUtil.strafe((float) (0.4175 + MoveUtil.getSpeedBoost(1.5F)));
+                                MoveUtil.strafe((float) (0.4175 + MoveUtil.getSpeedBoost(1.53F)));
                             } else {
                                 mc.timer.timerSpeed = 1;
                                 if (y == 0.01) {
-                                    MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? MoveUtil.getBaseMoveSpeed() * 1.11F : MoveUtil.getBaseMoveSpeed() * 1.04F);
+                                    MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? MoveUtil.getBaseMoveSpeed() * 1.15F : MoveUtil.getBaseMoveSpeed() * 1.04F);
                                     y = 0;
                                 }
 
@@ -184,9 +184,9 @@ public class Speed extends Module {
                                     mc.thePlayer.motionX *= 1.00575;
                                     mc.thePlayer.motionZ *= 1.00575;
 
-                                    MoveUtil.strafe((float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? MoveUtil.getSpeed() * 1.04 : MoveUtil.getSpeed()));
+                                    MoveUtil.strafe((float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? MoveUtil.getSpeed() * 1.08 : MoveUtil.getSpeed()));
 
-                                    mc.timer.timerSpeed = 1.1F;
+                                    mc.timer.timerSpeed = 1.18F;
                                 }
                             }
                             break;

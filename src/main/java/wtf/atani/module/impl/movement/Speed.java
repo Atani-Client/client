@@ -194,7 +194,7 @@ public class Speed extends Module {
                             if(mc.thePlayer.onGround) {
                                 vulcanTicks = 0;
                                 mc.thePlayer.jump();
-                                mc.timer.timerSpeed = 1.02F;
+                                mc.timer.timerSpeed = 1.07F;
                                 MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.485);
                             } else {
                                 vulcanTicks++;

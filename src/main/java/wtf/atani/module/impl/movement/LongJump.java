@@ -3,6 +3,7 @@ package wtf.atani.module.impl.movement;
 import com.google.common.base.Supplier;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
+import net.minecraft.potion.Potion;
 import wtf.atani.event.events.MoveEntityEvent;
 import wtf.atani.event.events.PacketEvent;
 import wtf.atani.event.events.UpdateMotionEvent;
@@ -30,6 +31,16 @@ public class LongJump extends Module {
 
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
+
+    }
+
+    @Listen
+    public final void onPacket(PacketEvent packetEvent) {
+
+    }
+
+    @Listen
+    public final void onMove(MoveEntityEvent moveEntityEvent) {
         mc.gameSettings.keyBindJump.pressed = MoveUtil.getSpeed() != 0;
         switch(mode.getValue()) {
             case "NCP":
@@ -40,48 +51,38 @@ public class LongJump extends Module {
                 }
 
                 if(mc.thePlayer.onGround) {
-                    ncpSpeed = 0.4 ;
+                    ncpSpeed = mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.53;
                 } else {
-                    ncpSpeed -= 0.007;
+                    ncpSpeed -= mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.03 : 0.02;
                 }
 
-                if(mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0 && !mc.thePlayer.onGround) {
-                    if(ncpSpeed < 0.2875) {
-                    //    MoveUtil.strafe(0.2875);
-                    } else {
-                        MoveUtil.strafe(ncpSpeed);
+                if(mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0) {
+                    if(ncpSpeed < 0.2) {
+                        MoveUtil.strafe(0.2 + MoveUtil.getSpeedBoost(3));
                     }
+                        MoveUtil.strafe(ncpSpeed + MoveUtil.getSpeedBoost(3));
                 }
 
                 switch(ncpTicks) {
                     case 4:
-                    //    ncpSpeed += 0.02;
+                        ncpSpeed += 0.02;
+                        mc.thePlayer.motionY += 0.02;
                         break;
-                    case 30:
-                        mc.thePlayer.motionY += 0.10;
+                    case 10:
+                            mc.thePlayer.motionY += 0.20;
                         break;
                 }
                 break;
         }
     }
 
-    @Listen
-    public final void onPacket(PacketEvent packetEvent) {
-
-    }
-
-    @Listen
-    public final void onMove(MoveEntityEvent moveEntityEvent) {
-
-    }
-
     @Override
     public void onEnable() {
-
+        mc.timer.timerSpeed = 0.6F;
     }
 
     @Override
     public void onDisable() {
-
+        mc.timer.timerSpeed = 1;
     }
 }

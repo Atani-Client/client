@@ -58,9 +58,47 @@ public class RenderUtil implements Methods {
         GL11.glEnable(GL11.GL_TEXTURE_2D);
     }
 
+    public static void drawBorder(final float left, final float top, final float right, final float bottom, final float borderWidth, final int borderColor, final boolean borderIncludedInBounds) {
+        float adjustedLeft = left;
+        float adjustedTop = top;
+        float adjustedRight = right;
+        float adjustedBottom = bottom;
+
+        if (!borderIncludedInBounds) {
+            adjustedLeft -= borderWidth;
+            adjustedTop -= borderWidth;
+            adjustedRight += borderWidth;
+            adjustedBottom += borderWidth;
+        }
+
+        // Draw the border
+        Gui.drawRect(adjustedLeft, adjustedTop, adjustedRight, adjustedTop + borderWidth, borderColor); // Top
+        Gui.drawRect(adjustedLeft, adjustedBottom - borderWidth, adjustedRight, adjustedBottom, borderColor); // Bottom
+        Gui.drawRect(adjustedLeft, adjustedTop + borderWidth, adjustedLeft + borderWidth, adjustedBottom - borderWidth, borderColor); // Left
+        Gui.drawRect(adjustedRight - borderWidth, adjustedTop + borderWidth, adjustedRight, adjustedBottom - borderWidth, borderColor); // Right
+    }
+
     public static void drawBorderedRect(final float left, final float top, final float right, final float bottom, final float borderWidth, final int insideColor, final int borderColor, final boolean borderIncludedInBounds) {
-        Gui.drawRect(left - (borderIncludedInBounds ? 0.0f : borderWidth), top - (borderIncludedInBounds ? 0.0f : borderWidth), right + (borderIncludedInBounds ? 0.0f : borderWidth), bottom + (borderIncludedInBounds ? 0.0f : borderWidth), borderColor);
-        Gui.drawRect(left + (borderIncludedInBounds ? borderWidth : 0.0f), top + (borderIncludedInBounds ? borderWidth : 0.0f), right - (borderIncludedInBounds ? borderWidth : 0.0f), bottom - (borderIncludedInBounds ? borderWidth : 0.0f), insideColor);
+        float adjustedLeft = left;
+        float adjustedTop = top;
+        float adjustedRight = right;
+        float adjustedBottom = bottom;
+
+        if (!borderIncludedInBounds) {
+            adjustedLeft -= borderWidth;
+            adjustedTop -= borderWidth;
+            adjustedRight += borderWidth;
+            adjustedBottom += borderWidth;
+        }
+
+        // Draw the border
+        Gui.drawRect(adjustedLeft, adjustedTop, adjustedRight, adjustedTop + borderWidth, borderColor); // Top
+        Gui.drawRect(adjustedLeft, adjustedBottom - borderWidth, adjustedRight, adjustedBottom, borderColor); // Bottom
+        Gui.drawRect(adjustedLeft, adjustedTop + borderWidth, adjustedLeft + borderWidth, adjustedBottom - borderWidth, borderColor); // Left
+        Gui.drawRect(adjustedRight - borderWidth, adjustedTop + borderWidth, adjustedRight, adjustedBottom - borderWidth, borderColor); // Right
+
+        // Draw the main rectangle
+        Gui.drawRect(adjustedLeft + borderWidth, adjustedTop + borderWidth, adjustedRight - borderWidth, adjustedBottom - borderWidth, insideColor);
     }
 
     public static void drawSkinHead(EntityLivingBase player, double x, double y, int size) {

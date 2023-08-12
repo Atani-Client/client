@@ -13,6 +13,7 @@ import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.utils.player.MoveUtil;
+import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
@@ -24,6 +25,7 @@ public class Speed extends Module {
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "YPort"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
     private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Normal", "Stable"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
+    private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true);
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
     private SliderValue<Float> jumpheight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
@@ -393,7 +395,7 @@ public class Speed extends Module {
                                 MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.375F));
                             }
 
-                            if(ncpTicks == 5) {
+                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
                                 mc.thePlayer.motionY -= 0.1;
                             }
                             break;
@@ -410,7 +412,7 @@ public class Speed extends Module {
                                 MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02);
                             }
 
-                            if(ncpTicks == 5) {
+                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
                                 mc.thePlayer.motionY -= 0.1;
                             }
                             break;

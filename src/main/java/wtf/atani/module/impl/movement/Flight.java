@@ -1,8 +1,6 @@
 package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
@@ -15,7 +13,6 @@ import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.utils.player.MoveUtil;
-import wtf.atani.utils.player.RotationUtil;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
@@ -68,40 +65,12 @@ public class Flight extends Module {
                             }
                             break;
                         case "Boat":
-                            if (mc.thePlayer.isRiding()) {
+                            if(mc.thePlayer.isRiding()) {
                                 launch = true;
                             }
-
-                            if (launch && !mc.thePlayer.isRiding()) {
-                                EntityBoat closestBoat = null;
-                                double closestDistance = Double.MAX_VALUE;
-
-                                for (Entity entity : mc.theWorld.loadedEntityList) {
-                                    if (entity instanceof EntityBoat) {
-                                        double distanceToBoat = mc.thePlayer.getDistanceSqToEntity(entity);
-                                        if (distanceToBoat < closestDistance) {
-                                            closestDistance = distanceToBoat;
-                                            closestBoat = (EntityBoat) entity;
-                                        }
-                                    }
-                                }
-
-                                if (closestBoat != null) {
-                                    double deltaX = closestBoat.posX - mc.thePlayer.posX;
-                                    double deltaY = closestBoat.posY - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight());
-                                    double deltaZ = closestBoat.posZ - mc.thePlayer.posZ;
-
-                                    double horizontalDistance = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
-                                    float yaw = (float) (Math.atan2(deltaZ, deltaX) * 180.0 / Math.PI) - 90.0F;
-                                    float pitch = (float) (Math.atan2(deltaY, horizontalDistance) * 180.0 / Math.PI);
-
-                                    mc.thePlayer.rotationYaw = yaw;
-                                    mc.thePlayer.rotationPitch = pitch;
-
-                                    mc.thePlayer.motionY = 1.5;
-                                    MoveUtil.strafe(1.5);
-                                }
-
+                            if(launch && !mc.thePlayer.isRiding()) {
+                                mc.thePlayer.motionY = 1.5;
+                                MoveUtil.strafe(1.5);
                                 launch = false;
                             }
                             break;

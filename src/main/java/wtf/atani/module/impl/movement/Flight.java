@@ -2,6 +2,7 @@ package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import wtf.atani.event.events.MoveEntityEvent;
 import wtf.atani.event.events.PacketEvent;
@@ -70,8 +71,8 @@ public class Flight extends Module {
                             if(launch && !mc.thePlayer.isRiding()) {
                                 mc.thePlayer.motionY = 1.5;
                                 MoveUtil.strafe(1.5);
+                                launch = false;
                             }
-
                             break;
                     }
                 }
@@ -232,6 +233,7 @@ public class Flight extends Module {
         stage = 0;
         jumped = false;
         jumps = 0;
+        launch = false;
     }
 
     @Override
@@ -240,6 +242,7 @@ public class Flight extends Module {
         jumped = false;
         MoveUtil.strafe(0);
         mc.timer.timerSpeed = 1f;
+        launch = false;
         stage = 0;
         mc.thePlayer.speedInAir = 0.02F;
         jumped = false;

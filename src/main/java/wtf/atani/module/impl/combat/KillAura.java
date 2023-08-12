@@ -20,11 +20,13 @@ import wtf.atani.utils.player.PlayerHandler;
 import wtf.atani.utils.player.PlayerUtil;
 import wtf.atani.utils.player.RotationUtil;
 import wtf.atani.utils.render.RenderUtil;
+import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 
@@ -68,7 +70,18 @@ public class KillAura extends Module {
     public SliderValue<Float> maxCps = new SliderValue<>("Max CPS", "Maximum CPS", this, 12f, 0f, 20f, 1);
     public CheckBoxValue targetESP = new CheckBoxValue("Target ESP", "Show which entity you're attacking?", this, true);
     public CheckBoxValue box = new CheckBoxValue("Box", "Display little box above the target?", this, false, new Supplier[]{() -> targetESP.getValue()});
+    public StringBoxValue boxMode = new StringBoxValue("Box Mode", "What box wil be rendered?", this, new String[]{"Above", "Full"});
+    public CheckBoxValue circle = new CheckBoxValue("Ring", "Display little Ring around the target?", this, false, new Supplier[]{() -> targetESP.getValue()});
     public CheckBoxValue pointer = new CheckBoxValue("Pointer", "Show where you're looking at?", this, true, new Supplier[]{() -> targetESP.getValue()});
+    private StringBoxValue customColorMode = new StringBoxValue("Color Mode", "How will the esp be colored?", this, new String[]{"Static", "Fade", "Gradient", "Rainbow", "Astolfo Sky"}, new Supplier[]{() -> targetESP.getValue()});
+    private CheckBoxValue changeOnHurt = new CheckBoxValue("Change Color on hurt", "Change the ESP colour to red if the target is being hurt?", this, false);
+    private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")});
+    private SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")});
+    private SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")});
+    private SliderValue<Integer> red2 = new SliderValue<>("Second Red", "What'll be the red of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Gradient")});
+    private SliderValue<Integer> green2 = new SliderValue<>("Second Green", "What'll be the green of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Gradient")});
+    private SliderValue<Integer> blue2 = new SliderValue<>("Second Blue", "What'll be the blue of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Gradient")});
+    private SliderValue<Float> darkFactor = new SliderValue<>("Dark Factor", "How much will the color be darkened?", this, 0.49F, 0F, 1F, 2, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Fade")});
 
     // Targets
     public static EntityLivingBase curEntity;
@@ -127,30 +140,72 @@ public class KillAura extends Module {
             rayTraceRangeEvent.setBlockReachDistance((float) Math.max(mc.playerController.getBlockReachDistance(), correctedRange));
         }
     }
-    
+
+    final Calendar calendar = Calendar.getInstance();
+
     @Listen
     public final void on3D(Render3DEvent render3DEvent) {
-        if(curEntity != null && targetESP.getValue() && box.getValue()) {
-            double x = this.curEntity.lastTickPosX + (this.curEntity.posX - this.curEntity.lastTickPosX) * render3DEvent.getPartialTicks() - (mc.getRenderManager()).renderPosX;
-            double y = this.curEntity.lastTickPosY + (this.curEntity.posY - this.curEntity.lastTickPosY) * render3DEvent.getPartialTicks() - (mc.getRenderManager()).renderPosY;
-            double z = this.curEntity.lastTickPosZ + (this.curEntity.posZ - this.curEntity.lastTickPosZ) * render3DEvent.getPartialTicks() - (mc.getRenderManager()).renderPosZ;
-            double width = 0.17D;
-            double height = 0.25D;
-            double thickness = 0.08D;
-            AxisAlignedBB entityBox = this.curEntity.getEntityBoundingBox();
-            AxisAlignedBB espBox = new AxisAlignedBB(entityBox.minX - this.curEntity.posX + x - width, entityBox.maxY - this.curEntity.posY + y + height, entityBox.minZ - this.curEntity.posZ + z - width, entityBox.maxX - this.curEntity.posX + x + width, entityBox.maxY - this.curEntity.posY + y + height + thickness, entityBox.maxZ - this.curEntity.posZ + z + width);
-            RenderUtil.renderESP(curEntity, true, espBox, false, true, curEntity.hurtTime > 0 ? new Color(255, 0, 0, 150) : new Color(255, 255, 255, 150));
-        }
-        if(curEntity != null && targetESP.getValue() && pointer.getValue()) {
-            Vec3 aimPoint = RotationUtil.getVectorForRotation(PlayerHandler.yaw, PlayerHandler.pitch);
-            Vec3 vec = RotationUtil.getBestVector(mc.thePlayer.getPositionEyes(1F), curEntity.getEntityBoundingBox());
-            double dist = PlayerUtil.getDistance(vec.xCoord, vec.yCoord, vec.zCoord);
-            aimPoint.xCoord *= dist;
-            aimPoint.yCoord *= dist;
-            aimPoint.zCoord *= dist;
-            aimPoint.yCoord += mc.thePlayer.getEyeHeight();
-            AxisAlignedBB aimBB = new AxisAlignedBB(aimPoint.xCoord - 0.1, aimPoint.yCoord - 0.1, aimPoint.zCoord - 0.1, aimPoint.xCoord + 0.1, aimPoint.yCoord + 0.1, aimPoint.zCoord + 0.1);
-            RenderUtil.renderESP(curEntity, true, aimBB, false, true, curEntity.hurtTime > 0 ? new Color(255, 0, 0, 150) : new Color(255, 255, 255, 150));
+        if(curEntity != null) {
+            int color = 0;
+            final int counter = 1;
+            switch (this.customColorMode.getValue()) {
+                case "Static":
+                    color = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();
+                    break;
+                case "Fade": {
+                    int firstColor = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();
+                    color = ColorUtil.fadeBetween(firstColor, ColorUtil.darken(firstColor, darkFactor.getValue()), counter * 150L);
+                    break;
+                }
+                case "Gradient": {
+                    int firstColor = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();
+                    int secondColor = new Color(red2.getValue(), green2.getValue(), blue2.getValue()).getRGB();
+                    color = ColorUtil.fadeBetween(firstColor, secondColor, counter * 150L);
+                    break;
+                }
+                case "Rainbow":
+                    color = ColorUtil.getRainbow(3000, (int) (counter * 150L));
+                    break;
+                case "Astolfo Sky":
+                    color = ColorUtil.blendRainbowColours(counter * 150L);
+                    break;
+            }
+            if(calendar.get(Calendar.DAY_OF_MONTH) == 28 && calendar.get(Calendar.MONTH) == Calendar.OCTOBER) {
+                color = ColorUtil.blendCzechiaColours(counter * 150L);
+            }
+            if(calendar.get(Calendar.DAY_OF_MONTH) == 3 && calendar.get(Calendar.MONTH) == Calendar.OCTOBER) {
+                color = ColorUtil.blendGermanColours(counter * 150L);
+            }
+            if(this.changeOnHurt.getValue() && curEntity.hurtTime > 0)
+                color = Color.red.getRGB();
+            if(targetESP.getValue() && box.getValue()) {
+                double x = this.curEntity.lastTickPosX + (this.curEntity.posX - this.curEntity.lastTickPosX) * render3DEvent.getPartialTicks() - (mc.getRenderManager()).renderPosX;
+                double y = this.curEntity.lastTickPosY + (this.curEntity.posY - this.curEntity.lastTickPosY) * render3DEvent.getPartialTicks() - (mc.getRenderManager()).renderPosY;
+                double z = this.curEntity.lastTickPosZ + (this.curEntity.posZ - this.curEntity.lastTickPosZ) * render3DEvent.getPartialTicks() - (mc.getRenderManager()).renderPosZ;
+                double width = 0.17D;
+                double height = 0.25D;
+                double thickness = 0.08D;
+                if(this.boxMode.getValue().equalsIgnoreCase("Full")) {
+                    thickness -= curEntity.height + 0.25D * 2 + thickness;
+                }
+                AxisAlignedBB entityBox = this.curEntity.getEntityBoundingBox();
+                AxisAlignedBB espBox = new AxisAlignedBB(entityBox.minX - this.curEntity.posX + x - width, entityBox.maxY - this.curEntity.posY + y + height, entityBox.minZ - this.curEntity.posZ + z - width, entityBox.maxX - this.curEntity.posX + x + width, entityBox.maxY - this.curEntity.posY + y + height + thickness, entityBox.maxZ - this.curEntity.posZ + z + width);
+                RenderUtil.renderESP(espBox, false, true, ColorUtil.setAlpha(new Color(color), 150));
+            }
+            if(targetESP.getValue() && pointer.getValue()) {
+                Vec3 aimPoint = RotationUtil.getVectorForRotation(PlayerHandler.yaw, PlayerHandler.pitch);
+                Vec3 vec = RotationUtil.getBestVector(mc.thePlayer.getPositionEyes(1F), curEntity.getEntityBoundingBox());
+                double dist = PlayerUtil.getDistance(vec.xCoord, vec.yCoord, vec.zCoord);
+                aimPoint.xCoord *= dist;
+                aimPoint.yCoord *= dist;
+                aimPoint.zCoord *= dist;
+                aimPoint.yCoord += mc.thePlayer.getEyeHeight();
+                AxisAlignedBB aimBB = new AxisAlignedBB(aimPoint.xCoord - 0.1, aimPoint.yCoord - 0.1, aimPoint.zCoord - 0.1, aimPoint.xCoord + 0.1, aimPoint.yCoord + 0.1, aimPoint.zCoord + 0.1);
+                RenderUtil.renderESP(aimBB, false, true, ColorUtil.setAlpha(new Color(color), 150));
+            }
+            if(targetESP.getValue() && circle.getValue()) {
+                RenderUtil.renderRing(curEntity, new Color(color));
+            }
         }
     }
 

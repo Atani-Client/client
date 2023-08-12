@@ -13,6 +13,7 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.math.time.TimeHelper;
+import wtf.atani.utils.player.MoveUtil;
 import wtf.atani.utils.player.PlayerHandler;
 import wtf.atani.utils.player.PlayerUtil;
 import wtf.atani.utils.player.RotationUtil;
@@ -44,6 +45,13 @@ public class ScaffoldWalk extends Module {
     private int lastItem = -1;
     private BlockPos blockPos;
     private boolean starting;
+
+    @Listen
+    public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {
+        if (MoveUtil.getSpeed() != 0 && sprint.getValue()) {
+            sprintCheckEvent.setSprintCheck(false);
+        }
+    }
 
     @Listen
     public final void onTick(TickEvent tickEvent) {
@@ -86,8 +94,9 @@ public class ScaffoldWalk extends Module {
             }
         }
 
-        getPlayer().setSprinting(sprint.getValue());
-        getGameSettings().keyBindSprint.pressed = sprint.getValue();
+        if (MoveUtil.getSpeed() != 0 && sprint.getValue()) {
+            getPlayer().setSprinting(true);
+        }
 
         if (reverseMovement.getValue()) {
             getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());

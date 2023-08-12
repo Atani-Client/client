@@ -1,11 +1,14 @@
 package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import wtf.atani.event.events.MoveEntityEvent;
 import wtf.atani.event.events.PacketEvent;
+import wtf.atani.event.events.RotationEvent;
 import wtf.atani.event.events.UpdateMotionEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
@@ -44,7 +47,28 @@ public class Flight extends Module {
     public String getSuffix() {
     	return mode.getValue();
     }
-    
+
+    @Listen
+    public final void onRotation(RotationEvent rotationEvent) {
+        switch (this.mode.getValue()) {
+            case "Grim":
+                switch (this.grimMode.getValue()) {
+                    case "Boat":
+                        if(mc.thePlayer.isRiding() && mc.thePlayer.ridingEntity != null) {
+                            if(mc.thePlayer.ridingEntity instanceof EntityBoat) {
+                                EntityBoat boat = (EntityBoat) mc.thePlayer.ridingEntity;
+                                float yaw = boat.rotationYaw;
+                                float pitch = 90;
+                                rotationEvent.setYaw(yaw);
+                                rotationEvent.setPitch(pitch);
+                            }
+                        }
+                        break;
+                }
+                break;
+        }
+    }
+
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {
@@ -65,7 +89,7 @@ public class Flight extends Module {
                             }
                             break;
                         case "Boat":
-                            if(mc.thePlayer.isRiding()) {
+                            if(mc.thePlayer.isRiding() && mc.thePlayer.ridingEntity instanceof EntityBoat) {
                                 launch = true;
                             }
                             if(launch && !mc.thePlayer.isRiding()) {

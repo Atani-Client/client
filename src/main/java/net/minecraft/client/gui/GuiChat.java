@@ -318,8 +318,17 @@ public class GuiChat extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).noBackground.isEnabled()) {
-            //don't draw background
+        boolean font = ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled();
+
+        if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled()) {
+            switch(ModuleStorage.getInstance().getByClass(CustomChat.class).background.getValue()) {
+            case "Normal":
+                drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
+                break;
+            case "TextWidth":
+                drawRect(2, this.height - 14, font ? customFontRenderer.getStringWidth(inputField.getText()) : mc.fontRendererObj.getStringWidth(inputField.getText()) + 6, this.height - 2, Integer.MIN_VALUE);
+                break;
+            }
         } else {
             drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
         }

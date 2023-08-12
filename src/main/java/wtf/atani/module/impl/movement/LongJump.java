@@ -1,13 +1,9 @@
 package wtf.atani.module.impl.movement;
 
-import net.minecraft.network.play.client.C03PacketPlayer;
-
 import com.google.common.base.Supplier;
-
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.potion.Potion;
-
 import wtf.atani.event.events.MoveEntityEvent;
 import wtf.atani.event.events.PacketEvent;
 import wtf.atani.event.events.UpdateMotionEvent;
@@ -31,6 +27,16 @@ public class LongJump extends Module {
     @Override
     public String getSuffix() {
         return mode.getValue();
+    }
+
+    @Listen
+    public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
+
+    }
+
+    @Listen
+    public final void onPacket(PacketEvent packetEvent) {
+
     }
 
     @Listen
@@ -76,27 +82,11 @@ public class LongJump extends Module {
 
     @Override
     public void onEnable() {
-
-        if(mc.thePlayer.onGround && mode.getValue().equals("Damage")) {
-            this.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 3.001, mc.thePlayer.posZ, false));
-            this.sendPacket(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
-        }
-        ticks = 0;
-        boosted = false;
-        startY = mc.thePlayer.posY;
-
     //    mc.timer.timerSpeed = 0.6F;
-
     }
 
     @Override
     public void onDisable() {
-
-        ticks = 0;
-        boosted = false;
-        mc.timer.timerSpeed = 1.0F;
-
         mc.timer.timerSpeed = 1;
-
     }
 }

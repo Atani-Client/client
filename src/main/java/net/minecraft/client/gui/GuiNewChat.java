@@ -83,14 +83,26 @@ public class GuiNewChat extends Gui
                             {
                                 int i2 = 0;
                                 int j2 = -i1 * 9;
-                                if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).noBackground.isEnabled()) {
-                                    // don't draw background
+                                String s = chatline.getChatComponent().getFormattedText();
+                                boolean font = ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled();
+
+                                if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled()) {
+                                    switch(ModuleStorage.getInstance().getByClass(CustomChat.class).background.getValue()) {
+                                    case "Normal":
+                                        drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
+                                        break;
+                                    case "TextWidth":
+                                        int strWidth = font ? customFontRenderer.getStringWidth(s) : mc.fontRendererObj.getStringWidth(s);
+                                        drawRect(i2, j2 - 9, strWidth + 1, j2, l1 / 2 << 24);
+                                        break;
+
+                                    }
                                 } else {
                                     drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
                                 }
-                                String s = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled()) {
+
+                                if(font) {
                                     this.customFontRenderer.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
                                 } else {
                                     this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));

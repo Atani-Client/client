@@ -406,10 +406,11 @@ public class Speed extends Module {
                             if(mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 1F;
                                 mc.thePlayer.motionY = 0.409;
-                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
+                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(4));
                             } else {
                                 mc.timer.timerSpeed = (float) (1 + Math.random() / 7.5);
-                                MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02);
+                                // this can be patched any moment, currently works on eu.loyisa.cn
+                                    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02 + MoveUtil.getSpeedBoost(1));
                             }
 
                             if(ncpTicks == 5 && ncpMotionModify.getValue()) {

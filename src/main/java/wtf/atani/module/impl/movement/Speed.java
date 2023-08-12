@@ -374,18 +374,27 @@ public class Speed extends Module {
                 break;
             case "NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                    if(mc.thePlayer.onGround)
+                        ncpTicks = 0;
+                     else
+                        ncpTicks++;
+
                     switch (ncpMode.getValue()) {
                         case "Normal":
                             if(!isMoving())
                                 return;
 
                             if(mc.thePlayer.onGround) {
-                                mc.timer.timerSpeed = 1.2F;
+                                mc.timer.timerSpeed = 2F;
                                 mc.thePlayer.motionY = 0.409;
                                 MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(4));
                             } else {
-                                mc.timer.timerSpeed = (float) (1.1 - Math.random() / 10);
+                                mc.timer.timerSpeed = 1;
                                 MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.375F));
+                            }
+
+                            if(ncpTicks == 5) {
+                                mc.thePlayer.motionY -= 0.1;
                             }
                             break;
                         case "Stable":
@@ -393,12 +402,16 @@ public class Speed extends Module {
                                 return;
 
                             if(mc.thePlayer.onGround) {
-                                mc.timer.timerSpeed = 1.1F;
+                                mc.timer.timerSpeed = 1F;
                                 mc.thePlayer.motionY = 0.409;
                                 MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(1));
                             } else {
-                                mc.timer.timerSpeed = 1;
-                                MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
+                                mc.timer.timerSpeed = (float) (1 + Math.random() / 7.5);
+                                MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02);
+                            }
+
+                            if(ncpTicks == 5) {
+                                mc.thePlayer.motionY -= 0.1;
                             }
                             break;
                     }
@@ -554,7 +567,11 @@ public class Speed extends Module {
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {
                     ((C03PacketPlayer) packetEvent.getPacket()).y = mc.thePlayer.posY + y;
                     if(vulcanMode.is("YPort")) {
-                        ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
+                        if(0 > mc.thePlayer.fallDistance) {
+                            ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance - 1;
+                        } else {
+                            ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
+                        }
                     }
                 }
                 break;

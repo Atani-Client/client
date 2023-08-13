@@ -103,8 +103,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
             List<Module> sortedModules = new ArrayList<>(modulesToShow);
             Collections.sort(sortedModules, (mod1, mod2) -> {
                 FontRenderer fontRenderer;
-                switch (moduleListMode.getValue()) 
-                        break;
+                switch (moduleListMode.getValue()) {
                     case "Icarus":
                         fontRenderer = FontStorage.getInstance().findFont("Pangram Regular", 17);
                         break;

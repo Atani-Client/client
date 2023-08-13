@@ -71,7 +71,7 @@ public class ScaffoldWalk extends Module {
         this.blockPos = BlockUtil.getAimBlockPos();
         if (this.blockPos != null) {
             float[] rotations = this.getRotations();
-            rotations = RotationUtil.updateRotationSimple(rotations[0], rotations[1], starting ? 5 : 180);
+            rotations = RotationUtil.updateRotationSimple(rotations[0], rotations[1], starting ? 3 : 40);
             rotations = RotationUtil.applyMouseFix(rotations[0], rotations[1]);
             rotationEvent.setYaw(rotations[0]);
             rotationEvent.setPitch(rotations[1]);

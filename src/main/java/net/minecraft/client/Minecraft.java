@@ -433,6 +433,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     {
         Util.EnumOS util$enumos = Util.getOSType();
 
+        ClassLoader classLoader = Minecraft.class.getClassLoader();
+
         if (util$enumos != Util.EnumOS.OSX)
         {
             InputStream inputstream = null;
@@ -440,8 +442,8 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
             try
             {
-                inputstream = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_16x16.png"));
-                inputstream1 = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_32x32.png"));
+                inputstream = classLoader.getResourceAsStream("assets/minecraft/icons/icon_16x16.png");
+                inputstream1 = classLoader.getResourceAsStream("assets/minecraft/icons/icon_32x32.png");
 
                 if (inputstream != null && inputstream1 != null)
                 {

@@ -6,6 +6,7 @@ import de.florianmichael.rclasses.storage.Storage;
 import wtf.atani.file.IFile;
 import wtf.atani.file.impl.AccountsFile;
 import wtf.atani.file.impl.ModulesFile;
+import wtf.atani.file.impl.SessionFile;
 import wtf.atani.utils.interfaces.Methods;
 
 import java.io.File;
@@ -28,6 +29,7 @@ public class FileStorage extends Storage<IFile> implements Methods {
         this.setupRoot(CLIENT_NAME);
         this.add(new ModulesFile());
         this.add(new AccountsFile());
+        this.add(new SessionFile());
         this.load();
     }
 

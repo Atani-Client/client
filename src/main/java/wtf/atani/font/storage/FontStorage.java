@@ -55,6 +55,11 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Arial", 20),
                 this.createFontEntry("Arial", 21),
                 this.createFontEntry("ArialMT", 16),
+                this.createFontEntry("SF Pro Display Semibold", 17),
+                this.createFontEntry("SF Pro Display Semibold", 18),
+                this.createFontEntry("SF Pro Display Semibold", 19),
+                this.createFontEntry("SF Pro Display Semibold", 20),
+                this.createFontEntry("SF Pro Display Semibold", 21),
                 this.createFontEntry("Android 101", 100, true));
     }
 

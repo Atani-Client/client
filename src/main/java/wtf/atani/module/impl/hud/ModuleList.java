@@ -58,13 +58,15 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
     private CheckBoxValue suffix = new CheckBoxValue("Suffix", "Display module's mode?", this, true);
     private StringBoxValue suffixMode = new StringBoxValue("Suffix Mode", "How will modes be displayed?", this, new String[] {"nm sfx", "nm - sfx", "nm # sfx", "nm (sfx)", "nm [sfx]", "nm {sfx}", "nm - (sfx)", "nm - [sfx]", "nm - {sfx}", "nm # (sfx)", "nm # [sfx]", "nm # {sfx}"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && suffix.getValue()});
     private StringBoxValue suffixColor = new StringBoxValue("Suffix Color", "How will modes be colored?", this, new String[] {"Gray", "Dark Gray", "White", "None"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
-    private StringBoxValue fontMode = new StringBoxValue("Font", "Which font will render the module name?", this, new String[]{"Minecraft", "Roboto", "Roboto Medium", "Product Sans", "Arial"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && suffix.getValue()});
+    private StringBoxValue fontMode = new StringBoxValue("Font", "Which font will render the module name?", this, new String[]{"Minecraft", "Roboto", "Roboto Medium", "Product Sans", "Arial", "SF Pro Display Semibold"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && suffix.getValue()});
     private SliderValue<Integer> fontSize = new SliderValue<>("Font Size", "How large will the font be?", this, 19, 17, 21, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && !fontMode.getValue().equalsIgnoreCase("Minecraft")});
     private SliderValue<Integer> brightness = new SliderValue<>("Background Brightness", "What will be the brightness of the background?", this, 0, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
     private SliderValue<Integer> opacity = new SliderValue<>("Background Opacity", "What will be the opacity of the background?", this, 180, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
     private SliderValue<Float> xOffset = new SliderValue<>("X Offset", "How much will the module list offset on X?", this, 0F, 0F, 20F, 1);
     private SliderValue<Float> yOffset = new SliderValue<>("Y Offset", "How much will the module list offset on Y?", this, 0F, 0F, 20F, 1);
     private CheckBoxValue hideRenderModules = new CheckBoxValue("Hide Render Modules", "Should the module list hide visual modules?", this, false);
+    private CheckBoxValue fontShadow = new CheckBoxValue("Font Shadow", "Should the module font use shadows on the text?", this, true);
+
 
     private LinkedHashMap<Module, DecelerateAnimation> moduleHashMap = new LinkedHashMap<>();
     private LinkedHashMap<Module, Color> moduleColorHashMap = new LinkedHashMap<>();
@@ -132,6 +134,9 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                             case "Arial":
                                 fontRenderer = FontStorage.getInstance().findFont("Arial", this.fontSize.getValue());
                                 break;
+                            case "SF Pro Display Semibold":
+                                fontRenderer = FontStorage.getInstance().findFont("SF Pro Display Semibold", this.fontSize.getValue());
+                                break;
                             default:
                                 fontRenderer = mc.fontRendererObj;
                                 break;
@@ -175,6 +180,9 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                                 break;
                             case "Arial":
                                 fontRenderer = FontStorage.getInstance().findFont("Arial", this.fontSize.getValue());
+                                break;
+                            case "SF Pro Display Semibold":
+                                fontRenderer = FontStorage.getInstance().findFont("SF Pro Display Semibold", this.fontSize.getValue());
                                 break;
                             default:
                                 fontRenderer = mc.fontRendererObj;
@@ -228,7 +236,13 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                                 float rectWidth = (fontRenderer.getStringWidth(name) + this.rectWidth.getValue());
                                 float moduleX = this.arrayListPosition.getValue().equalsIgnoreCase("Left") ? (0 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue()) : sr.getScaledWidth() - ((float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue());
                                 RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(brightness.getValue(), brightness.getValue(), brightness.getValue(), opacity.getValue()).getRGB());
-                                fontRenderer.drawTotalCenteredStringWithShadow(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, color);
+
+                                if (fontShadow.getValue()) {
+                                    fontRenderer.drawTotalCenteredString(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, color);
+                                } else {
+                                    fontRenderer.drawTotalCenteredStringWithShadow(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, color);
+                                }
+
                                 moduleY += moduleHeight;
                                 counter++;
                             }

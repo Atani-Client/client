@@ -2,6 +2,7 @@ package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import wtf.atani.event.events.MoveEntityEvent;
@@ -538,13 +539,11 @@ public class Speed extends Module {
                 break;
             case "Grim":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    mc.thePlayer.setSprinting(this.isMoving());
+                    getGameSettings().keyBindSprint.pressed = true;
 
                     if (mc.thePlayer.onGround && this.isMoving()){
                         mc.thePlayer.jump();
                     }
-
-
                 }
                 break;
         }
@@ -591,14 +590,12 @@ public class Speed extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
     public void onDisable() {
         mc.timer.timerSpeed = 1.0F;
         mc.thePlayer.speedInAir = 0.02F;
-        mc.gameSettings.keyBindJump.pressed = false;
+        KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), false);
     }
 }

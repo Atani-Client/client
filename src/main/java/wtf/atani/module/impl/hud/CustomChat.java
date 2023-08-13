@@ -12,7 +12,7 @@ public class CustomChat extends Module {
     // Hooked in GuiChat class & GuiNewChat class
 
     //public final CheckBoxValue noBackground = new CheckBoxValue("No Background", "Should the chat have no background?", this, false);
-    public final StringBoxValue background = new StringBoxValue("No Background", "Should the chat have no background?", this, new String[] {"Normal", "TextWidth", "Off"});
+    public final StringBoxValue background = new StringBoxValue("Background", "Which background should the chat box use?", this, new String[] {"Normal", "TextWidth", "Off"});
     public final CheckBoxValue unlimitedChat = new CheckBoxValue("Unlimited Chat", "Should the module remove chat box character limit??", this, false);
     public final CheckBoxValue customFont = new CheckBoxValue("Custom Font", "Should the chat have a custom font?", this, false);
 

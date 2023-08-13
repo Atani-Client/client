@@ -491,7 +491,9 @@ public class Block
     {
         AxisAlignedBB axisalignedbb = this.getCollisionBoundingBox(worldIn, pos, state);
 
-        CollisionBoxesEvent event = new CollisionBoxesEvent(pos, axisalignedbb);
+        CollisionBoxesEvent event = new CollisionBoxesEvent(pos, axisalignedbb).onFire();
+
+        axisalignedbb = event.getBoundingBox();
 
         if (axisalignedbb != null && mask.intersectsWith(axisalignedbb) && !event.isCancelled())
         {

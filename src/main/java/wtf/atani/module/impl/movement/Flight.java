@@ -6,10 +6,8 @@ import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
-import wtf.atani.event.events.MoveEntityEvent;
-import wtf.atani.event.events.PacketEvent;
-import wtf.atani.event.events.RotationEvent;
-import wtf.atani.event.events.UpdateMotionEvent;
+import net.minecraft.util.AxisAlignedBB;
+import wtf.atani.event.events.*;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
@@ -46,6 +44,16 @@ public class Flight extends Module {
     @Override
     public String getSuffix() {
     	return mode.getValue();
+    }
+
+    @Listen
+    public final void onCollisionBoxes(CollisionBoxesEvent collisionBoxesEvent) {
+        switch(mode.getValue()) {
+        case "Collision":
+            collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(collisionBoxesEvent.getBlockPos().getX(), collisionBoxesEvent.getBlockPos().getY(), collisionBoxesEvent.getBlockPos().getZ()));
+            System.out.println("test");
+            break;
+        }
     }
 
     @Listen

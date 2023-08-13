@@ -103,9 +103,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
             List<Module> sortedModules = new ArrayList<>(modulesToShow);
             Collections.sort(sortedModules, (mod1, mod2) -> {
                 FontRenderer fontRenderer;
-                switch (moduleListMode.getValue()) {
-                    case "Vestige 2.0.2":
-                        fontRenderer = FontStorage.getInstance().findFont("Product Sans", 17);
+                switch (moduleListMode.getValue()) 
                         break;
                     case "Icarus":
                         fontRenderer = FontStorage.getInstance().findFont("Pangram Regular", 17);
@@ -237,7 +235,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                                 float moduleX = this.arrayListPosition.getValue().equalsIgnoreCase("Left") ? (0 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue()) : sr.getScaledWidth() - ((float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue());
                                 RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(brightness.getValue(), brightness.getValue(), brightness.getValue(), opacity.getValue()).getRGB());
 
-                                if (fontShadow.getValue()) {
+                                if (!fontShadow.getValue()) {
                                     fontRenderer.drawTotalCenteredString(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, color);
                                 } else {
                                     fontRenderer.drawTotalCenteredStringWithShadow(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, color);

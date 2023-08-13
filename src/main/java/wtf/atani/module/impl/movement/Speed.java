@@ -261,6 +261,9 @@ public class Speed extends Module {
                             }
                             break;
                         case "Air Boost":
+                            if(mc.thePlayer.hurtTime != 0) {
+                                MoveUtil.strafe(5);
+                            }
                             switch(verusTicks) {
                                 case 0:
                                     mc.thePlayer.jump();

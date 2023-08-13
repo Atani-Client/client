@@ -53,6 +53,9 @@ public class Flight extends Module {
             collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(collisionBoxesEvent.getBlockPos().getX(), collisionBoxesEvent.getBlockPos().getY(), collisionBoxesEvent.getBlockPos().getZ()));
             System.out.println("test");
             break;
+            case "Test":
+                collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(collisionBoxesEvent.getBlockPos().getX(), collisionBoxesEvent.getBlockPos().getY(), collisionBoxesEvent.getBlockPos().getZ()));
+                break;
         }
     }
 
@@ -123,8 +126,7 @@ public class Flight extends Module {
                 MoveUtil.strafe(moveSpeed);
                 break;
             case "Test":
-                mc.thePlayer.motionY = 0;
-                mc.thePlayer.onGround = true;
+            //    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() + 0.05F);
                 break;
             case "Old NCP":
                 if (mc.thePlayer.onGround && !jumped) {
@@ -204,6 +206,11 @@ public class Flight extends Module {
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
         switch (mode.getValue()) {
+            case "Test":
+                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                //    packetEvent.setCancelled(true);
+                }
+                break;
             case "Grim":
                 if(grimMode.is("Explosion")) {
                     if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {

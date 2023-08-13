@@ -56,6 +56,8 @@ public class SessionProcessor extends Processor {
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
+        if(mc.thePlayer == null || mc.theWorld == null)
+            return;
         if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
             if(packetEvent.getPacket() instanceof S02PacketChat) {
                 S02PacketChat s02PacketChat = (S02PacketChat) packetEvent.getPacket();

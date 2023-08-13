@@ -25,7 +25,7 @@ public class Speed extends Module {
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "YPort"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
     private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Normal", "Stable"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
-    private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true);
+    private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
     private SliderValue<Float> jumpheight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
@@ -127,15 +127,18 @@ public class Speed extends Module {
                         case "Normal":
                             switch (vulcanTicks) {
                                 case 0:
-                                    if(this.isMoving())
+                                    if(this.isMoving()) {
                                         mc.thePlayer.jump();
-
+                                        mc.timer.timerSpeed = 1.2F;
+                                    } else {
+                                        mc.timer.timerSpeed = 1;
+                                    }
                                     MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6F : 0.485F);
                                     break;
-
                                 case 1:
                                 case 2:
                                     MoveUtil.strafe();
+                                    mc.timer.timerSpeed = 1;
                                     break;
 
                                 case 5:
@@ -162,9 +165,6 @@ public class Speed extends Module {
                                 case 2:
                                 case 8:
                                     MoveUtil.strafe();
-                                    break;
-                                case 5:
-                                    mc.thePlayer.motionY = MoveUtil.getPredictedMotion(mc.thePlayer.motionY, 6);
                                     break;
                             }
                             break;

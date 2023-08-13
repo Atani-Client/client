@@ -325,7 +325,7 @@ public class GuiChat extends GuiScreen
             case "Normal":
                 drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
                 break;
-            case "TextWidth":
+            case "Adaptive":
                 drawRect(2, this.height - 14, font ? customFontRenderer.getStringWidth(inputField.getText()) : mc.fontRendererObj.getStringWidth(inputField.getText()) + 6, this.height - 2, Integer.MIN_VALUE);
                 break;
             }

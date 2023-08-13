@@ -91,7 +91,7 @@ public class GuiNewChat extends Gui
                                     case "Normal":
                                         drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
                                         break;
-                                    case "TextWidth":
+                                    case "Adaptive":
                                         int strWidth = font ? customFontRenderer.getStringWidth(s) : mc.fontRendererObj.getStringWidth(s);
                                         drawRect(i2, j2 - 9, strWidth + 1, j2, l1 / 2 << 24);
                                         break;

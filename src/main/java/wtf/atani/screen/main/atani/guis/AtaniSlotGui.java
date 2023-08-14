@@ -74,7 +74,7 @@ public abstract class AtaniSlotGui
         this.mc = mcIn;
         this.width = width;
         this.height = height;
-        this.top = topIn;
+        this.top = topIn + 20;
         this.bottom = bottomIn;
         this.slotHeight = slotHeightIn;
         this.left = 0;
@@ -85,7 +85,7 @@ public abstract class AtaniSlotGui
     {
         this.width = widthIn;
         this.height = heightIn;
-        this.top = topIn;
+        this.top = topIn + 20;
         this.bottom = bottomIn;
         this.left = 0;
         this.right = widthIn;
@@ -242,14 +242,14 @@ public abstract class AtaniSlotGui
             RenderUtil.drawRect(0, 0, this.width, this.height, new Color(16, 16, 16).getRGB());
             AtaniMainMenu.shaderBackground.render();
             int k = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
-            int l = this.top + 4 - (int) this.amountScrolled + 20;
+            int l = this.top + 4 - (int) this.amountScrolled ;
 
-            int y = this.top + 4 + 20;
+            int y = this.top + 4 ;
 
             {
                 int k1 = this.left + this.width / 2 - 220 / 2 + 1;
-                int l1 = this.top + 4 - (int) this.amountScrolled + 20;
-                int y1 = this.top + 4 + 20;
+                int l1 = this.top + 4 - (int) this.amountScrolled ;
+                int y1 = this.top + 4 ;
 
                 RenderableShaders.render(() -> {
                     RoundedShader.drawRound(k1 - 60, y1 - 30, 220 + 60 * 2, height - 50, 10, new Color(0, 0, 0, 130));
@@ -270,8 +270,8 @@ public abstract class AtaniSlotGui
             if (j1 > 0)
             {
                 int k1 = (this.bottom - this.top) * (this.bottom - this.top) / this.getContentHeight();
-                k1 = MathHelper.clamp_int(k1, 32, this.bottom - this.top - 8) + 20;
-                int l1 = (int)this.amountScrolled * (this.bottom - this.top - k1) / j1 + this.top + 20;
+                k1 = MathHelper.clamp_int(k1, 32, this.bottom - this.top - 8) ;
+                int l1 = (int)this.amountScrolled * (this.bottom - this.top - k1) / j1 + this.top ;
 
                 if (l1 < this.top)
                 {
@@ -295,7 +295,7 @@ public abstract class AtaniSlotGui
             {
                 int i = (this.width - this.getListWidth()) / 2;
                 int j = (this.width + this.getListWidth()) / 2;
-                int k = this.mouseY - this.top - this.headerPadding + (int)this.amountScrolled - 4 + 20;
+                int k = this.mouseY - this.top - this.headerPadding + (int)this.amountScrolled - 4 ;
                 int l = k / this.slotHeight;
 
                 if (l < this.getSize() && this.mouseX >= i && this.mouseX <= j && l >= 0 && k >= 0)
@@ -327,7 +327,7 @@ public abstract class AtaniSlotGui
                     {
                         int j2 = (this.width - this.getListWidth()) / 2;
                         int k2 = (this.width + this.getListWidth()) / 2;
-                        int l2 = this.mouseY - this.top - this.headerPadding + (int)this.amountScrolled - 4 + 20;
+                        int l2 = this.mouseY - this.top - this.headerPadding + (int)this.amountScrolled - 4 ;
                         int i1 = l2 / this.slotHeight;
 
                         if (i1 < this.getSize() && this.mouseX >= j2 && this.mouseX <= k2 && i1 >= 0 && l2 >= 0)

@@ -1,6 +1,7 @@
 package wtf.atani.module.impl.combat;
 
 import com.google.common.base.Supplier;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
@@ -43,6 +44,7 @@ public class KillAura extends Module {
     public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters", this, true);
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true);
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
+    public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> rotationRange = new SliderValue<>("Rotation Range", "What'll be the range for rotating?", this, 4f, 3f, 10f, 1);
     public CheckBoxValue snapYaw = new CheckBoxValue("Snap Yaw", "Do not smooth out yaw?", this, false);
     public CheckBoxValue snapPitch = new CheckBoxValue("Snap Pitch", "Do not smooth out pitch?", this, false);
@@ -68,6 +70,7 @@ public class KillAura extends Module {
     public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Server-Side Misplace", "Fix Server-Side Misplace?", this, true);
     public SliderValue<Float> minCps = new SliderValue<>("Min CPS", "Minimum CPS", this, 10f, 0f, 20f, 1);
     public SliderValue<Float> maxCps = new SliderValue<>("Max CPS", "Maximum CPS", this, 12f, 0f, 20f, 1);
+    public CheckBoxValue fovCircle = new CheckBoxValue("FOV Circle", "Render circle which shows FOV?", this, false);
     public CheckBoxValue targetESP = new CheckBoxValue("Target ESP", "Show which entity you're attacking?", this, true);
     public CheckBoxValue box = new CheckBoxValue("Box", "Display little box above the target?", this, false, new Supplier[]{() -> targetESP.getValue()});
     public StringBoxValue boxMode = new StringBoxValue("Box Mode", "What box wil be rendered?", this, new String[]{"Above", "Full"});
@@ -207,6 +210,13 @@ public class KillAura extends Module {
                 RenderUtil.renderRing(curEntity, new Color(color));
             }
         }
+    }
+
+    @Listen
+    public final void on2D(Render2DEvent render2DEvent) {
+        ScaledResolution scaledResolution = render2DEvent.getScaledResolution();
+        if(this.fovCircle.getValue())
+            RenderUtil.drawFovCircle(scaledResolution.getScaledWidth() / 2, scaledResolution.getScaledHeight() / 2, this.fov.getValue(), 1000, -1);
     }
 
     @Listen

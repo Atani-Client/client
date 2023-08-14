@@ -83,6 +83,45 @@ public class RenderUtil implements Methods {
         }
     }
 
+    public static void drawFovCircle(double centerX, double centerY, double radius, int numSegments, int colorARGB) {
+        radius *= 6;
+        GlStateManager.pushAttrib();
+        GlStateManager.pushMatrix();
+        Tessellator tessellator = Tessellator.getInstance();
+
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+        GL11.glDisable(GL11.GL_LIGHTING);
+        GL11.glDisable(GL11.GL_CULL_FACE);
+
+        GL11.glColor4f(
+                ((colorARGB >> 16) & 0xFF) / 255.0F,
+                ((colorARGB >> 8) & 0xFF) / 255.0F,
+                (colorARGB & 0xFF) / 255.0F,
+                ((colorARGB >> 24) & 0xFF) / 255.0F
+        );
+
+        GL11.glLineWidth(1);
+
+        tessellator.getWorldRenderer().begin(GL11.GL_LINE_LOOP, DefaultVertexFormats.POSITION);
+
+        for (int i = 0; i < numSegments; i++) {
+            double angle = Math.PI * 2 * (i / (double) numSegments);
+            double x = centerX + radius * Math.cos(angle);
+            double y = centerY + radius * Math.sin(angle);
+            tessellator.getWorldRenderer().pos(x, y, 0.0).endVertex();
+        }
+
+        tessellator.draw();
+
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glEnable(GL11.GL_LIGHTING);
+        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GL11.glLineWidth(1.0F); // Reset line width to default
+        GlStateManager.popMatrix();
+        GlStateManager.popAttrib();
+        RenderUtil.resetColor();
+    }
+
     public static void drawRect(float x, float y, float width, float height, int colour) {
         Gui.drawRect(x, y, x + width, y + height, colour);
     }

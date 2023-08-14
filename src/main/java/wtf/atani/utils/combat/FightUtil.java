@@ -10,6 +10,7 @@ import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
+import net.minecraft.util.Vec3;
 import wtf.atani.combat.CombatManager;
 import wtf.atani.utils.interfaces.Methods;
 import wtf.atani.utils.player.RotationUtil;
@@ -49,6 +50,34 @@ public class FightUtil implements Methods {
         }
         return list;
     }
+
+    public static List<EntityLivingBase> getMultipleTargets(double range, int fov, boolean players, boolean animals, boolean walls, boolean mobs, boolean invis) {
+        List<EntityLivingBase> list = new ArrayList<>();
+        for (Entity entity : mc.theWorld.loadedEntityList) {
+            if (!(entity instanceof EntityLivingBase))
+                continue;
+            EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
+            if (entityLivingBase == mc.thePlayer ||
+                    getRange(entityLivingBase) > range
+                    || !entityLivingBase.canEntityBeSeen(mc.thePlayer) && !walls
+                    || entityLivingBase.isDead
+                    || FightUtil.yawDist(entityLivingBase) > fov
+                    || entityLivingBase instanceof EntityArmorStand
+                    || entityLivingBase instanceof EntityVillager
+                    || entityLivingBase instanceof EntityAnimal && !animals
+                    || entityLivingBase instanceof EntitySquid && !animals
+                    || entityLivingBase instanceof EntityPlayer && !players
+                    || entityLivingBase instanceof EntityMob && !mobs
+                    || entityLivingBase instanceof EntitySlime && !mobs
+                    || CombatManager.getInstance().hasBot(entity)
+                    || entityLivingBase.isInvisible() && !invis) continue;
+            if (list.size() > 5)
+                continue;
+            list.add(entityLivingBase);
+        }
+        return list;
+    }
+
 
     public static List<EntityLivingBase> getMultipleTargets(double range, boolean players, boolean animals, boolean walls, boolean mobs, boolean invis) {
         List<EntityLivingBase> list = new ArrayList<>();
@@ -118,6 +147,11 @@ public class FightUtil implements Methods {
                 || entity == null );
     }
 
+    public static double yawDist(EntityLivingBase e) {
+        final Vec3 difference = e.getPositionVector().addVector(0.0, e.getEyeHeight() / 2.0f, 0.0).subtract(mc.thePlayer.getPositionVector().addVector(0.0, mc.thePlayer.getEyeHeight(), 0.0));
+        final double d = Math.abs(mc.thePlayer.rotationYaw - (Math.toDegrees(Math.atan2(difference.zCoord, difference.xCoord)) - 90.0f)) % 360.0f;
+        return (d > 180.0f) ? (360.0f - d) : d;
+    }
 
     public static double getRange(Entity entity) {
         if(mc.thePlayer == null)

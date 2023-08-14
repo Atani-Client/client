@@ -16,13 +16,13 @@ import wtf.atani.module.impl.hud.clientOverlay.IClientOverlayComponent;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.interfaces.ColorPalette;
 import wtf.atani.utils.math.atomic.AtomicFloat;
-import wtf.atani.utils.render.GradientUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
-import wtf.atani.utils.render.animation.Direction;
-import wtf.atani.utils.render.animation.impl.DecelerateAnimation;
+import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.animation.Direction;
+import wtf.atani.utils.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.render.color.ColorUtil;
-import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
@@ -298,13 +298,13 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                         if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                             float moduleHeight = fontRenderer.FONT_HEIGHT + 4;
                             float rectLength = (float) ((fontRenderer.getStringWidth(module.getName() + 3) * moduleHashMap.get(module).getOutput()) - gradientWidth);
-                            RoundedUtil.drawRound(sr.getScaledWidth() - rectLength, moduleY, rectLength + 20, moduleHeight, 2, new Color(21, 21, 21));
+                            RoundedShader.drawRound(sr.getScaledWidth() - rectLength, moduleY, rectLength + 20, moduleHeight, 2, new Color(21, 21, 21));
                             fontRenderer.drawString(module.getName(), sr.getScaledWidth() - rectLength + 1.5f, moduleY + moduleHeight / 2 - fontRenderer.FONT_HEIGHT / 2, -1);
                             // The 20 is there so the rect goes out of the screen and therefore the right part's not rounded
                             moduleY += moduleHeight;
                         }
                     }
-                    GradientUtil.drawGradientTB(sr.getScaledWidth() - gradientWidth, rightY.get(), gradientWidth, moduleY, 1, new Color(ICARUS_FIRST), new Color(ICARUS_SECOND));
+                    GradientShader.drawGradientTB(sr.getScaledWidth() - gradientWidth, rightY.get(), gradientWidth, moduleY, 1, new Color(ICARUS_FIRST), new Color(ICARUS_SECOND));
                     break;
                 }
                 case "Augustus 2.6": {
@@ -390,7 +390,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                             }
                         }
                         RenderUtil.endScissorBox();
-                        GradientUtil.drawGradientTB(5, leftY.get(), 2, moduleY - leftY.get(), 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
+                        GradientShader.drawGradientTB(5, leftY.get(), 2, moduleY - leftY.get(), 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
                     });
                     break;
                 }

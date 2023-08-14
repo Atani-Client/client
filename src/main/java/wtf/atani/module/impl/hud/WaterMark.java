@@ -13,9 +13,9 @@ import wtf.atani.module.impl.hud.clientOverlay.IClientOverlayComponent;
 import wtf.atani.utils.interfaces.ColorPalette;
 import wtf.atani.utils.java.StringUtil;
 import wtf.atani.utils.math.atomic.AtomicFloat;
-import wtf.atani.utils.render.GradientUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
@@ -53,7 +53,7 @@ public class WaterMark extends Module implements ColorPalette, IClientOverlayCom
                     RenderUtil.drawBorderedRect(posX2 + 0.5f, posY1 + 0.5f, posX2 + width2 + 1.5f, posY1 + height2 - 0.5f, 0.5f, new Color(40, 40, 40, 255).getRGB(), new Color(60, 60, 60, 255).getRGB(), true);
                     RenderUtil.drawBorderedRect(posX2 + 2, posY1 + 2, posX2 + width2, posY1 + height2 - 2, 0.5f, new Color(22, 22, 22, 255).getRGB(), new Color(60, 60, 60, 255).getRGB(), true);
                     Gui.drawRect(posX2 + 2.5, posY1 + 2.5, posX2 + width2 - 0.5, posY1 + 4.5, new Color(9, 9, 9, 255).getRGB());
-                    GradientUtil.drawGradientLR(4.0f, posY1 + 3, width2 - 2, 1, 1, new Color(FATALITY_FIRST), new Color(FATALITY_SECOND));
+                    GradientShader.drawGradientLR(4.0f, posY1 + 3, width2 - 2, 1, 1, new Color(FATALITY_FIRST), new Color(FATALITY_SECOND));
                     FontStorage.getInstance().findFont("Roboto", 15).drawStringWithShadow(text, 7.5F, 10.0f, Color.white.getRGB());
                     leftY.set(24);
                     break;
@@ -106,7 +106,7 @@ public class WaterMark extends Module implements ColorPalette, IClientOverlayCom
                         FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
                         float length = roboto17.getStringWidth(text);
                         float x = 5 + 2, y = 5, lineHeight = 2;
-                        GradientUtil.drawGradientLR(x, y, length + 5, lineHeight, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
+                        GradientShader.drawGradientLR(x, y, length + 5, lineHeight, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
                         RenderUtil.drawRect(x - 2, y, 2, roboto17.FONT_HEIGHT + 4, new Color(255, 202, 3).getRGB());
                         RenderUtil.drawRect(x, y + lineHeight, length + 5, roboto17.FONT_HEIGHT + 4 - lineHeight, BACK_GRAY_20);
                         roboto17.drawStringWithShadow(text, x + 2.5f, y + lineHeight + 2, -1);

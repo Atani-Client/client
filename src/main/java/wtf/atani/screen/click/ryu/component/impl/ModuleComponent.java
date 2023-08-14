@@ -11,8 +11,6 @@ import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 import wtf.atani.value.storage.ValueStorage;
 
-import java.awt.*;
-
 public class ModuleComponent extends Component {
 
     private final Module module;

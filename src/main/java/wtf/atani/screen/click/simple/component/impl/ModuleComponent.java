@@ -1,8 +1,6 @@
 package wtf.atani.screen.click.simple.component.impl;
 
 import net.minecraft.client.gui.FontRenderer;
-import org.lwjgl.Sys;
-import sun.font.FontManager;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.Module;
 import wtf.atani.screen.click.simple.component.Component;

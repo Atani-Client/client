@@ -1,7 +1,6 @@
 package wtf.atani.screen.click.augustus.window;
 
 import wtf.atani.module.Module;
-import wtf.atani.screen.click.augustus.window.component.Component;
 import wtf.atani.screen.click.augustus.window.component.impl.CheckboxComponent;
 import wtf.atani.screen.click.augustus.window.component.impl.ModeComponent;
 import wtf.atani.screen.click.augustus.window.component.impl.SliderComponent;

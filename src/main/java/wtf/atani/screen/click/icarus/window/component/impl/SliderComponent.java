@@ -6,7 +6,7 @@ import org.lwjgl.input.Mouse;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.utils.math.MathUtil;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
 import wtf.atani.value.impl.SliderValue;
 
 import java.awt.*;
@@ -30,8 +30,8 @@ public class SliderComponent extends ValueComponent {
         float length = MathHelper
                 .floor_double(((sliderValue.getValue()).floatValue() - sliderValue.getMinimum().floatValue())
                         / (sliderValue.getMaximum().floatValue() - sliderValue.getMinimum().floatValue()) * sliderWidth);
-        RoundedUtil.drawRound(sliderX, sliderY, sliderWidth, sliderHeight, 2, new Color(30, 30, 30));
-        RoundedUtil.drawGradientRound(sliderX, sliderY, length, sliderHeight, 2, new Color(ICARUS_FIRST), new Color(ICARUS_FIRST), new Color(ICARUS_SECOND), new Color(ICARUS_SECOND));
+        RoundedShader.drawRound(sliderX, sliderY, sliderWidth, sliderHeight, 2, new Color(30, 30, 30));
+        RoundedShader.drawGradientRound(sliderX, sliderY, length, sliderHeight, 2, new Color(ICARUS_FIRST), new Color(ICARUS_FIRST), new Color(ICARUS_SECOND), new Color(ICARUS_SECOND));
         if(Mouse.isButtonDown(0) && RenderUtil.isHovered(mouseX, mouseY, this.getPosX(), this.getPosY(), this.getWidth(), this.getHeight())) {
             double min1 = sliderValue.getMinimum().floatValue();
             double max1 = sliderValue.getMaximum().floatValue();

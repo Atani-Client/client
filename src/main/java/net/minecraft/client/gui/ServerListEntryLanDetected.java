@@ -11,7 +11,7 @@ public class ServerListEntryLanDetected implements GuiListExtended.IGuiListEntry
     protected final LanServerDetector.LanServer field_148291_b;
     private long field_148290_d = 0L;
 
-    protected ServerListEntryLanDetected(GuiMultiplayer p_i45046_1_, LanServerDetector.LanServer p_i45046_2_)
+    public ServerListEntryLanDetected(GuiMultiplayer p_i45046_1_, LanServerDetector.LanServer p_i45046_2_)
     {
         this.field_148292_c = p_i45046_1_;
         this.field_148291_b = p_i45046_2_;

@@ -1,13 +1,9 @@
 package wtf.atani.module.impl.render;
 
 import com.google.common.base.Supplier;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.entity.Entity;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import wtf.atani.event.events.Render2DEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
@@ -16,23 +12,18 @@ import wtf.atani.module.data.enums.Category;
 import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.math.InterpolationUtil;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.StencilUtil;
 import wtf.atani.utils.render.color.ColorUtil;
-import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
-import wtf.atani.utils.render.shader.shaders.GLSLShader;
-import wtf.atani.utils.transform.Transormer;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
 import java.util.Calendar;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @ModuleInfo(name = "ESP", description = "Render little things around players", category = Category.RENDER)
 public class ESP extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"2D", "Stencil (Broken)"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"2D"});
     public CheckBoxValue blur = new CheckBoxValue("Blur", "Blur?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Stencil")});
     public CheckBoxValue rangeLimited = new CheckBoxValue("Range Limited", "Limit to a certain range?", this, false);
     public SliderValue<Float> range = new SliderValue<>("Range", "What range will be the maximum?", this, 100f, 0f, 1000f, 0);
@@ -52,30 +43,6 @@ public class ESP extends Module {
 
     // 2D
     private final Frustum frustum = new Frustum();
-
-    // Stencil
-    private final Transormer transormer = new Transormer();
-    private GLSLShader glslShader = new GLSLShader("/assets/minecraft/atani/shaders/galaxy.fsh");
-    long init = System.currentTimeMillis();
-
-    public void render(ScaledResolution scaledResolution) {
-        GL11.glPushMatrix();
-        GlStateManager.enableAlpha();
-        GlStateManager.disableCull();
-
-        glslShader.drawShader((int) (scaledResolution.getScaledWidth() * 1.5f), scaledResolution.getScaledHeight(), (System.currentTimeMillis() - init) / 1000F);
-
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glVertex2f(-1f, -1f);
-        GL11.glVertex2f(-1f, 1f);
-        GL11.glVertex2f(1f, 1f);
-        GL11.glVertex2f(1f, -1f);
-        GL11.glEnd();
-        GL20.glUseProgram(0);
-
-        GlStateManager.color(1, 1, 1);
-        GL11.glPopMatrix();
-    }
 
     @Listen
     public void on2D(Render2DEvent render2DEvent) {
@@ -136,42 +103,6 @@ public class ESP extends Module {
                     RenderUtil.drawBorderedRect(x + length, y + length, (x - length) + width, (y - length) + height, length, 0, Color.black.getRGB(), true);
                     GlStateManager.resetColor();
                 }
-                break;
-            case "Stencil (Broken)":
-                GlStateManager.pushAttrib();
-                GlStateManager.pushMatrix();
-                final ScaledResolution resolution = new ScaledResolution(mc);
-                mc.getRenderManager().setRenderOutlines(true);
-                transormer.collect();
-                final AtomicBoolean empty = new AtomicBoolean(true);
-
-                getWorld().loadedEntityList.forEach(entity -> {
-                    if (FightUtil.isValidWithPlayer(entity, rangeLimited.getValue() ? range.getValue() : 1000000, invisible.getValue(), players.getValue(), animals.getValue(), monsters.getValue())) {
-                        mc.getRenderManager().renderEntityStatic(entity, mc.timer.renderPartialTicks, false);
-                        empty.set(false);
-                    }
-                });
-
-                if (!empty.get()) {
-                    StencilUtil.init();
-                    transormer.draw();
-                    StencilUtil.readBuffer(1);
-                    render(render2DEvent.getScaledResolution());
-                    GlStateManager.enableLighting();
-                    if(blur.getValue())
-                        RenderUtil.drawAcrylicBlur();
-                    StencilUtil.uninit();
-                } else {
-                    mc.getFramebuffer().bindFramebuffer(true);
-                    mc.entityRenderer.setupOverlayRendering();
-                }
-                mc.getRenderManager().setRenderOutlines(false);
-                transormer.release();
-                GlStateManager.disableAlpha();
-                GlStateManager.disableBlend();
-                GlStateManager.popAttrib();
-                GlStateManager.popMatrix();
-                RenderUtil.resetColor();
                 break;
         }
     }

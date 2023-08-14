@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.MathHelper;
-import org.lwjgl.Sys;
 import org.lwjgl.input.Mouse;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.Module;
@@ -14,10 +13,10 @@ import wtf.atani.module.impl.hud.ClickGui;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.interfaces.ColorPalette;
 import wtf.atani.utils.math.MathUtil;
-import wtf.atani.utils.render.GradientUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.animation.Direction;
-import wtf.atani.utils.render.animation.impl.DecelerateAnimation;
+import wtf.atani.utils.animation.Direction;
+import wtf.atani.utils.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.CheckBoxValue;
@@ -90,7 +89,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
         }
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto", 21);
         RenderUtil.drawRect(x + animationLeftRight, y + animationUpDown, width, height, BACK_GRAY_20);
-        GradientUtil.drawGradientLR(x + animationLeftRight, y + animationUpDown, width, 2, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
+        GradientShader.drawGradientLR(x + animationLeftRight, y + animationUpDown, width, 2, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
         fontRenderer.drawTotalCenteredStringWithShadow("Atani Client", x + width / 2 + animationLeftRight, y + 13 + animationUpDown, -1);
         RenderUtil.drawRect(x + 30 + animationLeftRight, y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + animationUpDown, width - 60, 1, new Color(40, 40, 40).getRGB());
         float categoryX = 0;
@@ -152,7 +151,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
                 float length = MathHelper
                         .floor_double(((sliderValue.getValue()).floatValue() - sliderValue.getMinimum().floatValue())
                                 / (sliderValue.getMaximum().floatValue() - sliderValue.getMinimum().floatValue()) * sliderWidth);
-                GradientUtil.drawGradientLR(sliderX, sliderY, length, sliderHeight, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
+                GradientShader.drawGradientLR(sliderX, sliderY, length, sliderHeight, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
                 if (Mouse.isButtonDown(0) && RenderUtil.isHovered(mouseX, mouseY, halfX, valueY, endX - halfX, fontRenderer.FONT_HEIGHT + 2)) {
                     double min1 = sliderValue.getMinimum().floatValue();
                     double max1 = sliderValue.getMaximum().floatValue();

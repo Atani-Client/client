@@ -16,7 +16,7 @@ import wtf.atani.module.impl.combat.KillAura;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.math.MathUtil;
-import wtf.atani.utils.render.GradientUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.value.impl.StringBoxValue;
@@ -64,7 +64,7 @@ public class TargetHUD extends Module {
                     float healthPoint = height / 20;
                     RenderUtil.startScissorBox();
                     RenderUtil.drawScissorBox(x + width - 2, y + (20 * healthPoint) - (target.getHealth() * healthPoint), 2, target.getHealth() * healthPoint);
-                    GradientUtil.drawGradientTB(x + width - 2, y, 2, height, 1, new Color(255, 202, 3), new Color(255, 84, 3));
+                    GradientShader.drawGradientTB(x + width - 2, y, 2, height, 1, new Color(255, 202, 3), new Color(255, 84, 3));
                     RenderUtil.endScissorBox();
                     break;
                 case "Astolfo":

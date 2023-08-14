@@ -45,7 +45,7 @@ public class ServerSelectionList extends GuiListExtended
         }
     }
 
-    protected int getSize()
+    public int getSize()
     {
         return this.field_148198_l.size() + 1 + this.field_148199_m.size();
     }

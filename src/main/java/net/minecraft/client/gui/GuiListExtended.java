@@ -4,6 +4,14 @@ import net.minecraft.client.Minecraft;
 
 public abstract class GuiListExtended extends GuiSlot
 {
+
+    /*
+                int y = this.top + 4 + 20;
+            RenderableShaders.render(() -> {
+                RoundedShader.drawRound(k - 70, y - 30, getListWidth() + 70 * 2, height - 50, 10, new Color(0, 0, 0, 130));
+            });
+     */
+
     public GuiListExtended(Minecraft mcIn, int widthIn, int heightIn, int topIn, int bottomIn, int slotHeightIn)
     {
         super(mcIn, widthIn, heightIn, topIn, bottomIn, slotHeightIn);

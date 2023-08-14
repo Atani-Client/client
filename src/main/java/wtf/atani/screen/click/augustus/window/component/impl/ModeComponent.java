@@ -2,8 +2,6 @@ package wtf.atani.screen.click.augustus.window.component.impl;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import wtf.atani.font.storage.FontStorage;
-import wtf.atani.screen.click.augustus.window.component.Component;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.value.impl.StringBoxValue;
 

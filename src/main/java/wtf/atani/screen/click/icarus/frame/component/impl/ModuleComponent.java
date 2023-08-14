@@ -7,8 +7,6 @@ import wtf.atani.screen.click.icarus.frame.component.Component;
 import wtf.atani.screen.click.icarus.window.Window;
 import wtf.atani.utils.render.RenderUtil;
 
-import java.awt.*;
-
 public class ModuleComponent extends Component {
 
     private final Module module;

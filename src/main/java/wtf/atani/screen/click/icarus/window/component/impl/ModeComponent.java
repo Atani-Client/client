@@ -2,9 +2,9 @@ package wtf.atani.screen.click.icarus.window.component.impl;
 
 import net.minecraft.client.gui.FontRenderer;
 import wtf.atani.font.storage.FontStorage;
-import wtf.atani.utils.render.GradientUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
@@ -22,10 +22,10 @@ public class ModeComponent extends ValueComponent {
 
     @Override
     public float draw(int mouseX, int mouseY) {
-        RoundedUtil.drawRound(getPosX() + 4, getPosY() + 2, getWidth() - 8, getFinalHeight() - 4, 5, new Color(31, 31, 32));
+        RoundedShader.drawRound(getPosX() + 4, getPosY() + 2, getWidth() - 8, getFinalHeight() - 4, 5, new Color(31, 31, 32));
         fontRenderer.drawString(stringBoxValue.getName(), getPosX() + 10, getPosY() + 6, -1);
         if(expanded) {
-            GradientUtil.drawGradientLR(getPosX() + 3, getPosY() + 2 + getHeight() - 4 + 1, getWidth() - 6, 1, 1, new Color(ICARUS_FIRST), new Color(ICARUS_SECOND));
+            GradientShader.drawGradientLR(getPosX() + 3, getPosY() + 2 + getHeight() - 4 + 1, getWidth() - 6, 1, 1, new Color(ICARUS_FIRST), new Color(ICARUS_SECOND));
             float posY = this.getPosY() + this.getHeight();
             for(String string : stringBoxValue.getValues()) {
                 fontRenderer.drawTotalCenteredString(string, getPosX() + getWidth() / 2, posY + getHeight() / 2, !stringBoxValue.getValue().equalsIgnoreCase(string) ? -1 : ICARUS_FIRST);

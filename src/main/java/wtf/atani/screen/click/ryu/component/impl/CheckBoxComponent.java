@@ -3,7 +3,7 @@ package wtf.atani.screen.click.ryu.component.impl;
 import net.minecraft.client.gui.FontRenderer;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.CheckBoxValue;
 
@@ -22,7 +22,7 @@ public class CheckBoxComponent extends ValueComponent {
         RenderUtil.startScissorBox();
         RenderUtil.drawScissorBox(getPosX() + 1 + getAddX(), getPosY() + getAddY(), getBaseWidth() - 2, getBaseHeight());
         normal.drawString(value.getName(), getPosX() + 25, getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
-        RoundedUtil.drawRound(getPosX() + 8, getPosY() + 5, 10, getBaseHeight() - 5 * 2, 2, new Color(36, 37, 41));
+        RoundedShader.drawRound(getPosX() + 8, getPosY() + 5, 10, getBaseHeight() - 5 * 2, 2, new Color(36, 37, 41));
         CheckBoxValue checkBoxValue = (CheckBoxValue) value;
         if(checkBoxValue.isEnabled()) {
             normal.drawString("✔", getPosX() + 8 + 1, getPosY() + 5 + 1, RYU);

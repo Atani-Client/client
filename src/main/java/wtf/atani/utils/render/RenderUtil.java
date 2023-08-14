@@ -1,6 +1,5 @@
 package wtf.atani.utils.render;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -12,51 +11,15 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.Config;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ResourceLocation;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
 import wtf.atani.utils.interfaces.Methods;
 import wtf.atani.utils.render.color.ColorUtil;
-import wtf.atani.utils.render.shader.shaders.AcrylBlurShader;
+import wtf.atani.utils.render.gl.StencilUtil;
 
 import java.awt.*;
-import java.nio.FloatBuffer;
-import java.util.Random;
 
 public class RenderUtil implements Methods {
-
-    public static AcrylBlurShader acrylBlurShader = new AcrylBlurShader();
-
-    public static void drawAcrylicBlur() {
-        acrylBlurShader.draw();
-    }
-
-    public static void drawAcrylicBlurStencil() {
-        StencilUtil.init();
-    }
-
-    public static void stopAcrylicBlurStencil() {
-        StencilUtil.readBuffer(1);
-        acrylBlurShader.draw();
-        StencilUtil.uninit();
-        GlStateManager.enableBlend();
-        mc.entityRenderer.setupOverlayRendering();
-    }
-
-    public static void drawLine(double x, double y, double x1, double y1, float width, int color) {
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glLineWidth(width);
-        float[] rgba = ColorUtil.colorToRGBA(color);
-        GL11.glColor4f(rgba[0], rgba[1], rgba[2], rgba[3]);
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex2d(x, y);
-        GL11.glVertex2d(x1, y1);
-        GL11.glEnd();
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-    }
 
     public static void drawBorder(final float left, final float top, final float right, final float bottom, final float borderWidth, final int borderColor, final boolean borderIncludedInBounds) {
         float adjustedLeft = left;
@@ -143,6 +106,35 @@ public class RenderUtil implements Methods {
         GL11.glEnable(3553);
         GL11.glPopMatrix();
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+
+    public static void drawGradientRectSideways(double left, double top, double right, double bottom, int startColor, int endColor) {
+        float f = (float) (startColor >> 24 & 255) / 255.0F;
+        float f1 = (float) (startColor >> 16 & 255) / 255.0F;
+        float f2 = (float) (startColor >> 8 & 255) / 255.0F;
+        float f3 = (float) (startColor & 255) / 255.0F;
+        float f4 = (float) (endColor >> 24 & 255) / 255.0F;
+        float f5 = (float) (endColor >> 16 & 255) / 255.0F;
+        float f6 = (float) (endColor >> 8 & 255) / 255.0F;
+        float f7 = (float) (endColor & 255) / 255.0F;
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.shadeModel(7425);
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(right, top, Gui.zLevel).color(f5, f6, f7, f4).endVertex();
+        worldrenderer.pos(left, top, Gui.zLevel).color(f1, f2, f3, f).endVertex();
+        worldrenderer.pos(left, bottom, Gui.zLevel).color(f1, f2, f3, f).endVertex();
+        worldrenderer.pos(right, bottom, Gui.zLevel).color(f5, f6, f7, f4).endVertex();
+        tessellator.draw();
+        GlStateManager.shadeModel(7424);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
     }
 
     public static void renderESP(AxisAlignedBB boundingBox, boolean outline, boolean fill, Color color) {

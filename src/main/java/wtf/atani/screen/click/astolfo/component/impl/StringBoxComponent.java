@@ -6,8 +6,6 @@ import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.StringBoxValue;
 
-import java.awt.*;
-
 public class StringBoxComponent extends ValueComponent {
 
     private boolean expanded = false;

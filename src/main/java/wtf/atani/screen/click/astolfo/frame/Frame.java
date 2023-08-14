@@ -1,6 +1,5 @@
 package wtf.atani.screen.click.astolfo.frame;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import wtf.atani.font.storage.FontStorage;
@@ -10,9 +9,7 @@ import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.screen.click.astolfo.component.Component;
 import wtf.atani.screen.click.astolfo.component.impl.ModuleComponent;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
 import wtf.atani.utils.render.color.ColorUtil;
-import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 
 import java.awt.*;
 import java.util.ArrayList;

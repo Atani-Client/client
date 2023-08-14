@@ -2,7 +2,6 @@ package wtf.atani.screen.click.simple.component.impl;
 
 import net.minecraft.client.gui.FontRenderer;
 import wtf.atani.font.storage.FontStorage;
-import wtf.atani.screen.click.simple.component.Component;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.CheckBoxValue;

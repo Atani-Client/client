@@ -5,8 +5,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.GL11;
-import wtf.atani.utils.render.shader.FramebufferHelper;
-import wtf.atani.utils.render.shader.TextureRenderer;
+import wtf.atani.utils.render.shader.advanced.util.FramebufferHelper;
+import wtf.atani.utils.render.shader.advanced.TextureRenderer;
 
 public class Transormer {
 

@@ -9,9 +9,8 @@ import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.screen.click.ryu.component.Component;
 import wtf.atani.screen.click.ryu.component.impl.ModuleComponent;
 import wtf.atani.utils.interfaces.ColorPalette;
-import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
-import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -52,10 +51,10 @@ public class Frame extends Component implements ColorPalette {
         }
         final float finalY = moduleY;
         RenderableShaders.render(true, false, () -> {
-            RoundedUtil.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), finalY - getPosY(), 7,  2, new Color(0, 0, 0, 0), new Color(0, 0, 0, 255));
+            RoundedShader.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), finalY - getPosY(), 7,  2, new Color(0, 0, 0, 0), new Color(0, 0, 0, 255));
         });
-        RoundedUtil.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), moduleY - getPosY(), 7,  2, new Color(RYU), new Color(-1));
-        RoundedUtil.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY() + getBaseHeight(), getBaseWidth(), moduleY - getPosY() - getBaseHeight(), 7,  2, new Color(36, 37, 41), new Color(36, 37, 41, 0));
+        RoundedShader.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), moduleY - getPosY(), 7,  2, new Color(RYU), new Color(-1));
+        RoundedShader.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY() + getBaseHeight(), getBaseWidth(), moduleY - getPosY() - getBaseHeight(), 7,  2, new Color(36, 37, 41), new Color(36, 37, 41, 0));
         FontRenderer medium24 = FontStorage.getInstance().findFont("Roboto Medium", 24);
         RenderableShaders.render(true, false, () -> {
             FontStorage.getInstance().findFont("Roboto", 24).drawString(category.getName(), this.getPosX() + 7.5f + getAddX(), this.getPosY() + 6 + getAddY() + 0.5f, new Color(0, 0, 0, 255).getRGB());

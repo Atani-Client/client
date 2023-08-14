@@ -5,8 +5,7 @@ import wtf.atani.screen.click.icarus.window.component.impl.CheckboxComponent;
 import wtf.atani.screen.click.icarus.window.component.impl.ModeComponent;
 import wtf.atani.screen.click.icarus.window.component.impl.SliderComponent;
 import wtf.atani.screen.click.icarus.window.component.impl.ValueComponent;
-import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
@@ -53,7 +52,7 @@ public class Window {
     }
 
     public void draw(int mouseX, int mouseY) {
-        RoundedUtil.drawRound(posX, posY, width, height, 5, new Color(20, 20, 20));
+        RoundedShader.drawRound(posX, posY, width, height, 5, new Color(20, 20, 20));
 
         float yPos = getPosY();
 

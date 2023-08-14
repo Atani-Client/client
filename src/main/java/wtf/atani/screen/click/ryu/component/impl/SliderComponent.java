@@ -1,13 +1,10 @@
 package wtf.atani.screen.click.ryu.component.impl;
 
-import javafx.scene.control.Slider;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.MathHelper;
-import org.lwjgl.input.Mouse;
 import wtf.atani.font.storage.FontStorage;
-import wtf.atani.utils.math.MathUtil;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.RoundedUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.SliderValue;
 
@@ -33,8 +30,8 @@ public class SliderComponent extends ValueComponent {
         float length = MathHelper
                 .floor_double(((sliderValue.getValue()).floatValue() - sliderValue.getMinimum().floatValue())
                         / (sliderValue.getMaximum().floatValue() - sliderValue.getMinimum().floatValue()) * sliderWidth);
-        RoundedUtil.drawRound(sliderX, sliderY, length, sliderHeight, 2, new Color(RYU));
-        RoundedUtil.drawRound(sliderX + length - 2, sliderY - 2 + 1, 4, 4, 2, new Color(-1));
+        RoundedShader.drawRound(sliderX, sliderY, length, sliderHeight, 2, new Color(RYU));
+        RoundedShader.drawRound(sliderX + length - 2, sliderY - 2 + 1, 4, 4, 2, new Color(-1));
         FontRenderer small = FontStorage.getInstance().findFont("Roboto Medium", 15);
         small.drawString(sliderValue.getValue().floatValue() + "", sliderX + length - small.getStringWidth(sliderValue.getValue().floatValue() + "") / 2, sliderY + 4, -1);
         RenderUtil.endScissorBox();

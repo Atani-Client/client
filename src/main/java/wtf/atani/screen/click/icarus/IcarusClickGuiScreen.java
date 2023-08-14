@@ -9,9 +9,9 @@ import wtf.atani.module.impl.hud.ClickGui;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.screen.click.icarus.frame.Frame;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.animation.Animation;
-import wtf.atani.utils.render.animation.Direction;
-import wtf.atani.utils.render.animation.impl.DecelerateAnimation;
+import wtf.atani.utils.animation.Animation;
+import wtf.atani.utils.animation.Direction;
+import wtf.atani.utils.animation.impl.DecelerateAnimation;
 
 import java.io.IOException;
 import java.util.ArrayList;

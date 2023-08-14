@@ -519,9 +519,19 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                if(mc.thePlayer.hurtTime != 0) {
-                    mc.thePlayer.isInWeb = true;
-                    mc.thePlayer.setInWeb();
+                if(!isMoving())
+                    MoveUtil.strafe(0);
+
+                if(!isMoving())
+                    return;
+
+                if(mc.thePlayer.onGround) {
+                    MoveUtil.strafe(0.48);
+                    mc.timer.timerSpeed = 2;
+                    mc.thePlayer.jump();
+                } else {
+                    mc.timer.timerSpeed = 1;
+                    MoveUtil.strafe(MoveUtil.getSpeed() + 0.002);
                 }
                 break;
             case "MineMenClub":

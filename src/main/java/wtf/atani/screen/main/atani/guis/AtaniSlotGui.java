@@ -74,7 +74,7 @@ public abstract class AtaniSlotGui
         this.mc = mcIn;
         this.width = width;
         this.height = height;
-        this.top = topIn + 20;
+        this.top = topIn;
         this.bottom = bottomIn;
         this.slotHeight = slotHeightIn;
         this.left = 0;
@@ -85,7 +85,7 @@ public abstract class AtaniSlotGui
     {
         this.width = widthIn;
         this.height = heightIn;
-        this.top = topIn + 20;
+        this.top = topIn;
         this.bottom = bottomIn;
         this.left = 0;
         this.right = widthIn;

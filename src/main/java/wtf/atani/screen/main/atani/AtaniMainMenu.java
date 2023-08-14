@@ -5,6 +5,7 @@ import net.minecraft.util.ResourceLocation;
 import wtf.atani.screen.main.atani.button.AtaniButton;
 import wtf.atani.screen.main.atani.guis.AtaniMultiPlayerMenu;
 import wtf.atani.screen.main.atani.guis.AtaniSinglePlayerMenu;
+import wtf.atani.screen.main.atani.guis.AtaniAltManager;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.background.ShaderBackground;
 
@@ -74,7 +75,7 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback
                mc.displayGuiScreen(new AtaniMultiPlayerMenu(this));
                break;
            case 2:
-               //mc.displayGuiScreen(new GuiSelectWorld(this));
+               mc.displayGuiScreen(new AtaniAltManager());
                break;
            case 3:
                mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));

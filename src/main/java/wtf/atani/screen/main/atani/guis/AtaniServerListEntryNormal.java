@@ -6,6 +6,8 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.base64.Base64;
+
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.UnknownHostException;
 import java.util.List;
@@ -25,6 +27,8 @@ import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import wtf.atani.font.storage.FontStorage;
+import wtf.atani.utils.render.gl.StencilUtil;
+import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
 
 public class AtaniServerListEntryNormal implements AtaniGuiListExtended.IGuiListEntry
 {
@@ -155,8 +159,6 @@ public class AtaniServerListEntryNormal implements AtaniGuiListExtended.IGuiList
         }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(Gui.icons);
-        Gui.drawModalRectWithCustomSizedTexture(x + listWidth - 15, y, (float)(k * 10), (float)(176 + l * 8), 10, 8, 256.0F, 256.0F);
 
         if (this.field_148301_e.getBase64EncodedIconData() != null && !this.field_148301_e.getBase64EncodedIconData().equals(this.field_148299_g))
         {
@@ -188,47 +190,12 @@ public class AtaniServerListEntryNormal implements AtaniGuiListExtended.IGuiList
 
         if (this.mc.gameSettings.touchscreen || isSelected)
         {
-            this.mc.getTextureManager().bindTexture(SERVER_SELECTION_BUTTONS);
-            Gui.drawRect(x, y, x + 32, y + 32, -1601138544);
+            RoundedShader.drawRound(x, y,  32, 32, 5, new Color(0, 0, 0, 100));
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             int k1 = mouseX - x;
             int l1 = mouseY - y;
 
-            if (this.func_178013_b())
-            {
-                if (k1 < 32 && k1 > 16)
-                {
-                    Gui.drawModalRectWithCustomSizedTexture(x, y, 0.0F, 32.0F, 32, 32, 256.0F, 256.0F);
-                }
-                else
-                {
-                    Gui.drawModalRectWithCustomSizedTexture(x, y, 0.0F, 0.0F, 32, 32, 256.0F, 256.0F);
-                }
-            }
 
-            if (this.field_148303_c.func_175392_a(this, slotIndex))
-            {
-                if (k1 < 16 && l1 < 16)
-                {
-                    Gui.drawModalRectWithCustomSizedTexture(x, y, 96.0F, 32.0F, 32, 32, 256.0F, 256.0F);
-                }
-                else
-                {
-                    Gui.drawModalRectWithCustomSizedTexture(x, y, 96.0F, 0.0F, 32, 32, 256.0F, 256.0F);
-                }
-            }
-
-            if (this.field_148303_c.func_175394_b(this, slotIndex))
-            {
-                if (k1 < 16 && l1 > 16)
-                {
-                    Gui.drawModalRectWithCustomSizedTexture(x, y, 64.0F, 32.0F, 32, 32, 256.0F, 256.0F);
-                }
-                else
-                {
-                    Gui.drawModalRectWithCustomSizedTexture(x, y, 64.0F, 0.0F, 32, 32, 256.0F, 256.0F);
-                }
-            }
         }
     }
 
@@ -236,7 +203,11 @@ public class AtaniServerListEntryNormal implements AtaniGuiListExtended.IGuiList
     {
         this.mc.getTextureManager().bindTexture(p_178012_3_);
         GlStateManager.enableBlend();
+        StencilUtil.start();
+        RoundedShader.drawRound(p_178012_1_, p_178012_2_,  32, 32, 5, new Color(-1));
+        StencilUtil.readBuffer(1);
         Gui.drawModalRectWithCustomSizedTexture(p_178012_1_, p_178012_2_, 0.0F, 0.0F, 32, 32, 32.0F, 32.0F);
+        StencilUtil.end();
         GlStateManager.disableBlend();
     }
 

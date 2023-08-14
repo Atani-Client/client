@@ -254,7 +254,7 @@ public class AtaniSinglePlayerMenu extends GuiScreen implements GuiYesNoCallback
     {
         public List(Minecraft mcIn)
         {
-            super(mcIn, AtaniSinglePlayerMenu.this.width, AtaniSinglePlayerMenu.this.height, 32, AtaniSinglePlayerMenu.this.height - 64, 36);
+            super(mcIn, AtaniSinglePlayerMenu.this.width, AtaniSinglePlayerMenu.this.height, 32 + 20, AtaniSinglePlayerMenu.this.height - 64, 36);
         }
 
         protected int getSize()

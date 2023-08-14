@@ -74,12 +74,12 @@ public class AtaniMultiPlayerMenu extends GuiScreen implements GuiYesNoCallback
                 logger.warn("Unable to start LAN server detection: " + exception.getMessage());
             }
 
-            this.serverListSelector = new AtaniServerSelectionList(this, this.mc, this.width, this.height, 32, this.height - 64, 36);
+            this.serverListSelector = new AtaniServerSelectionList(this, this.mc, this.width, this.height, 32 + 20, this.height - 64, 36);
             this.serverListSelector.func_148195_a(this.savedServerList);
         }
         else
         {
-            this.serverListSelector.setDimensions(this.width, this.height, 32, this.height - 64);
+            this.serverListSelector.setDimensions(this.width, this.height, 32 + 20, this.height - 64);
         }
 
         this.createButtons();

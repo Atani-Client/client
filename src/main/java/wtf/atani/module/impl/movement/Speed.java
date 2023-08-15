@@ -20,17 +20,28 @@ import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "Test", "WatchDog", "Intave", "MineMenClub", "Polar Test", "Custom"});
+    private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
+    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.is("Verus")});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
+    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Normal", "Normal 2", "Stable"}, new Supplier[]{() -> mode.is("NCP")});
+    private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.is("NCP")});
+    private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
+    private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
+    private final SliderValue<Float> jumpHeight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.is("BHop")});
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "BlocksMC", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "Test", "WatchDog", "Intave", "MineMenClub", "Polar Test"});
-    private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "YPort"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Normal", "Normal 2", "Stable"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
-    private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
-    private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Incognito")});
-    private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
-    private SliderValue<Float> jumpheight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
-    private SliderValue<Float> ncpJumpHeight = new SliderValue<>("NCP Jump Height", "How high will the NCP speed jump?", this, 0.41, 0.4, 0.42, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
+    //Custom
+    private final SliderValue<Double> motionY = new SliderValue<>("Motion Y", "How big will the y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom")});
+    private final SliderValue<Double> airSpeed = new SliderValue<>("Air Speed", "How fast will you go in air?", this, 1d, 0.01d, 3d, 2, new Supplier[]{() -> mode.is("Custom")});
+    private final SliderValue<Double> friction = new SliderValue<>("Friction", "How big or small will friction be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom")});
+    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How fast should the game speed be?", this, 1f, 0.1f, 5f, 1, new Supplier[]{() -> mode.is("Custom")});
+    private final SliderValue<Double> groundSpeed = new SliderValue<>("Ground Speed", "How big or small will the y motion be?", this, 1d, 0.01d, 3d, 2, new Supplier[]{() -> mode.is("Custom")});
+    private final CheckBoxValue strafe = new CheckBoxValue("Strafe", "Should the module enable strafing?", this, false, new Supplier[]{() -> mode.is("Custom")});
+    private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Should the module enable sprinting?", this, true, new Supplier[]{() -> mode.is("Custom")});
+    private final CheckBoxValue stop = new CheckBoxValue("Stop", "Should the module stop all motion when not moving?", this, false, new Supplier[]{() -> mode.is("Custom")});
+    private final CheckBoxValue yPort = new CheckBoxValue("Y-Port", "Should the module y-port?", this, false, new Supplier[]{() -> mode.is("Custom")});
+    private final SliderValue<Double> minusMotionY = new SliderValue<>("Minus Motion Y", "How big will the -y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom") && yPort.getValue()});
+
     // Spartan
     private final TimeHelper spartanTimer = new TimeHelper();
     private boolean spartanBoost = true;
@@ -57,6 +68,46 @@ public class Speed extends Module {
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {
+            case "Custom":
+                mc.timer.timerSpeed = timer.getValue();
+                if (mc.thePlayer.onGround) {
+                    MoveUtil.setMoveSpeed(groundSpeed.getValue());
+
+                    if (mc.thePlayer.moveForward != 0.0) {
+                        mc.thePlayer.motionY = motionY.getValue();
+                    }
+                } else if (mc.thePlayer.isAirBorne) {
+                    MoveUtil.setMoveSpeed(airSpeed.getValue());
+
+                    if (mc.thePlayer.motionY <= 0.0) {
+                        mc.thePlayer.motionY *= friction.getValue();
+                    }
+
+                    if (strafe.getValue()) {
+                        MoveUtil.setMoveSpeed(Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ));
+                    }
+
+                    if (yPort.getValue()) {
+                        mc.thePlayer.motionY = -minusMotionY.getValue();
+                    }
+
+                } else {
+                    MoveUtil.setMoveSpeed(Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ));
+                    if (yPort.getValue()) {
+                        mc.thePlayer.motionY = -minusMotionY.getValue();
+                    }
+                }
+
+                if (sprint.getValue() && !mc.thePlayer.isSprinting()) {
+                    KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), true);
+                }
+
+                if (stop.getValue() && !this.isMoving()) {
+                    mc.thePlayer.motionX = 0.0;
+                    mc.thePlayer.motionZ = 0.0;
+                }
+
+                break;
             case "Polar Test":
                 if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     mc.gameSettings.keyBindJump.pressed = GameSettings.isKeyDown(mc.gameSettings.keyBindJump);
@@ -595,10 +646,10 @@ public class Speed extends Module {
     public void onMove(MoveEntityEvent moveEntityEvent) {
         switch (mode.getValue()) {
             case "BHop":
-                MoveUtil.setMoveSpeed(moveEntityEvent, boost.getValue().floatValue());
+                MoveUtil.setMoveSpeed(moveEntityEvent, boost.getValue());
                 if (isMoving()) {
                     if (mc.thePlayer.onGround) {
-                        moveEntityEvent.setY(mc.thePlayer.motionY = jumpheight.getValue());
+                        moveEntityEvent.setY(mc.thePlayer.motionY = jumpHeight.getValue());
                     }
                 } else {
                     mc.thePlayer.motionX = 0.0;
@@ -621,11 +672,6 @@ public class Speed extends Module {
                             ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
                         }
                     }
-                }
-                break;
-            case "Test":
-                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                    //    ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
                 }
                 break;
         }

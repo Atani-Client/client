@@ -26,6 +26,10 @@ public class C17PacketCustomPayload implements Packet<INetHandlerPlayServer>
         }
     }
 
+    public void setData(PacketBuffer data) {
+        this.data = data;
+    }
+
     /**
      * Reads the raw packet data from the data stream.
      */

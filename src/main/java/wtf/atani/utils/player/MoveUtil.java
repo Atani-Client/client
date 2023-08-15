@@ -163,5 +163,21 @@ public class MoveUtil implements Methods {
         return baseSpeed;
     }
 
+    public static float getDirection() {
+        return getDirection(mc.thePlayer.moveForward, mc.thePlayer.moveStrafing, mc.thePlayer.rotationYaw);
+    }
+
+    public static float getDirection(float forward, float strafing, float yaw) {
+        if (forward == 0.0 && strafing == 0.0) return yaw;
+        boolean reversed = (forward < 0.0);
+        float strafingYaw = 90f * ((forward > 0) ? 0.5f : (reversed ? -0.5f : 1));
+        if (reversed) yaw += 180;
+        if (strafing > 0) {
+            yaw -= strafingYaw;
+        } else if (strafing < 0) {
+            yaw += strafingYaw;
+        }
+        return yaw;
+    }
 
 }

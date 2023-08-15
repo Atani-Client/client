@@ -18,6 +18,9 @@ public class AutoTool extends Module {
             if (!mc.gameSettings.keyBindAttack.isKeyDown())
                 return;
 
+            if(mc.objectMouseOver == null)
+                return;
+
             BlockPos position = mc.objectMouseOver.getBlockPos();
             if(position == null)
                 return;

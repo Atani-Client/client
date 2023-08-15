@@ -21,7 +21,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "Test", "WatchDog", "Intave", "MineMenClub", "Polar Test"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "BlocksMC", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "Test", "WatchDog", "Intave", "MineMenClub", "Polar Test"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "YPort"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
@@ -446,6 +446,27 @@ public class Speed extends Module {
                             }
                             break;
                     }
+                }
+                break;
+            case "BlocksMC":
+                mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                if(!isMoving())
+                    return;
+
+                if(mc.thePlayer.onGround) {
+                    mc.timer.timerSpeed = 2;
+                    if(mc.thePlayer.moveForward < 0) {
+                        MoveUtil.strafe(0.48);
+                    }
+                } else {
+                    if(mc.thePlayer.moveForward < 0 && MoveUtil.getSpeed() < MoveUtil.getBaseMoveSpeed()) {
+                        MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
+                    } else if(mc.thePlayer.moveForward > 0 && MoveUtil.getSpeed() < MoveUtil.getBaseMoveSpeed() - 0.02) {
+                        MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02);
+                    }
+                    mc.timer.timerSpeed = (float) (1.05 - Math.random() / 21);
+                    MoveUtil.strafe();
                 }
                 break;
             case "Karhu":

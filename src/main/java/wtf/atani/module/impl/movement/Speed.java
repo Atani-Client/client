@@ -25,12 +25,12 @@ public class Speed extends Module {
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "YPort"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vulcan")});
-    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Normal", "Stable"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
+    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Normal", "Normal 2", "Stable"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
     private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
     private SliderValue<Float> jumpheight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("BHop")});
-
+    private SliderValue<Float> ncpJumpHeight = new SliderValue<>("NCP Jump Height", "How high will the NCP speed jump?", this, 0.41, 0.4, 0.42, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("NCP")});
     // Spartan
     private final TimeHelper spartanTimer = new TimeHelper();
     private boolean spartanBoost = true;
@@ -45,15 +45,15 @@ public class Speed extends Module {
 
     // WatchDog
     private int watchDogTicks;
-    
+
     // NCP
     private int ncpTicks;
 
     @Override
     public String getSuffix() {
-    	return mode.getValue();
+        return mode.getValue();
     }
-    
+
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {
@@ -285,13 +285,16 @@ public class Speed extends Module {
                                     } else if (mc.thePlayer.moveForward == 0) {
                                         MoveUtil.strafe(0.34F);
                                     }
+
+                                    mc.timer.timerSpeed = 1;
                                     break;
                                 case 8:
                                     mc.thePlayer.onGround = true;
                                     mc.thePlayer.jump();
+                                    mc.timer.timerSpeed = 1.6F;
                                     break;
                             }
-                            MoveUtil.strafe((float) MoveUtil.getSpeed());
+                            MoveUtil.strafe((float) MoveUtil.getSpeed() + 0.002);
                     }
                 }
                 break;
@@ -381,7 +384,7 @@ public class Speed extends Module {
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     if(mc.thePlayer.onGround)
                         ncpTicks = 0;
-                     else
+                    else
                         ncpTicks++;
 
                     switch (ncpMode.getValue()) {
@@ -402,6 +405,28 @@ public class Speed extends Module {
                                 mc.thePlayer.motionY -= 0.1;
                             }
                             break;
+                            // Tabio please dont kill me for the naming
+                        case "Normal 2":
+                            if(!isMoving()) {
+                                MoveUtil.strafe(0);
+                                return;
+                            }
+
+                            if(mc.thePlayer.onGround) {
+                                mc.timer.timerSpeed = 2F;
+                                mc.thePlayer.jump();
+                                mc.thePlayer.motionY = 0.405;
+                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(5));
+                            } else {
+                                mc.timer.timerSpeed = (float) (1.02 - Math.random() / 50);
+                            }
+
+                            MoveUtil.strafe();
+
+                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
+                                mc.thePlayer.motionY -= 0.1;
+                            }
+                            break;
                         case "Stable":
                             if(!isMoving())
                                 return;
@@ -413,7 +438,7 @@ public class Speed extends Module {
                             } else {
                                 mc.timer.timerSpeed = (float) (1 + Math.random() / 7.5);
                                 // this can be patched any moment, currently works on eu.loyisa.cn
-                                    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02 + MoveUtil.getSpeedBoost(1.75F));
+                                MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02 + MoveUtil.getSpeedBoost(1.75F));
                             }
 
                             if(ncpTicks == 5 && ncpMotionModify.getValue()) {
@@ -519,20 +544,6 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                if(!isMoving())
-                    MoveUtil.strafe(0);
-
-                if(!isMoving())
-                    return;
-
-                if(mc.thePlayer.onGround) {
-                    MoveUtil.strafe(0.48);
-                    mc.timer.timerSpeed = 2;
-                    mc.thePlayer.jump();
-                } else {
-                    mc.timer.timerSpeed = 1;
-                    MoveUtil.strafe(MoveUtil.getSpeed() + 0.002);
-                }
                 break;
             case "MineMenClub":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
@@ -593,7 +604,7 @@ public class Speed extends Module {
                 break;
             case "Test":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                //    ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
+                    //    ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
                 }
                 break;
         }

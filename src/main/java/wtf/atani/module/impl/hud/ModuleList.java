@@ -35,7 +35,7 @@ import java.util.*;
 
 @ModuleInfo(name = "ModuleList", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
 public class ModuleList extends Module implements ColorPalette, IClientOverlayComponent {
-    private StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Custom"}, new ValueChangeListener[]{new ValueChangeListener() {
+    private StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Atani Modern", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Custom"}, new ValueChangeListener[]{new ValueChangeListener() {
         @Override
         public void onChange(Stage stage, Value value, Object oldValue, Object newValue) {
             moduleHashMap.clear();
@@ -43,9 +43,9 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
     }});
     private StringBoxValue arrayListPosition = new StringBoxValue("Module List Position", "Where will the module list be?", this, new String[]{"Left", "Right"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
     private StringBoxValue customColorMode = new StringBoxValue("Custom Color Mode", "How will the modules be colored in custom mode?", this, new String[]{"Static", "Random", "Fade", "Gradient", "Rainbow", "Astolfo Sky"}, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
-    private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")});
-    private SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")});
-    private SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")});
+    private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> (moduleListMode.getValue().equalsIgnoreCase("Custom") && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")) || moduleListMode.getValue().equalsIgnoreCase("Atani Modern")});
+    private SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> (moduleListMode.getValue().equalsIgnoreCase("Custom") && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient") || moduleListMode.getValue().equalsIgnoreCase("Atani Modern"))});
+    private SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> (moduleListMode.getValue().equalsIgnoreCase("Custom") && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient") || moduleListMode.getValue().equalsIgnoreCase("Atani Modern"))});
     private SliderValue<Integer> red2 = new SliderValue<>("Second Red", "What'll be the red of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && customColorMode.getValue().equalsIgnoreCase("Gradient")});
     private SliderValue<Integer> green2 = new SliderValue<>("Second Green", "What'll be the green of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && customColorMode.getValue().equalsIgnoreCase("Gradient")});
     private SliderValue<Integer> blue2 = new SliderValue<>("Second Blue", "What'll be the blue of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom") && customColorMode.getValue().equalsIgnoreCase("Gradient")});
@@ -117,6 +117,9 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                     case "Ryu":
                         fontRenderer = FontStorage.getInstance().findFont("Roboto Medium", 17);
                         break;
+                    case "Atani Modern":
+                        fontRenderer = FontStorage.getInstance().findFont("Greycliff Medium", 18);
+                        break;
                     case "Custom":
                         switch (fontMode.getValue()) {
                             case "Roboto":
@@ -154,6 +157,41 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
             moduleHashMap = sortedMap;
 
             switch (moduleListMode.getValue()) {
+                case "Atani Modern": {
+                    FontRenderer fontRenderer = FontStorage.getInstance().findFont("Greycliff Medium", 18);
+                    RenderableShaders.render(true, false, () -> {
+                        float moduleY = leftY.get();
+                        int counter = 0;
+                        for (Module module : moduleHashMap.keySet()) {
+                            float moduleHeight = fontRenderer.FONT_HEIGHT + 2;
+                            if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
+                                String name = module.getName();
+                                Color firstColor = new Color(red.getValue(), green.getValue(), blue.getValue());
+                                int color = ColorUtil.fadeBetween(firstColor.getRGB(), firstColor.brighter().getRGB(), counter * 150L);
+                                float rectWidth = (fontRenderer.getStringWidth(name) + 3);
+                                float rectLength = (float) (rectWidth * moduleHashMap.get(module).getOutput());
+                                float moduleX = sr.getScaledWidth() - rectLength + 0.5f;
+                                RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, color);
+                                moduleY += moduleHeight;
+                                counter++;
+                            }
+                        }
+                    });
+                    float moduleY = leftY.get();
+                    for (Module module : moduleHashMap.keySet()) {
+                        float moduleHeight = fontRenderer.FONT_HEIGHT + 2;
+                        if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
+                            String name = module.getName();
+                            float rectWidth = (fontRenderer.getStringWidth(name) + 3);
+                            float rectLength = (float) (rectWidth * moduleHashMap.get(module).getOutput());
+                            float moduleX = sr.getScaledWidth() - rectLength + 0.5f;
+                            RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(20, 20, 20).getRGB());
+                            fontRenderer.drawTotalCenteredString(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 - 0.5f, -1);
+                            moduleY += moduleHeight;
+                        }
+                    }
+                    break;
+                }
                 case "Custom": {
                     switch (this.arrayListPosition.getValue()) {
                         case "Left":

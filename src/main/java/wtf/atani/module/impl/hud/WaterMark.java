@@ -1,5 +1,6 @@
 package wtf.atani.module.impl.hud;
 
+import com.google.common.base.Supplier;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -13,9 +14,12 @@ import wtf.atani.module.impl.hud.clientOverlay.IClientOverlayComponent;
 import wtf.atani.utils.interfaces.ColorPalette;
 import wtf.atani.utils.java.StringUtil;
 import wtf.atani.utils.math.atomic.AtomicFloat;
+import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
@@ -25,14 +29,28 @@ import java.util.*;
 @ModuleInfo(name = "WaterMark", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
 public class WaterMark extends Module implements ColorPalette, IClientOverlayComponent {
 
-    private StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality"});
-
+    private StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Atani Modern", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality"});
+    private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> watermarkMode.getValue().equalsIgnoreCase("Atani Modern")});
+    private SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> watermarkMode.getValue().equalsIgnoreCase("Atani Modern")});
+    private SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> watermarkMode.getValue().equalsIgnoreCase("Atani Modern")});
     @Override
     public void draw(Render2DEvent render2DEvent, AtomicFloat leftY, AtomicFloat rightY) {
         if(this.isEnabled()) {
             ScaledResolution sr = render2DEvent.getScaledResolution();
 
             switch (watermarkMode.getValue()) {
+                case "Atani Modern": {
+                    String text =  CLIENT_NAME + " | " + mc.getSession().getUsername() + " | " + mc.getDebugFPS() + " FPS";
+                    FontRenderer fontRenderer = FontStorage.getInstance().findFont("Greycliff Medium", 21);
+                    float outlineWidth = 1;
+                    Color firstColor = new Color(red.getValue(), green.getValue(), blue.getValue());
+                    int color = ColorUtil.fadeBetween(firstColor.getRGB(), firstColor.brighter().getRGB(), 1 * 150L);
+                    RenderableShaders.renderAndRun(() -> {
+                        RoundedShader.drawRoundOutline(10 - outlineWidth, 10 - outlineWidth, fontRenderer.getStringWidth(text) + 8 + outlineWidth * 2,fontRenderer.FONT_HEIGHT + 4 + outlineWidth * 2, 5, outlineWidth, new Color(20, 20, 20), new Color(color));
+                    });
+                    fontRenderer.drawString(text, 14f, 11.5f, -1);
+                    break;
+                }
                 case "Xave": {
                     FontRenderer fontRenderer = FontStorage.getInstance().findFont("ESP", 80);
                     String text = CLIENT_NAME.toUpperCase() + "+";

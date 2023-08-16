@@ -28,6 +28,9 @@ public class LongJump extends Module {
     private int clips = 0;
     private boolean jumped;
 
+    // TEST
+    private float speed;
+    private int testTicks;
     private final TimeHelper timer = new TimeHelper();
 
     @Override
@@ -117,6 +120,32 @@ public class LongJump extends Module {
                 }
             }
             break;
+            case "Test":
+                if(mc.thePlayer.onGround) {
+                    testTicks = 0;
+                } else {
+                    testTicks++;
+                }
+                switch (testTicks) {
+                    case 0:
+                        mc.thePlayer.jump();
+                        speed = 0.485F;
+                        break;
+                    case 1:
+                        speed = (float) MoveUtil.getBaseMoveSpeed();
+                        break;
+                    case 2:
+                        speed = (float) ((MoveUtil.getBaseMoveSpeed() * 1.2 + Math.random() / 8) + Math.random() / 9);
+                        break;
+                }
+
+                if(testTicks > 4) {
+                speed -= 0.01;
+                }
+
+                if(mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0)
+                    MoveUtil.strafe(speed);
+                break;
         }
     }
 

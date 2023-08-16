@@ -1,8 +1,11 @@
 package wtf.atani.utils.render.shader;
 
+import org.lwjgl.opengl.GL20;
 import wtf.atani.utils.interfaces.Methods;
 import wtf.atani.utils.logging.LogUtil;
 import wtf.atani.utils.render.shader.enums.ShaderType;
+
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
@@ -150,6 +153,34 @@ public class ShaderProgram implements Methods {
         int loc = glGetUniformLocation(programID, name);
         if (args.length > 1) glUniform2i(loc, args[0], args[1]);
         else glUniform1i(loc, args[0]);
+    }
+
+    public void uniformFB(final String name, final FloatBuffer floatBuffer) {
+        GL20.glUniform1(glGetUniformLocation(programID, name), floatBuffer);
+    }
+
+    public void uniform1i(final String name, final int i) {
+        glUniform1i(glGetUniformLocation(programID, name), i);
+    }
+
+    public void uniform2i(final String name, final int i, final int j) {
+        glUniform2i(glGetUniformLocation(programID, name), i, j);
+    }
+
+    public void uniform1f(final String name, final float f) {
+        glUniform1f(glGetUniformLocation(programID, name), f);
+    }
+
+    public void uniform2f(final String name, final float f, final float g) {
+        glUniform2f(glGetUniformLocation(programID, name), f, g);
+    }
+
+    public void uniform3f(final String name, final float f, final float g, final float h) {
+        glUniform3f(glGetUniformLocation(programID, name), f, g, h);
+    }
+
+    public void uniform4f(final String name, final float f, final float g, final float h, final float i) {
+        glUniform4f(glGetUniformLocation(programID, name), f, g, h, i);
     }
 
     @Override

@@ -5,7 +5,6 @@ uniform vec2 texelSize, direction;
 uniform float radius;
 uniform float weights[256];
 
-//https://github.com/CesiumGS/cesium/blob/main/Source/Shaders/Builtin/Functions/saturation.glsl
 vec4 czm_saturation(vec3 rgb, float adjustment)
 {
     // Algorithm from Chapter 16 of OpenGL Shading Language

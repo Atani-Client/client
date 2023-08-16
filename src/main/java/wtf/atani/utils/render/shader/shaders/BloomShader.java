@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL13;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.Framebuffer;
+import wtf.atani.module.impl.hud.PostProcessing;
 import wtf.atani.utils.render.shader.util.FramebufferHelper;
 import wtf.atani.utils.render.shader.ShaderProgram;
 import wtf.atani.utils.render.shader.enums.ShaderType;
@@ -67,7 +68,7 @@ public class BloomShader extends ShaderContainer {
             this.output.bindFramebuffer(true);
             this.shaderProgram.initShader();
 
-            int radius = 10;
+            int radius = PostProcessing.getInstance().radius.getValue();
 
 
             final FloatBuffer weightBuffer = BufferUtils.createFloatBuffer(256);

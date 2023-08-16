@@ -8,7 +8,6 @@ uniform vec4 color1, color2, color3, color4;
 
 vec4 createGradient(vec2 coords, vec4 color1, vec4 color2, vec4 color3, vec4 color4){
     vec4 color = mix(mix(color1, color2, coords.y), mix(color3, color4, coords.y), coords.x);
-    // Dithering the color from https://shader-tutorial.dev/advanced/color-banding-dithering/
     color += mix(NOISE, -NOISE, fract(sin(dot(coords.xy, vec2(12.9898, 78.233))) * 43758.5453));
     return color;
 }

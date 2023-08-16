@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.*;
 import org.lwjgl.input.Keyboard;
+import wtf.atani.anticheat.check.Check;
 import wtf.atani.event.events.*;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
@@ -34,6 +35,8 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
     private final CheckBoxValue switchItems = new CheckBoxValue("Switch Items", "Switch to blocks?", this, true);
     private final CheckBoxValue reverseMovement = new CheckBoxValue("Reverse Movement", "Reverse your movement?", this, false);
+    private final CheckBoxValue allowTowering = new CheckBoxValue("Allow Towering", "Allow going up in the air?", this, true);
+    private final CheckBoxValue towerMove = new CheckBoxValue("Tower Move", "Allow towering while moving?", this, false);
     private final CheckBoxValue addStrafe = new CheckBoxValue("Add Strafe", "Strafe a little?", this, false, new Supplier[]{() -> mode.is("Custom")});
     private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.is("Quickly") || mode.is("Custom")});
     private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false, new Supplier[]{() -> mode.is("Custom")});
@@ -176,9 +179,10 @@ public class ScaffoldWalk extends Module {
             return;
         }
 
+        boolean shouldTower = allowTowering.getValue() && (MoveUtil.getSpeed() == 0 || towerMove.getValue()) && mc.gameSettings.keyBindJump.isKeyDown();
         boolean necessaryPlacement = mode.is("Breezily") || mode.is("Godly");
 
-        if (necessaryPlacement ? objectOver.sideHit != EnumFacing.UP : this.timeHelper.hasReached(this.delay.getValue())) {
+        if ((shouldTower || mc.objectMouseOver.sideHit != EnumFacing.UP) && (necessaryPlacement || this.timeHelper.hasReached(this.delay.getValue()))) {
             if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, blockpos, objectOver.sideHit, objectOver.hitVec)) {
                 if(this.swinging.getValue())
                     mc.thePlayer.swingItem();

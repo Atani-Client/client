@@ -1,6 +1,3 @@
-//Trying to recreate the windows 10 "Acryl" blur -> https://docs.microsoft.com/en-us/windows/apps/design/style/acrylic
-//Noise functions from shadertoy -> https://www.shadertoy.com/view/Md2yWh
-
 #version 120
 
 uniform sampler2D currentTexture;
@@ -10,7 +7,6 @@ uniform float blurRadius;
 uniform float blursigma;
 uniform sampler2D texture20;
 
-//Blur function
 float CalcGauss(float x)
 {
 
@@ -68,10 +64,8 @@ vec3 noisetile(vec2 uv) {
     return vec3(clamp(lerpy(uv), 0.0, 1.0));
 }
 
-//https://github.com/CesiumGS/cesium/blob/main/Source/Shaders/Builtin/Functions/saturation.glsl
 vec3 czm_saturation(vec3 rgb, float adjustment)
 {
-    // Algorithm from Chapter 16 of OpenGL Shading Language
     const vec3 W = vec3(0.2125, 0.7154, 0.0721);
     vec3 intensity = vec3(dot(rgb, W));
     return mix(intensity, rgb, adjustment);
@@ -98,7 +92,6 @@ void main() {
     repeat = 2.0+(scale-1.0)*pow(rc, 2.0);
     float size = 1.0+scale*pow(sc, 2.0);
 
-    // coords, repeat
     vec2 uv = -1.0+2.0*gl_FragCoord.xy / texelSize.xy;
     uv = mod(uv*size, repeat);
 

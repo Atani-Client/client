@@ -7,6 +7,7 @@ import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.utils.render.shader.ShaderProgram;
 import wtf.atani.utils.render.shader.enums.ShaderType;
+import wtf.atani.utils.render.shader.render.FramebufferQuads;
 
 import java.awt.*;
 
@@ -36,16 +37,7 @@ public class GradientShader implements Methods {
         gradientShader.setUniformf("color4", topRight.getRed() / 255f, topRight.getGreen() / 255f, topRight.getBlue() / 255f, alpha);
 
         //Apply the gradient to whatever is put here
-        glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex2f(x, y);
-        glTexCoord2f(0, 1);
-        glVertex2f(x, y + height);
-        glTexCoord2f(1, 1);
-        glVertex2f(x + width, y + height);
-        glTexCoord2f(1, 0);
-        glVertex2f(x + width, y);
-        glEnd();
+        FramebufferQuads.drawQuad(x, y, width, height);
 
         gradientShader.deleteShader();
         RenderUtil.endBlend();

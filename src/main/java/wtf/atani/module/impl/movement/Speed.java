@@ -20,12 +20,14 @@ import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "Test", "WatchDog", "Intave", "MineMenClub", "Polar Test", "Custom"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "Test", "WatchDog", "Intave", "MineMenClub", "Polar Test", "Custom"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.is("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
-    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Normal", "Normal 2", "Stable"}, new Supplier[]{() -> mode.is("NCP")});
-    private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.is("NCP")});
+    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable"}, new Supplier[]{() -> mode.is("NCP")});
+    private final SliderValue<Double> ncpJumpMotion = new SliderValue<>("NCP Jump Motion", "What Motion will the NCP Speed use?", this, 0.41d, 0.4, 0.42d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
+    private final SliderValue<Double> ncpOnGroundSpeed = new SliderValue<>("NCP onGround Speed", "How fast will the NCP Speed move onGround?", this, 0.485d, 0.1, 0.5d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
+    private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
     private final SliderValue<Float> jumpHeight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.is("BHop")});
@@ -439,13 +441,20 @@ public class Speed extends Module {
                         ncpTicks++;
 
                     switch (ncpMode.getValue()) {
+                        case "Custom":
+                            if(mc.thePlayer.onGround) {
+                                mc.thePlayer.jump();
+                                mc.thePlayer.motionY = ncpJumpMotion.getValue();
+                                MoveUtil.strafe(ncpOnGroundSpeed.getValue());
+                            }
+                            break;
                         case "Normal":
                             if(!isMoving())
                                 return;
 
                             if(mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 2F;
-                                mc.thePlayer.motionY = 0.409;
+                                mc.thePlayer.motionY = ncpJumpMotion.getValue();
                                 MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(4));
                             } else {
                                 mc.timer.timerSpeed = 1;
@@ -466,7 +475,7 @@ public class Speed extends Module {
                             if(mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 2F;
                                 mc.thePlayer.jump();
-                                mc.thePlayer.motionY = 0.405;
+                                mc.thePlayer.motionY = ncpJumpMotion.getValue();
                                 MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(5));
                             } else {
                                 mc.timer.timerSpeed = (float) (1.02 - Math.random() / 50);
@@ -484,7 +493,7 @@ public class Speed extends Module {
 
                             if(mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 1F;
-                                mc.thePlayer.motionY = 0.409;
+                                mc.thePlayer.motionY = ncpJumpMotion.getValue();
                                 MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(4));
                             } else {
                                 mc.timer.timerSpeed = (float) (1 + Math.random() / 7.5);

@@ -49,6 +49,7 @@ public class WaterMark extends Module implements ColorPalette, IClientOverlayCom
                         RoundedShader.drawRoundOutline(10 - outlineWidth, 10 - outlineWidth, fontRenderer.getStringWidth(text) + 8 + outlineWidth * 2,fontRenderer.FONT_HEIGHT + 4 + outlineWidth * 2, 5, outlineWidth, new Color(20, 20, 20), new Color(color));
                     });
                     fontRenderer.drawString(text, 14f, 11.5f, -1);
+                    leftY.set(20 + fontRenderer.FONT_HEIGHT + 4 + outlineWidth * 2);
                     break;
                 }
                 case "Xave": {

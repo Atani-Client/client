@@ -5,7 +5,7 @@ import wtf.atani.screen.click.icarus.window.component.impl.CheckboxComponent;
 import wtf.atani.screen.click.icarus.window.component.impl.ModeComponent;
 import wtf.atani.screen.click.icarus.window.component.impl.SliderComponent;
 import wtf.atani.screen.click.icarus.window.component.impl.ValueComponent;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;

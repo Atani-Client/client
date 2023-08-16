@@ -1,13 +1,12 @@
 package wtf.atani.utils.render.background;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL20;
 import wtf.atani.utils.interfaces.Methods;
-import wtf.atani.utils.render.shader.advanced.ShaderProgram;
-import wtf.atani.utils.render.shader.advanced.TextureRenderer;
-import wtf.atani.utils.render.shader.advanced.util.FramebufferHelper;
+import wtf.atani.utils.render.shader.ShaderProgram;
+import wtf.atani.utils.render.shader.TextureRenderer;
+import wtf.atani.utils.render.shader.util.FramebufferHelper;
 
 import java.io.BufferedReader;
 import java.io.IOException;

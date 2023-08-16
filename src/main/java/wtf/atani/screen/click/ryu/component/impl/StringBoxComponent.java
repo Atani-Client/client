@@ -29,8 +29,8 @@ public class StringBoxComponent extends ValueComponent {
         if(expanded) {
             float y = this.getPosY() + this.getBaseHeight();
             for(String string : stringBoxValue.getValues()) {
-                RenderUtil.drawRect(getPosX() + 1, y, getBaseWidth() - 2, getBaseHeight(), new Color(18, 18, 18).getRGB());
-                normal.drawStringWithShadow(string, getPosX() + 5 + getAddX() + 10, y + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2,  stringBoxValue.getValue().equals(string) ? RYU : -1);
+                RenderUtil.drawRect(getPosX() + 1 + getAddX(), y + getAddY(), getBaseWidth() - 2, getBaseHeight(), new Color(18, 18, 18).getRGB());
+                normal.drawString(string, getPosX() + 5 + getAddX() + 10, y + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2,  stringBoxValue.getValue().equals(string) ? RYU : -1);
                 y += this.getBaseHeight();
             }
         }

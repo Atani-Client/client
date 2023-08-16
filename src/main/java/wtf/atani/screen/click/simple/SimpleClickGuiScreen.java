@@ -12,7 +12,7 @@ import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.animation.Animation;
 import wtf.atani.utils.animation.Direction;
 import wtf.atani.utils.animation.impl.DecelerateAnimation;
-import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 
 import java.io.IOException;
 import java.util.ArrayList;

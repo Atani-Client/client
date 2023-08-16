@@ -9,8 +9,8 @@ import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.screen.click.ryu.component.Component;
 import wtf.atani.screen.click.ryu.component.impl.ModuleComponent;
 import wtf.atani.utils.interfaces.ColorPalette;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
-import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 
 import java.awt.*;
 import java.util.ArrayList;

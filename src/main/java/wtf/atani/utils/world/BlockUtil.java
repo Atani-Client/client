@@ -1,6 +1,7 @@
 package wtf.atani.utils.world;
 
 import net.minecraft.block.*;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import wtf.atani.utils.interfaces.Methods;
 
@@ -78,6 +79,19 @@ public class BlockUtil implements Methods {
         }
 
         return distance;
+    }
+
+    public static boolean isBlockUnderPlayer() {
+        for (int offset = 0; offset < mc.thePlayer.posY + mc.thePlayer.getEyeHeight(); offset += 2) {
+
+            AxisAlignedBB boundingBox = mc.thePlayer.getEntityBoundingBox().offset(0.0D, -offset, 0.0D);
+
+            if (!mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, boundingBox).isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
     }
     
 }

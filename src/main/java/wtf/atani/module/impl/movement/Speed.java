@@ -24,7 +24,15 @@ public class Speed extends Module {
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.is("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
-    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable"}, new Supplier[]{() -> mode.is("NCP")});
+    private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
+    private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
+    private final SliderValue<Float> jumpHeight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.is("BHop")});
+
+    // WatchDog
+    private final StringBoxValue watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});
+
+    // NCP
+    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe"}, new Supplier[]{() -> mode.is("NCP")});
     private final SliderValue<Double> ncpJumpMotion = new SliderValue<>("NCP Jump Motion", "What Motion will the NCP Speed use?", this, 0.41d, 0.4, 0.42d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final SliderValue<Double> ncpOnGroundSpeed = new SliderValue<>("NCP onGround Speed", "How fast will the NCP Speed move onGround?", this, 0.485d, 0.1, 0.5d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final SliderValue<Float> ncpOnGroundSpeedBoost = new SliderValue<>("onGround Speed Boost", "How Much Will the NCP Speed Boost onGround?", this, 3F, 0, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
@@ -32,11 +40,8 @@ public class Speed extends Module {
     private final SliderValue<Float> ncpInAirTimer = new SliderValue<>("NCP In Air Timer", "What timer will the NCP Speed use In Air?", this, 1F, 0.1, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final SliderValue<Double> ncpLowerMotion = new SliderValue<>("NCP Motion Lowered", "How Much will the NCP Motion Modify Lower Motion?", this, 0.1d, 0.01, 0.12d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom") && ncpMotionModify.getValue()});
-    private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
-    private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
-    private final SliderValue<Float> jumpHeight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.is("BHop")});
 
-    //Custom
+    // Custom
     private final SliderValue<Double> motionY = new SliderValue<>("Motion Y", "How big will the y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom")});
     private final SliderValue<Double> airSpeed = new SliderValue<>("Air Speed", "How fast will you go in air?", this, 1d, 0.01d, 3d, 2, new Supplier[]{() -> mode.is("Custom")});
     private final SliderValue<Double> friction = new SliderValue<>("Friction", "How big or small will friction be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom")});
@@ -127,7 +132,7 @@ public class Speed extends Module {
                             mc.thePlayer.motionX *= 1.01;
                             mc.thePlayer.motionZ *= 1.01;
                         } else if (mc.thePlayer.motionY < 0.0029) {
-                            // This dont do shit?
+                            // This don't do shit?
                             mc.thePlayer.motionX *= 1.0;
                             mc.thePlayer.motionZ *= 1.0;
                         }
@@ -445,6 +450,13 @@ public class Speed extends Module {
                         ncpTicks++;
 
                     switch (ncpMode.getValue()) {
+                        case "Strafe":
+                            if(mc.thePlayer.onGround && this.isMoving()) {
+                                mc.thePlayer.jump();
+
+                                MoveUtil.strafe(0.4f);
+                            }
+                            break;
                         case "Custom":
                             if(!isMoving())
                                 return;
@@ -590,27 +602,37 @@ public class Speed extends Module {
                         break;
                 }
                 break;
-            // Do not change the name I will be very made >:(
             case "WatchDog":
-                if(MoveUtil.getSpeed() == 0) {
-                    mc.timer.timerSpeed = 1;
-                } else {
-                    mc.timer.timerSpeed = (float) (1 + Math.random() / 30);
-                    if(mc.thePlayer.onGround) {
-                        watchDogTicks = 0;
-                        mc.thePlayer.jump();
-                        MoveUtil.strafe((float) (0.525 - Math.random() / 10));
-                    } else {
-                        watchDogTicks++;
-                        mc.thePlayer.motionY -= 0.0008;
-                        if(watchDogTicks == 1) {
-                            mc.thePlayer.motionY -= 0.002;
-                        }
+                switch(watchDogMode.getValue()) {
+                    case "Normal":
+                        if(MoveUtil.getSpeed() == 0) {
+                            mc.timer.timerSpeed = 1;
+                        } else {
+                            mc.timer.timerSpeed = (float) (1 + Math.random() / 30);
+                            if(mc.thePlayer.onGround) {
+                                watchDogTicks = 0;
+                                mc.thePlayer.jump();
+                                MoveUtil.strafe(0.418f);
+                            } else {
+                                watchDogTicks++;
+                                mc.thePlayer.motionY -= 0.0008;
+                                if(watchDogTicks == 1) {
+                                    mc.thePlayer.motionY -= 0.002;
+                                }
 
-                        if(watchDogTicks == 8) {
-                            mc.thePlayer.motionY -= 0.003;
+                                if(watchDogTicks == 8) {
+                                    mc.thePlayer.motionY -= 0.003;
+                                }
+                            }
                         }
-                    }
+                        break;
+                    case "Strafe":
+                        if(mc.thePlayer.onGround && this.isMoving()) {
+                            mc.thePlayer.jump();
+
+                            MoveUtil.strafe(0.41f);
+                        }
+                        break;
                 }
                 break;
             case "Intave":

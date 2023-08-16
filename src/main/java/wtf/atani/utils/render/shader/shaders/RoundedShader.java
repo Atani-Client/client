@@ -2,10 +2,11 @@ package wtf.atani.utils.render.shader.shaders;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import org.lwjgl.util.glu.GLU;
 import wtf.atani.utils.render.color.ColorUtil;
+import wtf.atani.utils.render.gl.GLUtil;
 import wtf.atani.utils.render.shader.ShaderProgram;
 import wtf.atani.utils.render.shader.enums.ShaderType;
-import wtf.atani.utils.render.shader.legacy.LegacyShader;
 import wtf.atani.utils.render.RenderUtil;
 
 import java.awt.*;
@@ -54,7 +55,7 @@ public class RoundedShader {
         roundedGradientShader.setUniformf("color3", topRight.getRed() / 255f, topRight.getGreen() / 255f, topRight.getBlue() / 255f, topRight.getAlpha() / 255f);
         //Bottom Right
         roundedGradientShader.setUniformf("color4", bottomRight.getRed() / 255f, bottomRight.getGreen() / 255f, bottomRight.getBlue() / 255f, bottomRight.getAlpha() / 255f);
-        LegacyShader.drawQuads(x - 1, y - 1, width + 2, height + 2);
+        GLUtil.drawQuads(x - 1, y - 1, width + 2, height + 2);
         roundedGradientShader.deleteShader();
         RenderUtil.endBlend();
     }
@@ -73,7 +74,7 @@ public class RoundedShader {
         roundedShader.setUniformi("blur", blur ? 1 : 0);
         roundedShader.setUniformf("color", color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
 
-        LegacyShader.drawQuads(x - 1, y - 1, width + 2, height + 2);
+        GLUtil.drawQuads(x - 1, y - 1, width + 2, height + 2);
         roundedShader.deleteShader();
         RenderUtil.endBlend();
     }
@@ -93,7 +94,7 @@ public class RoundedShader {
         roundedOutlineShader.setUniformf("outlineColor", outlineColor.getRed() / 255f, outlineColor.getGreen() / 255f, outlineColor.getBlue() / 255f, outlineColor.getAlpha() / 255f);
 
 
-        LegacyShader.drawQuads(x - (2 + outlineThickness), y - (2 + outlineThickness), width + (4 + outlineThickness * 2), height + (4 + outlineThickness * 2));
+        GLUtil.drawQuads(x - (2 + outlineThickness), y - (2 + outlineThickness), width + (4 + outlineThickness * 2), height + (4 + outlineThickness * 2));
         roundedOutlineShader.deleteShader();
         RenderUtil.endBlend();
     }
@@ -107,7 +108,7 @@ public class RoundedShader {
         roundedTexturedShader.setUniformi("textureIn", 0);
         setupRoundedRectUniforms(x, y, width, height, radius, roundedTexturedShader);
         roundedTexturedShader.setUniformf("alpha", alpha);
-        LegacyShader.drawQuads(x - 1, y - 1, width + 2, height + 2);
+        GLUtil.drawQuads(x - 1, y - 1, width + 2, height + 2);
         roundedTexturedShader.deleteShader();
         RenderUtil.endBlend();
     }

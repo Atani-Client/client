@@ -27,7 +27,11 @@ public class Speed extends Module {
     private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable"}, new Supplier[]{() -> mode.is("NCP")});
     private final SliderValue<Double> ncpJumpMotion = new SliderValue<>("NCP Jump Motion", "What Motion will the NCP Speed use?", this, 0.41d, 0.4, 0.42d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final SliderValue<Double> ncpOnGroundSpeed = new SliderValue<>("NCP onGround Speed", "How fast will the NCP Speed move onGround?", this, 0.485d, 0.1, 0.5d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
+    private final SliderValue<Float> ncpOnGroundSpeedBoost = new SliderValue<>("onGround Speed Boost", "How Much Will the NCP Speed Boost onGround?", this, 3F, 0, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
+    private final SliderValue<Float> ncpOnGroundTimer = new SliderValue<>("NCP onGround Timer", "What timer will the NCP Speed use onGround?", this, 2F, 0.1, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
+    private final SliderValue<Float> ncpInAirTimer = new SliderValue<>("NCP In Air Timer", "What timer will the NCP Speed use In Air?", this, 1F, 0.1, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
+    private final SliderValue<Double> ncpLowerMotion = new SliderValue<>("NCP Motion Lowered", "How Much will the NCP Motion Modify Lower Motion?", this, 0.1d, 0.01, 0.12d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom") && ncpMotionModify.getValue()});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
     private final SliderValue<Float> jumpHeight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.is("BHop")});
@@ -442,11 +446,23 @@ public class Speed extends Module {
 
                     switch (ncpMode.getValue()) {
                         case "Custom":
+                            if(!isMoving())
+                                return;
+
                             if(mc.thePlayer.onGround) {
+                                mc.timer.timerSpeed = ncpOnGroundTimer.getValue();
                                 mc.thePlayer.jump();
                                 mc.thePlayer.motionY = ncpJumpMotion.getValue();
-                                MoveUtil.strafe(ncpOnGroundSpeed.getValue());
+                                MoveUtil.strafe(ncpOnGroundSpeed.getValue() + MoveUtil.getSpeedBoost(ncpOnGroundSpeedBoost.getValue()));
+                            } else {
+                                mc.timer.timerSpeed = ncpInAirTimer.getValue();
                             }
+
+                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
+                                mc.thePlayer.motionY -= ncpLowerMotion.getValue();
+                            }
+
+                            MoveUtil.strafe();
                             break;
                         case "Normal":
                             if(!isMoving())
@@ -461,7 +477,7 @@ public class Speed extends Module {
                                 MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.375F));
                             }
 
-                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
+                            if(ncpTicks == 5) {
                                 mc.thePlayer.motionY -= 0.1;
                             }
                             break;
@@ -482,10 +498,6 @@ public class Speed extends Module {
                             }
 
                             MoveUtil.strafe();
-
-                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
-                                mc.thePlayer.motionY -= 0.1;
-                            }
                             break;
                         case "Stable":
                             if(!isMoving())
@@ -499,10 +511,6 @@ public class Speed extends Module {
                                 mc.timer.timerSpeed = (float) (1 + Math.random() / 7.5);
                                 // this can be patched any moment, currently works on eu.loyisa.cn
                                 MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02 + MoveUtil.getSpeedBoost(1.75F));
-                            }
-
-                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
-                                mc.thePlayer.motionY -= 0.1;
                             }
                             break;
                     }

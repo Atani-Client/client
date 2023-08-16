@@ -160,7 +160,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                 case "Atani Modern": {
                     FontRenderer fontRenderer = FontStorage.getInstance().findFont("Greycliff Medium", 18);
                     RenderableShaders.render(true, false, () -> {
-                        float moduleY = leftY.get();
+                        float moduleY = rightY.get();
                         int counter = 0;
                         for (Module module : moduleHashMap.keySet()) {
                             float moduleHeight = fontRenderer.FONT_HEIGHT + 2;
@@ -177,7 +177,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                             }
                         }
                     });
-                    float moduleY = leftY.get();
+                    float moduleY = rightY.get();
                     for (Module module : moduleHashMap.keySet()) {
                         float moduleHeight = fontRenderer.FONT_HEIGHT + 2;
                         if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {

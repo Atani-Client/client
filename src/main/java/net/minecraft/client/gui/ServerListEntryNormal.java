@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Charsets;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import com.mojang.realmsclient.gui.ChatFormatting;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.Unpooled;
@@ -21,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import tv.twitch.chat.Chat;
 
 public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
 {
@@ -79,6 +81,11 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
         boolean flag1 = this.field_148301_e.version < 47;
         boolean flag2 = flag || flag1;
         this.mc.fontRendererObj.drawString(this.field_148301_e.serverName, x + 32 + 3, y + 1, 16777215);
+
+        this.mc.fontRendererObj.drawString(ChatFormatting.WHITE + "Version" + ChatFormatting.GRAY + ": " + this.field_148301_e.gameVersion, x + 312, y + 2, -1);
+        this.mc.fontRendererObj.drawString(ChatFormatting.WHITE + "Ping" + ChatFormatting.GRAY + ": " + this.field_148301_e.pingToServer + "ms", x + 312, y + 12, -1);
+        this.mc.fontRendererObj.drawString(ChatFormatting.WHITE + "Players" + ChatFormatting.GRAY + ": " + this.field_148301_e.populationInfo, x + 312, y + 22, -1);
+
         List<String> list = this.mc.fontRendererObj.listFormattedStringToWidth(this.field_148301_e.serverMOTD, listWidth - 32 - 2);
 
         for (int i = 0; i < Math.min(list.size(), 2); ++i)

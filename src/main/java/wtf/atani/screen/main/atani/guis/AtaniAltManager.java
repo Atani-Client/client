@@ -20,8 +20,8 @@ import wtf.atani.font.storage.FontStorage;
 import wtf.atani.screen.main.atani.AtaniMainMenu;
 import wtf.atani.screen.main.atani.button.AtaniButton;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
 
 public class AtaniAltManager extends GuiScreen
 {

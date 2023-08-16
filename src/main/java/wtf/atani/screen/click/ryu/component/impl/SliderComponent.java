@@ -4,7 +4,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.MathHelper;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.SliderValue;
 

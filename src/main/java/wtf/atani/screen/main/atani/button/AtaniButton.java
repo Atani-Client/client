@@ -1,20 +1,14 @@
 package wtf.atani.screen.main.atani.button;
 
-import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.utils.animation.Direction;
 import wtf.atani.utils.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
 

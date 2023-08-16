@@ -8,9 +8,9 @@ import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.screen.click.icarus.frame.component.Component;
 import wtf.atani.screen.click.icarus.frame.component.impl.ModuleComponent;
-import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
+import wtf.atani.utils.render.shader.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
 import java.util.ArrayList;

@@ -6,7 +6,7 @@ import org.lwjgl.input.Mouse;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.utils.math.MathUtil;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
 import wtf.atani.value.impl.SliderValue;
 
 import java.awt.*;

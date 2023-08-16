@@ -16,7 +16,7 @@ import wtf.atani.module.impl.combat.KillAura;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.combat.FightUtil;
 import wtf.atani.utils.math.MathUtil;
-import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
+import wtf.atani.utils.render.shader.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.value.impl.StringBoxValue;

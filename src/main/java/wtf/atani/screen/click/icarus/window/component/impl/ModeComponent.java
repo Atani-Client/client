@@ -2,9 +2,9 @@ package wtf.atani.screen.click.icarus.window.component.impl;
 
 import net.minecraft.client.gui.FontRenderer;
 import wtf.atani.font.storage.FontStorage;
-import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
+import wtf.atani.utils.render.shader.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;

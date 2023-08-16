@@ -13,7 +13,7 @@ import wtf.atani.module.impl.hud.ClickGui;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.interfaces.ColorPalette;
 import wtf.atani.utils.math.MathUtil;
-import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
+import wtf.atani.utils.render.shader.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.animation.Direction;
 import wtf.atani.utils.animation.impl.DecelerateAnimation;

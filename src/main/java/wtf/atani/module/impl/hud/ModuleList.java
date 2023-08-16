@@ -16,13 +16,13 @@ import wtf.atani.module.impl.hud.clientOverlay.IClientOverlayComponent;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.interfaces.ColorPalette;
 import wtf.atani.utils.math.atomic.AtomicFloat;
-import wtf.atani.utils.render.shader.legacy.shaders.GradientShader;
+import wtf.atani.utils.render.shader.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
 import wtf.atani.utils.animation.Direction;
 import wtf.atani.utils.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.render.color.ColorUtil;
-import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 import wtf.atani.value.Value;
 import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.SliderValue;
@@ -65,7 +65,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
     private SliderValue<Float> xOffset = new SliderValue<>("X Offset", "How much will the module list offset on X?", this, 0F, 0F, 20F, 1);
     private SliderValue<Float> yOffset = new SliderValue<>("Y Offset", "How much will the module list offset on Y?", this, 0F, 0F, 20F, 1);
     private CheckBoxValue hideRenderModules = new CheckBoxValue("Hide Render Modules", "Should the module list hide visual modules?", this, false);
-    private CheckBoxValue fontShadow = new CheckBoxValue("Font Shadow", "Should the module font use shadows on the text?", this, true);
+    private CheckBoxValue fontShadow = new CheckBoxValue("Font Shadow", "Should the module font use shadows on the text?", this, true, new Supplier[]{() -> moduleListMode.getValue().equalsIgnoreCase("Custom")});
 
 
     private LinkedHashMap<Module, DecelerateAnimation> moduleHashMap = new LinkedHashMap<>();

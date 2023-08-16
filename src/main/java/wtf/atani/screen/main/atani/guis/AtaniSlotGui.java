@@ -11,8 +11,8 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 import wtf.atani.screen.main.atani.AtaniMainMenu;
 import wtf.atani.utils.render.RenderUtil;
-import wtf.atani.utils.render.shader.advanced.render.ingame.RenderableShaders;
-import wtf.atani.utils.render.shader.legacy.shaders.RoundedShader;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
+import wtf.atani.utils.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
 

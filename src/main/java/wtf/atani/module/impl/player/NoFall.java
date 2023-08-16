@@ -15,8 +15,8 @@ import com.google.common.base.Supplier;
 @ModuleInfo(name = "NoFall", description = "Reduces fall damage", category = Category.PLAYER)
 public class NoFall extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Edit", "Vulcan", "Verus", "Spartan"});
-    private final CheckBoxValue modulo = new CheckBoxValue("Modulo", "Set on ground only every 3 blocks?", this, true, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Edit")});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[] {"Instant Motion"});
+    private final CheckBoxValue modulo = new CheckBoxValue("Modulo", "Set on ground only every 3 blocks?", this, true, new Supplier[] {() -> mode.is("Edit")});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[] {"Instant Motion"}, new Supplier[] {() -> mode.is("Vulcan")});
 
     private final TickHelper spartanTimer = new TickHelper();
 
@@ -28,9 +28,6 @@ public class NoFall extends Module {
             boolean editGround = this.modulo.getValue() ? correctModulo : mc.thePlayer.fallDistance > 3;
             switch(mode.getValue()) {
                 case "Edit":
-                    if(mc.thePlayer.fallDistance > 3) {
-                        sendMessage(modulo + " " + mc.thePlayer.fallDistance + " " + correctModulo);
-                    }
                     if(packetEvent.getPacket() instanceof C03PacketPlayer && editGround) {
                         ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
                     }
@@ -74,8 +71,6 @@ public class NoFall extends Module {
                 mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY - 10, mc.thePlayer.posZ, true));
                 spartanTimer.reset();
             }
-    		break;
-    	case "Vulcan":
     		break;
     	}
     }

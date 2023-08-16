@@ -38,7 +38,7 @@ public class KillAura extends Module {
     public StringBoxValue targetMode = new StringBoxValue("Target Mode", "How will the aura search for targets?", this, new String[]{"Single", "Hybrid", "Switch", "Multi"});
     public StringBoxValue priority = new StringBoxValue("Priority", "How will the aura sort targets?", this, new String[]{"Health", "Distance"});
 
-    public SliderValue<Long> switchDelay = new SliderValue<>("Switch Delay", "How long will it take to switch between targets?", this, 300L, 0L, 1000L, 0, new Supplier[]{() -> targetMode.getValue().equalsIgnoreCase("Switch")});
+    public SliderValue<Long> switchDelay = new SliderValue<>("Switch Delay", "How long will it take to switch between targets?", this, 300L, 0L, 1000L, 0, new Supplier[]{() -> targetMode.is("Switch")});
     public CheckBoxValue players = new CheckBoxValue("Players", "Attack Players?", this, true);
     public CheckBoxValue animals = new CheckBoxValue("Animals", "Attack Animals", this, true);
     public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters", this, true);
@@ -78,13 +78,13 @@ public class KillAura extends Module {
     public CheckBoxValue pointer = new CheckBoxValue("Pointer", "Show where you're looking at?", this, true, new Supplier[]{() -> targetESP.getValue()});
     private StringBoxValue customColorMode = new StringBoxValue("Color Mode", "How will the esp be colored?", this, new String[]{"Static", "Fade", "Gradient", "Rainbow", "Astolfo Sky"}, new Supplier[]{() -> targetESP.getValue()});
     private CheckBoxValue changeOnHurt = new CheckBoxValue("Change Color on hurt", "Change the ESP colour to red if the target is being hurt?", this, false);
-    private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")});
-    private SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")});
-    private SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Static") || customColorMode.getValue().equalsIgnoreCase("Random") || customColorMode.getValue().equalsIgnoreCase("Fade") || customColorMode.getValue().equalsIgnoreCase("Gradient")});
-    private SliderValue<Integer> red2 = new SliderValue<>("Second Red", "What'll be the red of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Gradient")});
-    private SliderValue<Integer> green2 = new SliderValue<>("Second Green", "What'll be the green of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Gradient")});
-    private SliderValue<Integer> blue2 = new SliderValue<>("Second Blue", "What'll be the blue of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Gradient")});
-    private SliderValue<Float> darkFactor = new SliderValue<>("Dark Factor", "How much will the color be darkened?", this, 0.49F, 0F, 1F, 2, new Supplier[]{() -> targetESP.getValue() && customColorMode.getValue().equalsIgnoreCase("Fade")});
+    private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.is("Static") || customColorMode.is("Random") || customColorMode.is("Fade") || customColorMode.is("Gradient")});
+    private SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.is("Static") || customColorMode.is("Random") || customColorMode.is("Fade") || customColorMode.is("Gradient")});
+    private SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.is("Static") || customColorMode.is("Random") || customColorMode.is("Fade") || customColorMode.is("Gradient")});
+    private SliderValue<Integer> red2 = new SliderValue<>("Second Red", "What'll be the red of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.is("Gradient")});
+    private SliderValue<Integer> green2 = new SliderValue<>("Second Green", "What'll be the green of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.is("Gradient")});
+    private SliderValue<Integer> blue2 = new SliderValue<>("Second Blue", "What'll be the blue of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> targetESP.getValue() && customColorMode.is("Gradient")});
+    private SliderValue<Float> darkFactor = new SliderValue<>("Dark Factor", "How much will the color be darkened?", this, 0.49F, 0F, 1F, 2, new Supplier[]{() -> targetESP.getValue() && customColorMode.is("Fade")});
 
     // Targets
     public static EntityLivingBase curEntity;
@@ -188,7 +188,7 @@ public class KillAura extends Module {
                 double width = 0.17D;
                 double height = 0.25D;
                 double thickness = 0.08D;
-                if(this.boxMode.getValue().equalsIgnoreCase("Full")) {
+                if(this.boxMode.is("Full")) {
                     thickness -= curEntity.height + 0.25D * 2 + thickness;
                 }
                 AxisAlignedBB entityBox = this.curEntity.getEntityBoundingBox();
@@ -246,7 +246,7 @@ public class KillAura extends Module {
                     break;
                 case "Multi":
                 case "Switch":
-                    long switchDelay = this.targetMode.getValue().equalsIgnoreCase("Multi") ? 0 : this.switchDelay.getValue();
+                    long switchDelay = this.targetMode.is("Multi") ? 0 : this.switchDelay.getValue();
                     if(!this.switchTimer.hasReached(switchDelay)) {
                         if(curEntity == null || !FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()))
                             curEntity = targets.get(0);
@@ -286,9 +286,9 @@ public class KillAura extends Module {
 
             if (rots != null) {
                 boolean necessary = !necessaryRotations.getValue() || (mc.objectMouseOver == null || mc.objectMouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY) || (FightUtil.getRange(curEntity) >= nearDistance.getValue().floatValue() && nearRotate.getValue());
-                boolean yaw = necessaryMode.getValue().equalsIgnoreCase("Yaw");
-                boolean pitch = necessaryMode.getValue().equalsIgnoreCase("Pitch");
-                boolean both = necessaryMode.getValue().equalsIgnoreCase("Both");
+                boolean yaw = necessaryMode.is("Yaw");
+                boolean pitch = necessaryMode.is("Pitch");
+                boolean both = necessaryMode.is("Both");
                 if (both) {
                     yaw = true;
                     pitch = true;
@@ -304,7 +304,7 @@ public class KillAura extends Module {
             hasSilentRotations = true;
         } else {
             if (hasSilentRotations && resetRotations.getValue()) {
-                RotationUtil.resetRotations(getYaw(), getPitch(), resetMode.getValue().equalsIgnoreCase("Silent"));
+                RotationUtil.resetRotations(getYaw(), getPitch(), resetMode.is("Silent"));
                 hasSilentRotations = false;
             }
             curPitch = getPlayer().rotationPitch;
@@ -348,7 +348,7 @@ public class KillAura extends Module {
     @Override
     public void onDisable() {
         if (hasSilentRotations && resetRotations.getValue())
-            RotationUtil.resetRotations(getYaw(), getPitch(), resetMode.getValue().equalsIgnoreCase("Silent"));
+            RotationUtil.resetRotations(getYaw(), getPitch(), resetMode.is("Silent"));
         hasSilentRotations = false;
     }
 

@@ -172,7 +172,7 @@ public class Speed extends Module {
                 break;
             case "Vulcan":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    if(!vulcanMode.getValue().equalsIgnoreCase("Ground"))
+                    if(!vulcanMode.is("Ground"))
                         mc.gameSettings.keyBindJump.pressed = false;
                     if (mc.thePlayer.onGround) {
                         vulcanTicks = 0;

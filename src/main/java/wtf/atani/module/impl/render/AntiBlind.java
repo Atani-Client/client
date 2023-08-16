@@ -7,10 +7,9 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 
+// Hooked in Entity class
 @ModuleInfo(name = "AntiBlind", description = "Removes bad effects from the player.", category = Category.RENDER)
 public class AntiBlind extends Module {
-
-    // Hooked in Entity class
 
     @Listen
     public void onUpdateEvent(UpdateEvent updateEvent) {

@@ -26,7 +26,7 @@ public class Ambience extends Module {
 
     @Listen
     public void onTick(TickEvent tickEvent) {
-        snow = weather.getValue().equalsIgnoreCase("Snow");
+        snow = weather.is("Snow");
         if (mc.theWorld != null) {
 
             WorldInfo worldinfo = mc.theWorld.getWorldInfo();
@@ -74,13 +74,9 @@ public class Ambience extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 
 }

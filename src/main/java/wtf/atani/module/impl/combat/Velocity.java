@@ -23,9 +23,9 @@ import wtf.atani.value.impl.StringBoxValue;
 public class Velocity extends Module {
 
     public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar Under-Block"});
-    public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple") || mode.getValue().equalsIgnoreCase("Reverse")});
-    public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("Simple") || mode.getValue().equalsIgnoreCase("Reverse")});
-    public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1, new Supplier[] {() -> mode.getValue().equalsIgnoreCase("AAC v4")});
+    public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
+    public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
+    public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1, new Supplier[] {() -> mode.is("AAC v4")});
 
     private KillAura killAura;
 

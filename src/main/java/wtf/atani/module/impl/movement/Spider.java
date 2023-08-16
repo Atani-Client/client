@@ -18,7 +18,7 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "Spider", description = "Climb up walls", category = Category.MOVEMENT)
 public class Spider extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Jump", "Collision", "Vulcan"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Jump", "Collision", "Vulcan", "Verus"});
     private final CheckBoxValue jumpOnly = new CheckBoxValue("Jump Only", "Should the module only work when pressing the jump key?", this, false);
 
     @Override
@@ -79,6 +79,12 @@ public class Spider extends Module {
                 case "Jump":
                 case "Vulcan":
                     mc.thePlayer.jump();
+                    break;
+
+                case "Verus":
+                    if (mc.thePlayer.ticksExisted % 3 == 0) {
+                        mc.thePlayer.motionY = 0.42f;
+                    }
                     break;
                 }
             }

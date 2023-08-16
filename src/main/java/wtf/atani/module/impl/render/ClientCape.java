@@ -19,7 +19,6 @@ public class ClientCape extends Module {
     ResourceLocation ataniFunctionLogo = new ResourceLocation("atani/capes/AtaniFunctionLogoCape.png");
     ResourceLocation pixelated = new ResourceLocation("atani/capes/AtaniCapePixelated.png");
 
-
     @Listen
     public void onUpdate(UpdateEvent event) {
         ResourceLocation resourceLocation = null;

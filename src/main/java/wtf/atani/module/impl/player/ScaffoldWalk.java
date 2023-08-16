@@ -34,11 +34,11 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
     private final CheckBoxValue switchItems = new CheckBoxValue("Switch Items", "Switch to blocks?", this, true);
     private final CheckBoxValue reverseMovement = new CheckBoxValue("Reverse Movement", "Reverse your movement?", this, false);
-    private final CheckBoxValue addStrafe = new CheckBoxValue("Add Strafe", "Strafe a little?", this, false, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Custom")});
-    private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Quickly") || mode.getValue().equalsIgnoreCase("Custom")});
-    private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Custom")});
-    private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Custom") && sneak.getValue()});
-    private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Quickly") || (mode.getValue().equalsIgnoreCase("Custom") && sneak.getValue() && sneakMode.getValue().equalsIgnoreCase("Edge"))});
+    private final CheckBoxValue addStrafe = new CheckBoxValue("Add Strafe", "Strafe a little?", this, false, new Supplier[]{() -> mode.is("Custom")});
+    private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.is("Quickly") || mode.is("Custom")});
+    private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false, new Supplier[]{() -> mode.is("Custom")});
+    private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> mode.is("Custom") && sneak.getValue()});
+    private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.is("Quickly") || (mode.is("Custom") && sneak.getValue() && sneakMode.is("Edge"))});
 
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper(), startingTimeHelper = new TimeHelper();
     private double[] lastPos = new double[3];
@@ -103,7 +103,7 @@ public class ScaffoldWalk extends Module {
             getGameSettings().keyBindForward.pressed = false;
         }
 
-        if(this.mode.getValue().equalsIgnoreCase("Quickly") || (this.mode.getValue().equalsIgnoreCase("Custom") && sneak.getValue() && sneakMode.getValue().equalsIgnoreCase("Edge"))) {
+        if(this.mode.is("Quickly") || (this.mode.is("Custom") && sneak.getValue() && sneakMode.is("Edge"))) {
             if (unSneakDelay.getValue() == 0 || unsneakTimeHelper.hasReached((long) (unSneakDelay.getValue()))) {
                 getGameSettings().keyBindSneak.pressed = false;
             }
@@ -116,14 +116,14 @@ public class ScaffoldWalk extends Module {
                     unsneakTimeHelper.reset();
                 }
             }
-        } else  if(this.mode.getValue().equalsIgnoreCase("Slowly") || (this.mode.getValue().equalsIgnoreCase("Custom") && sneak.getValue() && sneakMode.getValue().equalsIgnoreCase("Constant"))) {
+        } else  if(this.mode.is("Slowly") || (this.mode.is("Custom") && sneak.getValue() && sneakMode.is("Constant"))) {
             getGameSettings().keyBindSneak.pressed = true;
         }
     }
 
     @Listen
     public void onSilent(SilentMoveEvent silentMoveEvent) {
-        if(this.mode.getValue().equalsIgnoreCase("Breezily") || (this.mode.getValue().equalsIgnoreCase("Custom") && addStrafe.getValue())) {
+        if(this.mode.is("Breezily") || (this.mode.is("Custom") && addStrafe.getValue())) {
             final BlockPos b = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 0.5, mc.thePlayer.posZ);
             if (mc.theWorld.getBlockState(b).getBlock().getMaterial() == Material.air && mc.currentScreen == null && !Keyboard.isKeyDown(mc.gameSettings.keyBindJump.getKeyCodeDefault()) && mc.thePlayer.movementInput.moveForward != 0.0f) {
                 if (mc.thePlayer.getHorizontalFacing(PlayerHandler.yaw) == EnumFacing.EAST) {
@@ -176,7 +176,7 @@ public class ScaffoldWalk extends Module {
             return;
         }
 
-        boolean necessaryPlacement = mode.getValue().equalsIgnoreCase("Breezily") || mode.getValue().equalsIgnoreCase("Godly");
+        boolean necessaryPlacement = mode.is("Breezily") || mode.is("Godly");
 
         if (necessaryPlacement ? objectOver.sideHit != EnumFacing.UP : this.timeHelper.hasReached(this.delay.getValue())) {
             if (mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, itemstack, blockpos, objectOver.sideHit, objectOver.hitVec)) {

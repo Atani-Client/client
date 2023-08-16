@@ -33,7 +33,7 @@ public class TickBase extends Module {
     
 	@Listen
 	public void onTick(TickEvent tickEvent) {
-		if(mode.getValue().equalsIgnoreCase("Legit")) {
+		if(mode.is("Legit")) {
 	        if(shouldCharge()) {
 	        	try {
 					Thread.sleep(ticks.getValue() * 20);
@@ -47,7 +47,7 @@ public class TickBase extends Module {
     
 	@Listen
 	public void onTime(TimeEvent timeEvent) {
-		if(mode.getValue().equalsIgnoreCase("Normal")) {
+		if(mode.is("Normal")) {
 	        if(shouldCharge()) {
 	            shifted += timeEvent.getTime() - previousTime;
 	            this.delayTimer.reset();

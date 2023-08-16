@@ -39,7 +39,6 @@ public class NoWeb extends Module {
                 mc.thePlayer.jumpMovementFactor = 0.02958f;
                 mc.thePlayer.motionY -= 0.00775;
                 if (mc.thePlayer.onGround) {
-                    // mc.thePlayer.jump()
                     mc.thePlayer.motionY = 0.4050;
                     mc.timer.timerSpeed = 1.35F;
                 }
@@ -64,7 +63,7 @@ public class NoWeb extends Module {
 
     @Listen
     public final void onMove(MoveButtonEvent moveButtonEvent) {
-        if(mode.getValue().equalsIgnoreCase("AAC 4") && mc.thePlayer.isInWeb) {
+        if(mode.is("AAC 4") && mc.thePlayer.isInWeb) {
             moveButtonEvent.setJump(false);
         }
     }

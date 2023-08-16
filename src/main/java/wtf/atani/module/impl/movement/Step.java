@@ -1,6 +1,7 @@
 package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
+import net.minecraft.network.play.client.C03PacketPlayer;
 import wtf.atani.event.events.UpdateMotionEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
@@ -14,7 +15,7 @@ import wtf.atani.value.impl.StringBoxValue;
 public class Step extends Module {
 
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "NCP", "Motion", "Spartan"});
-    private final SliderValue<Integer> height = new SliderValue<>("Height", "How high will the step go?", this, 2, 0, 10, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Vanilla")});
+    private final SliderValue<Integer> height = new SliderValue<>("Height", "How high will the step go?", this, 2, 0, 10, 1, new Supplier[]{() -> mode.is("Vanilla")});
 
     // NCP
     private boolean hasStepped;

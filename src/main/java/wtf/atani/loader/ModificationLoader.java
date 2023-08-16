@@ -46,11 +46,11 @@ public class ModificationLoader implements ClientInformationAccess {
         new FontStorage();
         new ProcessorStorage();
         new ValueStorage();
+        new CombatManager();
         new ModuleStorage();
         new CommandStorage();
         new AccountStorage();
         new FileStorage();
-        new CombatManager();
     }
 
     private void addShutdownHook() {

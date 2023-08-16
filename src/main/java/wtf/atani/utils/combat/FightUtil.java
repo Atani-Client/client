@@ -9,7 +9,6 @@ import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.scoreboard.Team;
 import net.minecraft.util.Vec3;
 import wtf.atani.combat.CombatManager;
 import wtf.atani.utils.interfaces.Methods;
@@ -42,7 +41,7 @@ public class FightUtil implements Methods {
                     || entityLivingBase instanceof EntityPlayer && !players
                     || entityLivingBase instanceof EntityMob && !mobs
                     || entityLivingBase instanceof EntitySlime && !mobs
-                    || CombatManager.getInstance().hasBot(entity)
+                    || CombatManager.getInstance().isIgnored(entity)
                     || entityLivingBase.isInvisible() && !invis) continue;
             if (list.size() > 5)
                 continue;
@@ -69,7 +68,7 @@ public class FightUtil implements Methods {
                     || entityLivingBase instanceof EntityPlayer && !players
                     || entityLivingBase instanceof EntityMob && !mobs
                     || entityLivingBase instanceof EntitySlime && !mobs
-                    || CombatManager.getInstance().hasBot(entity)
+                    || CombatManager.getInstance().isIgnored(entity)
                     || entityLivingBase.isInvisible() && !invis) continue;
             if (list.size() > 5)
                 continue;
@@ -96,7 +95,7 @@ public class FightUtil implements Methods {
                     || entityLivingBase instanceof EntityPlayer && !players
                     || entityLivingBase instanceof EntityMob && !mobs
                     || entityLivingBase instanceof EntitySlime && !mobs
-                    || CombatManager.getInstance().hasBot(entity)
+                    || CombatManager.getInstance().isIgnored(entity)
                     || entityLivingBase.isInvisible() && !invis) continue;
             if (list.size() > 5)
                 continue;
@@ -114,6 +113,7 @@ public class FightUtil implements Methods {
                 || entityLivingBase instanceof EntityAnimal && !animals
                 || entityLivingBase instanceof EntityMob && !mobs
                 || entityLivingBase.isInvisible() && !invis
+                || CombatManager.getInstance().isIgnored(entityLivingBase)
                 || mc.theWorld.getEntityByID(entityLivingBase.getEntityId()) != entityLivingBase
                 || entityLivingBase == mc.thePlayer
                 ||  entityLivingBase == null
@@ -129,6 +129,7 @@ public class FightUtil implements Methods {
                 || entity instanceof EntityAnimal && !animals
                 || entity instanceof EntityMob && !mobs
                 || entity.isInvisible() && !invis
+                || CombatManager.getInstance().isIgnored(entity)
                 || mc.theWorld.getEntityByID(entity.getEntityId()) != entity
                 || entity == null );
     }
@@ -143,6 +144,7 @@ public class FightUtil implements Methods {
                 || entity instanceof EntityAnimal && !animals
                 || entity instanceof EntityMob && !mobs
                 || entity.isInvisible() && !invis
+                || CombatManager.getInstance().isIgnored(entity)
                 || mc.theWorld.getEntityByID(entity.getEntityId()) != entity
                 || entity == null );
     }

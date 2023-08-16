@@ -2049,6 +2049,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
+        EventHandling.getInstance().publishEvent(new PostTickEvent());
     }
 
     /**

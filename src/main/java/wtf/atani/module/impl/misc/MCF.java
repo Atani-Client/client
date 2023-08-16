@@ -1,9 +1,12 @@
 package wtf.atani.module.impl.misc;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
 import org.lwjgl.input.Mouse;
 
+import wtf.atani.combat.CombatManager;
+import wtf.atani.combat.interfaces.IgnoreList;
 import wtf.atani.event.events.UpdateMotionEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
@@ -14,10 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ModuleInfo(name = "MCF", description = "Friend other players with a mouse click", category = Category.MISCELLANEOUS)
-public class MCF extends Module {
-    private static final List<EntityPlayer> friends = new ArrayList<>();
+public class MCF extends Module implements IgnoreList {
+    private final List<Entity> friends = new ArrayList<>();
 
     private boolean clicked;
+
+    public MCF() {
+        CombatManager.getInstance().addIgnoreList(this);
+    }
 
     @Listen
     public void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
@@ -29,10 +36,10 @@ public class MCF extends Module {
 
                 if(friends.contains(mc.pointedEntity)) {
                     friends.remove(player);
-                    message = "§c" + player.getDisplayName() + " is no longer a friend!";
+                    message = "§c" + player.getCommandSenderName() + " is no longer a friend!";
                 } else {
                     friends.add(player);
-                    message = "§a" + player.getDisplayName() + " is now a friend!";
+                    message = "§a" + player.getCommandSenderName() + " is now a friend!";
                 }
 
                 this.sendMessage(message, true);
@@ -45,13 +52,16 @@ public class MCF extends Module {
 
     @Override
     public void onEnable() {
-        friends.clear();
         this.clicked = false;
     }
 
     @Override
     public void onDisable() {
-        friends.clear();
         this.clicked = false;
+    }
+
+    @Override
+    public List<Entity> getIgnored() {
+        return this.friends;
     }
 }

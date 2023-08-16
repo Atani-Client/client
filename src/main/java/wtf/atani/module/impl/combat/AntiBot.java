@@ -8,6 +8,7 @@ import net.minecraft.network.play.server.S38PacketPlayerListItem;
 import net.minecraft.network.play.server.S41PacketServerDifficulty;
 import net.minecraft.world.WorldSettings;
 import wtf.atani.combat.CombatManager;
+import wtf.atani.combat.interfaces.IgnoreList;
 import wtf.atani.event.events.PacketEvent;
 import wtf.atani.event.events.UpdateEvent;
 import wtf.atani.event.radbus.Listen;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ModuleInfo(name = "AntiBot", description = "Prevents you from attacking bots in your game", category = Category.COMBAT)
-public class AntiBot extends Module {
+public class AntiBot extends Module implements IgnoreList {
 
     private final ArrayList<Entity> bots = new ArrayList<>();
 
@@ -28,6 +29,10 @@ public class AntiBot extends Module {
 
     private boolean wasAdded = false;
     private String name;
+
+    public AntiBot() {
+        CombatManager.getInstance().addIgnoreList(this);
+    }
     
     @Override
     public String getSuffix() {
@@ -85,21 +90,12 @@ public class AntiBot extends Module {
                 mc.theWorld.playerEntities.forEach(player -> {
                     final NetworkPlayerInfo info = mc.getNetHandler().getPlayerInfo(player.getUniqueID());
                     if (info == null) {
-                        CombatManager.getInstance().addBot(player);
+                        this.bots.add(player);
                     } else {
-                        CombatManager.getInstance().removeBot(player);
+                        this.bots.remove(player);
                     }
                 });
                 break;
-        }
-        for(Entity entity : bots) {
-            if(!CombatManager.getInstance().hasBot(entity))
-                CombatManager.getInstance().addBot(entity);
-        }
-        for(Entity entity : CombatManager.getInstance().getBots()) {
-            if(!this.bots.contains(entity)) {
-                CombatManager.getInstance().removeBot(entity);
-            }
         }
     }
 
@@ -110,9 +106,11 @@ public class AntiBot extends Module {
 
     @Override
     public void onDisable() {
-        for(Entity entity : bots) {
-            if(CombatManager.getInstance().hasBot(entity))
-                CombatManager.getInstance().removeBot(entity);
-        }
+        this.bots.clear();
+    }
+
+    @Override
+    public List<Entity> getIgnored() {
+        return this.bots;
     }
 }

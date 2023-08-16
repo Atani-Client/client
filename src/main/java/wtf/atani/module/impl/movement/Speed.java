@@ -612,7 +612,7 @@ public class Speed extends Module {
                             if(mc.thePlayer.onGround) {
                                 watchDogTicks = 0;
                                 mc.thePlayer.jump();
-                                MoveUtil.strafe((float) (0.525 - Math.random() / 10));
+                                MoveUtil.strafe(0.418f);
                             } else {
                                 watchDogTicks++;
                                 mc.thePlayer.motionY -= 0.0008;

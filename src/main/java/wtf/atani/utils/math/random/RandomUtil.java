@@ -73,4 +73,8 @@ public class RandomUtil {
         return (float)(origin + secureRandom.nextFloat() * difference);
     }
 
+    public static double randomSin() {
+        return Math.sin(nextDouble(0.0, 6.283185307179586));
+    }
+
 }

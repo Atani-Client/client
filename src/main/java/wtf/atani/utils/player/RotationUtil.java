@@ -17,7 +17,6 @@ public class RotationUtil implements Methods {
     public static Vec3 getBestVector(Vec3 look, AxisAlignedBB axisAlignedBB) {
         return new Vec3(MathHelper.clamp(look.xCoord, axisAlignedBB.minX, axisAlignedBB.maxX), MathHelper.clamp(look.yCoord, axisAlignedBB.minY, axisAlignedBB.maxY), MathHelper.clamp(look.zCoord, axisAlignedBB.minZ, axisAlignedBB.maxZ));
     }
-
     public static Vec3 getVectorForRotation(float yaw, float pitch) {
         float f = MathHelper.cos((float) (-yaw * 0.017163291F - Math.PI));
         float f2 = MathHelper.sin((float) (-yaw * 0.017163291F - Math.PI));
@@ -100,60 +99,12 @@ public class RotationUtil implements Methods {
         return new float[]{endYaw, endPitch};
     }
 
-    public static float[] updateRotationAdvanced(float newYaw, float newPitch, float speed) {
-        return RotationUtil.updateRotationAdvanced(PlayerHandler.yaw, newYaw, speed, PlayerHandler.pitch, newPitch, speed);
-    }
-
     public static float[] updateRotationSimple(float newYaw, float newPitch, float speed) {
         return RotationUtil.updateRotationSimple(PlayerHandler.yaw, newYaw, speed, PlayerHandler.pitch, newPitch, speed);
     }
 
-    public static float[] updateRotationAdvanced(float oldYaw, float newYaw, float yawSpeed, float oldPitch, float newPitch, float pitchSpeed) {
-        final int fps = (int) (Minecraft.getDebugFPS() / 20.0F);
-        final float deltaYaw = (((newYaw - oldYaw) + 540) % 360) - 180;
-        final float deltaPitch = newPitch - oldPitch;
-        final float yawDistance = MathHelper.clamp_float(deltaYaw, -yawSpeed, yawSpeed) / fps * 4;
-        final float pitchDistance = MathHelper.clamp_float(deltaPitch, -pitchSpeed, pitchSpeed) / fps * 4;
-        float calcYaw = oldYaw + yawDistance;
-        float calcPitch = oldPitch + pitchDistance;
-        return new float[] {calcYaw, calcPitch};
-    }
-
     public static float[] updateRotationSimple(float oldYaw, float newYaw, float yawSpeed, float oldPitch, float newPitch, float pitchSpeed) {
         return new float[] {updateRotation(oldYaw, newYaw, yawSpeed), updateRotation(oldPitch, newPitch, pitchSpeed)};
-    }
-
-
-    public static float getSimpleScaffoldYaw() {
-        boolean forward = mc.gameSettings.keyBindForward.isKeyDown();
-        boolean left = mc.gameSettings.keyBindLeft.isKeyDown();
-        boolean right = mc.gameSettings.keyBindRight.isKeyDown();
-        boolean back = mc.gameSettings.keyBindBack.isKeyDown();
-
-        float yaw = 0;
-
-        // Only one Key directions
-        if (forward && !left && !right && !back)
-            yaw = 180;
-        if (!forward && left && !right && !back)
-            yaw = 90;
-        if (!forward && !left && right && !back)
-            yaw = -90;
-        if (!forward && !left && !right && back)
-            yaw = 0;
-
-        // Multi Key directions
-        if (forward && left && !right && !back)
-            yaw = 135;
-        if (forward && !left && right && !back)
-            yaw = -135;
-
-        if (!forward && left && !right && back)
-            yaw = 45;
-        if (!forward && !left && right && back)
-            yaw = -45;
-
-        return mc.thePlayer.rotationYaw + yaw;
     }
 
     public static float getDistanceToLastPitch(final float pitch) {
@@ -178,20 +129,6 @@ public class RotationUtil implements Methods {
 
         if (f < -(float) speed) {
             f = -(float) speed;
-        }
-
-        return oldRot + f;
-    }
-
-    public static float updateRotation(float oldRot, float newRot) {
-        float f = MathHelper.wrapDegrees(newRot - oldRot);
-
-        if (f > (float) 180) {
-            f = (float) 180;
-        }
-
-        if (f < -(float) 180) {
-            f = -(float) 180;
         }
 
         return oldRot + f;

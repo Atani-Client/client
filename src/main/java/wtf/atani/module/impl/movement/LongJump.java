@@ -17,7 +17,7 @@ import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "LongJump", description = "Jumps long", category = Category.MOVEMENT)
 public class LongJump extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"NCP", "Test", "Vulcan"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"NCP", "Test", "Vulcan", "Intave"});
     private final SliderValue<Float> height = new SliderValue<>("Height", "High high will the player jump?", this, 4F, 0.4F, 10F, 0);
 
     // NCP
@@ -40,7 +40,18 @@ public class LongJump extends Module {
 
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
-
+        if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+            switch (mode.getValue()) {
+                // Fucking insane
+                case "Intave":
+                    if(mc.thePlayer.onGround) {
+                        mc.thePlayer.jump();
+                        mc.thePlayer.jump();
+                        this.setEnabled(false);
+                    }
+                    break;
+            }
+        }
     }
 
     @Listen
@@ -161,5 +172,6 @@ public class LongJump extends Module {
         mc.timer.timerSpeed = 1;
         clips = 0;
         jumped = false;
+        mc.gameSettings.keyBindJump.pressed = false;
     }
 }

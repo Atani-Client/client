@@ -77,7 +77,7 @@ public class AntiBot extends Module implements IgnoreList {
     public final void onUpdate(UpdateEvent updateEvent) {
         switch (mode.getValue()) {
             case "Twerion":
-                List<Entity> list = new ArrayList();
+                List<Entity> list = new ArrayList<>();
                 mc.theWorld.loadedEntityList.forEach(entity -> {
                     if(entity instanceof EntityZombie) {
                         list.add(entity);

@@ -23,7 +23,7 @@ public class PingSpoof extends Module {
     	if(mc.thePlayer == null || mc.theWorld == null)
     		return;
         if(packetEvent.getType() == PacketEvent.Type.OUTGOING) {
-            final Packet packet = packetEvent.getPacket();
+            final Packet<?> packet = packetEvent.getPacket();
             if (packet instanceof C00PacketKeepAlive || packet instanceof C01PacketPing || packet instanceof C0FPacketConfirmTransaction) {
                 packetEvent.setCancelled(true);
                 new Thread(() -> {

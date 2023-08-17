@@ -16,7 +16,7 @@ import java.util.ArrayDeque;
 @ModuleInfo(name = "Blink", description = "Blocks your packets for a time being", category = Category.MISCELLANEOUS, alwaysEnabled = true)
 public class Blink extends Module {
 
-    private final ArrayDeque<Packet> outPacketDeque = new ArrayDeque<>();
+    private final ArrayDeque<Packet<?>> outPacketDeque = new ArrayDeque<>();
     private final TimeHelper fakeLagTimer = new TimeHelper();
 
     private final CheckBoxValue incoming = new CheckBoxValue("Incoming", "Queue incoming packets?", this, false);
@@ -41,7 +41,7 @@ public class Blink extends Module {
     		this.setEnabled(false);
         if (active && (event.getType() == PacketEvent.Type.OUTGOING || incoming.getValue())) {
             outPacketDeque.add(event.getPacket());
-            if (pulse.getValue() && fakeLagTimer.hasReached(pulseDelay.getValue().longValue())) {
+            if (pulse.getValue() && fakeLagTimer.hasReached(pulseDelay.getValue())) {
                 while (!outPacketDeque.isEmpty()) {
                     sendPacketUnlogged(outPacketDeque.poll());
                 }

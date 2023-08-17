@@ -25,7 +25,6 @@ import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
-import java.util.logging.FileHandler;
 
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 @ModuleInfo(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)

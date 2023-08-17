@@ -20,7 +20,7 @@ import wtf.atani.value.impl.StringBoxValue;
 
 @ModuleInfo(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "Test", "WatchDog", "Intave", "MineMenClub", "Polar Test", "Custom"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.is("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
@@ -119,7 +119,7 @@ public class Speed extends Module {
                 }
 
                 break;
-            case "Polar Test":
+            case "Polar":
                 if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     mc.gameSettings.keyBindJump.pressed = GameSettings.isKeyDown(mc.gameSettings.keyBindJump);
                     if (isMoving()) {
@@ -132,7 +132,6 @@ public class Speed extends Module {
                             mc.thePlayer.motionX *= 1.01;
                             mc.thePlayer.motionZ *= 1.01;
                         } else if (mc.thePlayer.motionY < 0.0029) {
-                            // This don't do shit?
                             mc.thePlayer.motionX *= 1.0;
                             mc.thePlayer.motionZ *= 1.0;
                         }
@@ -493,7 +492,6 @@ public class Speed extends Module {
                                 mc.thePlayer.motionY -= 0.1;
                             }
                             break;
-                            // Tabio please dont kill me for the naming
                         case "Normal 2":
                             if(!isMoving()) {
                                 MoveUtil.strafe(0);
@@ -653,8 +651,6 @@ public class Speed extends Module {
                 if(mc.thePlayer.hurtTime != 0) {
                     mc.timer.timerSpeed = 1.21F;
                 }
-                break;
-            case "Test":
                 break;
             case "MineMenClub":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {

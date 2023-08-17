@@ -360,7 +360,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
                         valY2 += fontRendererSmall.FONT_HEIGHT + 2;
                     } else if(value instanceof SliderValue) {
 
-                        valY2 += fontRendererSmall.FONT_HEIGHT + 2;
+                        valY2 += (fontRendererSmall.FONT_HEIGHT + 2) * 2;
                     } else if(value instanceof StringBoxValue) {
                         if(RenderUtil.isHovered(mouseX, mouseY, modX, valY2 - 2.5f, modWidth, 11)) {
                              if(this.expanded.contains(value))

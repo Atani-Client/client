@@ -306,7 +306,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
         if(selectedCategory != null) {
             float third = spaceWidth / 3;
             int counter = 0;
-            float firstY = y + 30 + 4 + 20 + 10 + 10, secondY = y + 30 + 4 + 20 + 10 + 10, thirdY = y + 30 + 4 + 20 + 10 + 10;
+            float firstY = y + 30 + 4 + 20 + 10 + 10 + scroll, secondY = y + 30 + 4 + 20 + 10 + 10 + scroll, thirdY = y + 30 + 4 + 20 + 10 + 10 + scroll;
             float modX = x + 2 + 10;
             float modWidth = third - 13.5f;
             for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {

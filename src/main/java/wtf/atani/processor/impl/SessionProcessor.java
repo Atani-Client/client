@@ -12,6 +12,12 @@ import wtf.atani.processor.data.ProcessorInfo;
 @ProcessorInfo(name = "SessionProcessor")
 public class SessionProcessor extends Processor {
 
+    private static SessionProcessor instance;
+
+    public SessionProcessor() {
+        this.instance = this;
+    }
+
     private final long totalPlayTimeStart = System.currentTimeMillis();
     private long serverPlayTimeStart = -1;
 
@@ -125,5 +131,9 @@ public class SessionProcessor extends Processor {
 
     public void setWins(int wins) {
         this.wins = wins;
+    }
+
+    public static SessionProcessor getInstance() {
+        return instance;
     }
 }

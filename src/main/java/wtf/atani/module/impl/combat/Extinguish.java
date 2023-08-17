@@ -2,14 +2,10 @@ package wtf.atani.module.impl.combat;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.BlockPos;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
-import org.lwjgl.Sys;
 import wtf.atani.event.events.ClickingEvent;
 import wtf.atani.event.events.RotationEvent;
 import wtf.atani.event.events.UpdateEvent;
@@ -17,7 +13,6 @@ import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
-import wtf.atani.utils.player.PlayerHandler;
 
 @ModuleInfo(name = "Extinguish", description = "Automatically extinguishes fire under you", category = Category.COMBAT)
 public class Extinguish extends Module {

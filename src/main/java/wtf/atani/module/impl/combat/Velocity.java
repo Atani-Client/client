@@ -111,7 +111,7 @@ public class Velocity extends Module {
         }
         switch (mode.getValue()) {
             case "Polar Under-Block": {
-                Packet packet = packetEvent.getPacket();
+                Packet<?> packet = packetEvent.getPacket();
                 AxisAlignedBB axisAlignedBB = mc.thePlayer.getEntityBoundingBox().offset(0.0, 1.0, 0.0);
 
                 if (!mc.theWorld.getCollidingBoundingBoxes(mc.thePlayer, axisAlignedBB).isEmpty()) {
@@ -124,7 +124,7 @@ public class Velocity extends Module {
             }
             case "Grim Flag":
                 if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
-                    Packet p = packetEvent.getPacket();
+                    Packet<?> p = packetEvent.getPacket();
                     if (p instanceof S12PacketEntityVelocity && ((S12PacketEntityVelocity)p).getEntityID() == mc.thePlayer.getEntityId()) {
                         packetEvent.setCancelled(true);
                         mc.thePlayer.motionX += 0.1D;

@@ -1,7 +1,6 @@
 package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
-import net.minecraft.network.play.client.C03PacketPlayer;
 import wtf.atani.event.events.UpdateMotionEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;

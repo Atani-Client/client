@@ -7,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.util.*;
 import org.lwjgl.input.Keyboard;
-import wtf.atani.anticheat.check.Check;
 import wtf.atani.event.events.*;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;

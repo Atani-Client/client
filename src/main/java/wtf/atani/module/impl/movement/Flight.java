@@ -1,10 +1,8 @@
 package wtf.atani.module.impl.movement;
 
 import com.google.common.base.Supplier;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.util.AxisAlignedBB;
 import wtf.atani.event.events.*;

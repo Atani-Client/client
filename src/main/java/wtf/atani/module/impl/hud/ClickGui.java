@@ -6,7 +6,7 @@ import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
 import wtf.atani.module.data.enums.Category;
 import wtf.atani.screen.click.astolfo.AstolfoClickGuiScreen;
-import wtf.atani.screen.click.atani.AtaniClickguiScreen;
+import wtf.atani.screen.click.atani.AtaniClickGuiScreen;
 import wtf.atani.screen.click.augustus.AugustusClickGuiScreen;
 import wtf.atani.screen.click.golden.GoldenClickGuiScreen;
 import wtf.atani.screen.click.icarus.IcarusClickGuiScreen;
@@ -33,7 +33,7 @@ public class ClickGui extends Module {
                     mode.getValue().equalsIgnoreCase("Fatality")}).setIdName("Non-Dropdown Animation Mode");
 
     public static SimpleClickGuiScreen clickGuiScreenSimple;
-    public static AtaniClickguiScreen clickGuiScreenAtani;
+    public static AtaniClickGuiScreen clickGuiScreenAtani;
     public static GoldenClickGuiScreen clickGuiScreenGolden;
     public static AugustusClickGuiScreen clickGuiScreenAugustus;
     public static XaveClickGuiScreen clickGuiScreenXave;
@@ -45,8 +45,8 @@ public class ClickGui extends Module {
     public void onEnable() {
         switch (this.mode.getValue()) {
             case "Atani":
-                if(clickGuiScreenAtani == null || true) {
-                    clickGuiScreenAtani = new AtaniClickguiScreen();
+                if(clickGuiScreenAtani == null) {
+                    clickGuiScreenAtani = new AtaniClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenAtani);
                 break;

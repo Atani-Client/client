@@ -2,15 +2,19 @@ package wtf.atani.screen.click.atani;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.enums.Category;
-import wtf.atani.module.impl.player.ScaffoldWalk;
+import wtf.atani.module.impl.hud.ClickGui;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.processor.impl.SessionProcessor;
+import wtf.atani.utils.animation.Direction;
+import wtf.atani.utils.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.interfaces.ClientInformationAccess;
 import wtf.atani.utils.math.MathUtil;
 import wtf.atani.utils.render.RenderUtil;
@@ -22,23 +26,104 @@ import wtf.atani.value.impl.StringBoxValue;
 import wtf.atani.value.storage.ValueStorage;
 
 import java.awt.*;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-public class AtaniClickguiScreen extends GuiScreen implements ClientInformationAccess {
+public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationAccess {
 
     float width = 450, height = 350;
-    float x = 100, y = 100;
+    float draggingX = -1337, draggingY = -1337;
+    float x = -1337, y = -1337;
     Category selectedCategory;
     ArrayList<StringBoxValue> expanded = new ArrayList<>();
     FontRenderer fontRendererSmall = FontStorage.getInstance().findFont("Arial",  18);
     FontRenderer fontRendererSmaller = FontStorage.getInstance().findFont("Arial",  17);
     Color textColor = new Color(15, 15, 15);
+    DecelerateAnimation openingAnimation = new DecelerateAnimation(600, 1, Direction.BACKWARDS);
+    ClickGui clickGui;
+    private float scroll, addY, addX;
+
+    @Override
+    public void initGui() {
+        this.clickGui = ModuleStorage.getInstance().getByClass(ClickGui.class);
+        this.buttonList.clear();
+        this.buttonList.add(new GuiButton(0, super.width - 60, super.height - 25, 55, 20, "Reset Gui"));
+        openingAnimation.setDirection(Direction.FORWARDS);
+    }
+
+    @Override
+    public void actionPerformed(GuiButton button) {
+        switch (button.id) {
+            case 0:
+                mc.displayGuiScreen(null);
+                ClickGui.clickGuiScreenAtani = null;
+                ModuleStorage.getInstance().getByClass(ClickGui.class).toggle();
+                break;
+        }
+    }
+
+    @Override
+    protected void keyTyped(char key, int code) {
+        if (code == 1) {
+            if (clickGui.openingAnimation.getValue()) {
+                this.openingAnimation.setDirection(Direction.BACKWARDS);
+            } else {
+                mc.displayGuiScreen(null);
+            }
+        }
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if (this.x == -1337 || this.y == -1337) {
+            this.x = super.width / 2 - this.width / 2;
+            this.y = super.height / 2 - this.height / 2;
+        }
+        if(Mouse.isButtonDown(0) && draggingY != -1337 && draggingX != -1337) {
+            x = mouseX - draggingX;
+            y = mouseY - draggingY;
+        } else if(!Mouse.isButtonDown(0)) {
+            draggingY = -1337;
+            draggingX = -1337;
+        }
+        ScaledResolution sr = new ScaledResolution(mc);
+        float animationLeftRight = 0;
+        float animationUpDown = 0;
+        if(clickGui.openingAnimation.getValue()) {
+            switch (clickGui.nonDropdownAnimation.getValue()) {
+                case "Left to Right":
+                    animationLeftRight = (float) ((width + x) * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.FORWARDS) {
+                        animationLeftRight = (float) -((width + x) * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+                case "Right to Left":
+                    animationLeftRight = (float) (sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.BACKWARDS) {
+                        animationLeftRight = (float) -(sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+                case "Up to Down":
+                    animationUpDown = (float) ((height + y) * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.FORWARDS) {
+                        animationUpDown = (float) -((height + y) * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+                case "Down to Up":
+                    animationUpDown = (float) (sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.BACKWARDS) {
+                        animationUpDown = (float) -(sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+            }
+            addX = animationLeftRight;
+            addY = animationUpDown;
+        }
+        float beforeX = x, beforeY = y;
+        x += addX;
+        y += addY;
+        scroll += Mouse.getDWheel() / 10f;
+        scroll = Math.min(0, scroll);
         RenderUtil.drawRect(x, y, width, height, new Color(0, 58, 105).brighter().getRGB());
         GradientShader.drawGradientTB(x + 2, y + 2, width - 4, 30, 1, new Color(0, 48, 95).brighter().brighter(), new Color(0, 48, 95).brighter());
         RenderUtil.drawRect(x + 2, y + 32, width - 4, height - 34, new Color(0, 48, 95).brighter().getRGB());
@@ -72,11 +157,11 @@ public class AtaniClickguiScreen extends GuiScreen implements ClientInformationA
             categoryX += categoryWidth;
         }
         RenderUtil.startScissorBox();
-        RenderUtil.drawScissorBox(x + 2, y + 2 + 30 + 2, width - 4, height - (2 + 30 + 2) - 2);
+        RenderUtil.drawScissorBox(x + 2, y + 2 + 30 + 20.5f + 2, width - 4, height - (2 + 30 + 2) - 20.5f - 2);
         if(selectedCategory != null) {
             float third = spaceWidth / 3;
             int counter = 0;
-            float firstY = y + 30 + 4 + 20 + 10 + 10, secondY = y + 30 + 4 + 20 + 10 + 10, thirdY = y + 30 + 4 + 20 + 10 + 10;
+            float firstY = y + 30 + 4 + 20 + 10 + 10 + scroll, secondY = y + 30 + 4 + 20 + 10 + 10 + scroll, thirdY = y + 30 + 4 + 20 + 10 + 10 + scroll;
             float modX = x + 2 + 10;
             float modWidth = third - 13.5f;
             for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
@@ -96,7 +181,7 @@ public class AtaniClickguiScreen extends GuiScreen implements ClientInformationA
                 float valY = modY + 10;
                 // Getting Y
                 // Enabled field
-                valY += fontRendererSmall.FONT_HEIGHT + 2 ;
+                valY += fontRendererSmall.FONT_HEIGHT + 2;
                 // Values
                 for(Value value : ValueStorage.getInstance().getValues(module)) {
                     if(!value.isVisible())
@@ -110,7 +195,7 @@ public class AtaniClickguiScreen extends GuiScreen implements ClientInformationA
                         if(this.expanded.contains(value)) {
                             StringBoxValue stringBoxValue = (StringBoxValue) value;
                             for(String s : stringBoxValue.getValues()) {
-                                valY += (fontRendererSmall.FONT_HEIGHT + 2) * 2;
+                                valY += (fontRendererSmall.FONT_HEIGHT + 2);
                             }
                         }
                     }
@@ -187,10 +272,24 @@ public class AtaniClickguiScreen extends GuiScreen implements ClientInformationA
             }
         }
         RenderUtil.endScissorBox();
+        x = beforeX;
+        y = beforeY;
+        super.drawScreen(mouseX, mouseY, partialTicks);
+        if (clickGui.openingAnimation.getValue()) {
+            if (this.openingAnimation.finished(Direction.BACKWARDS))
+                mc.displayGuiScreen(null);
+        }
     }
 
     @Override
     public void mouseClicked(int mouseX, int mouseY, int button) {
+        float beforeX = x, beforeY = y;
+        x += addX;
+        y += addY;
+        if (RenderUtil.isHovered(mouseX, mouseY, x + 2, y + 2, width - 4, 30)) {
+            draggingX = mouseX - x;
+            draggingY = mouseY - y;
+        }
         float spaceWidth = width - 4;
         float categoryWidth = spaceWidth / Category.values().length;
         float categoryX = x + 2;
@@ -199,8 +298,11 @@ public class AtaniClickguiScreen extends GuiScreen implements ClientInformationA
                 selectedCategory = category;
             categoryX += categoryWidth;
         }
-        if(!RenderUtil.isHovered(mouseX, mouseY, x + 2, y + 2 + 30 + 2, width - 4, height - (2 + 30 + 2) - 2))
+        if(!RenderUtil.isHovered(mouseX, mouseY, x + 2, y + 2 + 30 + 20.5f + 2, width - 4, height - (2 + 30 + 2) - 20.5f - 2)) {
+            x = beforeX;
+            y = beforeY;
             return;
+        }
         if(selectedCategory != null) {
             float third = spaceWidth / 3;
             int counter = 0;
@@ -237,7 +339,7 @@ public class AtaniClickguiScreen extends GuiScreen implements ClientInformationA
                         if(this.expanded.contains(value)) {
                             StringBoxValue stringBoxValue = (StringBoxValue) value;
                             for(String s : stringBoxValue.getValues()) {
-                                valY += (fontRendererSmall.FONT_HEIGHT + 2) * 2;
+                                valY += (fontRendererSmall.FONT_HEIGHT + 2);
                             }
                         }
                     }
@@ -298,6 +400,8 @@ public class AtaniClickguiScreen extends GuiScreen implements ClientInformationA
                 }
             }
         }
+        x = beforeX;
+        y = beforeY;
     }
 
 }

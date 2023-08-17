@@ -40,6 +40,11 @@
 
     <repositories>
         <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+
+        <repository>
             <id>lenni0451-maven-releases</id>
             <name>lenni0451.net Maven Repository</name>
             <url>https://maven.lenni0451.net/releases</url>
@@ -58,6 +63,12 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>com.github.Vatuu</groupId>
+            <artifactId>discord-rpc</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+
         <dependency>
             <groupId>fr.litarvan</groupId>
             <artifactId>openauth</artifactId>

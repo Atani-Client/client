@@ -1,6 +1,7 @@
 package wtf.atani.module.impl.hud;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import de.florianmichael.rclasses.math.MathUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
@@ -15,19 +16,22 @@ import wtf.atani.module.data.enums.Category;
 import wtf.atani.module.impl.combat.KillAura;
 import wtf.atani.module.storage.ModuleStorage;
 import wtf.atani.utils.combat.FightUtil;
+import wtf.atani.utils.interfaces.ColorPalette;
 import wtf.atani.utils.math.MathUtil;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 import wtf.atani.utils.render.shader.shaders.GradientShader;
 import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.value.impl.StringBoxValue;
 
 import java.awt.*;
+import java.util.logging.FileHandler;
 
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 @ModuleInfo(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)
-public class TargetHUD extends Module {
+public class TargetHUD extends Module implements ColorPalette {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Golden", "Astolfo"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Atani", "Golden", "Ryu", "Astolfo"});
 
     @Listen
     public void onRender2D(Render2DEvent render2DEvent) {
@@ -43,6 +47,69 @@ public class TargetHUD extends Module {
             int counter = 0;
 
             switch (this.mode.getValue()) {
+                case "Ryu": {
+                    float height = 35;
+                    RenderUtil.drawRect(x, y, height, height, new Color(0, 0, 0, 140).getRGB());
+                    RenderUtil.drawSkinHead(target, x + 4, y + 4, (int)height - 8);
+                    RenderUtil.drawRect(x + height, y, 3, height, ColorUtil.setAlpha(new Color(RYU), 140).getRGB());
+                    RenderUtil.drawRect(x + height + 3, y, 70, height, new Color(0, 0, 0, 80).getRGB());
+                    RenderableShaders.render(true, false, () -> {
+                        FontRenderer medium21 = FontStorage.getInstance().findFont("Roboto", 21);
+                        FontRenderer medium17 = FontStorage.getInstance().findFont("Roboto", 17);
+                        float health = MathUtils.clamp(target.getHealth(), 0, 20);
+                        medium21.drawString(target.getCommandSenderName(), x + height + 3 + 4 + 0.5f, y + 5 + 0.5f, Color.black.getRGB());
+                        medium17.drawString("Health " + health, x + height + 3 + 4 + 0.5f, y + 5 + medium21.FONT_HEIGHT + 2 + 0.5f, Color.black.getRGB());
+                        medium17.drawString("Distance " + MathUtil.round(FightUtil.getRange(target), 1), x + height + 3 + 4 + 0.5f, y + 5 + medium21.FONT_HEIGHT + 2 + medium17.FONT_HEIGHT + 0.5f, Color.black.getRGB());
+                    });
+                    FontRenderer medium21 = FontStorage.getInstance().findFont("Roboto Medium", 21);
+                    FontRenderer medium17 = FontStorage.getInstance().findFont("Roboto Medium", 17);
+                    float health = MathUtils.clamp(target.getHealth(), 0, 20);
+                    medium21.drawString(target.getCommandSenderName(), x + height + 3 + 4, y + 5, -1);
+                    medium17.drawString("Health " + ChatFormatting.WHITE + health, x + height + 3 + 4, y + 5 + medium21.FONT_HEIGHT + 2, RYU);
+                    medium17.drawString("Distance " + ChatFormatting.WHITE + MathUtil.round(FightUtil.getRange(target), 1), x + height + 3 + 4, y + 5 + medium21.FONT_HEIGHT + 2 + medium17.FONT_HEIGHT, RYU);
+                    break;
+                }
+                case "Atani": {
+                    float width = 120, height = 50;
+                    RenderUtil.drawRect(x, y, width, height, new Color(0, 58, 105).brighter().getRGB());
+                    GradientShader.drawGradientTB(x + 2, y + 2, width - 4, 14, 1, new Color(0, 48, 95).brighter().brighter(), new Color(0, 48, 95).brighter());
+                    RenderUtil.drawRect(x + 2, y + 14, width - 4, height - 14 - 2, new Color(240, 240, 240).getRGB());
+                    FontRenderer fontRenderer = FontStorage.getInstance().findFont("Arial", 19);
+                    fontRenderer.drawStringWithShadow(target.getCommandSenderName(), x + 3.5f, y + 3.5f, -1);
+                    int headSize = (int) (height - 14 - 6);
+                    RenderUtil.drawSkinHead(target, x + 2 + 2, y + 14 + 2, headSize);
+                    RenderUtil.drawBorderedRect(x + 6 + headSize, y + 14 + 2, (x + 6 + headSize) + width - 10 - headSize, (y + 14 + 2) + headSize, 1f,-1, new Color(200, 200, 200).getRGB(), true);
+                    float health = MathUtils.clamp(target.getHealth(), 0, 20);
+                    float percentage = health / 20;
+                    RenderUtil.drawRect(x + 6 + headSize + 2, y + 14 + 2 + 2, width - (6 + headSize + 8), 6, new Color(240, 240, 240).getRGB());
+                    GradientShader.drawGradientTB(x + 6 + headSize + 2, y + 14 + 2 + 2, (width - (6 + headSize + 8)) * percentage, 6, 1, Color.red, Color.red.darker().darker());
+                    FontRenderer smallArial = FontStorage.getInstance().findFont("Arial", 17);
+                    Color textColor = new Color(15, 15, 15);
+                    fontRenderer.drawString( ChatFormatting.BOLD.toString() + ((int)health) + " HP (" + ((int)(percentage * 100)) + "%)", x + 6 + headSize + 3, y + 14 + 2 + 2 + 9, textColor.getRGB());
+                    int roundedOwn = Math.round(mc.thePlayer.getHealth());
+                    int roundedTarget = Math.round(target.getHealth());
+                    int status = 0;
+                    if(roundedOwn == roundedTarget) {
+                        status = 0;
+                    } else if(roundedOwn < roundedTarget) {
+                        status = 1;
+                    } else if(roundedOwn > roundedTarget) {
+                        status = 2;
+                    }
+                    fontRenderer.drawString(status == 0 ? "Draw" : status == 1 ? "Lose" : "Win", x + 6 + headSize + 3, y + 14 + 2 + 2 + 10 + smallArial.FONT_HEIGHT, status == 0 ? Color.yellow.darker().getRGB() : status == 1 ? Color.red.darker().getRGB() : Color.green.darker().getRGB());
+                    break;
+                }
+                case "Simple":
+                    RenderableShaders.renderAndRun(() -> {
+                        String text = target.getCommandSenderName() + " | " + Math.round(mc.thePlayer.getHealth());
+                        FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
+                        float length = roboto17.getStringWidth(text);
+                        float textX = x + 4, textY = y + 4.5f;
+                        float rectWidth = 8 + length, rectHeight = roboto17.FONT_HEIGHT + 8;
+                        RenderUtil.drawRect(x, y, rectWidth, rectHeight, BACK_TRANS_180);
+                        roboto17.drawStringWithShadow(text, textX, textY, -1);
+                    });
+                    break;
                 case "Golden":
                     float width = 100;
                     float height = 2 + 3 * (small.FONT_HEIGHT + 1);

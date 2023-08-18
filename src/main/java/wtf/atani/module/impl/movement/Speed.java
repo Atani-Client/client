@@ -39,7 +39,7 @@ public class Speed extends Module {
     private final SliderValue<Float> ncpOnGroundTimer = new SliderValue<>("NCP onGround Timer", "What timer will the NCP Speed use onGround?", this, 2F, 0.1, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final SliderValue<Float> ncpInAirTimer = new SliderValue<>("NCP In Air Timer", "What timer will the NCP Speed use In Air?", this, 1F, 0.1, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
-    private final SliderValue<Double> ncpLowerMotion = new SliderValue<>("NCP Motion Lowered", "How Much will the NCP Motion Modify Lower Motion?", this, 0.1d, 0.01, 0.12d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom") && ncpMotionModify.getValue()});
+    private final SliderValue<Double> ncpLowerMotion = new SliderValue<>("NCP Motion Lowered", "How Much will the NCP Motion Modify Lower Motion?", this, 0.1d, 0.01, 0.18d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom") && ncpMotionModify.getValue()});
 
     // Custom
     private final SliderValue<Double> motionY = new SliderValue<>("Motion Y", "How big will the y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom")});

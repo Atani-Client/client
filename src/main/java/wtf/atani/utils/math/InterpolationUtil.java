@@ -24,6 +24,10 @@ public final class InterpolationUtil implements Methods {
 		return previous + (current - previous) * scale;
 	}
 
+	public static double interpolate(final double previous, final double current) {
+		return previous + (current - previous) * mc.timer.renderPartialTicks;
+	}
+
 	public static float interpolate(final float previous, final float current, final float scale) {
 		return previous + (current - previous) * scale;
 	}

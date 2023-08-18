@@ -46,7 +46,7 @@ public class Step extends Module {
                             hasStepped = false;
                             mc.thePlayer.motionY = 0;
                             if (mc.thePlayer.moveForward > 0) {
-                                MoveUtil.setMoveSpeed(MoveUtil.getBaseMoveSpeed() * 0.47);
+                                MoveUtil.setMoveSpeed(MoveUtil.getBaseMoveSpeed() * 1);
                             }
                         }
                     }

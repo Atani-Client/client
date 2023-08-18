@@ -51,7 +51,7 @@ public class Flight extends Module {
             collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(collisionBoxesEvent.getBlockPos().getX(), collisionBoxesEvent.getBlockPos().getY(), collisionBoxesEvent.getBlockPos().getZ()));
             break;
             case "Test":
-                collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(collisionBoxesEvent.getBlockPos().getX(), collisionBoxesEvent.getBlockPos().getY(), collisionBoxesEvent.getBlockPos().getZ()));
+            //    collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(collisionBoxesEvent.getBlockPos().getX(), collisionBoxesEvent.getBlockPos().getY(), collisionBoxesEvent.getBlockPos().getZ()));
                 break;
         }
     }
@@ -123,6 +123,16 @@ public class Flight extends Module {
                 MoveUtil.strafe(moveSpeed);
                 break;
             case "Test":
+                if(!isMoving())
+                    return;
+
+                mc.gameSettings.keyBindJump.pressed = mc.thePlayer.onGround;
+
+                if(mc.thePlayer.onGround) {
+                    mc.timer.timerSpeed = 0.8F;
+                } else {
+                    mc.timer.timerSpeed = 1.1F;
+                }
             //    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() + 0.05F);
                 break;
             case "Old NCP":

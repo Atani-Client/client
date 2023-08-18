@@ -176,8 +176,6 @@ public class KillAura extends Module {
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
         final SecureRandom secureRandom = new SecureRandom();
-        float deltaYaw = RandomUtil.nextFloat(this.minYaw.getValue() - 0.0010000000474974513, this.maxYaw.getValue()) / 2.0f + secureRandom.nextFloat() + RandomUtil.nextFloat(this.minYaw.getValue() - 0.0010000000474974513, this.maxYaw.getValue()) / 2.0f;
-        float deltaPitch = RandomUtil.nextFloat(this.minPitch.getValue() - 0.0010000000474974513, this.maxPitch.getValue()) / 2.0f + secureRandom.nextFloat() + RandomUtil.nextFloat(this.minPitch.getValue() - 0.0010000000474974513, this.maxPitch.getValue()) / 2.0f;
         if (curEntity != null) {
             final float[] rotations = RotationUtil.getRotation(curEntity, mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
             rotationEvent.setYaw(rotations[0]);

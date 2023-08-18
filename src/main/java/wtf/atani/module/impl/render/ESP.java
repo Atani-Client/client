@@ -4,7 +4,9 @@ import com.google.common.base.Supplier;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.entity.Entity;
+import org.lwjgl.opengl.GL11;
 import wtf.atani.event.events.Render2DEvent;
+import wtf.atani.event.events.Render3DEvent;
 import wtf.atani.event.radbus.Listen;
 import wtf.atani.module.Module;
 import wtf.atani.module.data.ModuleInfo;
@@ -23,8 +25,7 @@ import java.util.Calendar;
 @ModuleInfo(name = "ESP", description = "Render little things around players", category = Category.RENDER)
 public class ESP extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"2D"});
-    public CheckBoxValue blur = new CheckBoxValue("Blur", "Blur?", this, true, new Supplier[]{() -> mode.is("Stencil")});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"2D", "Box"});
     public CheckBoxValue rangeLimited = new CheckBoxValue("Range Limited", "Limit to a certain range?", this, false);
     public SliderValue<Float> range = new SliderValue<>("Range", "What range will be the maximum?", this, 100f, 0f, 1000f, 0);
     public CheckBoxValue players = new CheckBoxValue("Players", "Attack Players?", this, true);
@@ -33,9 +34,9 @@ public class ESP extends Module {
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true);
     public CheckBoxValue color = new CheckBoxValue("Color", "Color the esp?", this, true);
     private StringBoxValue customColorMode = new StringBoxValue("Color Mode", "How will the esp be colored?", this, new String[]{"Static", "Fade", "Gradient", "Rainbow", "Astolfo Sky"}, new Supplier[]{() -> color.getValue()});
-    private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> color.getValue() && customColorMode.is("Static") || customColorMode.is("Random") || customColorMode.is("Fade") || customColorMode.is("Gradient")});
-    private SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> color.getValue() && customColorMode.is("Static") || customColorMode.is("Random") || customColorMode.is("Fade") || customColorMode.is("Gradient")});
-    private SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> color.getValue() && customColorMode.is("Static") || customColorMode.is("Random") || customColorMode.is("Fade") || customColorMode.is("Gradient")});
+    private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> color.getValue() && (customColorMode.is("Static") || customColorMode.is("Random") || customColorMode.is("Fade") || customColorMode.is("Gradient"))});
+    private SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> color.getValue() && (customColorMode.is("Static") || customColorMode.is("Random") || customColorMode.is("Fade") || customColorMode.is("Gradient"))});
+    private SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the color?", this, 255, 0, 255, 0, new Supplier[]{() -> color.getValue() && (customColorMode.is("Static") || customColorMode.is("Random") || customColorMode.is("Fade") || customColorMode.is("Gradient"))});
     private SliderValue<Integer> red2 = new SliderValue<>("Second Red", "What'll be the red of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> color.getValue() && customColorMode.is("Gradient")});
     private SliderValue<Integer> green2 = new SliderValue<>("Second Green", "What'll be the green of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> color.getValue() && customColorMode.is("Gradient")});
     private SliderValue<Integer> blue2 = new SliderValue<>("Second Blue", "What'll be the blue of the second color?", this, 255, 0, 255, 0, new Supplier[]{() -> color.getValue() && customColorMode.is("Gradient")});
@@ -46,37 +47,8 @@ public class ESP extends Module {
 
     @Listen
     public void on2D(Render2DEvent render2DEvent) {
-        int color = 0;
-        final int counter = 1;
-        switch (this.customColorMode.getValue()) {
-            case "Static":
-                color = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();
-                break;
-            case "Fade": {
-                int firstColor = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();
-                color = ColorUtil.fadeBetween(firstColor, ColorUtil.darken(firstColor, darkFactor.getValue()), counter * 150L);
-                break;
-            }
-            case "Gradient": {
-                int firstColor = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();
-                int secondColor = new Color(red2.getValue(), green2.getValue(), blue2.getValue()).getRGB();
-                color = ColorUtil.fadeBetween(firstColor, secondColor, counter * 150L);
-                break;
-            }
-            case "Rainbow":
-                color = ColorUtil.getRainbow(3000, (int) (counter * 150L));
-                break;
-            case "Astolfo Sky":
-                color = ColorUtil.blendRainbowColours(counter * 150L);
-                break;
-        }
-        if(calendar.get(Calendar.DAY_OF_MONTH) == 28 && calendar.get(Calendar.MONTH) == Calendar.OCTOBER) {
-            color = ColorUtil.blendCzechiaColours(counter * 150L);
-        }
-        if(calendar.get(Calendar.DAY_OF_MONTH) == 3 && calendar.get(Calendar.MONTH) == Calendar.OCTOBER) {
-            color = ColorUtil.blendGermanColours(counter * 150L);
-        }
         float length = 0.5f;
+        final int counter = 1;
 
         switch (mode.getValue()) {
             case "2D":
@@ -98,12 +70,94 @@ public class ESP extends Module {
                      */
 
                     // Border
-                    RenderUtil.drawBorderedRect(x, y, x + width, y + height, length, 0, color, true);
+                    RenderUtil.drawBorderedRect(x, y, x + width, y + height, length, 0, getColor(counter), true);
                     RenderUtil.drawBorderedRect(x, y, x + width, y + height, length, 0, Color.black.getRGB(), false);
                     RenderUtil.drawBorderedRect(x + length, y + length, (x - length) + width, (y - length) + height, length, 0, Color.black.getRGB(), true);
                     GlStateManager.resetColor();
                 }
                 break;
+        }
+    }
+
+    @Listen
+    public void on3D(Render3DEvent render3DEvent) {
+        final int counter = 1;
+
+        switch (mode.getValue()) {
+            case "Box":
+                for (final Entity entity : getWorld().loadedEntityList) {
+                    if (entity == getPlayer() && mc.gameSettings.thirdPersonView == 0) continue;
+                    if (!FightUtil.isValidWithPlayer(entity, rangeLimited.getValue() ? range.getValue() : 1000000, invisible.getValue(), players.getValue(), animals.getValue(), monsters.getValue())) continue;
+                    double x = InterpolationUtil.interpolate(entity.posX, entity.lastTickPosX) - getRenderManager().renderPosX;
+                    double y = InterpolationUtil.interpolate(entity.posY, entity.lastTickPosY) - getRenderManager().renderPosY;
+                    double z = InterpolationUtil.interpolate(entity.posZ, entity.lastTickPosZ) - getRenderManager().renderPosZ;
+
+                    int red = (getColor(counter) >> 16) & 0xFF;
+                    int green = (getColor(counter) >> 8) & 0xFF;
+                    int blue = getColor(counter) & 0xFF;
+
+                    float redNormalized = red / 255.0f;
+                    float greenNormalized = green / 255.0f;
+                    float blueNormalized = blue / 255.0f;
+
+                    double boxLeft = -entity.width / 2.0;
+                    double boxRight = entity.width / 2.0;
+                    double boxTop = entity.height;
+                    double boxBottom = 0;
+                    double boxFront = -entity.width / 2.0;
+                    double boxBack = entity.width / 2.0;
+
+                    GlStateManager.enableBlend();
+                    GlStateManager.disableTexture2D();
+                    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    GlStateManager.disableDepth();
+                    GlStateManager.disableCull();
+
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(x, y, z);
+                    GlStateManager.rotate(-entity.rotationYaw, 0.0F, 1.0F, 0.0F);
+                    GlStateManager.color(redNormalized, greenNormalized, blueNormalized, 0.5f);
+
+                    GL11.glBegin(GL11.GL_QUADS);
+                    // Front face
+                    GL11.glVertex3d(boxLeft, boxTop, boxFront);
+                    GL11.glVertex3d(boxRight, boxTop, boxFront);
+                    GL11.glVertex3d(boxRight, boxBottom, boxFront);
+                    GL11.glVertex3d(boxLeft, boxBottom, boxFront);
+                    // Back face
+                    GL11.glVertex3d(boxLeft, boxTop, boxBack);
+                    GL11.glVertex3d(boxRight, boxTop, boxBack);
+                    GL11.glVertex3d(boxRight, boxBottom, boxBack);
+                    GL11.glVertex3d(boxLeft, boxBottom, boxBack);
+                    // Top face
+                    GL11.glVertex3d(boxLeft, boxTop, boxFront);
+                    GL11.glVertex3d(boxRight, boxTop, boxFront);
+                    GL11.glVertex3d(boxRight, boxTop, boxBack);
+                    GL11.glVertex3d(boxLeft, boxTop, boxBack);
+                    // Bottom face
+                    GL11.glVertex3d(boxLeft, boxBottom, boxFront);
+                    GL11.glVertex3d(boxRight, boxBottom, boxFront);
+                    GL11.glVertex3d(boxRight, boxBottom, boxBack);
+                    GL11.glVertex3d(boxLeft, boxBottom, boxBack);
+                    // Left face
+                    GL11.glVertex3d(boxLeft, boxTop, boxFront);
+                    GL11.glVertex3d(boxLeft, boxTop, boxBack);
+                    GL11.glVertex3d(boxLeft, boxBottom, boxBack);
+                    GL11.glVertex3d(boxLeft, boxBottom, boxFront);
+                    // Right face
+                    GL11.glVertex3d(boxRight, boxTop, boxFront);
+                    GL11.glVertex3d(boxRight, boxTop, boxBack);
+                    GL11.glVertex3d(boxRight, boxBottom, boxBack);
+                    GL11.glVertex3d(boxRight, boxBottom, boxFront);
+
+                    GL11.glEnd();
+                    GlStateManager.enableDepth();
+                    GlStateManager.enableTexture2D();
+                    GlStateManager.disableBlend();
+                    GlStateManager.enableCull();
+                    GlStateManager.popMatrix();
+                }
+            break;
         }
     }
 
@@ -143,12 +197,8 @@ public class ESP extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 }

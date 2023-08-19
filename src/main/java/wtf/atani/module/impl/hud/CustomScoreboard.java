@@ -8,7 +8,7 @@ import wtf.atani.value.impl.CheckBoxValue;
 import wtf.atani.value.impl.StringBoxValue;
 
 // Hooked in GuiIngame class
-@ModuleInfo(name = "CustomScoreboard", description = "Improves the minecraft default tab list.", category = Category.HUD)
+@ModuleInfo(name = "CustomScoreboard", description = "Improves the minecraft default scoreboard.", category = Category.HUD)
 public class CustomScoreboard extends Module {
 
     public final StringBoxValue background = new StringBoxValue("Background", "Which background should the scoreboard use?", this, new String[] {"Normal", "Off"});

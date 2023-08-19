@@ -22,7 +22,7 @@ import wtf.atani.value.impl.StringBoxValue;
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost"}, new Supplier[]{() -> mode.is("Verus")});
+    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low"}, new Supplier[]{() -> mode.is("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
@@ -60,6 +60,7 @@ public class Speed extends Module {
     // Verus
     private int verusDamageTicks;
     private int verusTicks;
+    private int verusCount = 1;
 
     // Vulcan
     private int vulcanTicks;
@@ -284,7 +285,7 @@ public class Speed extends Module {
                         verusTicks++;
                     }
 
-                    if(mc.thePlayer.hurtTime > 1 && !mc.thePlayer.isBurning() && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava() && verusDamageTicks > 30) {
+                    if(mc.thePlayer.hurtTime > 1 && !mc.thePlayer.isBurning() && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava() && verusDamageTicks < 30) {
                         MoveUtil.strafe(5);
                         mc.thePlayer.motionX *= 1.2F;
                         mc.thePlayer.motionZ *= 1.2F;
@@ -316,10 +317,23 @@ public class Speed extends Module {
                             } else {
                                 MoveUtil.strafe(0.33F);
                             }
+                            break;
+                        case "Low":
+                            if(!isMoving())
+                                return;
 
-                            if (mc.thePlayer.moveForward < 0) {
-                                MoveUtil.strafe(0.3F);
+                            if(mc.thePlayer.onGround) {
+                                mc.thePlayer.jump();
+                                MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
+                            } else {
+                                if(verusTicks == 1) {
+                                    mc.thePlayer.motionY = 0;
+                                    mc.thePlayer.onGround = true;
+                                    MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
+                                }
                             }
+
+                            MoveUtil.strafe(Math.max(MoveUtil.getSpeed(), mc.thePlayer.moveForward > 0 ? 0.33 : 0.3) + MoveUtil.getSpeedBoost(1));
                             break;
                         case "Air Boost":
                             if(mc.thePlayer.hurtTime != 0) {

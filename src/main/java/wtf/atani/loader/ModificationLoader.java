@@ -63,7 +63,7 @@ public class ModificationLoader implements ClientInformationAccess {
         DiscordRPC.discordInitialize("1141582938127998988", handlers, true);
         final DiscordRichPresence rich = new DiscordRichPresence.Builder(username)
                 .setBigImage("icon", CLIENT_NAME + " - " + VERSION)
-                .setDetails((beta ? "Bete" : "Free") + " Version")
+                .setDetails((beta ? "Beta" : "Free") + " Version")
                 .setStartTimestamps(startTime)
                 .build();
         DiscordRPC.discordUpdatePresence(rich);

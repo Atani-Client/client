@@ -35,24 +35,21 @@ public class RotationUtil implements Methods {
         double z = bestVector.zCoord - mc.thePlayer.posZ;
 
         if (prediction) {
-            final boolean sprinting = entity.isSprinting();
-            final boolean sprintingPlayer = mc.thePlayer.isSprinting();
+            final boolean targetIsSprinting = entity.isSprinting();
+            final boolean playerIsSprinting = mc.thePlayer.isSprinting();
 
-            final float walkingSpeed = 0.10000000149011612f; //https://minecraft.fandom.com/wiki/Sprinting
+            final float walkingSpeed = 0.10000000149011612f;
+            final float targetSpeed = targetIsSprinting ? 1.25f : walkingSpeed;
+            final float playerSpeed = playerIsSprinting ? 1.25f : walkingSpeed;
 
-            final float sprint = sprinting ? 1.25f : walkingSpeed;
-            final float playerSprint = sprintingPlayer ? 1.25f : walkingSpeed;
+            final float targetPredictedX = (float) ((entity.posX - entity.prevPosX) * targetSpeed);
+            final float targetPredictedZ = (float) ((entity.posZ - entity.prevPosZ) * targetSpeed);
+            final float playerPredictedX = (float) ((mc.thePlayer.posX - mc.thePlayer.prevPosX) * playerSpeed);
+            final float playerPredictedZ = (float) ((mc.thePlayer.posZ - mc.thePlayer.prevPosZ) * playerSpeed);
 
-            final float predictX = (float) ((entity.posX - entity.prevPosX) * sprint);
-            final float predictZ = (float) ((entity.posZ - entity.prevPosZ) * sprint);
-
-            final float playerPredictX = (float) ((mc.thePlayer.posX - mc.thePlayer.prevPosX) * playerSprint);
-            final float playerPredictZ = (float) ((mc.thePlayer.posZ - mc.thePlayer.prevPosZ) * playerSprint);
-
-
-            if (predictX != 0.0f && predictZ != 0.0f || playerPredictX != 0.0f && playerPredictZ != 0.0f) {
-                x += predictX + playerPredictX;
-                z += predictZ + playerPredictZ;
+            if (targetPredictedX != 0.0f && targetPredictedZ != 0.0f || playerPredictedX != 0.0f && playerPredictedZ != 0.0f) {
+                x += targetPredictedX + playerPredictedX;
+                z += targetPredictedZ + playerPredictedZ;
             }
         }
 
@@ -71,11 +68,10 @@ public class RotationUtil implements Methods {
         float pitchSpeed = (float) RandomUtil.randomBetween(minPitch, maxPitch);
         float f = (float) (MathHelper.atan2(z, x) * (180 / Math.PI)) - 90.0F;
         float f1 = (float) (-(MathHelper.atan2(y, d3) * (180 / Math.PI)));
-        final int fps = (int) (Minecraft.getDebugFPS() / 20.0F);
         final float deltaYaw = (((f - PlayerHandler.yaw) + 540) % 360) - 180;
         final float deltaPitch = f1 - PlayerHandler.pitch;
-        final float yawDistance = MathHelper.clamp_float(deltaYaw, -yawSpeed, yawSpeed) / fps * 4;
-        final float pitchDistance = MathHelper.clamp_float(deltaPitch, -pitchSpeed, pitchSpeed) / fps * 4;
+        final float yawDistance = MathHelper.clamp_float(deltaYaw, -yawSpeed, yawSpeed);
+        final float pitchDistance = MathHelper.clamp_float(deltaPitch, -pitchSpeed, pitchSpeed);
         float calcYaw = snapYaw ? f : PlayerHandler.yaw + yawDistance;
         float calcPitch = snapPitch ? f1 : PlayerHandler.pitch + pitchDistance;
         calcPitch = MathHelper.clamp(calcPitch, -90, 90);

@@ -1,5 +1,9 @@
 package wtf.atani.module.impl.combat;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.ServerStatusResponse;
+import org.lwjgl.Sys;
 import wtf.atani.event.events.TickEvent;
 import wtf.atani.event.events.TimeEvent;
 import wtf.atani.event.radbus.Listen;
@@ -17,69 +21,49 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "TickBase", description = "Tick Base Manipulation", category = Category.COMBAT)
 public class TickBase extends Module {
 
-	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Normal", "Legit"});
-	private final SliderValue<Integer> ticks = new SliderValue<Integer>("Ticks", "How many ticks will be tickbase charge?", this, 5, 0, 40, 0);
-    private SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the minimum delay between shifting?", this, 500L, 0L, 2000L, 1);
-    private CheckBoxValue onlyWhenOutOfReach = new CheckBoxValue("Only When Out of Reach", "Shift only if the target is out of reach?", this, false);
+	public final SliderValue<Long> maxBalance = new SliderValue<>("Max Balance", "What will be the maximum balance?", this, 100L, 0L, 5000L, 0);
+	public final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between shifting?", this, 300l, 0l, 1000l, 0);
+	public final SliderValue<Float> range = new SliderValue<>("Range", "At what range will the module operate?", this, 3f, 0.1f,7f, 1);
 
 	private KillAura killAura;
-    private long shifted, previousTime;
+	private long shifted, previousTime;
+	private TimeHelper timeHelper = new TimeHelper();
 
-    private TimeHelper delayTimer = new TimeHelper();
-
-    @Override
-    public String getSuffix() {
-    	return mode.getValue();
-    }
-
-	@Listen
-	public void onTick(TickEvent tickEvent) {
-		if(mode.is("Legit")) {
-	        if(shouldCharge()) {
-	        	try {
-					Thread.sleep(ticks.getValue() * 20);
-		            this.delayTimer.reset();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-	        }
-		}
-	}
-    
 	@Listen
 	public void onTime(TimeEvent timeEvent) {
-		if(mode.is("Normal")) {
-	        if(shouldCharge() && this.delayTimer.hasReached(delay.getValue().longValue())) {
-	            shifted += timeEvent.getTime() - previousTime;
-	            this.delayTimer.reset();
-	        }
+		if(killAura == null)
+			killAura = ModuleStorage.getInstance().getByClass(KillAura.class);
 
-	        if(shouldDischarge()) {
-	            shifted = 0;
-	        }
-
-	        previousTime = timeEvent.getTime();
-	        timeEvent.setTime(timeEvent.getTime() - shifted);
+		if(shouldCharge() && this.timeHelper.hasReached(delay.getValue())) {
+			shifted += timeEvent.getTime() - previousTime;
 		}
+
+		if(shouldDischarge()) {
+			shifted = 0;
+			this.timeHelper.reset();
+		}
+
+		previousTime = timeEvent.getTime();
+		timeEvent.setTime(timeEvent.getTime() - shifted);
+	};
+
+	private boolean shouldCharge() {
+		return killAura.isEnabled() && KillAura.curEntity != null && this.shifted < maxBalance.getValue();
 	}
 
-    private boolean shouldCharge() {
-        return  killAura.isEnabled() && KillAura.curEntity != null && (!this.onlyWhenOutOfReach.getValue() || FightUtil.getRange(KillAura.curEntity) > 3.0) && MoveUtil.getSpeed() > 0;
-    }
+	private boolean shouldDischarge() {
+		return this.shifted >= this.maxBalance.getValue() && killAura.isEnabled() && killAura.curEntity != null && FightUtil.getRange(KillAura.curEntity) > range.getValue();
+	}
 
-    private boolean shouldDischarge() {
-        return this.shifted > this.ticks.getValue() * 20;
-    }
+	@Override
+	public void onDisable() {
+		this.shifted = 0;
+	}
 
-
-    @Override
-    public void onDisable() {
-
-    }
-
-    @Override
-    public void onEnable() {
-    	this.killAura = ModuleStorage.getInstance().getByClass(KillAura.class);
-    }
+	@Override
+	public void onEnable() {
+		this.shifted = 0;
+		this.previousTime = (System.nanoTime() / 1000000L) / 1000L;
+	}
 
 }

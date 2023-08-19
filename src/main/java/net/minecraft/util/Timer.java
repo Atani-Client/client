@@ -2,6 +2,7 @@ package net.minecraft.util;
 
 import net.minecraft.client.Minecraft;
 import wtf.atani.event.events.TimeEvent;
+import wtf.atani.utils.interfaces.Methods;
 
 public class Timer
 {

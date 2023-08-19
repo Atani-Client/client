@@ -26,6 +26,7 @@ import wtf.atani.value.impl.StringBoxValue;
 import wtf.atani.value.storage.ValueStorage;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -282,7 +283,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
     }
 
     @Override
-    public void mouseClicked(int mouseX, int mouseY, int button) {
+    public void mouseClicked(int mouseX, int mouseY, int button) throws IOException {
         float beforeX = x, beforeY = y;
         x += addX;
         y += addY;
@@ -403,6 +404,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
         }
         x = beforeX;
         y = beforeY;
+        super.mouseClicked(mouseX, mouseY, button);
     }
 
 }

@@ -53,6 +53,10 @@ public class KillAura extends Module {
     public CheckBoxValue lockview = new CheckBoxValue("Lock-view", "Rotate non-silently", this, false);
     public CheckBoxValue snapYaw = new CheckBoxValue("Snap Yaw", "Skip smoothing out yaw rotations?", this, false);
     public CheckBoxValue snapPitch = new CheckBoxValue("Snap Pitch", "Skip smoothing out pitch rotations?", this, false);
+    public CheckBoxValue skipUnnecessaryRotations = new CheckBoxValue("Skip unnecessary Rotations", "Rotate only if necessary?", this, false);
+    public StringBoxValue unnecessaryRotations = new StringBoxValue("Unnecessary Rotations", "What rotations to skip?", this, new String[]{"Both", "Yaw", "Pitch"});
+    public CheckBoxValue skipIfNear = new CheckBoxValue("Skip If Near", "Rotate only if far enough?", this, true, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
+    public SliderValue<Float> nearDistance = new SliderValue<>("Near Distance", "How near to skip rotations?", this, 0.5F, 0F, 0.5F, 2, new Supplier[]{() -> skipUnnecessaryRotations.getValue() && skipIfNear.getValue()});
     public SliderValue<Float> minYaw = new SliderValue<>("Minimum Yaw", "What will be the minimum yaw for rotating?", this, 40f, 0f, 180f, 0);
     public SliderValue<Float> maxYaw = new SliderValue<>("Maximum Yaw", "What will be the maximum yaw for rotating?", this, 40f, 0f, 180f, 0);
     public SliderValue<Float> minPitch = new SliderValue<>("Minimum Pitch", "What will be the minimum pitch for rotating?", this, 40f, 0f, 180f, 0);
@@ -76,6 +80,9 @@ public class KillAura extends Module {
     // Clicking
     private TimeHelper attackTimer = new TimeHelper();
     private double cpsDelay = 0;
+
+    // Rotations
+    private float yawRot, pitchRot;
 
     @Override
     public String getSuffix() {
@@ -177,11 +184,26 @@ public class KillAura extends Module {
     public final void onRotation(RotationEvent rotationEvent) {
         if (curEntity != null) {
             final float[] rotations = RotationUtil.getRotation(curEntity, mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
-            rotationEvent.setYaw(rotations[0]);
-            rotationEvent.setPitch(rotations[1]);
+
+            boolean necessary = !skipUnnecessaryRotations.getValue() || (mc.objectMouseOver == null || mc.objectMouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY) || (getPlayer().getDistanceToEntity(curEntity) >= nearDistance.getValue() && skipIfNear.getValue());
+            boolean yaw = unnecessaryRotations.getValue().equalsIgnoreCase("Yaw");
+            boolean pitch = unnecessaryRotations.getValue().equalsIgnoreCase("Pitch");
+            boolean both = unnecessaryRotations.getValue().equalsIgnoreCase("Both");
+            if (both) {
+                yaw = true;
+                pitch = true;
+            }
+            if (!skipUnnecessaryRotations.getValue() || necessary || !yaw)
+                yawRot = rotations[0];
+            if (!skipUnnecessaryRotations.getValue() || necessary || !pitch)
+                pitchRot = rotations[1];
+
+            rotationEvent.setYaw(yawRot);
+            rotationEvent.setPitch(pitchRot);
+
             if(this.lockview.getValue()) {
-                mc.thePlayer.rotationYaw = rotationEvent.getYaw();
-                mc.thePlayer.rotationPitch = rotationEvent.getPitch();
+                mc.thePlayer.rotationYaw = yawRot;
+                mc.thePlayer.rotationPitch = pitchRot;
             }
         }
     }
@@ -279,12 +301,12 @@ public class KillAura extends Module {
 
     @Override
     public void onEnable() {
-
+        curEntity = null;
     }
 
     @Override
     public void onDisable() {
-
+        curEntity = null;
     }
 
 }

@@ -47,10 +47,8 @@ import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
 import wtf.atani.event.events.Render2DEvent;
 import wtf.atani.font.storage.FontStorage;
-import wtf.atani.module.impl.hud.CustomCrosshair;
 import wtf.atani.module.impl.hud.CustomScoreboard;
 import wtf.atani.module.storage.ModuleStorage;
-import wtf.atani.utils.render.RenderUtil;
 import wtf.atani.utils.render.color.ColorUtil;
 import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 

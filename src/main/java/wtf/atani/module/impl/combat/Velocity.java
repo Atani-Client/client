@@ -3,9 +3,9 @@ package wtf.atani.module.impl.combat;
 import com.google.common.base.Supplier;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.util.AxisAlignedBB;
 import wtf.atani.event.events.PacketEvent;
 import wtf.atani.event.events.SilentMoveEvent;
@@ -19,10 +19,13 @@ import wtf.atani.utils.math.time.TimeHelper;
 import wtf.atani.value.impl.SliderValue;
 import wtf.atani.value.impl.StringBoxValue;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
 @ModuleInfo(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar Under-Block"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Grim", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar Under-Block"});
     public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1, new Supplier[] {() -> mode.is("AAC v4")});
@@ -47,6 +50,10 @@ public class Velocity extends Module {
     // Grim Flag
     private boolean grimFlag;
 
+    // Grim
+    private final Queue<Short> transactionQueue = new ConcurrentLinkedQueue<>();
+    private boolean grimPacket;
+
     @Override
     public String getSuffix() {
     	return mode.getValue();
@@ -55,6 +62,9 @@ public class Velocity extends Module {
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         switch (mode.getValue()) {
+            case "Grim":
+                if (transactionQueue.isEmpty() && grimPacket) grimPacket = false;
+                break;
             case "Grim Flag":
                 if (mc.thePlayer.hurtTime != 0)
                     mc.thePlayer.setPosition(mc.thePlayer.lastTickPosX, mc.thePlayer.lastTickPosY, mc.thePlayer.lastTickPosZ);
@@ -122,6 +132,25 @@ public class Velocity extends Module {
                 }
                 break;
             }
+            case "Grim":
+                if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
+                    Packet<?> p = packetEvent.getPacket();
+                    if (p instanceof S12PacketEntityVelocity && ((S12PacketEntityVelocity) p).getEntityID() == mc.thePlayer.getEntityId()) {
+                        packetEvent.setCancelled(true);
+                        grimPacket = true;
+                    } else if(p instanceof S32PacketConfirmTransaction) {
+                        if (!grimPacket) return;
+                        packetEvent.setCancelled(true);
+                        transactionQueue.add(((S32PacketConfirmTransaction)p).getActionNumber());
+                    }
+                } else {
+                    if (packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {
+                        if (!grimPacket || transactionQueue.isEmpty()) return;
+                        if (transactionQueue.remove(((C0FPacketConfirmTransaction)packetEvent.getPacket()).getUid()))
+                            packetEvent.setCancelled(true);
+                    }
+                }
+                break;
             case "Grim Flag":
                 if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
                     Packet<?> p = packetEvent.getPacket();
@@ -247,6 +276,7 @@ public class Velocity extends Module {
 
     @Override
     public void onDisable() {
-
+        grimPacket = false;
+        transactionQueue.clear();
     }
 }

@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import wtf.atani.font.storage.FontStorage;
+import wtf.atani.module.impl.hud.PostProcessing;
 import wtf.atani.utils.animation.Direction;
 import wtf.atani.utils.animation.impl.DecelerateAnimation;
 import wtf.atani.utils.render.RenderUtil;
@@ -38,6 +39,8 @@ public class AtaniButton extends GuiButton
             RenderableShaders.render(true, true, () -> {
                 RoundedShader.drawRound(this.xPosition, this.yPosition, this.width, this.height, 5, new Color(0, 0, 0, 205 + (int) (this.decelerateAnimation.getOutput() * 50)));
             });
+            if(!PostProcessing.getInstance().isEnabled() || !PostProcessing.getInstance().bloom.getValue())
+                RoundedShader.drawRound(this.xPosition, this.yPosition, this.width, this.height, 5, new Color(0, 0, 0, 50));
             FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto", 19);
             fontRenderer.drawTotalCenteredString(displayString, this.xPosition + this.width / 2, this.yPosition + this.height / 2, -1);
         }

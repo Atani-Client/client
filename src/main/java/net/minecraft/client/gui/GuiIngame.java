@@ -123,8 +123,8 @@ public class GuiIngame extends Gui
     public void renderGameOverlay(float partialTicks)
     {
         ScaledResolution scaledresolution = new ScaledResolution(this.mc);
-        int srWidth = scaledresolution.getScaledWidth();
-        int srHeight = scaledresolution.getScaledHeight();
+        int i = scaledresolution.getScaledWidth();
+        int j = scaledresolution.getScaledHeight();
         this.mc.entityRenderer.setupOverlayRendering();
         GlStateManager.enableBlend();
 
@@ -163,30 +163,15 @@ public class GuiIngame extends Gui
             this.renderTooltip(scaledresolution, partialTicks);
         }
 
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        this.mc.getTextureManager().bindTexture(icons);
+        GlStateManager.enableBlend();
+
         if (this.showCrosshair())
         {
             GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
             GlStateManager.enableAlpha();
-
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.mc.getTextureManager().bindTexture(icons);
-            this.drawTexturedModalRect(srWidth / 2 - 7, srHeight / 2 - 7, 0, 0, 16, 16);
-            GlStateManager.enableBlend();
-
-//            if(ModuleStorage.getInstance().getByClass(CustomCrosshair.class).isEnabled()) {
-//                switch (ModuleStorage.getInstance().getByClass(CustomCrosshair.class).style.getValue()) {
-//                    case "Default":
-//                        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-//                        this.mc.getTextureManager().bindTexture(icons);
-//                        this.drawTexturedModalRect(srWidth / 2 - 7, srHeight / 2 - 7, 0, 0, 16, 16);
-//                        break;
-//                    case "Circle":
-//                        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-//                        this.mc.getTextureManager().bindTexture(icons);
-//                        this.drawTexturedModalRect(srWidth / 2 - 7, srHeight / 2 - 7, 16, 0, 16, 16);
-//                        break;
-//                }
-//            }
+            this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
         }
 
         GlStateManager.enableAlpha();
@@ -216,14 +201,14 @@ public class GuiIngame extends Gui
             }
 
             int k = (int)(220.0F * f1) << 24 | 1052704;
-            drawRect(0, 0, srWidth, srHeight, k);
+            drawRect(0, 0, i, j, k);
             GlStateManager.enableAlpha();
             GlStateManager.enableDepth();
             this.mc.mcProfiler.endSection();
         }
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        int k1 = srWidth / 2 - 91;
+        int k1 = i / 2 - 91;
 
         if (this.mc.thePlayer.isRidingHorse())
         {
@@ -267,7 +252,7 @@ public class GuiIngame extends Gui
             if (l1 > 8)
             {
                 GlStateManager.pushMatrix();
-                GlStateManager.translate((float)(srWidth / 2), (float)(srHeight - 68), 0.0F);
+                GlStateManager.translate((float)(i / 2), (float)(j - 68), 0.0F);
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
                 int l = 16777215;
@@ -307,7 +292,7 @@ public class GuiIngame extends Gui
             if (i2 > 8)
             {
                 GlStateManager.pushMatrix();
-                GlStateManager.translate((float)(srWidth / 2), (float)(srHeight / 2), 0.0F);
+                GlStateManager.translate((float)(i / 2), (float)(j / 2), 0.0F);
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
                 GlStateManager.pushMatrix();
@@ -351,7 +336,7 @@ public class GuiIngame extends Gui
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.disableAlpha();
         GlStateManager.pushMatrix();
-        GlStateManager.translate(0.0F, (float)(srHeight - 48), 0.0F);
+        GlStateManager.translate(0.0F, (float)(j - 48), 0.0F);
         this.mc.mcProfiler.startSection("chat");
         this.persistantChatGUI.drawChat(this.updateCounter);
         this.mc.mcProfiler.endSection();
@@ -361,7 +346,7 @@ public class GuiIngame extends Gui
         if (this.mc.gameSettings.keyBindPlayerList.isKeyDown() && (!this.mc.isIntegratedServerRunning() || this.mc.thePlayer.sendQueue.getPlayerInfoMap().size() > 1 || scoreobjective1 != null))
         {
             this.overlayPlayerList.updatePlayerList(true);
-            this.overlayPlayerList.renderPlayerlist(srWidth, scoreboard, scoreobjective1);
+            this.overlayPlayerList.renderPlayerlist(i, scoreboard, scoreobjective1);
         }
         else
         {

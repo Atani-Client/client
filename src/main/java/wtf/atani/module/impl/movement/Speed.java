@@ -285,14 +285,9 @@ public class Speed extends Module {
                         verusTicks++;
                     }
 
-                    if(mc.thePlayer.hurtTime > 1 && !mc.thePlayer.isBurning() && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava() && verusDamageTicks < 30) {
+                    if(mc.thePlayer.hurtTime > 1 && !mc.thePlayer.isBurning() && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava()) {
                         MoveUtil.strafe(5);
-                        mc.thePlayer.motionX *= 1.2F;
-                        mc.thePlayer.motionZ *= 1.2F;
                         mc.thePlayer.motionY = 0.1F;
-                        verusDamageTicks = 0;
-                    } else {
-                        verusDamageTicks++;
                     }
 
                     switch(verusMode.getValue()) {
@@ -312,10 +307,10 @@ public class Speed extends Module {
                                 return;
 
                             if (mc.thePlayer.onGround) {
-                                MoveUtil.strafe(0.53F);
+                                MoveUtil.strafe(0.53 + MoveUtil.getSpeedBoost(0.05F));
                                 mc.thePlayer.jump();
                             } else {
-                                MoveUtil.strafe(0.33F);
+                                MoveUtil.strafe(0.33 + MoveUtil.getSpeedBoost(0.06F));
                             }
                             break;
                         case "Low":

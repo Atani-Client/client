@@ -42,6 +42,9 @@ public class Jesus extends Module {
 
     @Listen
     public void onCollisionBoxes(CollisionBoxesEvent collisionBoxesEvent) {
+        if(mc.thePlayer == null || mc.theWorld == null)
+            return;
+        
         switch(mode.getValue()) {
         case "Solid":
             BlockPos blockPos = collisionBoxesEvent.getBlockPos();

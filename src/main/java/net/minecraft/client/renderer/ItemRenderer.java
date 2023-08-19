@@ -279,7 +279,7 @@ public class ItemRenderer
      * @param equipProgress The progress of the animation to equip (raise from out of frame) while switching held items.
      * @param swingProgress The progress of the arm swing animation.
      */
-    private void transformFirstPersonItem(float equipProgress, float swingProgress)
+        private void transformFirstPersonItem(float equipProgress, float swingProgress)
     {
         float scale = ModuleStorage.getInstance().getByClass(ViewModel.class).isEnabled() ? ModuleStorage.getInstance().getByClass(ViewModel.class).scale.getValue() : 0.4f;
         float x = ModuleStorage.getInstance().getByClass(ViewModel.class).isEnabled() ? ModuleStorage.getInstance().getByClass(ViewModel.class).xPos.getValue() : 0.56f;
@@ -353,6 +353,7 @@ public class ItemRenderer
             float swingProgress = abstractclientplayer.getSwingProgress(partialTicks);
             float rotationPitch = abstractclientplayer.prevRotationPitch + (abstractclientplayer.rotationPitch - abstractclientplayer.prevRotationPitch) * partialTicks;
             float rotationYaw = abstractclientplayer.prevRotationYaw + (abstractclientplayer.rotationYaw - abstractclientplayer.prevRotationYaw) * partialTicks;
+            float swingProgressFactor = MathHelper.sin((float) (MathHelper.sqrt_float(swingProgress) * Math.PI));
             this.func_178101_a(rotationPitch, rotationYaw);
             this.func_178109_a(abstractclientplayer);
             this.func_178110_a((EntityPlayerSP)abstractclientplayer, partialTicks);
@@ -396,10 +397,26 @@ public class ItemRenderer
                                         this.doBlockTransformations();
                                         break;
                                     case "Exhibition":
-                                        this.transformFirstPersonItem(equippedProgress, swingProgress - 0.07f);
+                                        this.transformFirstPersonItem(equippedProgress - 0.125F, 0);
+                                        GlStateManager.rotate(-swingProgressFactor * 55 / 2.0F, -8.0F, 0.4f, 9.0F);
+                                        GlStateManager.rotate(-swingProgressFactor * 45, 1.0F, swingProgressFactor / 2, -0.0F);
+                                        GlStateManager.translate(0.0f, 0.1F, 0.0f);
                                         this.doBlockTransformations();
-                                        GL11.glTranslated(1.0, -0.1, 0.5);
-                                        GL11.glTranslatef(-1.0f, this.mc.thePlayer.isSneaking() ? -0.2f : -0.3f, 0.1f);
+                                        break;
+                                    case "Flux":
+                                        this.transformFirstPersonItem(-0.2F, swingProgress);
+                                        this.doBlockTransformations();
+                                        break;
+                                    case "Swang":
+                                        this.transformFirstPersonItem(equippedProgress / 2f, swingProgress);
+                                        GlStateManager.rotate(swingProgressFactor * 30.0f / 2.0f, -swingProgressFactor, -0.0f, 9.0f);
+                                        GlStateManager.rotate(swingProgressFactor * 40.0f, 1.0f, (-swingProgressFactor) / 2.0f, -0.0f);
+                                        this.doBlockTransformations();
+                                        break;
+                                    case "Remix":
+                                        this.transformFirstPersonItem(equippedProgress, swingProgress / 40.0f);
+                                        this.doBlockTransformations();
+                                        GlStateManager.translate(-0.1f, 0.0f, 0.0f);
                                         break;
                                 }
                             }

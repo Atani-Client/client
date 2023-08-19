@@ -17,6 +17,7 @@ import org.lwjgl.input.Mouse;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.impl.hud.CustomChat;
 import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 
 public class GuiChat extends GuiScreen
 {
@@ -318,28 +319,30 @@ public class GuiChat extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        boolean font = ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled();
+        RenderableShaders.renderAndRun(false, ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).backgroundBlur.isEnabled(), () -> {
+            boolean font = ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled();
 
-        if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled()) {
-            switch(ModuleStorage.getInstance().getByClass(CustomChat.class).background.getValue()) {
-            case "Normal":
+            if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled()) {
+                switch(ModuleStorage.getInstance().getByClass(CustomChat.class).background.getValue()) {
+                    case "Normal":
+                        drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
+                        break;
+                    case "Adaptive":
+                        drawRect(2, this.height - 14, font ? customFontRenderer.getStringWidth(inputField.getText()) : mc.fontRendererObj.getStringWidth(inputField.getText()) + 6, this.height - 2, Integer.MIN_VALUE);
+                        break;
+                }
+            } else {
                 drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
-                break;
-            case "Adaptive":
-                drawRect(2, this.height - 14, font ? customFontRenderer.getStringWidth(inputField.getText()) : mc.fontRendererObj.getStringWidth(inputField.getText()) + 6, this.height - 2, Integer.MIN_VALUE);
-                break;
             }
-        } else {
-            drawRect(2, this.height - 14, this.width - 2, this.height - 2, Integer.MIN_VALUE);
-        }
 
-        this.inputField.drawTextBox();
-        IChatComponent ichatcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
+            this.inputField.drawTextBox();
+            IChatComponent ichatcomponent = this.mc.ingameGUI.getChatGUI().getChatComponent(Mouse.getX(), Mouse.getY());
 
-        if (ichatcomponent != null && ichatcomponent.getChatStyle().getChatHoverEvent() != null)
-        {
-            this.handleComponentHover(ichatcomponent, mouseX, mouseY);
-        }
+            if (ichatcomponent != null && ichatcomponent.getChatStyle().getChatHoverEvent() != null)
+            {
+                this.handleComponentHover(ichatcomponent, mouseX, mouseY);
+            }
+        });
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

@@ -3,6 +3,8 @@ package net.minecraft.client.gui;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
+
+import java.awt.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -44,6 +46,11 @@ import net.minecraft.util.StringUtils;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
 import wtf.atani.event.events.Render2DEvent;
+import wtf.atani.font.storage.FontStorage;
+import wtf.atani.module.impl.hud.CustomScoreboard;
+import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.utils.render.color.ColorUtil;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 
 public class GuiIngame extends Gui
 {
@@ -547,60 +554,83 @@ public class GuiIngame extends Gui
 
     private void renderScoreboard(ScoreObjective p_180475_1_, ScaledResolution p_180475_2_)
     {
-        Scoreboard scoreboard = p_180475_1_.getScoreboard();
-        Collection<Score> collection = scoreboard.getSortedScores(p_180475_1_);
-        List<Score> list = Lists.newArrayList(Iterables.filter(collection, new Predicate<Score>()
-        {
-            public boolean apply(Score p_apply_1_)
+        RenderableShaders.renderAndRun(false, ModuleStorage.getInstance().getByClass(CustomScoreboard.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomScoreboard.class).backgroundBlur.isEnabled(), () -> {
+            Scoreboard scoreboard = p_180475_1_.getScoreboard();
+            Collection<Score> collection = scoreboard.getSortedScores(p_180475_1_);
+            List<Score> list = Lists.newArrayList(Iterables.filter(collection, new Predicate<Score>()
             {
-                return p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#");
-            }
-        }));
+                public boolean apply(Score p_apply_1_)
+                {
+                    return p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#");
+                }
+            }));
 
-        if (list.size() > 15)
-        {
-            collection = Lists.newArrayList(Iterables.skip(list, collection.size() - 15));
-        }
-        else
-        {
-            collection = list;
-        }
-
-        int i = this.getFontRenderer().getStringWidth(p_180475_1_.getDisplayName());
-
-        for (Score score : collection)
-        {
-            ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
-            String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
-            i = Math.max(i, this.getFontRenderer().getStringWidth(s));
-        }
-
-        int i1 = collection.size() * this.getFontRenderer().FONT_HEIGHT;
-        int j1 = p_180475_2_.getScaledHeight() / 2 + i1 / 3;
-        int k1 = 3;
-        int l1 = p_180475_2_.getScaledWidth() - i - k1;
-        int j = 0;
-
-        for (Score score1 : collection)
-        {
-            ++j;
-            ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
-            String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
-            String s2 = EnumChatFormatting.RED + "" + score1.getScorePoints();
-            int k = j1 - j * this.getFontRenderer().FONT_HEIGHT;
-            int l = p_180475_2_.getScaledWidth() - k1 + 2;
-            drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
-            this.getFontRenderer().drawString(s1, l1, k, 553648127);
-            this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
-
-            if (j == collection.size())
+            if (list.size() > 15)
             {
-                String s3 = p_180475_1_.getDisplayName();
-                drawRect(l1 - 2, k - this.getFontRenderer().FONT_HEIGHT - 1, l, k - 1, 1610612736);
-                drawRect(l1 - 2, k - 1, l, k, 1342177280);
-                this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidth(s3) / 2, k - this.getFontRenderer().FONT_HEIGHT, 553648127);
+                collection = Lists.newArrayList(Iterables.skip(list, collection.size() - 15));
             }
-        }
+            else
+            {
+                collection = list;
+            }
+
+            int i = this.getFontRenderer().getStringWidth(p_180475_1_.getDisplayName());
+
+            for (Score score : collection)
+            {
+                ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
+                String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
+                i = Math.max(i, this.getFontRenderer().getStringWidth(s));
+            }
+
+            int i1 = collection.size() * this.getFontRenderer().FONT_HEIGHT;
+            int j1 = p_180475_2_.getScaledHeight() / 2 + i1 / 3;
+            int k1 = 3;
+            int l1 = p_180475_2_.getScaledWidth() - i - k1;
+            int j = 0;
+
+            for (Score score1 : collection)
+            {
+                ++j;
+                ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
+                String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
+                String s2 = EnumChatFormatting.RED + "" + score1.getScorePoints();
+                int k = j1 - j * this.getFontRenderer().FONT_HEIGHT;
+                int l = p_180475_2_.getScaledWidth() - k1 + 2;
+
+                // Scoreboard background
+                if(ModuleStorage.getInstance().getByClass(CustomScoreboard.class).isEnabled()) {
+                    switch (ModuleStorage.getInstance().getByClass(CustomScoreboard.class).background.getValue()) {
+                        case "Normal":
+                            drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
+                            break;
+                    }
+                } else {
+                    drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
+                }
+                //553648127
+                this.getFontRenderer().drawString(s1, l1, k, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
+                this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
+
+                if (j == collection.size())
+                {
+                    String s3 = p_180475_1_.getDisplayName();
+                    if(ModuleStorage.getInstance().getByClass(CustomScoreboard.class).isEnabled()) {
+                        switch (ModuleStorage.getInstance().getByClass(CustomScoreboard.class).background.getValue()) {
+                            case "Normal":
+                                drawRect(l1 - 2, k - this.getFontRenderer().FONT_HEIGHT - 1, l, k - 1, 1610612736);
+                                drawRect(l1 - 2, k - 1, l, k, 1342177280);
+                                break;
+                        }
+                    } else {
+                        drawRect(l1 - 2, k - this.getFontRenderer().FONT_HEIGHT - 1, l, k - 1, 1610612736);
+                        drawRect(l1 - 2, k - 1, l, k, 1342177280);
+                    }
+
+                    this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidth(s3) / 2, k - this.getFontRenderer().FONT_HEIGHT, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
+                }
+            }
+        });
     }
 
     private void renderPlayerStats(ScaledResolution p_180477_1_)
@@ -1185,7 +1215,12 @@ public class GuiIngame extends Gui
 
     public FontRenderer getFontRenderer()
     {
-        return this.mc.fontRendererObj;
+        FontRenderer customFontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
+        if(ModuleStorage.getInstance().getByClass(CustomScoreboard.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomScoreboard.class).customFont.isEnabled()) {
+            return customFontRenderer;
+        } else {
+            return this.mc.fontRendererObj;
+        }
     }
 
     public GuiSpectator getSpectatorGui()

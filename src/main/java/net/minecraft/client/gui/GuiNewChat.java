@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import wtf.atani.font.storage.FontStorage;
 import wtf.atani.module.impl.hud.CustomChat;
 import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 
 public class GuiNewChat extends Gui
 {
@@ -33,115 +34,117 @@ public class GuiNewChat extends Gui
 
     public void drawChat(int p_146230_1_)
     {
-        if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN)
-        {
-            int i = this.getLineCount();
-            boolean flag = false;
-            int j = 0;
-            int k = this.field_146253_i.size();
-            float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
-
-            if (k > 0)
+        RenderableShaders.renderAndRun(false, ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).backgroundBlur.isEnabled(), () -> {
+            if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN)
             {
-                if (this.getChatOpen())
+                int i = this.getLineCount();
+                boolean flag = false;
+                int j = 0;
+                int k = this.field_146253_i.size();
+                float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
+
+                if (k > 0)
                 {
-                    flag = true;
-                }
-
-                float f1 = this.getChatScale();
-                int l = MathHelper.ceiling_float_int((float)this.getChatWidth() / f1);
-                GlStateManager.pushMatrix();
-                GlStateManager.translate(2.0F, 20.0F, 0.0F);
-                GlStateManager.scale(f1, f1, 1.0F);
-
-                for (int i1 = 0; i1 + this.scrollPos < this.field_146253_i.size() && i1 < i; ++i1)
-                {
-                    ChatLine chatline = this.field_146253_i.get(i1 + this.scrollPos);
-
-                    if (chatline != null)
+                    if (this.getChatOpen())
                     {
-                        int j1 = p_146230_1_ - chatline.getUpdatedCounter();
+                        flag = true;
+                    }
 
-                        if (j1 < 200 || flag)
+                    float f1 = this.getChatScale();
+                    int l = MathHelper.ceiling_float_int((float)this.getChatWidth() / f1);
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(2.0F, 20.0F, 0.0F);
+                    GlStateManager.scale(f1, f1, 1.0F);
+
+                    for (int i1 = 0; i1 + this.scrollPos < this.field_146253_i.size() && i1 < i; ++i1)
+                    {
+                        ChatLine chatline = this.field_146253_i.get(i1 + this.scrollPos);
+
+                        if (chatline != null)
                         {
-                            double d0 = (double)j1 / 200.0D;
-                            d0 = 1.0D - d0;
-                            d0 = d0 * 10.0D;
-                            d0 = MathHelper.clamp_double(d0, 0.0D, 1.0D);
-                            d0 = d0 * d0;
-                            int l1 = (int)(255.0D * d0);
+                            int j1 = p_146230_1_ - chatline.getUpdatedCounter();
 
-                            if (flag)
+                            if (j1 < 200 || flag)
                             {
-                                l1 = 255;
-                            }
+                                double d0 = (double)j1 / 200.0D;
+                                d0 = 1.0D - d0;
+                                d0 = d0 * 10.0D;
+                                d0 = MathHelper.clamp_double(d0, 0.0D, 1.0D);
+                                d0 = d0 * d0;
+                                int l1 = (int)(255.0D * d0);
 
-                            l1 = (int)((float)l1 * f);
-                            ++j;
+                                if (flag)
+                                {
+                                    l1 = 255;
+                                }
 
-                            if (l1 > 3)
-                            {
-                                int i2 = 0;
-                                int j2 = -i1 * 9;
-                                String s = chatline.getChatComponent().getFormattedText();
-                                boolean font = ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled();
+                                l1 = (int)((float)l1 * f);
+                                ++j;
 
-                                if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled()) {
-                                    switch(ModuleStorage.getInstance().getByClass(CustomChat.class).background.getValue()) {
-                                    case "Normal":
+                                if (l1 > 3)
+                                {
+                                    int i2 = 0;
+                                    int j2 = -i1 * 9;
+                                    String s = chatline.getChatComponent().getFormattedText();
+                                    boolean font = ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled();
+
+                                    if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled()) {
+                                        switch(ModuleStorage.getInstance().getByClass(CustomChat.class).background.getValue()) {
+                                            case "Normal":
+                                                drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
+                                                break;
+                                            case "Adaptive":
+                                                int strWidth = font ? customFontRenderer.getStringWidth(s) : mc.fontRendererObj.getStringWidth(s);
+                                                drawRect(i2, j2 - 9, strWidth + 1, j2, l1 / 2 << 24);
+                                                break;
+                                        }
+                                    } else {
                                         drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
-                                        break;
-                                    case "Adaptive":
-                                        int strWidth = font ? customFontRenderer.getStringWidth(s) : mc.fontRendererObj.getStringWidth(s);
-                                        drawRect(i2, j2 - 9, strWidth + 1, j2, l1 / 2 << 24);
-                                        break;
-
                                     }
-                                } else {
-                                    drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
-                                }
-                                GlStateManager.enableBlend();
+                                    GlStateManager.enableBlend();
 
-                                if(font) {
-                                    this.customFontRenderer.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
-                                } else {
-                                    this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
-                                }
+                                    if(font) {
+                                        this.customFontRenderer.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                    } else {
+                                        this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                    }
 
-                                GlStateManager.disableAlpha();
-                                GlStateManager.disableBlend();
+                                    GlStateManager.disableAlpha();
+                                    GlStateManager.disableBlend();
+                                }
                             }
                         }
                     }
-                }
 
-                if (flag)
-                {
-                    int k2;
-                    if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled()) {
-                        k2 = this.customFontRenderer.FONT_HEIGHT;
-                    } else {
-                        k2 = this.mc.fontRendererObj.FONT_HEIGHT;
-                    }
-
-                    GlStateManager.translate(-3.0F, 0.0F, 0.0F);
-                    int l2 = k * k2 + k;
-                    int i3 = j * k2 + j;
-                    int j3 = this.scrollPos * i3 / k;
-                    int k1 = i3 * i3 / l2;
-
-                    if (l2 != i3)
+                    if (flag)
                     {
-                        int k3 = j3 > 0 ? 170 : 96;
-                        int l3 = this.isScrolled ? 13382451 : 3355562;
-                        drawRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
-                        drawRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
-                    }
-                }
+                        int k2;
+                        if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled()) {
+                            k2 = this.customFontRenderer.FONT_HEIGHT;
+                        } else {
+                            k2 = this.mc.fontRendererObj.FONT_HEIGHT;
+                        }
 
-                GlStateManager.popMatrix();
+                        GlStateManager.translate(-3.0F, 0.0F, 0.0F);
+                        int l2 = k * k2 + k;
+                        int i3 = j * k2 + j;
+                        int j3 = this.scrollPos * i3 / k;
+                        int k1 = i3 * i3 / l2;
+
+                        if (l2 != i3)
+                        {
+                            int k3 = j3 > 0 ? 170 : 96;
+                            int l3 = this.isScrolled ? 13382451 : 3355562;
+
+                            drawRect(0, -j3, 2, -j3 - k1, l3 + (k3 << 24));
+                            drawRect(2, -j3, 1, -j3 - k1, 13421772 + (k3 << 24));
+                        }
+                    }
+
+                    GlStateManager.popMatrix();
+                }
             }
-        }
+        });
     }
 
     /**

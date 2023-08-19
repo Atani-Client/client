@@ -19,9 +19,14 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldSettings;
+import wtf.atani.font.storage.FontStorage;
+import wtf.atani.module.impl.hud.CustomTabList;
+import wtf.atani.module.storage.ModuleStorage;
+import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
 
 public class GuiPlayerTabOverlay extends Gui
 {
+    private final FontRenderer customFontRenderer = FontStorage.getInstance().findFont("Roboto", 17);
     private static final Ordering<NetworkPlayerInfo> field_175252_a = Ordering.from(new GuiPlayerTabOverlay.PlayerComparator());
     private final Minecraft mc;
     private final GuiIngame guiIngame;
@@ -71,169 +76,237 @@ public class GuiPlayerTabOverlay extends Gui
      */
     public void renderPlayerlist(int width, Scoreboard scoreboardIn, ScoreObjective scoreObjectiveIn)
     {
-        NetHandlerPlayClient nethandlerplayclient = this.mc.thePlayer.sendQueue;
-        List<NetworkPlayerInfo> list = field_175252_a.<NetworkPlayerInfo>sortedCopy(nethandlerplayclient.getPlayerInfoMap());
-        int i = 0;
-        int j = 0;
+        RenderableShaders.renderAndRun(false, ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).backgroundBlur.isEnabled(), () -> {
+            NetHandlerPlayClient nethandlerplayclient = this.mc.thePlayer.sendQueue;
+            List<NetworkPlayerInfo> list = field_175252_a.<NetworkPlayerInfo>sortedCopy(nethandlerplayclient.getPlayerInfoMap());
+            int i = 0;
+            int j = 0;
 
-        for (NetworkPlayerInfo networkplayerinfo : list)
-        {
-            int k = this.mc.fontRendererObj.getStringWidth(this.getPlayerName(networkplayerinfo));
-            i = Math.max(i, k);
-
-            if (scoreObjectiveIn != null && scoreObjectiveIn.getRenderType() != IScoreObjectiveCriteria.EnumRenderType.HEARTS)
+            for (NetworkPlayerInfo networkplayerinfo : list)
             {
-                k = this.mc.fontRendererObj.getStringWidth(" " + scoreboardIn.getValueFromObjective(networkplayerinfo.getGameProfile().getName(), scoreObjectiveIn).getScorePoints());
-                j = Math.max(j, k);
-            }
-        }
+                int k = this.mc.fontRendererObj.getStringWidth(this.getPlayerName(networkplayerinfo));
+                i = Math.max(i, k);
 
-        list = list.subList(0, Math.min(list.size(), 80));
-        int l3 = list.size();
-        int i4 = l3;
-        int j4;
-
-        for (j4 = 1; i4 > 20; i4 = (l3 + j4 - 1) / j4)
-        {
-            ++j4;
-        }
-
-        boolean flag = this.mc.isIntegratedServerRunning() || this.mc.getNetHandler().getNetworkManager().getIsencrypted();
-        int l;
-
-        if (scoreObjectiveIn != null)
-        {
-            if (scoreObjectiveIn.getRenderType() == IScoreObjectiveCriteria.EnumRenderType.HEARTS)
-            {
-                l = 90;
-            }
-            else
-            {
-                l = j;
-            }
-        }
-        else
-        {
-            l = 0;
-        }
-
-        int i1 = Math.min(j4 * ((flag ? 9 : 0) + i + l + 13), width - 50) / j4;
-        int j1 = width / 2 - (i1 * j4 + (j4 - 1) * 5) / 2;
-        int k1 = 10;
-        int l1 = i1 * j4 + (j4 - 1) * 5;
-        List<String> list1 = null;
-        List<String> list2 = null;
-
-        if (this.header != null)
-        {
-            list1 = this.mc.fontRendererObj.listFormattedStringToWidth(this.header.getFormattedText(), width - 50);
-
-            for (String s : list1)
-            {
-                l1 = Math.max(l1, this.mc.fontRendererObj.getStringWidth(s));
-            }
-        }
-
-        if (this.footer != null)
-        {
-            list2 = this.mc.fontRendererObj.listFormattedStringToWidth(this.footer.getFormattedText(), width - 50);
-
-            for (String s2 : list2)
-            {
-                l1 = Math.max(l1, this.mc.fontRendererObj.getStringWidth(s2));
-            }
-        }
-
-        if (list1 != null)
-        {
-            drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list1.size() * this.mc.fontRendererObj.FONT_HEIGHT, Integer.MIN_VALUE);
-
-            for (String s3 : list1)
-            {
-                int i2 = this.mc.fontRendererObj.getStringWidth(s3);
-                this.mc.fontRendererObj.drawStringWithShadow(s3, (float)(width / 2 - i2 / 2), (float)k1, -1);
-                k1 += this.mc.fontRendererObj.FONT_HEIGHT;
-            }
-
-            ++k1;
-        }
-
-        drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + i4 * 9, Integer.MIN_VALUE);
-
-        for (int k4 = 0; k4 < l3; ++k4)
-        {
-            int l4 = k4 / i4;
-            int i5 = k4 % i4;
-            int j2 = j1 + l4 * i1 + l4 * 5;
-            int k2 = k1 + i5 * 9;
-            drawRect(j2, k2, j2 + i1, k2 + 8, 553648127);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-
-            if (k4 < list.size())
-            {
-                NetworkPlayerInfo networkplayerinfo1 = (NetworkPlayerInfo)list.get(k4);
-                String s1 = this.getPlayerName(networkplayerinfo1);
-                GameProfile gameprofile = networkplayerinfo1.getGameProfile();
-
-                if (flag)
+                if (scoreObjectiveIn != null && scoreObjectiveIn.getRenderType() != IScoreObjectiveCriteria.EnumRenderType.HEARTS)
                 {
-                    EntityPlayer entityplayer = this.mc.theWorld.getPlayerEntityByUUID(gameprofile.getId());
-                    boolean flag1 = entityplayer != null && entityplayer.isWearing(EnumPlayerModelParts.CAPE) && (gameprofile.getName().equals("Dinnerbone") || gameprofile.getName().equals("Grumm"));
-                    this.mc.getTextureManager().bindTexture(networkplayerinfo1.getLocationSkin());
-                    int l2 = 8 + (flag1 ? 8 : 0);
-                    int i3 = 8 * (flag1 ? -1 : 1);
-                    Gui.drawScaledCustomSizeModalRect(j2, k2, 8.0F, (float)l2, 8, i3, 8, 8, 64.0F, 64.0F);
-
-                    if (entityplayer != null && entityplayer.isWearing(EnumPlayerModelParts.HAT))
-                    {
-                        int j3 = 8 + (flag1 ? 8 : 0);
-                        int k3 = 8 * (flag1 ? -1 : 1);
-                        Gui.drawScaledCustomSizeModalRect(j2, k2, 40.0F, (float)j3, 8, k3, 8, 8, 64.0F, 64.0F);
-                    }
-
-                    j2 += 9;
+                    k = this.mc.fontRendererObj.getStringWidth(" " + scoreboardIn.getValueFromObjective(networkplayerinfo.getGameProfile().getName(), scoreObjectiveIn).getScorePoints());
+                    j = Math.max(j, k);
                 }
+            }
 
-                if (networkplayerinfo1.getGameType() == WorldSettings.GameType.SPECTATOR)
+            list = list.subList(0, Math.min(list.size(), 80));
+            int l3 = list.size();
+            int i4 = l3;
+            int j4;
+
+            for (j4 = 1; i4 > 20; i4 = (l3 + j4 - 1) / j4)
+            {
+                ++j4;
+            }
+
+            boolean flag = this.mc.isIntegratedServerRunning() || this.mc.getNetHandler().getNetworkManager().getIsencrypted();
+            int l;
+
+            if (scoreObjectiveIn != null)
+            {
+                if (scoreObjectiveIn.getRenderType() == IScoreObjectiveCriteria.EnumRenderType.HEARTS)
                 {
-                    s1 = EnumChatFormatting.ITALIC + s1;
-                    this.mc.fontRendererObj.drawStringWithShadow(s1, (float)j2, (float)k2, -1862270977);
+                    l = 90;
                 }
                 else
                 {
-                    this.mc.fontRendererObj.drawStringWithShadow(s1, (float)j2, (float)k2, -1);
+                    l = j;
+                }
+            }
+            else
+            {
+                l = 0;
+            }
+
+            int i1 = Math.min(j4 * ((flag ? 9 : 0) + i + l + 13), width - 50) / j4;
+            int j1 = width / 2 - (i1 * j4 + (j4 - 1) * 5) / 2;
+            int k1 = 10;
+            int l1 = i1 * j4 + (j4 - 1) * 5;
+            List<String> list1;
+            List<String> list2;
+
+            if (this.header != null)
+            {
+                list1 = this.mc.fontRendererObj.listFormattedStringToWidth(this.header.getFormattedText(), width - 50);
+
+                for (String s : list1)
+                {
+                    l1 = Math.max(l1, this.mc.fontRendererObj.getStringWidth(s));
+                }
+            } else {
+                list1 = null;
+            }
+
+            if (this.footer != null)
+            {
+                list2 = this.mc.fontRendererObj.listFormattedStringToWidth(this.footer.getFormattedText(), width - 50);
+
+                for (String s2 : list2)
+                {
+                    l1 = Math.max(l1, this.mc.fontRendererObj.getStringWidth(s2));
+                }
+            } else {
+                list2 = null;
+            }
+
+            // Header
+
+            if (list1 != null)
+            {
+                if(ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled()) {
+                    switch (ModuleStorage.getInstance().getByClass(CustomTabList.class).background.getValue()) {
+                        case "Normal":
+                            drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list1.size() * this.mc.fontRendererObj.FONT_HEIGHT, Integer.MIN_VALUE);
+                            break;
+                    }
+                } else {
+                    drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list1.size() * this.mc.fontRendererObj.FONT_HEIGHT, Integer.MIN_VALUE);
                 }
 
-                if (scoreObjectiveIn != null && networkplayerinfo1.getGameType() != WorldSettings.GameType.SPECTATOR)
-                {
-                    int k5 = j2 + i + 1;
-                    int l5 = k5 + l;
+                for (String s3 : list1) {
+                    int i2 = this.mc.fontRendererObj.getStringWidth(s3);
 
-                    if (l5 - k5 > 5)
-                    {
-                        this.drawScoreboardValues(scoreObjectiveIn, k2, gameprofile.getName(), k5, l5, networkplayerinfo1);
+                    if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
+                        i2 = this.customFontRenderer.getStringWidth(s3);
+                        this.customFontRenderer.drawStringWithShadow(s3, (float)(width / 2 - i2 / 2), (float)k1, -1);
+                        k1 += this.customFontRenderer.FONT_HEIGHT;
+                    } else {
+                        this.mc.fontRendererObj.drawStringWithShadow(s3, (float)(width / 2 - i2 / 2), (float)k1, -1);
+                        k1 += this.mc.fontRendererObj.FONT_HEIGHT;
                     }
                 }
 
-                this.drawPing(i1, j2 - (flag ? 9 : 0), k2, networkplayerinfo1);
+                ++k1;
             }
-        }
 
-        if (list2 != null)
-        {
-            k1 = k1 + i4 * 9 + 1;
-            drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list2.size() * this.mc.fontRendererObj.FONT_HEIGHT, Integer.MIN_VALUE);
+            // Around player names box
+            if(ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled()) {
+                switch (ModuleStorage.getInstance().getByClass(CustomTabList.class).background.getValue()) {
+                    case "Normal":
+                        drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + i4 * 9, Integer.MIN_VALUE);
+                        break;
+                }
+            } else {
+                drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + i4 * 9, Integer.MIN_VALUE);
+            }
 
-            for (String s4 : list2)
+            // Player name
+
+            for (int k4 = 0; k4 < l3; ++k4)
             {
-                int j5 = this.mc.fontRendererObj.getStringWidth(s4);
-                this.mc.fontRendererObj.drawStringWithShadow(s4, (float)(width / 2 - j5 / 2), (float)k1, -1);
-                k1 += this.mc.fontRendererObj.FONT_HEIGHT;
+                int l4 = k4 / i4;
+                int i5 = k4 % i4;
+                int j2 = j1 + l4 * i1 + l4 * 5;
+                int k2 = k1 + i5 * 9;
+                // Box
+                if(ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled()) {
+                    switch (ModuleStorage.getInstance().getByClass(CustomTabList.class).background.getValue()) {
+                        case "Normal":
+                            drawRect(j2, k2, j2 + i1, k2 + 8, 553648127);
+                            break;
+                    }
+                } else {
+                    drawRect(j2, k2, j2 + i1, k2 + 8, 553648127);
+                }
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                GlStateManager.enableAlpha();
+                GlStateManager.enableBlend();
+                GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+
+                if (k4 < list.size())
+                {
+                    NetworkPlayerInfo networkplayerinfo1 = (NetworkPlayerInfo)list.get(k4);
+                    String s1 = this.getPlayerName(networkplayerinfo1);
+                    GameProfile gameprofile = networkplayerinfo1.getGameProfile();
+
+                    if (flag)
+                    {
+                        EntityPlayer entityplayer = this.mc.theWorld.getPlayerEntityByUUID(gameprofile.getId());
+                        boolean flag1 = entityplayer != null && entityplayer.isWearing(EnumPlayerModelParts.CAPE) && (gameprofile.getName().equals("Dinnerbone") || gameprofile.getName().equals("Grumm"));
+                        this.mc.getTextureManager().bindTexture(networkplayerinfo1.getLocationSkin());
+                        int l2 = 8 + (flag1 ? 8 : 0);
+                        int i3 = 8 * (flag1 ? -1 : 1);
+                        Gui.drawScaledCustomSizeModalRect(j2, k2, 8.0F, (float)l2, 8, i3, 8, 8, 64.0F, 64.0F);
+
+                        if (entityplayer != null && entityplayer.isWearing(EnumPlayerModelParts.HAT))
+                        {
+                            int j3 = 8 + (flag1 ? 8 : 0);
+                            int k3 = 8 * (flag1 ? -1 : 1);
+                            Gui.drawScaledCustomSizeModalRect(j2, k2, 40.0F, (float)j3, 8, k3, 8, 8, 64.0F, 64.0F);
+                        }
+
+                        j2 += 9;
+                    }
+
+                    // Username
+
+                    if (networkplayerinfo1.getGameType() == WorldSettings.GameType.SPECTATOR)
+                    {
+                        s1 = EnumChatFormatting.ITALIC + s1;
+                        if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
+                            this.customFontRenderer.drawStringWithShadow(s1, (float)j2, (float)k2, -1862270977);
+                        } else {
+                            this.mc.fontRendererObj.drawStringWithShadow(s1, (float)j2, (float)k2, -1862270977);
+                        }
+                    }
+                    else {
+                        if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
+                            this.customFontRenderer.drawStringWithShadow(s1, (float) j2, (float) k2, -1);
+                        } else {
+                            this.mc.fontRendererObj.drawStringWithShadow(s1, (float) j2, (float) k2, -1);
+                        }
+                    }
+
+                    if (scoreObjectiveIn != null && networkplayerinfo1.getGameType() != WorldSettings.GameType.SPECTATOR)
+                    {
+                        int k5 = j2 + i + 1;
+                        int l5 = k5 + l;
+
+                        if (l5 - k5 > 5)
+                        {
+                            this.drawScoreboardValues(scoreObjectiveIn, k2, gameprofile.getName(), k5, l5, networkplayerinfo1);
+                        }
+                    }
+
+                    this.drawPing(i1, j2 - (flag ? 9 : 0), k2, networkplayerinfo1);
+                }
             }
-        }
+
+            //Footer
+
+            if (list2 != null)
+            {
+                k1 = k1 + i4 * 9 + 1;
+                if(ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled()){
+                    switch(ModuleStorage.getInstance().getByClass(CustomTabList.class).background.getValue()) {
+                        case "Normal":
+                            drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list2.size() * this.mc.fontRendererObj.FONT_HEIGHT, Integer.MIN_VALUE);
+                            break;
+                    }
+                } else {
+                    drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list2.size() * this.mc.fontRendererObj.FONT_HEIGHT, Integer.MIN_VALUE);
+                }
+
+                for (String s4 : list2) {
+                    int j5;
+
+                    if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
+                        j5 = this.customFontRenderer.getStringWidth(s4);
+                        this.customFontRenderer.drawStringWithShadow(s4, (float)(width / 2 - j5 / 2), (float)k1, -1);
+                        k1 += this.customFontRenderer.FONT_HEIGHT;
+                    } else {
+                        j5 = this.mc.fontRendererObj.getStringWidth(s4);
+                        this.mc.fontRendererObj.drawStringWithShadow(s4, (float)(width / 2 - j5 / 2), (float)k1, -1);
+                        k1 += this.mc.fontRendererObj.FONT_HEIGHT;
+                    }
+                }
+            }
+        });
     }
 
     protected void drawPing(int p_175245_1_, int p_175245_2_, int p_175245_3_, NetworkPlayerInfo networkPlayerInfoIn)
@@ -358,14 +431,22 @@ public class GuiPlayerTabOverlay extends Gui
                         s = s + "hp";
                     }
 
-                    this.mc.fontRendererObj.drawStringWithShadow(s, (float)((p_175247_5_ + p_175247_4_) / 2 - this.mc.fontRendererObj.getStringWidth(s) / 2), (float)p_175247_2_, i1);
+                    if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
+                        this.customFontRenderer.drawStringWithShadow(s, (float)((p_175247_5_ + p_175247_4_) / 2 - this.customFontRenderer.getStringWidth(s) / 2), (float)p_175247_2_, i1);
+                    } else {
+                        this.mc.fontRendererObj.drawStringWithShadow(s, (float)((p_175247_5_ + p_175247_4_) / 2 - this.mc.fontRendererObj.getStringWidth(s) / 2), (float)p_175247_2_, i1);
+                    }
                 }
             }
         }
         else
         {
             String s1 = EnumChatFormatting.YELLOW + "" + i;
-            this.mc.fontRendererObj.drawStringWithShadow(s1, (float)(p_175247_5_ - this.mc.fontRendererObj.getStringWidth(s1)), (float)p_175247_2_, 16777215);
+            if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
+                this.customFontRenderer.drawStringWithShadow(s1, (float)(p_175247_5_ - this.customFontRenderer.getStringWidth(s1)), (float)p_175247_2_, 16777215);
+            } else {
+                this.mc.fontRendererObj.drawStringWithShadow(s1, (float)(p_175247_5_ - this.mc.fontRendererObj.getStringWidth(s1)), (float)p_175247_2_, 16777215);
+            }
         }
     }
 

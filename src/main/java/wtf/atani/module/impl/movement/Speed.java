@@ -22,7 +22,7 @@ import wtf.atani.value.impl.StringBoxValue;
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low", "Fast Flag"}, new Supplier[]{() -> mode.is("Verus")});
+    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low", "Fast Flag", "Float"}, new Supplier[]{() -> mode.is("Verus")});
     private final StringBoxValue verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
@@ -59,9 +59,9 @@ public class Speed extends Module {
     private boolean spartanBoost = true;
 
     // Verus
-    private int verusDamageTicks;
     private int verusTicks;
-    private int verusCount = 1;
+    private int verusY;
+    private boolean slowDown = true;
 
     // Vulcan
     private int vulcanTicks;
@@ -313,6 +313,18 @@ public class Speed extends Module {
                                 mc.thePlayer.jump();
                             } else {
                                 MoveUtil.strafe(0.33 + MoveUtil.getSpeedBoost(0.06F));
+                            }
+                            break;
+                        case "Float":
+                            if(mc.thePlayer.onGround) {
+                                mc.thePlayer.jump();
+                                MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
+                            } else {
+                                if(verusTicks < 10) {
+                                    mc.thePlayer.motionY = 0;
+                                    mc.thePlayer.onGround = true;
+                                    MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
+                                }
                             }
                             break;
                         case "Low":

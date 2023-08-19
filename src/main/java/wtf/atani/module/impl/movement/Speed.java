@@ -23,6 +23,7 @@ public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
     private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low", "Fast Flag"}, new Supplier[]{() -> mode.is("Verus")});
+    private final StringBoxValue verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
@@ -310,6 +311,11 @@ public class Speed extends Module {
                                 MoveUtil.strafe(0.53 + MoveUtil.getSpeedBoost(0.05F));
                                 mc.thePlayer.jump();
                             } else {
+                                if(verusTicks == 1) {
+                                    mc.thePlayer.onGround = true;
+                                    MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
+                                }
+                                
                                 MoveUtil.strafe(0.33 + MoveUtil.getSpeedBoost(0.06F));
                             }
                             break;
@@ -322,9 +328,16 @@ public class Speed extends Module {
                                 MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
                             } else {
                                 if(verusTicks == 1) {
-                                    mc.thePlayer.motionY = 0;
-                                    mc.thePlayer.onGround = true;
-                                    MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
+                                    switch (verusLowMode.getValue()) {
+                                        case "Normal":
+                                            mc.thePlayer.motionY = -0.0980000019;
+                                            break;
+                                        case "Fast":
+                                            mc.thePlayer.motionY = 0;
+                                            mc.thePlayer.onGround = true;
+                                            MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
+                                            break;
+                                    }
                                 }
                             }
 

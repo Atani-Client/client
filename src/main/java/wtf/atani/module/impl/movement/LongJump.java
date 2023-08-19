@@ -1,5 +1,6 @@
 package wtf.atani.module.impl.movement;
 
+import com.google.common.base.Supplier;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 
@@ -18,20 +19,20 @@ import wtf.atani.value.impl.StringBoxValue;
 @ModuleInfo(name = "LongJump", description = "Jumps long", category = Category.MOVEMENT)
 public class LongJump extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"NCP", "Test", "Vulcan", "Intave"});
-    private final SliderValue<Float> height = new SliderValue<>("Height", "High high will the player jump?", this, 4F, 0.4F, 10F, 0);
+    private final SliderValue<Float> vulcanHeight = new SliderValue<>("Height", "High high will the player jump?", this, 4F, 0.4F, 10F, 0, new Supplier[]{() -> mode.is("Vulcan")});
 
     // NCP
     private int ncpTicks;
     private double ncpSpeed;
 
     // Vulcan
-    private int clips = 0;
-    private boolean jumped;
+    private int vulcanClips = 0;
+    private boolean vulcanJumped;
 
-    // TEST
-    private float speed;
+    // Test
+    private float testSpeed;
     private int testTicks;
-    private final TimeHelper timer = new TimeHelper();
+    private final TimeHelper testTimer = new TimeHelper();
 
     @Override
     public String getSuffix() {
@@ -59,7 +60,7 @@ public class LongJump extends Module {
         if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
             switch(mode.getValue()) {
             case "Vulcan":
-                if(jumped && packetEvent.getPacket() instanceof C03PacketPlayer) {
+                if(vulcanJumped && packetEvent.getPacket() instanceof C03PacketPlayer) {
                     C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
 
                     if(mc.thePlayer.ticksExisted % 11 == 0) {
@@ -111,19 +112,19 @@ public class LongJump extends Module {
             break;
         case "Vulcan":
             if(mc.thePlayer.onGround) {
-                if(!jumped) {
+                if(!vulcanJumped) {
                     mc.thePlayer.jump();
                 } else {
                     this.setEnabled(false);
                 }
             } else if(mc.thePlayer.fallDistance > 0.25) {
-                if(clips < 3) {
-                    mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + (clips == 0 ? 10 : height.getValue()), mc.thePlayer.posZ);
-                    clips++;
+                if(vulcanClips < 3) {
+                    mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + (vulcanClips == 0 ? 10 : vulcanHeight.getValue()), mc.thePlayer.posZ);
+                    vulcanClips++;
                 } else {
-                    jumped = true;
+                    vulcanJumped = true;
 
-                    if(timer.hasReached(145, true)) {
+                    if(testTimer.hasReached(145, true)) {
                         mc.thePlayer.motionY = -0.1476D;
                     } else {
                         mc.thePlayer.motionY = -0.0975D;
@@ -140,38 +141,37 @@ public class LongJump extends Module {
                 switch (testTicks) {
                     case 0:
                         mc.thePlayer.jump();
-                        speed = 0.485F;
+                        testSpeed = 0.485F;
                         break;
                     case 1:
-                        speed = (float) MoveUtil.getBaseMoveSpeed();
+                        testSpeed = (float) MoveUtil.getBaseMoveSpeed();
                         break;
                     case 2:
-                        speed = (float) ((MoveUtil.getBaseMoveSpeed() * 1.2 + Math.random() / 8) + Math.random() / 9);
+                        testSpeed = (float) ((MoveUtil.getBaseMoveSpeed() * 1.2 + Math.random() / 8) + Math.random() / 9);
                         break;
                 }
 
                 if(testTicks > 4) {
-                speed -= 0.01;
+                testSpeed -= 0.01;
                 }
 
                 if(mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0)
-                    MoveUtil.strafe(speed);
+                    MoveUtil.strafe(testSpeed);
                 break;
         }
     }
 
     @Override
     public void onEnable() {
-    //    mc.timer.timerSpeed = 0.6F;
-        clips = 0;
-        jumped = false;
+        vulcanClips = 0;
+        vulcanJumped = false;
     }
 
     @Override
     public void onDisable() {
+        vulcanClips = 0;
+        vulcanJumped = false;
         mc.timer.timerSpeed = 1;
-        clips = 0;
-        jumped = false;
         mc.gameSettings.keyBindJump.pressed = false;
     }
 }

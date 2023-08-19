@@ -22,7 +22,7 @@ import wtf.atani.value.impl.StringBoxValue;
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low"}, new Supplier[]{() -> mode.is("Verus")});
+    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low", "Fast Flag"}, new Supplier[]{() -> mode.is("Verus")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
     private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
@@ -370,6 +370,34 @@ public class Speed extends Module {
                                     break;
                             }
                             MoveUtil.strafe((float) MoveUtil.getSpeed() + 0.002);
+                            break;
+                        case "Fast Flag":
+                            if (mc.thePlayer.onGround && this.isMoving()) {
+                                mc.gameSettings.keyBindJump.pressed = true;
+                            }
+
+                            if (this.isMoving()) {
+                                float direction = mc.thePlayer.rotationYaw + ((mc.thePlayer.moveForward < 0) ? 180 : 0) + ((mc.thePlayer.moveStrafing > 0) ? (-90f * ((mc.thePlayer.moveForward < 0) ? -0.5f : ((mc.thePlayer.moveForward > 0) ? 0.4f : 1f))) : 0);
+
+                                float x = (float) Math.cos((direction + 90) * Math.PI / 180);
+                                float z = (float) Math.sin((direction + 90) * Math.PI / 180);
+
+                                if (mc.thePlayer.isCollidedVertically) {
+                                    mc.thePlayer.motionX = x * 0.29f;
+                                    mc.thePlayer.motionZ = z * 0.29f;
+                                }
+
+                                if (mc.thePlayer.motionY == .33319999363422365) {
+                                    if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+                                        mc.thePlayer.motionX = x * 1.24;
+                                        mc.thePlayer.motionZ = z * 1.24;
+                                    } else {
+                                        mc.thePlayer.motionX = x * 0.45;
+                                        mc.thePlayer.motionZ = z * 0.45;
+                                    }
+                                }
+                            }
+                            break;
                     }
                 }
                 break;
@@ -733,6 +761,7 @@ public class Speed extends Module {
     public void onDisable() {
         mc.timer.timerSpeed = 1.0F;
         mc.thePlayer.speedInAir = 0.02F;
+        mc.gameSettings.keyBindJump.pressed = false;
         KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), false);
     }
 }

@@ -180,6 +180,7 @@ public class Speed extends Module {
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     if(!vulcanMode.is("Ground"))
                         mc.gameSettings.keyBindJump.pressed = false;
+                    
                     if (mc.thePlayer.onGround) {
                         vulcanTicks = 0;
                     } else {
@@ -311,11 +312,6 @@ public class Speed extends Module {
                                 MoveUtil.strafe(0.53 + MoveUtil.getSpeedBoost(0.05F));
                                 mc.thePlayer.jump();
                             } else {
-                                if(verusTicks == 1) {
-                                    mc.thePlayer.onGround = true;
-                                    MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
-                                }
-                                
                                 MoveUtil.strafe(0.33 + MoveUtil.getSpeedBoost(0.06F));
                             }
                             break;

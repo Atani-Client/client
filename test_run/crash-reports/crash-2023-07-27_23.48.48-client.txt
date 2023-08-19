@@ -5,7 +5,7 @@ Time: 27/07/23 23:48
 Description: Initializing game
 
 java.lang.RuntimeException: fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException: Invalid credentials or tokens
-	at wtf.atani.loader.ModificationLoader.start(ModificationLoader.java:30)
+	at loader.tech.atani.client.ModificationLoader.start(ModificationLoader.java:30)
 	at net.minecraft.client.Minecraft.startGame(Minecraft.java:566)
 	at net.minecraft.client.Minecraft.run(Minecraft.java:403)
 	at net.minecraft.client.main.Main.main(Main.java:113)
@@ -14,7 +14,7 @@ Caused by: fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException: Inva
 	at fr.litarvan.openauth.microsoft.MicrosoftAuthenticator.extractValue(MicrosoftAuthenticator.java:291)
 	at fr.litarvan.openauth.microsoft.MicrosoftAuthenticator.extractTokens(MicrosoftAuthenticator.java:284)
 	at fr.litarvan.openauth.microsoft.MicrosoftAuthenticator.loginWithCredentials(MicrosoftAuthenticator.java:120)
-	at wtf.atani.loader.ModificationLoader.start(ModificationLoader.java:27)
+	at loader.tech.atani.client.ModificationLoader.start(ModificationLoader.java:27)
 	... 4 more
 
 
@@ -23,7 +23,7 @@ A detailed walkthrough of the error, its code path and all known details is as f
 
 -- Head --
 Stacktrace:
-	at wtf.atani.loader.ModificationLoader.start(ModificationLoader.java:30)
+	at loader.tech.atani.client.ModificationLoader.start(ModificationLoader.java:30)
 	at net.minecraft.client.Minecraft.startGame(Minecraft.java:566)
 
 -- Initialization --

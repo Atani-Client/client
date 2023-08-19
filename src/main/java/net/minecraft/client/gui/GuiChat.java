@@ -14,10 +14,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import wtf.atani.font.storage.FontStorage;
-import wtf.atani.module.impl.hud.CustomChat;
-import wtf.atani.module.storage.ModuleStorage;
-import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
+import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.module.impl.hud.CustomChat;
+import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 
 public class GuiChat extends GuiScreen
 {

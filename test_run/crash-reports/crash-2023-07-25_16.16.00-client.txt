@@ -5,7 +5,7 @@ Time: 7/25/23 4:16 PM
 Description: Rendering screen
 
 java.lang.NullPointerException: Rendering screen
-	at wtf.atani.font.storage.FontStorage.findFont(FontStorage.java:27)
+	at storage.font.tech.atani.client.FontStorage.findFont(FontStorage.java:27)
 	at wtf.atani.screen.click.component.settings.SliderComponent.drawScreen(SliderComponent.java:30)
 	at wtf.atani.screen.click.component.module.ModuleComponent.drawScreen(ModuleComponent.java:60)
 	at wtf.atani.screen.click.component.frame.Frame.drawScreen(Frame.java:41)
@@ -22,7 +22,7 @@ A detailed walkthrough of the error, its code path and all known details is as f
 
 -- Head --
 Stacktrace:
-	at wtf.atani.font.storage.FontStorage.findFont(FontStorage.java:27)
+	at storage.font.tech.atani.client.FontStorage.findFont(FontStorage.java:27)
 	at wtf.atani.screen.click.component.settings.SliderComponent.drawScreen(SliderComponent.java:30)
 	at wtf.atani.screen.click.component.module.ModuleComponent.drawScreen(ModuleComponent.java:60)
 	at wtf.atani.screen.click.component.frame.Frame.drawScreen(Frame.java:41)

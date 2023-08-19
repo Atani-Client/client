@@ -31,7 +31,7 @@ import net.optifine.shaders.Shaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
-import wtf.atani.utils.player.PlayerHandler;
+import tech.atani.client.utility.player.PlayerHandler;
 
 public abstract class RendererLivingEntity<T extends EntityLivingBase> extends Render<T>
 {

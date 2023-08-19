@@ -4,7 +4,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import java.util.UUID;
 import net.minecraft.util.StringUtils;
-import wtf.atani.performance.FastUUID;
+import tech.atani.client.feature.performance.FastUUID;
 
 public final class NBTUtil
 {

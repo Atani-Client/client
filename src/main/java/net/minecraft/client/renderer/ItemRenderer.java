@@ -31,10 +31,10 @@ import net.optifine.DynamicLights;
 import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
-import wtf.atani.module.impl.render.BlockAnimations;
-import wtf.atani.module.impl.render.HitAnimations;
-import wtf.atani.module.impl.render.ViewModel;
-import wtf.atani.module.storage.ModuleStorage;
+import tech.atani.client.feature.module.impl.render.BlockAnimations;
+import tech.atani.client.feature.module.impl.render.HitAnimations;
+import tech.atani.client.feature.module.impl.render.ViewModel;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 
 public class ItemRenderer
 {

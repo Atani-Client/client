@@ -44,8 +44,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import wtf.atani.performance.FastUUID;
-import wtf.atani.utils.player.PlayerHandler;
+import tech.atani.client.feature.performance.FastUUID;
+import tech.atani.client.utility.player.PlayerHandler;
 
 public class Item
 {

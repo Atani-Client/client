@@ -10,7 +10,7 @@ java.lang.NullPointerException: Rendering screen
 	at net.minecraft.client.gui.FontRenderer.listFormattedStringToWidth(FontRenderer.java:565)
 	at wtf.atani.screen.main.atani.button.impl.ServerButton.draw(ServerButton.java:35)
 	at wtf.atani.screen.main.atani.page.impl.second.MultiPlayerPage.draw(MultiPlayerPage.java:54)
-	at wtf.atani.screen.main.atani.AtaniMainMenu.drawScreen(AtaniMainMenu.java:135)
+	at atani.main.screen.tech.atani.client.AtaniMainMenu.drawScreen(AtaniMainMenu.java:135)
 	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1407)
 	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1130)
 	at net.minecraft.client.Minecraft.run(Minecraft.java:423)
@@ -28,11 +28,11 @@ Stacktrace:
 	at net.minecraft.client.gui.FontRenderer.listFormattedStringToWidth(FontRenderer.java:565)
 	at wtf.atani.screen.main.atani.button.impl.ServerButton.draw(ServerButton.java:35)
 	at wtf.atani.screen.main.atani.page.impl.second.MultiPlayerPage.draw(MultiPlayerPage.java:54)
-	at wtf.atani.screen.main.atani.AtaniMainMenu.drawScreen(AtaniMainMenu.java:135)
+	at atani.main.screen.tech.atani.client.AtaniMainMenu.drawScreen(AtaniMainMenu.java:135)
 
 -- Screen render details --
 Details:
-	Screen name: wtf.atani.screen.main.atani.AtaniMainMenu
+	Screen name: atani.main.screen.tech.atani.client.AtaniMainMenu
 	Mouse location: Scaled: (365, 121). Absolute: (730, 774)
 	Screen size: Scaled: (960, 509). Absolute: (1920, 1017). Scale factor of 2
 Stacktrace:

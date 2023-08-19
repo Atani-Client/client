@@ -75,8 +75,8 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.LockCode;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
-import wtf.atani.event.events.KnockbackModifierEvent;
-import wtf.atani.utils.player.PlayerHandler;
+import tech.atani.client.listener.event.events.minecraft.player.combat.KnockbackModifierEvent;
+import tech.atani.client.utility.player.PlayerHandler;
 
 @SuppressWarnings("incomplete-switch")
 public abstract class EntityPlayer extends EntityLivingBase

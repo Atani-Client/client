@@ -6,7 +6,7 @@ import java.util.UUID;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.login.INetHandlerLoginClient;
-import wtf.atani.performance.FastUUID;
+import tech.atani.client.feature.performance.FastUUID;
 
 public class S02PacketLoginSuccess implements Packet<INetHandlerLoginClient>
 {

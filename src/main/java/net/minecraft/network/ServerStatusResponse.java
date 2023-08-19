@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
 import java.util.UUID;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.JsonUtils;
-import wtf.atani.performance.FastUUID;
+import tech.atani.client.feature.performance.FastUUID;
 
 public class ServerStatusResponse
 {

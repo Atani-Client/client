@@ -1,7 +1,7 @@
 package net.minecraft.util;
 
 import net.minecraft.client.settings.GameSettings;
-import wtf.atani.event.events.MoveButtonEvent;
+import tech.atani.client.listener.event.events.minecraft.input.MoveButtonEvent;
 
 public class MovementInputFromOptions extends MovementInput
 {

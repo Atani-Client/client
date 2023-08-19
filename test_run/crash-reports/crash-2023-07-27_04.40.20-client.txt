@@ -5,7 +5,7 @@ Time: 27/07/23 04:40
 Description: Rendering screen
 
 java.lang.NullPointerException: Rendering screen
-	at wtf.atani.screen.main.atani.AtaniMainMenu.drawScreen(AtaniMainMenu.java:92)
+	at atani.main.screen.tech.atani.client.AtaniMainMenu.drawScreen(AtaniMainMenu.java:92)
 	at net.minecraft.client.renderer.EntityRenderer.func_181560_a(EntityRenderer.java:1407)
 	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1130)
 	at net.minecraft.client.Minecraft.run(Minecraft.java:423)
@@ -18,11 +18,11 @@ A detailed walkthrough of the error, its code path and all known details is as f
 
 -- Head --
 Stacktrace:
-	at wtf.atani.screen.main.atani.AtaniMainMenu.drawScreen(AtaniMainMenu.java:92)
+	at atani.main.screen.tech.atani.client.AtaniMainMenu.drawScreen(AtaniMainMenu.java:92)
 
 -- Screen render details --
 Details:
-	Screen name: wtf.atani.screen.main.atani.AtaniMainMenu
+	Screen name: atani.main.screen.tech.atani.client.AtaniMainMenu
 	Mouse location: Scaled: (0, 239). Absolute: (0, 0)
 	Screen size: Scaled: (427, 240). Absolute: (854, 480). Scale factor of 2
 Stacktrace:

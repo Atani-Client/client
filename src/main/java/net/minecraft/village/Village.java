@@ -5,7 +5,7 @@ import com.mojang.authlib.GameProfile;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.UUID;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.material.Material;
@@ -22,7 +22,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
-import wtf.atani.performance.FastUUID;
+import tech.atani.client.feature.performance.FastUUID;
 
 public class Village
 {

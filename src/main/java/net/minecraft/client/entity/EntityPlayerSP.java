@@ -45,12 +45,12 @@ import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
-import wtf.atani.command.storage.CommandStorage;
-import wtf.atani.event.events.*;
-import wtf.atani.module.impl.movement.NoSlowDown;
-import wtf.atani.module.storage.ModuleStorage;
-import wtf.atani.utils.player.MoveUtil;
-import wtf.atani.utils.player.PlayerHandler;
+import tech.atani.client.feature.command.storage.CommandStorage;
+import tech.atani.client.feature.module.impl.movement.NoSlowDown;
+import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.listener.event.events.minecraft.player.movement.*;
+import tech.atani.client.utility.player.movement.MoveUtil;
+import tech.atani.client.utility.player.PlayerHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -222,9 +222,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     @Override
     public void moveEntity(double x, double y, double z) {
-        final MoveEntityEvent moveEntityEvent = new MoveEntityEvent(x, y, z).onFire();
-        if (!moveEntityEvent.isCancelled())
-            super.moveEntity(moveEntityEvent.getX(), moveEntityEvent.getY(), moveEntityEvent.getZ());
+        final MovePlayerEvent movePlayerEvent = new MovePlayerEvent(x, y, z).onFire();
+        if (!movePlayerEvent.isCancelled())
+            super.moveEntity(movePlayerEvent.getX(), movePlayerEvent.getY(), movePlayerEvent.getZ());
     }
 
     /**

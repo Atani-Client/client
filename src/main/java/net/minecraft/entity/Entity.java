@@ -48,11 +48,11 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import wtf.atani.event.events.SafeWalkEvent;
-import wtf.atani.module.impl.movement.SafeWalk;
-import wtf.atani.module.impl.render.AntiBlind;
-import wtf.atani.module.storage.ModuleStorage;
-import wtf.atani.performance.FastUUID;
+import tech.atani.client.listener.event.events.minecraft.player.movement.SafeWalkEvent;
+import tech.atani.client.feature.module.impl.movement.SafeWalk;
+import tech.atani.client.feature.module.impl.render.AntiBlind;
+import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.feature.performance.FastUUID;
 
 public abstract class Entity implements ICommandSender
 {

@@ -11,7 +11,7 @@ import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
-import wtf.atani.performance.FastUUID;
+import tech.atani.client.feature.performance.FastUUID;
 
 public abstract class EntityTameable extends EntityAnimal implements IEntityOwnable
 {

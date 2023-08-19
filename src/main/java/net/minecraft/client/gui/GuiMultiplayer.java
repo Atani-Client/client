@@ -13,7 +13,7 @@ import net.minecraft.client.resources.I18n;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
-import wtf.atani.screen.main.atani.AtaniMainMenu;
+import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 
 public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
 {

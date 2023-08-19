@@ -33,7 +33,6 @@ import java.util.Queue;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import javax.crypto.SecretKey;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.CryptManager;
@@ -50,7 +49,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-import wtf.atani.event.events.PacketEvent;
+import tech.atani.client.listener.event.events.minecraft.network.PacketEvent;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 {

@@ -94,9 +94,14 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
-import wtf.atani.event.events.*;
-import wtf.atani.module.impl.render.Ambience;
-import wtf.atani.utils.player.PlayerHandler;
+import tech.atani.client.feature.module.impl.render.Ambience;
+import tech.atani.client.listener.event.events.minecraft.player.rotation.RayTraceRangeEvent;
+import tech.atani.client.listener.event.events.minecraft.player.rotation.RotationEvent;
+import tech.atani.client.listener.event.events.minecraft.render.PerspectiveEvent;
+import tech.atani.client.listener.event.events.minecraft.render.Render3DEvent;
+import tech.atani.client.listener.event.events.minecraft.render.player.EntityRendererEvent;
+import tech.atani.client.listener.event.events.minecraft.render.player.RendererEvent;
+import tech.atani.client.utility.player.PlayerHandler;
 
 public class EntityRenderer implements IResourceManagerReloadListener
 {

@@ -8,7 +8,7 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
-import wtf.atani.performance.FastUUID;
+import tech.atani.client.feature.performance.FastUUID;
 
 public abstract class EntityCreature extends EntityLiving
 {

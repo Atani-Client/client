@@ -45,12 +45,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
-import wtf.atani.event.events.Render2DEvent;
-import wtf.atani.font.storage.FontStorage;
-import wtf.atani.module.impl.hud.CustomScoreboard;
-import wtf.atani.module.storage.ModuleStorage;
-import wtf.atani.utils.render.color.ColorUtil;
-import wtf.atani.utils.render.shader.render.ingame.RenderableShaders;
+import tech.atani.client.listener.event.events.minecraft.render.Render2DEvent;
+import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.module.impl.hud.CustomScoreboard;
+import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.utility.render.color.ColorUtil;
+import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 
 public class GuiIngame extends Gui
 {

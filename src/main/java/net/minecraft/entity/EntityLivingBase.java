@@ -51,13 +51,13 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import wtf.atani.event.events.JumpEvent;
-import wtf.atani.module.impl.movement.NoJumpDelay;
-import wtf.atani.module.impl.movement.NoSlowDown;
-import wtf.atani.module.impl.render.HitAnimations;
-import wtf.atani.module.storage.ModuleStorage;
-import wtf.atani.performance.FastUUID;
-import wtf.atani.utils.player.PlayerHandler;
+import tech.atani.client.listener.event.events.minecraft.player.movement.PlayerJumpEvent;
+import tech.atani.client.feature.module.impl.movement.NoJumpDelay;
+import tech.atani.client.feature.module.impl.movement.NoSlowDown;
+import tech.atani.client.feature.module.impl.render.HitAnimations;
+import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.feature.performance.FastUUID;
+import tech.atani.client.utility.player.PlayerHandler;
 
 public abstract class EntityLivingBase extends Entity
 {
@@ -1586,7 +1586,7 @@ public abstract class EntityLivingBase extends Entity
             this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1f);
         }
         if (this.isSprinting()) {
-            JumpEvent jumpEvent = new JumpEvent(this.rotationYaw).onFire();
+            PlayerJumpEvent jumpEvent = new PlayerJumpEvent(this.rotationYaw).onFire();
             float f = PlayerHandler.moveFix ? PlayerHandler.yaw : this.rotationYaw;
             float f2 = f * ((float)Math.PI / 180);
             this.motionX -= (double)(MathHelper.sin(f2) * 0.2f);

@@ -30,7 +30,7 @@ import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.optifine.reflect.Reflector;
-import wtf.atani.event.events.EmitParticleEvent;
+import tech.atani.client.listener.event.events.minecraft.render.EmitParticleEvent;
 
 public class EffectRenderer
 {

@@ -1,7 +1,7 @@
 package net.minecraft.entity.projectile;
 
 import java.util.List;
-import java.util.UUID;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -19,8 +19,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import wtf.atani.performance.FastUUID;
-import wtf.atani.utils.player.PlayerHandler;
+import tech.atani.client.feature.performance.FastUUID;
+import tech.atani.client.utility.player.PlayerHandler;
 
 public abstract class EntityThrowable extends Entity implements IProjectile
 {

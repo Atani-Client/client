@@ -28,8 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
-import wtf.atani.event.events.AttackEvent;
-import wtf.atani.utils.interfaces.Methods;
+import tech.atani.client.listener.event.events.minecraft.player.combat.AttackEntityEvent;
 
 public class PlayerControllerMP
 {
@@ -498,7 +497,7 @@ public class PlayerControllerMP
      */
     public void attackEntity(EntityPlayer playerIn, Entity targetEntity)
     {
-        new AttackEvent(targetEntity).onFire();
+        new AttackEntityEvent(targetEntity).onFire();
         this.syncCurrentPlayItem();
         this.netClientHandler.addToSendQueue(new C02PacketUseEntity(targetEntity, C02PacketUseEntity.Action.ATTACK));
 

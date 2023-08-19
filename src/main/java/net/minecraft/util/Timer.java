@@ -1,8 +1,7 @@
 package net.minecraft.util;
 
 import net.minecraft.client.Minecraft;
-import wtf.atani.event.events.TimeEvent;
-import wtf.atani.utils.interfaces.Methods;
+import tech.atani.client.listener.event.events.minecraft.game.TimerManipulationEvent;
 
 public class Timer
 {
@@ -33,8 +32,8 @@ public class Timer
      */
     public void updateTimer()
     {
-        TimeEvent timeEvent = new TimeEvent(Minecraft.getSystemTime()).onFire();
-        long i = timeEvent.getTime();
+        TimerManipulationEvent timerManipulationEvent = new TimerManipulationEvent(Minecraft.getSystemTime()).onFire();
+        long i = timerManipulationEvent.getTime();
         this.field_194148_c = (float)(i - this.lastSyncSysClock) / this.field_194149_e * this.timerSpeed;
         this.lastSyncSysClock = i;
         this.partialTicks += this.field_194148_c;

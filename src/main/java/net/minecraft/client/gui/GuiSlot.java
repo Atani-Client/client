@@ -7,8 +7,8 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
-import wtf.atani.screen.main.atani.AtaniMainMenu;
-import wtf.atani.utils.render.RenderUtil;
+import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
+import tech.atani.client.utility.render.RenderUtil;
 
 import java.awt.*;
 

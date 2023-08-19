@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import wtf.atani.utils.player.PlayerHandler;
+import tech.atani.client.utility.player.PlayerHandler;
 
 public class GuiInventory extends InventoryEffectRenderer
 {

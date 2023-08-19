@@ -2,18 +2,14 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
-import java.io.BufferedReader;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URI;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -30,13 +26,11 @@ import net.minecraft.world.storage.WorldInfo;
 import net.optifine.CustomPanorama;
 import net.optifine.CustomPanoramaProperties;
 import net.optifine.reflect.Reflector;
-import org.apache.commons.io.Charsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
-import wtf.atani.screen.main.atani.AtaniMainMenu;
+import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 {

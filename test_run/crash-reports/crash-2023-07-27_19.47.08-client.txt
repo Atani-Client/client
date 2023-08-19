@@ -5,7 +5,7 @@ Time: 27/07/23 19:47
 Description: Updating screen events
 
 java.lang.NullPointerException: Updating screen events
-	at wtf.atani.screen.main.atani.AtaniMainMenu.mouseClicked(AtaniMainMenu.java:146)
+	at atani.main.screen.tech.atani.client.AtaniMainMenu.mouseClicked(AtaniMainMenu.java:146)
 	at net.minecraft.client.gui.GuiScreen.handleMouseInput(GuiScreen.java:608)
 	at net.minecraft.client.gui.GuiScreen.handleInput(GuiScreen.java:577)
 	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1778)
@@ -20,13 +20,13 @@ A detailed walkthrough of the error, its code path and all known details is as f
 
 -- Head --
 Stacktrace:
-	at wtf.atani.screen.main.atani.AtaniMainMenu.mouseClicked(AtaniMainMenu.java:146)
+	at atani.main.screen.tech.atani.client.AtaniMainMenu.mouseClicked(AtaniMainMenu.java:146)
 	at net.minecraft.client.gui.GuiScreen.handleMouseInput(GuiScreen.java:608)
 	at net.minecraft.client.gui.GuiScreen.handleInput(GuiScreen.java:577)
 
 -- Affected screen --
 Details:
-	Screen name: wtf.atani.screen.main.atani.AtaniMainMenu
+	Screen name: atani.main.screen.tech.atani.client.AtaniMainMenu
 Stacktrace:
 	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1778)
 	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1104)

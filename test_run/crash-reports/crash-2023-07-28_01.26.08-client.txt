@@ -5,10 +5,10 @@ Time: 28/07/23 01:26
 Description: Ticking entity
 
 java.lang.NullPointerException: Ticking entity
-	at wtf.atani.module.impl.movement.Flight.onMove(Flight.java:152)
-	at wtf.atani.event.radbus.PubSubImpl.publish(PubSubImpl.java:146)
-	at wtf.atani.event.handling.EventHandling.publishEvent(EventHandling.java:17)
-	at wtf.atani.event.Event.onFire(Event.java:17)
+	at movement.impl.module.tech.atani.client.Flight.onMove(Flight.java:152)
+	at radbus.event.tech.atani.client.PubSubImpl.publish(PubSubImpl.java:146)
+	at handling.event.tech.atani.client.EventHandling.publishEvent(EventHandling.java:17)
+	at event.tech.atani.client.Event.onFire(Event.java:17)
 	at net.minecraft.client.entity.EntityPlayerSP.moveEntity(EntityPlayerSP.java:221)
 	at net.minecraft.entity.EntityLivingBase.moveEntityWithHeading(EntityLivingBase.java:1655)
 	at net.minecraft.entity.player.EntityPlayer.moveEntityWithHeading(EntityPlayer.java:1819)
@@ -33,10 +33,10 @@ A detailed walkthrough of the error, its code path and all known details is as f
 
 -- Head --
 Stacktrace:
-	at wtf.atani.module.impl.movement.Flight.onMove(Flight.java:152)
-	at wtf.atani.event.radbus.PubSubImpl.publish(PubSubImpl.java:146)
-	at wtf.atani.event.handling.EventHandling.publishEvent(EventHandling.java:17)
-	at wtf.atani.event.Event.onFire(Event.java:17)
+	at movement.impl.module.tech.atani.client.Flight.onMove(Flight.java:152)
+	at radbus.event.tech.atani.client.PubSubImpl.publish(PubSubImpl.java:146)
+	at handling.event.tech.atani.client.EventHandling.publishEvent(EventHandling.java:17)
+	at event.tech.atani.client.Event.onFire(Event.java:17)
 	at net.minecraft.client.entity.EntityPlayerSP.moveEntity(EntityPlayerSP.java:221)
 	at net.minecraft.entity.EntityLivingBase.moveEntityWithHeading(EntityLivingBase.java:1655)
 	at net.minecraft.entity.player.EntityPlayer.moveEntityWithHeading(EntityPlayer.java:1819)

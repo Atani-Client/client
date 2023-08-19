@@ -5,9 +5,9 @@ Time: 27/07/23 19:14
 Description: Unexpected error
 
 java.lang.NullPointerException: Unexpected error
-	at wtf.atani.module.impl.combat.Backtrack.onTick(Backtrack.java:63)
-	at wtf.atani.event.radbus.PubSubImpl.publish(PubSubImpl.java:146)
-	at wtf.atani.event.handling.EventHandling.publishEvent(EventHandling.java:17)
+	at combat.impl.module.tech.atani.client.Backtrack.onTick(Backtrack.java:63)
+	at radbus.event.tech.atani.client.PubSubImpl.publish(PubSubImpl.java:146)
+	at handling.event.tech.atani.client.EventHandling.publishEvent(EventHandling.java:17)
 	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1724)
 	at net.minecraft.client.Minecraft.runGameLoop(Minecraft.java:1104)
 	at net.minecraft.client.Minecraft.run(Minecraft.java:423)
@@ -20,9 +20,9 @@ A detailed walkthrough of the error, its code path and all known details is as f
 
 -- Head --
 Stacktrace:
-	at wtf.atani.module.impl.combat.Backtrack.onTick(Backtrack.java:63)
-	at wtf.atani.event.radbus.PubSubImpl.publish(PubSubImpl.java:146)
-	at wtf.atani.event.handling.EventHandling.publishEvent(EventHandling.java:17)
+	at combat.impl.module.tech.atani.client.Backtrack.onTick(Backtrack.java:63)
+	at radbus.event.tech.atani.client.PubSubImpl.publish(PubSubImpl.java:146)
+	at handling.event.tech.atani.client.EventHandling.publishEvent(EventHandling.java:17)
 
 -- Affected level --
 Details:

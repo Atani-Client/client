@@ -8,7 +8,7 @@ java.lang.ClassCastException: wtf.atani.screen.main.atani.button.impl.SimpleButt
 	at wtf.atani.screen.main.atani.page.impl.second.MultiPlayerPage.pingServers(MultiPlayerPage.java:113)
 	at wtf.atani.screen.main.atani.page.impl.second.MultiPlayerPage.lambda$refresh$2(MultiPlayerPage.java:85)
 	at wtf.atani.screen.main.atani.page.Page.mouseClicked(Page.java:31)
-	at wtf.atani.screen.main.atani.AtaniMainMenu.mouseClicked(AtaniMainMenu.java:148)
+	at atani.main.screen.tech.atani.client.AtaniMainMenu.mouseClicked(AtaniMainMenu.java:148)
 	at net.minecraft.client.gui.GuiScreen.handleMouseInput(GuiScreen.java:608)
 	at net.minecraft.client.gui.GuiScreen.handleInput(GuiScreen.java:577)
 	at net.minecraft.client.Minecraft.runTick(Minecraft.java:1778)
@@ -26,7 +26,7 @@ Stacktrace:
 	at wtf.atani.screen.main.atani.page.impl.second.MultiPlayerPage.pingServers(MultiPlayerPage.java:113)
 	at wtf.atani.screen.main.atani.page.impl.second.MultiPlayerPage.lambda$refresh$2(MultiPlayerPage.java:85)
 	at wtf.atani.screen.main.atani.page.Page.mouseClicked(Page.java:31)
-	at wtf.atani.screen.main.atani.AtaniMainMenu.mouseClicked(AtaniMainMenu.java:148)
+	at atani.main.screen.tech.atani.client.AtaniMainMenu.mouseClicked(AtaniMainMenu.java:148)
 	at net.minecraft.client.gui.GuiScreen.handleMouseInput(GuiScreen.java:608)
 	at net.minecraft.client.gui.GuiScreen.handleInput(GuiScreen.java:577)
 

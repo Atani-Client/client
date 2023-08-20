@@ -22,7 +22,12 @@ import tech.atani.client.feature.module.value.impl.StringBoxValue;
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low", "Fast Flag", "Float"}, new Supplier[]{() -> mode.is("Verus")});
+    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low", "Fast Flag", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")});
+    private final SliderValue<Float> verusGroundSpeed = new SliderValue<>("Verus Ground Speed", "How much will the verus speed strafe onGround?", this, 0.53f, 0.1f, 0.55f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
+    private final SliderValue<Float> verusAirSpeed = new SliderValue<>("Verus Air Speed", "How much will the verus speed strafe inAir?", this, 0.33f, 0.1f, 0.4f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
+    private final SliderValue<Float> verusSpeedBoost = new SliderValue<>("Verus Speed Boost", "How Much Will the Verus Speed Boost?", this, 3F, 0, 5F, 1, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
+    private final StringBoxValue verusCustomMode = new StringBoxValue("Verus Custom Mode", "Which custom mode will the verus speed use?", this, new String[]{"Normal", "Low", "Float"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
+    private final SliderValue<Float> verusFloatTicks = new SliderValue<>("Verus Float Ticks", "For how many ticks will the verus float speed float?", this, 5F, 1, 9F, 1, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Float")});
     private final StringBoxValue verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
@@ -325,6 +330,30 @@ public class Speed extends Module {
                                     mc.thePlayer.onGround = true;
                                     MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
                                 }
+                            }
+                            break;
+                        case "Custom":
+                            if(!isMoving())
+                                return;
+
+                            if(mc.thePlayer.onGround)
+                                mc.thePlayer.jump();
+
+                            MoveUtil.strafe((mc.thePlayer.onGround ? verusGroundSpeed.getValue() : verusAirSpeed.getValue()) + MoveUtil.getSpeedBoost(verusSpeedBoost.getValue()));
+
+                            switch (verusCustomMode.getValue()) {
+                                case "Float":
+                                    if(!mc.thePlayer.onGround) {
+                                        if(verusTicks < verusFloatTicks.getValue() + 1) {
+                                            mc.thePlayer.motionY = 0;
+                                            mc.thePlayer.onGround = true;
+                                            MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(verusSpeedBoost.getValue()));
+                                        }
+                                    } else {
+                                        mc.thePlayer.jump();
+                                    }
+
+                                    break;
                             }
                             break;
                         case "Low":

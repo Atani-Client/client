@@ -3,7 +3,7 @@ package tech.atani.client.utility.player.movement;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.listener.event.events.minecraft.player.movement.MovePlayerEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
 import tech.atani.client.utility.player.PlayerHandler;
 
 public class MoveUtil implements Methods {

@@ -5,7 +5,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.module.value.impl.SliderValue;
-import tech.atani.client.listener.event.events.minecraft.player.movement.UpdateEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;
 
 @ModuleData(name = "ParticleTimer", description = "Increases particle speed", category = Category.RENDER)

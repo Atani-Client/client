@@ -51,7 +51,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import tech.atani.client.listener.event.events.minecraft.player.movement.PlayerJumpEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.PlayerJumpEvent;
 import tech.atani.client.feature.module.impl.movement.NoJumpDelay;
 import tech.atani.client.feature.module.impl.movement.NoSlowDown;
 import tech.atani.client.feature.module.impl.render.HitAnimations;

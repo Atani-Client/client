@@ -1,7 +1,7 @@
 package tech.atani.client.feature.module.impl.misc;
 
 import net.minecraft.network.play.client.C03PacketPlayer;
-import tech.atani.client.listener.event.events.minecraft.player.movement.UpdateEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

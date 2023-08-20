@@ -49,7 +49,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
-import tech.atani.client.listener.event.events.minecraft.network.PacketEvent;
+import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 {

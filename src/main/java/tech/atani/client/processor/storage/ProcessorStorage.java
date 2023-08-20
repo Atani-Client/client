@@ -2,7 +2,7 @@ package tech.atani.client.processor.storage;
 
 import de.florianmichael.rclasses.storage.Storage;
 import org.reflections.Reflections;
-import tech.atani.client.listener.event.handling.EventHandling;
+import tech.atani.client.listener.handling.EventHandling;
 import tech.atani.client.processor.Processor;
 import tech.atani.client.processor.data.ProcessorInfo;
 

@@ -10,7 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.*;
 
-import tech.atani.client.listener.event.events.minecraft.input.GuiHandleEvent;
+import tech.atani.client.listener.event.minecraft.input.GuiHandleEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

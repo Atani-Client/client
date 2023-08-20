@@ -19,7 +19,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldSettings;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.impl.hud.CustomTabList;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;

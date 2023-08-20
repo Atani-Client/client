@@ -1,8 +1,8 @@
 package tech.atani.client.feature.combat;
 
 import net.minecraft.entity.Entity;
-import tech.atani.client.listener.event.events.minecraft.game.RunTickEvent;
-import tech.atani.client.listener.event.handling.EventHandling;
+import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
+import tech.atani.client.listener.handling.EventHandling;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.combat.interfaces.IgnoreList;

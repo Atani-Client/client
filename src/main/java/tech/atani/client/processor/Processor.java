@@ -1,6 +1,6 @@
 package tech.atani.client.processor;
 
-import tech.atani.client.listener.event.handling.EventHandling;
+import tech.atani.client.listener.handling.EventHandling;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.processor.data.ProcessorInfo;
 

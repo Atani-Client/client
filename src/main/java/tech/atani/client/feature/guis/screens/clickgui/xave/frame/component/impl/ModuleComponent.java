@@ -3,7 +3,7 @@ package tech.atani.client.feature.guis.screens.clickgui.xave.frame.component.imp
 import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.clickgui.xave.frame.component.Component;
 import tech.atani.client.feature.guis.screens.clickgui.xave.window.Window;
 

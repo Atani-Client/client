@@ -9,7 +9,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.module.value.impl.SliderValue;
-import tech.atani.client.listener.event.events.minecraft.network.PacketEvent;
+import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.random.RandomUtil;
 

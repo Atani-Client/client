@@ -2,8 +2,8 @@ package tech.atani.client.feature.module.impl.player;
 
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tech.atani.client.utility.math.time.TickHelper;
-import tech.atani.client.listener.event.events.minecraft.network.PacketEvent;
-import tech.atani.client.listener.event.events.minecraft.game.RunTickEvent;
+import tech.atani.client.listener.event.minecraft.network.PacketEvent;
+import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

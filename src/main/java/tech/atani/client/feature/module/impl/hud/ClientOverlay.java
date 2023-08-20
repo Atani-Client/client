@@ -1,7 +1,7 @@
 package tech.atani.client.feature.module.impl.hud;
 
 import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.listener.event.events.minecraft.render.Render2DEvent;
+import tech.atani.client.listener.event.minecraft.render.Render2DEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

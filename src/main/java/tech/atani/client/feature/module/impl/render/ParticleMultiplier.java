@@ -5,7 +5,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.value.impl.SliderValue;
-import tech.atani.client.listener.event.events.minecraft.render.EmitParticleEvent;
+import tech.atani.client.listener.event.minecraft.render.EmitParticleEvent;
 
 @ModuleData(name = "ParticleMultiplier", description = "Multiplies particles", category = Category.RENDER)
 public class ParticleMultiplier extends Module {

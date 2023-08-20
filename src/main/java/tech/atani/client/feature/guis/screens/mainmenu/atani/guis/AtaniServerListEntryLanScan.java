@@ -2,7 +2,7 @@ package tech.atani.client.feature.guis.screens.mainmenu.atani.guis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 
 public class AtaniServerListEntryLanScan implements AtaniGuiListExtended.IGuiListEntry
 {

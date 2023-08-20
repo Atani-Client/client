@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.impl.hud.ClickGui;

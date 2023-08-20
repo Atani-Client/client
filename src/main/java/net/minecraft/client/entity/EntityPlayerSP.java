@@ -48,7 +48,7 @@ import net.minecraft.world.World;
 import tech.atani.client.feature.command.storage.CommandStorage;
 import tech.atani.client.feature.module.impl.movement.NoSlowDown;
 import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.listener.event.events.minecraft.player.movement.*;
+import tech.atani.client.listener.event.minecraft.player.movement.*;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.utility.player.PlayerHandler;
 

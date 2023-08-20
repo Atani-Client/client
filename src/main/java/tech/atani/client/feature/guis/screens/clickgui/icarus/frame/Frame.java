@@ -6,7 +6,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.guis.screens.clickgui.icarus.frame.component.impl.ModuleComponent;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.clickgui.icarus.frame.component.Component;
 import tech.atani.client.utility.render.shader.shaders.GradientShader;
 import tech.atani.client.utility.render.RenderUtil;

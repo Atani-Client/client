@@ -28,7 +28,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
-import tech.atani.client.listener.event.events.minecraft.player.combat.AttackEntityEvent;
+import tech.atani.client.listener.event.minecraft.player.combat.AttackEntityEvent;
 
 public class PlayerControllerMP
 {

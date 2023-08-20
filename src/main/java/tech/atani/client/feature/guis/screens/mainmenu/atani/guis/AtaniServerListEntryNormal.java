@@ -25,7 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.utility.render.lwjgl.StencilUtil;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 

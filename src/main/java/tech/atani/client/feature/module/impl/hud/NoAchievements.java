@@ -1,7 +1,7 @@
 package tech.atani.client.feature.module.impl.hud;
 
 import net.minecraft.network.play.server.S37PacketStatistics;
-import tech.atani.client.listener.event.events.minecraft.network.PacketEvent;
+import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

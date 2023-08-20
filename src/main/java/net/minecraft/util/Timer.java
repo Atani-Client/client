@@ -1,7 +1,7 @@
 package net.minecraft.util;
 
 import net.minecraft.client.Minecraft;
-import tech.atani.client.listener.event.events.minecraft.game.TimerManipulationEvent;
+import tech.atani.client.listener.event.minecraft.game.TimerManipulationEvent;
 
 public class Timer
 {

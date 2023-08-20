@@ -1,7 +1,7 @@
 package tech.atani.client.feature.module.impl.render;
 
 import net.minecraft.util.EnumParticleTypes;
-import tech.atani.client.listener.event.events.minecraft.player.combat.AttackEntityEvent;
+import tech.atani.client.listener.event.minecraft.player.combat.AttackEntityEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

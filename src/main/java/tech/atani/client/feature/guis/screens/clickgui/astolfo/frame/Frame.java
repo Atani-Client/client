@@ -9,7 +9,7 @@ import tech.atani.client.feature.guis.screens.clickgui.astolfo.component.Compone
 import tech.atani.client.feature.guis.screens.clickgui.astolfo.component.impl.ModuleComponent;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.color.ColorUtil;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 
 import java.awt.*;
 import java.util.ArrayList;

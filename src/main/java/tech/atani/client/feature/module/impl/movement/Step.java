@@ -1,7 +1,7 @@
 package tech.atani.client.feature.module.impl.movement;
 
 import com.google.common.base.Supplier;
-import tech.atani.client.listener.event.events.minecraft.player.movement.UpdateMotionEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

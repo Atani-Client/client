@@ -2,9 +2,9 @@ package tech.atani.client.processor.impl;
 
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.StringUtils;
-import tech.atani.client.listener.event.events.minecraft.network.PacketEvent;
-import tech.atani.client.listener.event.events.minecraft.game.RunTickEvent;
-import tech.atani.client.listener.event.events.minecraft.world.WorldLoadEvent;
+import tech.atani.client.listener.event.minecraft.network.PacketEvent;
+import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
+import tech.atani.client.listener.event.minecraft.world.WorldLoadEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.processor.Processor;
 import tech.atani.client.processor.data.ProcessorInfo;

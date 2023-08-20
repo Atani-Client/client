@@ -8,7 +8,7 @@ import tech.atani.client.feature.module.value.impl.CheckBoxValue;
 import tech.atani.client.feature.module.value.impl.SliderValue;
 import tech.atani.client.feature.module.value.impl.StringBoxValue;
 import tech.atani.client.feature.module.value.storage.ValueStorage;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.clickgui.ryu.component.Component;
 
 public class ModuleComponent extends Component {

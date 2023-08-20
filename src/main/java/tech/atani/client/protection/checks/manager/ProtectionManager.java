@@ -1,8 +1,8 @@
 package tech.atani.client.protection.checks.manager;
 
 import sun.misc.Unsafe;
-import tech.atani.client.listener.event.events.minecraft.world.WorldLoadEvent;
-import tech.atani.client.listener.event.handling.EventHandling;
+import tech.atani.client.listener.event.minecraft.world.WorldLoadEvent;
+import tech.atani.client.listener.handling.EventHandling;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.protection.checks.ProtectionCheck;
 import tech.atani.client.protection.checks.enums.TriggerType;

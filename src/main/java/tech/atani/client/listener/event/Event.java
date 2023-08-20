@@ -1,6 +1,6 @@
 package tech.atani.client.listener.event;
 
-import tech.atani.client.listener.event.handling.EventHandling;
+import tech.atani.client.listener.handling.EventHandling;
 
 public class Event {
     private boolean cancelled;

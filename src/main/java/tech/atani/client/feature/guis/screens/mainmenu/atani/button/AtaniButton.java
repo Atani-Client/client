@@ -3,7 +3,7 @@ package tech.atani.client.feature.guis.screens.mainmenu.atani.button;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.utility.render.animation.Direction;
 import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
 import tech.atani.client.utility.render.RenderUtil;

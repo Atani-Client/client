@@ -6,7 +6,7 @@ import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 import tech.atani.client.feature.module.value.Value;
 import tech.atani.client.feature.module.value.impl.SliderValue;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 
 import java.awt.*;
 

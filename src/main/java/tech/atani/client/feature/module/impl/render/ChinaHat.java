@@ -3,7 +3,7 @@ package tech.atani.client.feature.module.impl.render;
 import com.google.common.base.Supplier;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
-import tech.atani.client.listener.event.events.minecraft.render.Render3DEvent;
+import tech.atani.client.listener.event.minecraft.render.Render3DEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

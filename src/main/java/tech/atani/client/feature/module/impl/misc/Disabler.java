@@ -10,7 +10,7 @@ import net.minecraft.network.play.server.S05PacketSpawnPosition;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import tech.atani.client.feature.module.value.impl.StringBoxValue;
-import tech.atani.client.listener.event.events.minecraft.network.PacketEvent;
+import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

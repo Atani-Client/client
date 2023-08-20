@@ -211,8 +211,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.storage.MapData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tech.atani.client.listener.event.events.minecraft.render.player.HeadLookEvent;
-import tech.atani.client.listener.event.events.minecraft.network.PacketEvent;
+import tech.atani.client.listener.event.minecraft.render.player.HeadLookEvent;
+import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.utility.player.PlayerHandler;
 
 public class NetHandlerPlayClient implements INetHandlerPlayClient

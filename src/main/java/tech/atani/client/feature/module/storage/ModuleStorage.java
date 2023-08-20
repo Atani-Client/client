@@ -2,8 +2,8 @@ package tech.atani.client.feature.module.storage;
 
 import de.florianmichael.rclasses.storage.Storage;
 import org.reflections.Reflections;
-import tech.atani.client.listener.event.events.minecraft.input.KeyInputEvent;
-import tech.atani.client.listener.event.handling.EventHandling;
+import tech.atani.client.listener.event.minecraft.input.KeyInputEvent;
+import tech.atani.client.listener.handling.EventHandling;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

@@ -75,7 +75,7 @@ import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.LockCode;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
-import tech.atani.client.listener.event.events.minecraft.player.combat.KnockbackModifierEvent;
+import tech.atani.client.listener.event.minecraft.player.combat.KnockbackModifierEvent;
 import tech.atani.client.utility.player.PlayerHandler;
 
 @SuppressWarnings("incomplete-switch")

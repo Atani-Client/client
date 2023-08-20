@@ -1,7 +1,7 @@
 package tech.atani.client.feature.guis.screens.clickgui.xave.window.component.impl;
 
 import net.minecraft.client.gui.FontRenderer;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.feature.module.value.impl.CheckBoxValue;
 

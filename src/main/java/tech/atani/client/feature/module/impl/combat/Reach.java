@@ -5,7 +5,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.listener.event.events.minecraft.player.rotation.RayTraceRangeEvent;
+import tech.atani.client.listener.event.minecraft.player.rotation.RayTraceRangeEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.value.impl.SliderValue;
 

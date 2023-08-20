@@ -5,7 +5,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.entity.Entity;
 import org.lwjgl.opengl.GL11;
-import tech.atani.client.listener.event.events.minecraft.render.Render3DEvent;
+import tech.atani.client.listener.event.minecraft.render.Render3DEvent;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
@@ -16,7 +16,7 @@ import tech.atani.client.utility.render.color.ColorUtil;
 import tech.atani.client.feature.module.value.impl.CheckBoxValue;
 import tech.atani.client.feature.module.value.impl.SliderValue;
 import tech.atani.client.feature.module.value.impl.StringBoxValue;
-import tech.atani.client.listener.event.events.minecraft.render.Render2DEvent;
+import tech.atani.client.listener.event.minecraft.render.Render2DEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.interpolation.InterpolationUtil;
 

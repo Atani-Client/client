@@ -7,7 +7,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.clickgui.ryu.component.Component;
 import tech.atani.client.feature.guis.screens.clickgui.ryu.component.impl.ModuleComponent;
 import tech.atani.client.utility.interfaces.ColorPalette;

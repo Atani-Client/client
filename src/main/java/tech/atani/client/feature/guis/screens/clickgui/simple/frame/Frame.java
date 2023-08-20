@@ -2,7 +2,7 @@ package tech.atani.client.feature.guis.screens.clickgui.simple.frame;
 
 import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.feature.guis.screens.clickgui.simple.component.Component;
-import tech.atani.client.feature.customFont.storage.FontStorage;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.storage.ModuleStorage;

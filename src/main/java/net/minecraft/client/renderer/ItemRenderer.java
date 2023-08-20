@@ -365,6 +365,7 @@ public class ItemRenderer
             float rotationPitch = abstractclientplayer.prevRotationPitch + (abstractclientplayer.rotationPitch - abstractclientplayer.prevRotationPitch) * partialTicks;
             float rotationYaw = abstractclientplayer.prevRotationYaw + (abstractclientplayer.rotationYaw - abstractclientplayer.prevRotationYaw) * partialTicks;
             float swingProgressFactor = MathHelper.sin((float) (MathHelper.sqrt_float(swingProgress) * Math.PI));
+            float squaredSwingProgressFactor = MathHelper.sin((float) (swingProgress * swingProgress * Math.PI));
             this.func_178101_a(rotationPitch, rotationYaw);
             this.func_178109_a(abstractclientplayer);
             this.func_178110_a((EntityPlayerSP)abstractclientplayer, partialTicks);
@@ -410,10 +411,10 @@ public class ItemRenderer
                                         this.doBlockTransformations();
                                         break;
                                     case "Exhibition":
-                                        this.transformFirstPersonItem(equippedProgress - 0.125F, 0);
-                                        GlStateManager.rotate(-swingProgressFactor * 55 / 2.0F, -8.0F, 0.4f, 9.0F);
-                                        GlStateManager.rotate(-swingProgressFactor * 45, 1.0F, swingProgressFactor / 2, -0.0F);
-                                        GlStateManager.translate(0.0f, 0.1F, 0.0f);
+                                        this.transformFirstPersonItem(equippedProgress - 0.125f, 0);
+                                        GlStateManager.rotate(-swingProgressFactor * 55 / 2f, -8f, 0.4f, 9f);
+                                        GlStateManager.rotate(-swingProgressFactor * 45, 1f, swingProgressFactor / 2, -0.0f);
+                                        GlStateManager.translate(0.0f, 0.1f, 0.0f);
                                         this.doBlockTransformations();
                                         break;
                                     case "Flux":
@@ -422,16 +423,15 @@ public class ItemRenderer
                                         break;
                                     case "Swang":
                                         this.transformFirstPersonItem(equippedProgress / 2f, swingProgress);
-                                        GlStateManager.rotate(swingProgressFactor * 30.0f / 2.0f, -swingProgressFactor, -0.0f, 9.0f);
-                                        GlStateManager.rotate(swingProgressFactor * 40.0f, 1.0f, (-swingProgressFactor) / 2.0f, -0.0f);
+                                        GlStateManager.rotate(swingProgressFactor * 30f / 2f, -swingProgressFactor, -0f, 9f);
+                                        GlStateManager.rotate(swingProgressFactor * 40f, 1f, (-swingProgressFactor) / 2f, -0f);
                                         this.doBlockTransformations();
                                         break;
                                     case "Swong":
-                                        this.transformFirstPersonItem(equippedProgress / 2.0F, 0.0F);
-                                        float var153 = MathHelper.sin((float) (swingProgress * swingProgress * Math.PI));
-                                        GlStateManager.rotate(-var153 * 40.0F / 2.0F, var153 / 2.0F, -0.0F, 9.0F);
-                                        GlStateManager.rotate(-var153 * 30.0F, 1.0F, var153 / 2.0F, -0.0F);
-                                        this.doBlockTransformations(0.4F);
+                                        this.transformFirstPersonItem(equippedProgress / 2f, 0);
+                                        GlStateManager.rotate(-squaredSwingProgressFactor * 40f / 2f, squaredSwingProgressFactor / 2f, -0f, 9f);
+                                        GlStateManager.rotate(-squaredSwingProgressFactor * 30f, 1f, squaredSwingProgressFactor / 2f, -0f);
+                                        this.doBlockTransformations(0.4f);
                                         break;
                                     case "Remix":
                                         this.transformFirstPersonItem(equippedProgress, swingProgress / 40.0f);

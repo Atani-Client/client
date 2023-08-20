@@ -46,6 +46,11 @@ public class ESP extends Module {
     // 2D
     private final Frustum frustum = new Frustum();
 
+    @Override
+    public String getSuffix() {
+        return mode.getValue();
+    }
+
     @Listen
     public void on2D(Render2DEvent render2DEvent) {
         float length = 0.5f;

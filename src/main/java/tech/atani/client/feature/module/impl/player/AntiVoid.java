@@ -17,9 +17,6 @@ public class AntiVoid extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, (new String[] {"Flag", "Position", "Ground"}));
     private final CheckBoxValue voidCheck = new CheckBoxValue("Void Check", "Should the module check for void?", this, true);
 
-    @Override
-    public String getSuffix() { return mode.getValue(); }
-
     @Listen
     public void onMove(MovePlayerEvent event) {
         if((!BlockUtil.isBlockUnderPlayer() || voidCheck.getValue() && Methods.mc.thePlayer.fallDistance > 5 && !Methods.mc.gameSettings.keyBindSneak.isKeyDown() && !Methods.mc.thePlayer.capabilities.isFlying)) {

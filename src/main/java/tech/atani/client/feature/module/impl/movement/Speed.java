@@ -22,7 +22,13 @@ import tech.atani.client.feature.module.value.impl.StringBoxValue;
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"});
     private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low", "Fast Flag", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")});
+    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
+    private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
+    private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
+    private final SliderValue<Float> jumpHeight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.is("BHop")});
+
+    // Verus
+    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")});
     private final SliderValue<Float> verusGroundSpeed = new SliderValue<>("Verus Ground Speed", "How much will the verus speed strafe onGround?", this, 0.53f, 0.1f, 0.55f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
     private final SliderValue<Float> verusAirSpeed = new SliderValue<>("Verus Air Speed", "How much will the verus speed strafe inAir?", this, 0.33f, 0.1f, 0.4f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
     private final SliderValue<Float> verusSpeedBoost = new SliderValue<>("Verus Speed Boost", "How Much Will the Verus Speed Boost?", this, 3F, 0, 5F, 1, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
@@ -30,10 +36,6 @@ public class Speed extends Module {
     private final SliderValue<Float> verusFloatTicks = new SliderValue<>("Verus Float Ticks", "For how many ticks will the verus float speed float?", this, 5F, 1, 9F, 0, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Float")});
     private final StringBoxValue verusCustomLowMode = new StringBoxValue("Custom Low Mode", "What mode will the custom lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Low")});
     private final StringBoxValue verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
-    private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
-    private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
-    private final SliderValue<Float> jumpHeight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.is("BHop")});
 
     // WatchDog
     private final StringBoxValue watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});
@@ -300,20 +302,12 @@ public class Speed extends Module {
 
                     switch(verusMode.getValue()) {
                         case "Slow":
-                            if (!isMoving()) {
-                                mc.gameSettings.keyBindJump.pressed = false;
-                                return;
-                            }
-
                             mc.gameSettings.keyBindJump.pressed = true;
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 100);
 
                             MoveUtil.strafe((float) MoveUtil.getSpeed());
                             break;
                         case "Normal":
-                            if(!isMoving())
-                                return;
-
                             if (mc.thePlayer.onGround) {
                                 MoveUtil.strafe(0.53 + MoveUtil.getSpeedBoost(0.05F));
                                 mc.thePlayer.jump();
@@ -433,33 +427,6 @@ public class Speed extends Module {
                                     break;
                             }
                             MoveUtil.strafe((float) MoveUtil.getSpeed() + 0.002);
-                            break;
-                        case "Fast Flag":
-                            if (mc.thePlayer.onGround && this.isMoving()) {
-                                mc.gameSettings.keyBindJump.pressed = true;
-                            }
-
-                            if (this.isMoving()) {
-                                float direction = mc.thePlayer.rotationYaw + ((mc.thePlayer.moveForward < 0) ? 180 : 0) + ((mc.thePlayer.moveStrafing > 0) ? (-90f * ((mc.thePlayer.moveForward < 0) ? -0.5f : ((mc.thePlayer.moveForward > 0) ? 0.4f : 1f))) : 0);
-
-                                float x = (float) Math.cos((direction + 90) * Math.PI / 180);
-                                float z = (float) Math.sin((direction + 90) * Math.PI / 180);
-
-                                if (mc.thePlayer.isCollidedVertically) {
-                                    mc.thePlayer.motionX = x * 0.29f;
-                                    mc.thePlayer.motionZ = z * 0.29f;
-                                }
-
-                                if (mc.thePlayer.motionY == .33319999363422365) {
-                                    if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
-                                        mc.thePlayer.motionX = x * 1.24;
-                                        mc.thePlayer.motionZ = z * 1.24;
-                                    } else {
-                                        mc.thePlayer.motionX = x * 0.45;
-                                        mc.thePlayer.motionZ = z * 0.45;
-                                    }
-                                }
-                            }
                             break;
                     }
                 }

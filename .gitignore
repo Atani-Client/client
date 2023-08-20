@@ -7,3 +7,4 @@
 *.project
 
 test_run/
+target/

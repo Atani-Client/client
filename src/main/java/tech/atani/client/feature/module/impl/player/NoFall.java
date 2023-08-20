@@ -20,6 +20,11 @@ public class NoFall extends Module {
 
     private final TickHelper spartanTimer = new TickHelper();
 
+    @Override
+    public String getSuffix() {
+        return mode.getValue();
+    }
+
     @Listen
     public void onPacket(PacketEvent packetEvent) {
         if(mc.thePlayer != null && mc.theWorld != null) {

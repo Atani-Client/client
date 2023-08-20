@@ -41,6 +41,11 @@ public class Disabler extends Module {
 	// Verus Combat
 	private int verusCounter;
 
+	@Override
+	public String getSuffix() {
+		return mode.getValue();
+	}
+
 	@Listen
 	public void onPacketEvent(PacketEvent event) {
 		if (Methods.mc.thePlayer == null || Methods.mc.theWorld == null)

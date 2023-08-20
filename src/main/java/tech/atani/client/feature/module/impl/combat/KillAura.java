@@ -44,8 +44,6 @@ public class KillAura extends Module {
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
-    public CheckBoxValue perfectHit = new CheckBoxValue("Perfect Hit", "Hit only if in a perfect state?", this, false);
-    public CheckBoxValue perfectHitIntave = new CheckBoxValue("Perfect Hit Intave", "Modify perfect hit specifically for intave anti cheat?", this, false);
     public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Server-Side Misplace", "Fix Server-Side Misplace?", this, true);
     public CheckBoxValue waitBeforeAttack = new CheckBoxValue("Wait before attacking", "Wait before attacking the target?", this, true);
     public StringBoxValue waitMode = new StringBoxValue("Wait for", "For what will the module wait before attacking?", this, new String[]{"CPS", "1.9"}, new Supplier[]{() -> waitBeforeAttack.getValue()});
@@ -219,7 +217,7 @@ public class KillAura extends Module {
                     break;
             }
 
-            if(shouldHit()) {
+            if(!this.waitBeforeAttack.getValue() || this.attackTimer.hasReached(cpsDelay)) {
                 // We need to calculate cps delay after checking if the timer has reached, since the delay would be first set to 0, therefore we hit earlier
                 switch (this.waitMode.getValue()) {
                     case "CPS":
@@ -243,27 +241,6 @@ public class KillAura extends Module {
                 this.attackTimer.reset();
             }
         }
-    }
-
-    private boolean shouldHit() {
-        if (this.perfectHit.getValue()) {
-            if (this.perfectHitIntave.getValue()) {
-                final MovingObjectPosition objectPosition = RaytraceUtil.rayCast(2.0f);
-                if (objectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && KillAura.mc.objectMouseOver.entityHit instanceof EntityLivingBase && KillAura.mc.objectMouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY) {
-                    return false;
-                }
-            }
-            if (KillAura.mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && KillAura.mc.objectMouseOver.entityHit instanceof EntityLivingBase) {
-                final EntityLivingBase entity = (EntityLivingBase)KillAura.mc.objectMouseOver.entityHit;
-                if (entity.hurtTime == 0 || entity.hurtTime == 1) {
-                    return true;
-                }
-            }
-            if (this.perfectHitIntave.getValue() && curEntity.hurtTime == 4) {
-                return false;
-            }
-        }
-        return !this.waitBeforeAttack.getValue() || this.attackTimer.hasReached(cpsDelay);
     }
 
     public static long getAttackSpeed(final ItemStack itemStack, final boolean responsive) {

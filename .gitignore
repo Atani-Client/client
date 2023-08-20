@@ -1,9 +1,9 @@
-# hope this works
-.idea/*
-target/*
-test_natives/*
-test_run/*
-test_logs/*
-*.gz
-test_run/Atani/modules.json
-/target/
+.idea/
+.settings/
+
+*.iml
+
+*.classpath
+*.project
+
+test_run/

@@ -27,7 +27,8 @@ public class Speed extends Module {
     private final SliderValue<Float> verusAirSpeed = new SliderValue<>("Verus Air Speed", "How much will the verus speed strafe inAir?", this, 0.33f, 0.1f, 0.4f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
     private final SliderValue<Float> verusSpeedBoost = new SliderValue<>("Verus Speed Boost", "How Much Will the Verus Speed Boost?", this, 3F, 0, 5F, 1, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
     private final StringBoxValue verusCustomMode = new StringBoxValue("Verus Custom Mode", "Which custom mode will the verus speed use?", this, new String[]{"Normal", "Low", "Float"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
-    private final SliderValue<Float> verusFloatTicks = new SliderValue<>("Verus Float Ticks", "For how many ticks will the verus float speed float?", this, 5F, 1, 9F, 1, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Float")});
+    private final SliderValue<Float> verusFloatTicks = new SliderValue<>("Verus Float Ticks", "For how many ticks will the verus float speed float?", this, 5F, 1, 9F, 0, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Float")});
+    private final StringBoxValue verusCustomLowMode = new StringBoxValue("Custom Low Mode", "What mode will the custom lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Low")});
     private final StringBoxValue verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
     private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
@@ -352,7 +353,24 @@ public class Speed extends Module {
                                     } else {
                                         mc.thePlayer.jump();
                                     }
-
+                                    break;
+                                case "Low":
+                                    if(!mc.thePlayer.onGround) {
+                                        if(verusTicks == 1) {
+                                            switch (verusCustomLowMode.getValue()) {
+                                                case "Normal":
+                                                    mc.thePlayer.motionY = -0.0980000019;
+                                                    break;
+                                                case "Fast":
+                                                    mc.thePlayer.motionY = 0;
+                                                    mc.thePlayer.onGround = true;
+                                                    MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
+                                                    break;
+                                            }
+                                        }
+                                    } else {
+                                        mc.thePlayer.jump();
+                                    }
                                     break;
                             }
                             break;

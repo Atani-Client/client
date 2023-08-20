@@ -382,7 +382,7 @@ public class Speed extends Module {
                                 case 8:
                                     mc.thePlayer.onGround = true;
                                     mc.thePlayer.jump();
-                                    mc.timer.timerSpeed = 1.6F;
+                                    mc.timer.timerSpeed = 1.3F;
                                     break;
                             }
                             MoveUtil.strafe((float) MoveUtil.getSpeed() + 0.002);

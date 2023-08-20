@@ -25,7 +25,7 @@ public class Flight extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "Test"});
     private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")});
     private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")});
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage"}, new Supplier[]{() -> mode.is("Verus")});
+    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump"}, new Supplier[]{() -> mode.is("Verus")});
     private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
     private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
     private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> mode.is("Vulcan") || mode.is("Vanilla")});
@@ -44,6 +44,9 @@ public class Flight extends Module {
     boolean velo = false;
     private boolean launch;
     private int launchTicks;
+
+    // Verus
+    private final TimeHelper verusTimer = new TimeHelper();
 
     @Override
     public String getSuffix() {
@@ -87,17 +90,26 @@ public class Flight extends Module {
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {
             case "Verus":
-                switch(verusMode.getValue()) {
-                    case "Damage":
-                        if(mc.thePlayer.hurtTime != 0) {
-                            MoveUtil.strafe(5);
-                        }
+                if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                    switch (verusMode.getValue()) {
+                        case "Damage":
+                            if (mc.thePlayer.hurtTime != 0) {
+                                MoveUtil.strafe(5);
+                            }
 
-                        if(mc.thePlayer.onGround) {
-                            mc.thePlayer.jump();
-                            MoveUtil.strafe(0.4F);
-                        }
-                        break;
+                            if (mc.thePlayer.onGround) {
+                                mc.thePlayer.jump();
+                                MoveUtil.strafe(0.4F);
+                            }
+                            break;
+
+                        case "Jump":
+                            if (verusTimer.hasReached(545, true)) {
+                                mc.thePlayer.jump();
+                                mc.thePlayer.onGround = true;
+                            }
+                            break;
+                    }
                 }
                 break;
             case "Grim":
@@ -153,7 +165,6 @@ public class Flight extends Module {
                 } else {
                     mc.timer.timerSpeed = 1.1F;
                 }
-            //    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() + 0.05F);
                 break;
             case "Old NCP":
                 if (mc.thePlayer.onGround && !jumped) {
@@ -233,11 +244,6 @@ public class Flight extends Module {
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
         switch (mode.getValue()) {
-            case "Test":
-                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                //    packetEvent.setCancelled(true);
-                }
-                break;
             case "Grim":
                 if(grimMode.is("Explosion")) {
                     if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {

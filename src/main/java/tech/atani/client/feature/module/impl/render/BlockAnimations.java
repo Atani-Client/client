@@ -14,7 +14,7 @@ import tech.atani.client.feature.module.value.impl.StringBoxValue;
 @ModuleData(name = "BlockAnimations", description = "Changes your item blocking animation", category = Category.RENDER)
 public class BlockAnimations extends Module {
 
-    public final StringBoxValue mode = new StringBoxValue("Style", "What animation should the sword use?", this, new String[]{"1.7", "Atani", "Exhibition", "Flux", "Swang", "Remix"});
+    public final StringBoxValue mode = new StringBoxValue("Style", "What animation should the sword use?", this, new String[]{"1.7", "Atani", "Exhibition", "Flux", "Swang", "Swong", "Remix", "Spin"});
     public final CheckBoxValue blockHit = new CheckBoxValue("Block Hit", "Should the sword allow block hitting?", this, true);
     public final CheckBoxValue fake = new CheckBoxValue("Fake", "Should the module fake block hitting?", this, false);
     public final CheckBoxValue killauraOnly = new CheckBoxValue("KillAura Only", "Fake block hitting only if killaura has a target?", this, true, new Supplier[]{() -> blockHit.getValue()});

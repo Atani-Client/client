@@ -327,6 +327,14 @@ public class ItemRenderer
         GlStateManager.scale(1.0F, 1.0F, 1.0F + f1 * 0.2F);
     }
 
+    private void doBlockTransformations(float translationOffset)
+    {
+        GlStateManager.translate(-0.5F, translationOffset, 0.0F);
+        GlStateManager.rotate(30.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-80.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(60.0F, 0.0F, 1.0F, 0.0F);
+    }
+
     private void doBlockTransformations()
     {
         GlStateManager.translate(-0.5F, 0.2F, 0.0F);
@@ -342,6 +350,9 @@ public class ItemRenderer
      *  
      * @param partialTicks The amount of time passed during the current tick, ranging from 0 to 1.
      */
+
+    private int spinCounter = 0;
+
     public void renderItemInFirstPerson(float partialTicks)
     {
         if(blockAnimations == null)
@@ -359,6 +370,8 @@ public class ItemRenderer
             this.func_178110_a((EntityPlayerSP)abstractclientplayer, partialTicks);
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
+
+            spinCounter++;
 
             if (this.itemToRender != null)
             {
@@ -413,10 +426,23 @@ public class ItemRenderer
                                         GlStateManager.rotate(swingProgressFactor * 40.0f, 1.0f, (-swingProgressFactor) / 2.0f, -0.0f);
                                         this.doBlockTransformations();
                                         break;
+                                    case "Swong":
+                                        this.transformFirstPersonItem(equippedProgress / 2.0F, 0.0F);
+                                        float var153 = MathHelper.sin((float) (swingProgress * swingProgress * Math.PI));
+                                        GlStateManager.rotate(-var153 * 40.0F / 2.0F, var153 / 2.0F, -0.0F, 9.0F);
+                                        GlStateManager.rotate(-var153 * 30.0F, 1.0F, var153 / 2.0F, -0.0F);
+                                        this.doBlockTransformations(0.4F);
+                                        break;
                                     case "Remix":
                                         this.transformFirstPersonItem(equippedProgress, swingProgress / 40.0f);
                                         this.doBlockTransformations();
                                         GlStateManager.translate(-0.1f, 0.0f, 0.0f);
+                                        break;
+                                    case "Spin":
+                                        GL11.glTranslated(-0.04D, 0.1, 0.0D);
+                                        this.transformFirstPersonItem(equippedProgress / 2.5F, 0.0f);
+                                        GlStateManager.rotate(-90, 1, 0, 0.2f);
+                                        GlStateManager.rotate(spinCounter, 0, -1, 0);
                                         break;
                                 }
                             }

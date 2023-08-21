@@ -3,6 +3,7 @@ package tech.atani.client.feature.module.impl.hud;
 import com.google.common.base.Supplier;
 import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.guis.screens.clickgui.atani.AtaniClickGuiScreen;
+import tech.atani.client.feature.guis.screens.clickgui.fatality.FatalityClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.simple.SimpleClickGuiScreen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
@@ -33,6 +34,7 @@ public class ClickGui extends Module {
                     mode.getValue().equalsIgnoreCase("Atani") ||
                     mode.getValue().equalsIgnoreCase("Fatality")}).setIdName("Non-Dropdown Animation Mode");
 
+    public static FatalityClickGuiScreen clickGuiScreenFatality;
     public static SimpleClickGuiScreen clickGuiScreenSimple;
     public static AtaniClickGuiScreen clickGuiScreenAtani;
     public static GoldenClickGuiScreen clickGuiScreenGolden;
@@ -94,7 +96,10 @@ public class ClickGui extends Module {
                 mc.displayGuiScreen(clickGuiScreenIcarus);
                 break;
             case "Fatality": {
-                this.mode.setValue("Golden");
+                if(clickGuiScreenFatality == null) {
+                    clickGuiScreenFatality = new FatalityClickGuiScreen();
+                }
+                mc.displayGuiScreen(clickGuiScreenFatality);
                 break;
             }
         }

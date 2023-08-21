@@ -50,6 +50,7 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Arial", 19),
                 this.createFontEntry("Arial", 20),
                 this.createFontEntry("Arial", 21),
+                this.createFontEntry("Arial", 24),
                 this.createFontEntry("ArialMT", 16),
                 this.createFontEntry("SF Regular", 17),
                 this.createFontEntry("SF Regular", 18),
@@ -65,6 +66,7 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Greycliff Medium", 19),
                 this.createFontEntry("Greycliff Medium", 21),
                 this.createFontEntry("Greycliff Bold", 24),
+                this.createFontEntry("Porter Bold", 23),
                 this.createFontEntry("Android 101", 100, true));
     }
 

@@ -93,6 +93,10 @@ public class ClickGui extends Module {
                 }
                 mc.displayGuiScreen(clickGuiScreenIcarus);
                 break;
+            case "Fatality": {
+                this.mode.setValue("Golden");
+                break;
+            }
         }
         this.setEnabled(false);
     }

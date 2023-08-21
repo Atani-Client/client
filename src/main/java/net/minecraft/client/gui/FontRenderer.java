@@ -11,6 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
+
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -238,30 +240,37 @@ public class FontRenderer
     }
 
     public int drawCenteredString(String string, float x, float y, int color) {
+        replaceText(string);
         return this.drawString(string, x - this.getStringWidth(string) / 2, y, color);
     }
 
     public int drawTotalCenteredString(String string, float x, float y, int color) {
+        replaceText(string);
         return this.drawString(string, x - this.getStringWidth(string) / 2, y - this.FONT_HEIGHT / 2, color);
     }
 
     public int drawCenteredStringWithShadow(String string, float x, float y, int color) {
+        replaceText(string);
         return this.drawString(string, x - this.getStringWidth(string) / 2, y, color, true);
     }
 
     public int drawTotalCenteredStringWithShadow(String string, float x, float y, int color) {
+        replaceText(string);
         return this.drawString(string, x - this.getStringWidth(string) / 2, y - this.FONT_HEIGHT / 2, color, true);
     }
 
     public int drawStringWithShadow(String string, float x, float y, int color) {
+        replaceText(string);
         return this.drawString(string, x, y, color, true);
     }
 
     public int drawString(String string, float x, float y, int color) {
+        replaceText(string);
         return !this.enabled ? 0 : this.drawString(string, x, y, color, false);
     }
 
     public int drawString(String string, float x, float y, int color, boolean hasAlpha) {
+        replaceText(string);
         int n3;
         this.enableAlpha();
         this.resetStyles();
@@ -302,6 +311,7 @@ public class FontRenderer
     }
 
     private void renderStringAtPos(String string, boolean bl2) {
+        replaceText(string);
         for (int i2 = 0; i2 < string.length(); ++i2) {
             WorldRenderer worldRenderer;
             Tessellator tessellator;
@@ -422,6 +432,7 @@ public class FontRenderer
         if (string == null) {
             return 0;
         }
+        replaceText(string);
         if (this.bidiFlag) {
             string = this.bidiReorder(string);
         }
@@ -446,6 +457,7 @@ public class FontRenderer
         if (string == null) {
             return 0;
         }
+        replaceText(string);
         float f2 = 0.0f;
         boolean bl2 = false;
         for (int i2 = 0; i2 < string.length(); ++i2) {
@@ -466,6 +478,14 @@ public class FontRenderer
             f2 += this.unicodeFlag ? 1.0f : this.offsetBold;
         }
         return (int)f2;
+    }
+
+    public void replaceText(String string) {
+        if(Minecraft.getMinecraft() != null && Minecraft.getMinecraft().getCurrentServerData() != null) {
+            if(Minecraft.getMinecraft().getCurrentServerData().serverName.contains("loyisa")) {
+                string.replace("Atani", ChatFormatting.BOLD + "ATANI");
+            }
+        }
     }
 
     public int getCharWidth(char c2) {

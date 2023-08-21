@@ -54,8 +54,58 @@ public class Window {
     public void draw(int mouseX, int mouseY) {
         RoundedShader.drawRound(posX, posY, width, height, 5, new Color(20, 20, 20));
 
-        float yPos = getPosY();
+               boolean reset = false;
+        for(Value value : ValueStorage.getInstance().getValues(module)) {
+            boolean found = false;
+            for(ValueComponent component : this.components) {
+                if(component instanceof ValueComponent) {
+                    ValueComponent valueComponent = (ValueComponent) component;
+                    if(valueComponent.getValue() == value)
+                        found = true;
+                }
+            }
+            if(!found) {
+                reset = true;
+                break;
+            }
+        }
+        for(ValueComponent component : this.components) {
+            if (component instanceof ValueComponent) {
+                ValueComponent valueComponent = (ValueComponent) component;
+                boolean found = false;
+                for(Value value : ValueStorage.getInstance().getValues(module)) {
+                    if(valueComponent.getValue() == value)
+                        found = true;
+                }
+                if(!found) {
+                    reset = true;
+                    break;
+                }
+            }
+        }
+        if(reset)
+            this.components.clear();
 
+        float yPos1 = getPosY();
+        if(this.components.isEmpty()) {
+            for(Value value : ValueStorage.getInstance().getValues(module)) {
+                if(value instanceof CheckBoxValue) {
+                    CheckboxComponent component = new CheckboxComponent((CheckBoxValue) value, posX, yPos1, 18);
+                    this.components.add(component);
+                    yPos1 += component.getFinalHeight();
+                } else if(value instanceof SliderValue) {
+                    SliderComponent component = new SliderComponent((SliderValue) value, posX, yPos1, 18);
+                    this.components.add(component);
+                    yPos1 += component.getFinalHeight();
+                }else if(value instanceof StringBoxValue) {
+                    ModeComponent component = new ModeComponent((StringBoxValue) value, posX, yPos1, 18);
+                    this.components.add(component);
+                    yPos1 += component.getFinalHeight();
+                }
+            }
+        }
+
+        float yPos = getPosY();
         for(ValueComponent component : this.components) {
             if(!component.getValue().isVisible())
                 continue;
@@ -69,7 +119,6 @@ public class Window {
         }
 
         this.height = yPos - getPosY();
-
     }
 
     public void mouseClicked(int mouseX, int mouseY, int mouseButton) {

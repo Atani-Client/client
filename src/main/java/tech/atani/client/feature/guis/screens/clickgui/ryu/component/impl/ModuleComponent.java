@@ -25,6 +25,37 @@ public class ModuleComponent extends Component {
     public void drawScreen(int mouseX, int mouseY) {
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
         normal.drawTotalCenteredString(module.getName(), getPosX() + getBaseWidth() / 2 + getAddX(), getPosY() + getBaseHeight() / 2, !module.isEnabled() ? -1 : RYU);
+                boolean reset = false;
+        for(Value value : ValueStorage.getInstance().getValues(module)) {
+            boolean found = false;
+            for(Component component : this.subComponents) {
+                if(component instanceof ValueComponent) {
+                    ValueComponent valueComponent = (ValueComponent) component;
+                    if(valueComponent.getValue() == value)
+                        found = true;
+                }
+            }
+            if(!found) {
+                reset = true;
+                break;
+            }
+        }
+        for(Component component : this.subComponents) {
+            if (component instanceof ValueComponent) {
+                ValueComponent valueComponent = (ValueComponent) component;
+                boolean found = false;
+                for(Value value : ValueStorage.getInstance().getValues(module)) {
+                    if(valueComponent.getValue() == value)
+                        found = true;
+                }
+                if(!found) {
+                    reset = true;
+                    break;
+                }
+            }
+        }
+        if(reset)
+            this.subComponents.clear();
         if(expanded && this.subComponents.isEmpty()) {
             for(Value value : ValueStorage.getInstance().getValues(module)) {
                 float valueY = this.getPosY() + this.getBaseHeight();

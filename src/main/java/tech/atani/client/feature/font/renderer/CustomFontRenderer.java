@@ -134,6 +134,7 @@ implements Methods {
         if (string == null) {
             return 0;
         }
+        replaceText(string);
         if (bl2) {
             n2 = (n2 & (bl3 ? 0x50000000 : 0xFCFCFC)) >> 2 | n2 & 0xFF000000;
         }
@@ -279,6 +280,7 @@ implements Methods {
         if (string == null) {
             return 0;
         }
+        replaceText(string);
         int n2 = 0;
         Glyph[] arrglyph = this.basicGlyphs;
         for (int i2 = 0; i2 < string.length(); ++i2) {
@@ -358,17 +360,20 @@ implements Methods {
 
     @Override
     public final int drawStringWithShadow(String string, float x, float y, int color) {
+        replaceText(string);
         this.renderString(string, x + 1.0f, y + 1.0f, color, true, true);
         return this.renderString(string, x, y, color, false, false);
     }
 
     @Override
     public final int drawString(String string, float x, float y, int color) {
+        replaceText(string);
         return this.renderString(string, x, y, color, false, false);
     }
 
     @Override
     public final int drawString(String string, float x, float y, int color, boolean hasAlpha) {
+        replaceText(string);
         if (hasAlpha) {
             this.renderString(string, x + 1.0f, y + 1.0f, color, true, true);
         }

@@ -28,6 +28,37 @@ public class ModuleComponent extends tech.atani.client.feature.guis.screens.clic
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
         RenderUtil.drawRect(getPosX() + getAddX(), getPosY(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
         normal.drawTotalCenteredStringWithShadow(module.getName(), getPosX() + getBaseWidth() / 2 + getAddX(), getPosY() + getBaseHeight() / 2, !module.isEnabled() ? new Color(200, 200, 200).getRGB() : -1);
+        boolean reset = false;
+        for(Value value : ValueStorage.getInstance().getValues(module)) {
+            boolean found = false;
+            for(Component component : this.subComponents) {
+                if(component instanceof ValueComponent) {
+                    ValueComponent valueComponent = (ValueComponent) component;
+                    if(valueComponent.getValue() == value)
+                        found = true;
+                }
+            }
+            if(!found) {
+                reset = true;
+                break;
+            }
+        }
+        for(Component component : this.subComponents) {
+            if (component instanceof ValueComponent) {
+                ValueComponent valueComponent = (ValueComponent) component;
+                boolean found = false;
+                for(Value value : ValueStorage.getInstance().getValues(module)) {
+                    if(valueComponent.getValue() == value)
+                        found = true;
+                }
+                if(!found) {
+                    reset = true;
+                    break;
+                }
+            }
+        }
+        if(reset)
+            this.subComponents.clear();
         if(expanded && this.subComponents.isEmpty()) {
             for(Value value : ValueStorage.getInstance().getValues(module)) {
                 float valueY = this.getPosY() + this.getBaseHeight();

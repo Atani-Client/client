@@ -31,6 +31,37 @@ public class ModuleComponent extends tech.atani.client.feature.guis.screens.clic
             RenderUtil.drawRect(this.getPosX() + getAddX(), this.getPosY() + getAddY(), this.getBaseWidth(), this.getBaseHeight(), ColorUtil.getAstolfoColor(module.getCategory()));
         }
         normal.drawString(module.getName().toLowerCase(), getPosX() + 7 + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2 + 1, new Color(210, 210, 210).getRGB());
+        boolean reset = false;
+        for(Value value : ValueStorage.getInstance().getValues(module)) {
+            boolean found = false;
+            for(Component component : this.subComponents) {
+                if(component instanceof ValueComponent) {
+                    ValueComponent valueComponent = (ValueComponent) component;
+                    if(valueComponent.getValue() == value)
+                        found = true;
+                }
+            }
+            if(!found) {
+                reset = true;
+                break;
+            }
+        }
+        for(Component component : this.subComponents) {
+            if (component instanceof ValueComponent) {
+                ValueComponent valueComponent = (ValueComponent) component;
+                boolean found = false;
+                for(Value value : ValueStorage.getInstance().getValues(module)) {
+                    if(valueComponent.getValue() == value)
+                        found = true;
+                }
+                if(!found) {
+                    reset = true;
+                    break;
+                }
+            }
+        }
+        if(reset)
+            this.subComponents.clear();
         if(expanded && this.subComponents.isEmpty()) {
             for(Value value : ValueStorage.getInstance().getValues(module)) {
                 float valueY = this.getPosY() + this.getBaseHeight();

@@ -80,7 +80,8 @@ public class Modification implements ClientInformationAccess {
         try {
             System.out.println(NetUtils.sendPostRequest("https://texttoascii.com/api/figlet", (HashMap<String, String>) parameters));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
+            // Don't stop the client please, I can't launch it.
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::end));

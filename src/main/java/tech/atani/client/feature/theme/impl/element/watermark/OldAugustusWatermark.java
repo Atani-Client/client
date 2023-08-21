@@ -17,7 +17,7 @@ import java.util.Date;
 public class OldAugustusWatermark extends ThemeObject {
 
     @Override
-    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
+    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
         Date now = new Date();
         String time = dateFormat.format(now);

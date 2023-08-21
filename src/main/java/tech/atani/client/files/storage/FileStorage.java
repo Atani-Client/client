@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.florianmichael.rclasses.storage.Storage;
 import tech.atani.client.files.impl.SessionFile;
+import tech.atani.client.files.impl.ThemesFile;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.files.IFile;
 import tech.atani.client.files.impl.AccountsFile;
@@ -25,6 +26,7 @@ public class FileStorage extends Storage<IFile> implements Methods {
         this.add(new ModulesFile());
         this.add(new AccountsFile());
         this.add(new SessionFile());
+        this.add(new ThemesFile());
         this.load();
     }
 

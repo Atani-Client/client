@@ -18,7 +18,7 @@ import java.awt.*;
 public class RyuWatermark extends ThemeObject {
 
     @Override
-    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
+    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto Medium", 17);
         String text = CLIENT_NAME + " " + ChatFormatting.GRAY + " # " + ChatFormatting.WHITE + " " + mc.getDebugFPS() + "fps";
         // Rendering bloom on text is really performance fucking due to all the geometry around letter so we're trying to not hurt it as much

@@ -16,6 +16,8 @@ import tech.atani.client.feature.module.data.enums.Category;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ThemeStorage extends Storage<ThemeObject> {
 
@@ -45,6 +47,14 @@ public class ThemeStorage extends Storage<ThemeObject> {
 
     public <T extends ThemeObject> T getThemeObject(String name, ScreenType screenType) {
         return (T) this.getList().stream().filter(themeObject -> themeObject.getName().equalsIgnoreCase(name) && themeObject.getThemeObjectType() == ThemeObjectType.ELEMENT && themeObject.getScreenType() == screenType).findAny().orElse(null);
+    }
+
+    public List<ThemeObject> getThemeObjects(ElementType elementType) {
+        return this.getList().stream().filter(themeObject -> themeObject.getThemeObjectType() == ThemeObjectType.ELEMENT && themeObject.getElementType() == elementType).collect(Collectors.toList());
+    }
+
+    public List<ThemeObject> getThemeObjects(ScreenType screenType) {
+        return this.getList().stream().filter(themeObject -> themeObject.getThemeObjectType() == ThemeObjectType.SCREEN && themeObject.getScreenType() == screenType).collect(Collectors.toList());
     }
 
     public static ThemeStorage getInstance() {

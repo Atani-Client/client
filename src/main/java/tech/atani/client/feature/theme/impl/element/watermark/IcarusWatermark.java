@@ -13,7 +13,7 @@ import tech.atani.client.utility.math.atomic.AtomicFloat;
 public class IcarusWatermark extends ThemeObject {
 
     @Override
-    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
+    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Pangram Bold", 80);
         fontRenderer.drawStringWithShadow(CLIENT_NAME, 8, 0, -1);
         leftY.set(fontRenderer.FONT_HEIGHT + 8);

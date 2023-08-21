@@ -27,7 +27,7 @@ public class ModernWatermark extends ThemeObject {
     private SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the color?", this, 255, 0, 255, 0);
     
     @Override
-    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
+    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         String text =  CLIENT_NAME + " | " + mc.getSession().getUsername() + " | " + mc.getDebugFPS() + " FPS";
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Greycliff Medium", 21);
         float outlineWidth = 1;

@@ -48,7 +48,7 @@ public class WaterMark extends Module implements ColorPalette, IClientOverlayCom
     @Override
     public void draw(Render2DEvent render2DEvent, AtomicFloat leftY, AtomicFloat rightY) {
         if(this.isEnabled() && !this.watermarkMode.getValue().equalsIgnoreCase("None")) {
-            ThemeStorage.getInstance().getThemeObject(watermarkMode.getValue(), ElementType.WATERMARK).onDraw(render2DEvent.getScaledResolution(), render2DEvent.getPartialTicks(), leftY, rightY);
+            ThemeStorage.getInstance().getThemeObject(watermarkMode.getValue(), ElementType.WATERMARK).onDraw(render2DEvent.getScaledResolution(), render2DEvent.getPartialTicks(), leftY, rightY, new Object[0]);
         }
     }
 

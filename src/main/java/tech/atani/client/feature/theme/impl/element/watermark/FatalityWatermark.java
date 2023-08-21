@@ -17,7 +17,7 @@ import java.awt.*;
 public class FatalityWatermark extends ThemeObject {
 
     @Override
-    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
+    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         // TODO: implement usernames
         final String text = String.format("$$$ %s.vip $$$ | %s | %s", CLIENT_NAME.toLowerCase(), "idk", mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP);
         final float width2 = (float) (FontStorage.getInstance().findFont("Roboto", 15).getStringWidth(text) + 8);

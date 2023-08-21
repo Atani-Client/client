@@ -18,7 +18,7 @@ import java.awt.*;
 public class GoldenWatermark extends ThemeObject {
 
     @Override
-    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
+    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         RenderableShaders.renderAndRun(() -> {
             String text = CLIENT_NAME + " v" + VERSION + " | " + mc.getDebugFPS() + " fps";
             FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);

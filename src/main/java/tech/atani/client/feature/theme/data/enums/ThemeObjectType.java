@@ -1,5 +1,16 @@
 package tech.atani.client.feature.theme.data.enums;
 
 public enum ThemeObjectType {
-    ELEMENT, SCREEN;
+    ELEMENT("Element"), SCREEN("Screen");
+
+    private final String name;
+
+    ThemeObjectType(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
 }

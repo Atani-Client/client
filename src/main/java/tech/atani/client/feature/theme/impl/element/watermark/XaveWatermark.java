@@ -16,7 +16,7 @@ import java.awt.*;
 public class XaveWatermark extends ThemeObject {
 
     @Override
-    public void onDraw(ScaledResolution sr, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
+    public void onDraw(ScaledResolution sr, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("ESP", 80);
         String text = CLIENT_NAME.toUpperCase() + "+";
         Gui.drawRect(sr.getScaledWidth() - fontRenderer.getStringWidth(text) - 1, fontRenderer.FONT_HEIGHT - 4, sr.getScaledWidth(), 0, new Color(0, 0, 0, 180).getRGB());

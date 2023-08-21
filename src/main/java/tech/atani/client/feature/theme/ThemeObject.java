@@ -1,8 +1,11 @@
 package tech.atani.client.feature.theme;
 
+import com.google.gson.JsonObject;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.Entity;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.value.Value;
+import tech.atani.client.feature.module.value.storage.ValueStorage;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ScreenType;
@@ -12,6 +15,8 @@ import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public abstract class ThemeObject implements Methods, ColorPalette {
 
@@ -34,9 +39,35 @@ public abstract class ThemeObject implements Methods, ColorPalette {
 
     public abstract void onDisable();
 
-    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
+    public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         if(this.themeObjectType == ThemeObjectType.SCREEN) {
             throw new RuntimeException("Gui Screen objects should not be executed on drawing.");
+        }
+    }
+
+    public JsonObject save() {
+        JsonObject object = new JsonObject();
+        List<Value> values = ValueStorage.getInstance().getValues(this);
+        if (values != null && !values.isEmpty()) {
+            JsonObject propertiesObject = new JsonObject();
+            for (Value property : values) {
+                propertiesObject.addProperty(property.getIdName(), property.getValueAsString());
+            }
+            object.add("Values", propertiesObject);
+        }
+        return object;
+    }
+
+    public void load(JsonObject object) {
+        List<Value> values = ValueStorage.getInstance().getValues(this);
+
+        if (object.has("Values") && values != null && !values.isEmpty()) {
+            JsonObject propertiesObject = object.getAsJsonObject("Values");
+            for (Value property : values) {
+                if (propertiesObject.has(property.getIdName())) {
+                    property.setValue(propertiesObject.get(property.getIdName()).getAsString());
+                }
+            }
         }
     }
 

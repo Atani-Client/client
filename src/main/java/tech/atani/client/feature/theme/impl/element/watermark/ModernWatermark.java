@@ -7,6 +7,7 @@ import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.impl.hud.WaterMark;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.module.value.storage.ValueStorage;
 import tech.atani.client.feature.theme.ThemeObject;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
@@ -42,12 +43,17 @@ public class ModernWatermark extends ThemeObject {
     @Override
     public void onEnable() {
         WaterMark waterMark = ModuleStorage.getInstance().getByClass(WaterMark.class);
-
+        ValueStorage.getInstance().addLinkedValues(waterMark, red);
+        ValueStorage.getInstance().addLinkedValues(waterMark, green);
+        ValueStorage.getInstance().addLinkedValues(waterMark, blue);
     }
 
     @Override
     public void onDisable() {
-
+        WaterMark waterMark = ModuleStorage.getInstance().getByClass(WaterMark.class);
+        ValueStorage.getInstance().removeLinkedValues(waterMark, red);
+        ValueStorage.getInstance().removeLinkedValues(waterMark, green);
+        ValueStorage.getInstance().removeLinkedValues(waterMark, blue);
     }
 
 }

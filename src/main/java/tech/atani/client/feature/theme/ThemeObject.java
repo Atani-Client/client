@@ -40,6 +40,10 @@ public abstract class ThemeObject implements Methods, ColorPalette {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
     public ThemeObjectType getThemeObjectType() {
         return themeObjectType;
     }

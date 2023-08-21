@@ -8,6 +8,7 @@ import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.account.storage.AccountStorage;
 import tech.atani.client.feature.combat.CombatManager;
 import tech.atani.client.feature.command.storage.CommandStorage;
+import tech.atani.client.feature.theme.storage.ThemeStorage;
 import tech.atani.client.listener.handling.EventHandling;
 import tech.atani.client.files.storage.FileStorage;
 import tech.atani.client.feature.font.storage.FontStorage;
@@ -40,6 +41,7 @@ public class Modification implements ClientInformationAccess {
         ProcessorStorage.setInstance(new ProcessorStorage());
         ValueStorage.setInstance(new ValueStorage());
         CombatManager.setInstance(new CombatManager());
+        ThemeStorage.setInstance(new ThemeStorage());
         ModuleStorage.setInstance(new ModuleStorage());
         CommandStorage.setInstance(new CommandStorage());
         AccountStorage.setInstance(new AccountStorage());
@@ -50,6 +52,7 @@ public class Modification implements ClientInformationAccess {
         ProcessorStorage.getInstance().init();
         ValueStorage.getInstance().init();
         CombatManager.getInstance().init();
+        ThemeStorage.getInstance().init();
         ModuleStorage.getInstance().init();
         CommandStorage.getInstance().init();
         AccountStorage.getInstance().init();

@@ -245,13 +245,15 @@ public class Flight extends Module {
     public final void onPacket(PacketEvent packetEvent) {
         switch (mode.getValue()) {
             case "Grim":
-                if(grimMode.is("Explosion")) {
-                    if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
-                        S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
-                        if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
-                            velo = true;
+                switch(grimMode.getValue()){
+                    case "Explosion":
+                        if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                            S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
+                            if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                                velo = true;
+                            }
                         }
-                    }
+                        break;
                 }
                 break;
             case "Vulcan":

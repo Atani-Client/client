@@ -28,12 +28,12 @@ public class Speed extends Module {
     private final SliderValue<Float> jumpHeight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.is("BHop")});
 
     // Verus
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Slow", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")});
+    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")});
     private final SliderValue<Float> verusGroundSpeed = new SliderValue<>("Verus Ground Speed", "How much will the verus speed strafe onGround?", this, 0.53f, 0.1f, 0.55f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
     private final SliderValue<Float> verusAirSpeed = new SliderValue<>("Verus Air Speed", "How much will the verus speed strafe inAir?", this, 0.33f, 0.1f, 0.4f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
     private final SliderValue<Float> verusSpeedBoost = new SliderValue<>("Verus Speed Boost", "How Much Will the Verus Speed Boost?", this, 3F, 0, 5F, 1, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
     private final StringBoxValue verusCustomMode = new StringBoxValue("Verus Custom Mode", "Which custom mode will the verus speed use?", this, new String[]{"Normal", "Low", "Float"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
-    private final SliderValue<Float> verusFloatTicks = new SliderValue<>("Verus Float Ticks", "For how many ticks will the verus float speed float?", this, 5F, 1, 9F, 0, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Float")});
+    private final SliderValue<Float> verusFloatTicks = new SliderValue<>("Verus Float Ticks", "For how many ticks will the verus float speed float?", this, 5F, 1f, 9f, 0, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Float")});
     private final StringBoxValue verusCustomLowMode = new StringBoxValue("Custom Low Mode", "What mode will the custom lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Low")});
     private final StringBoxValue verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
 
@@ -301,19 +301,14 @@ public class Speed extends Module {
                     }
 
                     switch(verusMode.getValue()) {
-                        case "Slow":
-                            mc.gameSettings.keyBindJump.pressed = true;
+                        case "Normal":
+                            if (mc.thePlayer.onGround) {
+                                mc.thePlayer.jump();
+                            }
+
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 100);
 
                             MoveUtil.strafe((float) MoveUtil.getSpeed());
-                            break;
-                        case "Normal":
-                            if (mc.thePlayer.onGround) {
-                                MoveUtil.strafe(0.53 + MoveUtil.getSpeedBoost(0.05F));
-                                mc.thePlayer.jump();
-                            } else {
-                                MoveUtil.strafe(0.33 + MoveUtil.getSpeedBoost(0.06F));
-                            }
                             break;
                         case "Float":
                             if(mc.thePlayer.onGround) {

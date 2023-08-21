@@ -16,6 +16,7 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 
 import java.awt.*;
+
 @ModuleData(name = "EnemyAlert", description = "Alerts about close enemies", category = Category.HUD)
 public class EnemyAlert extends Module {
 

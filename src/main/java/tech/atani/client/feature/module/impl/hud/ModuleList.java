@@ -59,7 +59,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
 
     @Override
     public void draw(Render2DEvent render2DEvent, AtomicFloat leftY, AtomicFloat rightY) {
-        if(this.isEnabled()) {
+        if(this.isEnabled() && !this.moduleListMode.getValue().equalsIgnoreCase("None")) {
             ModuleListElement moduleListElement = ThemeStorage.getInstance().getThemeObject(moduleListMode.getValue(), ElementType.MODULE_LIST);
 
             List<Module> modulesToShow = new ArrayList<>();

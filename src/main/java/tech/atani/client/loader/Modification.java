@@ -68,6 +68,20 @@ public class Modification implements ClientInformationAccess {
                 .setStartTimestamps(System.currentTimeMillis())
                 .build();
         DiscordRPC.discordUpdatePresence(rich);
+        
+        String[] fonts = {
+                "5 Line Oblique", "AMC AAA01", "ANSI Regular", "ANSI Shadow", "Alligator", "Alligator2","Alphabet", "Banner", "Banner3", "Bell",
+                "Big Chief", "Big Money-nw", "Block", "Calvin S", "Catwalk", "Colossal", "DOS Rebel", "Delta Corps Priest 1", "Doh",  "Speed",
+                "Small Keyboard", "Siant Relief", "Lean"
+        };
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("style", ArrayUtils.getRandomItem(fonts));
+        parameters.put("text", "ATANI");
+        try {
+            System.out.println(NetUtils.sendPostRequest("https://texttoascii.com/api/figlet", (HashMap<String, String>) parameters));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::end));
     }

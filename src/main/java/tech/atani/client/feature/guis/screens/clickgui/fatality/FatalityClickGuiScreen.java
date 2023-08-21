@@ -222,7 +222,7 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
         }
         if (RenderUtil.isHovered(mouseX, mouseY, posX, posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2F, 2 * (width / 5), height - (24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 1.5F))) {
             if(selectedCategory != null) {
-                float moduleY = posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2;
+                float moduleY = posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2 + modScroll;
                 for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
                     if(RenderUtil.isHovered(mouseX, mouseY, posX, moduleY, 2 * (width / 5), 40)) {
                         switch (mouseButton) {
@@ -246,7 +246,7 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
         FontRenderer smallFont = FontStorage.getInstance().findFont("Arial", 17);
         if (RenderUtil.isHovered(mouseX, mouseY, posX + 2 * (width / 5) + 1.5F, posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2F, width - (2 * (width / 5) + 1.5F), height - (24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 1.5F))) {
             if(selectedModule != null) {
-                float valueY = posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2 + 10;
+                float valueY = posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2 + 10 + valScroll;
                 for (Value value : ValueStorage.getInstance().getValues(selectedModule)) {
                     if(!value.isVisible())
                         continue;

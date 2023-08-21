@@ -22,7 +22,7 @@ import java.util.Calendar;
 @ModuleData(name = "ChinaHat", description = "Gives you a hat from China.", category = Category.RENDER)
 public class ChinaHat extends Module {
 
-    private final SliderValue<Float> width = new SliderValue<>("Width", "What'll be the width of the hat?", this, 0.7f, 0.1f, 1f, 1);
+    private final SliderValue<Float> width = new SliderValue<>("Width", "What'll be the width of the hat?", this, 0.7f, 0.1f, 1f, 2);
     private final SliderValue<Float> height = new SliderValue<>("Height", "What'll be the width of the hat?", this, 0.4f, 0.1f, 1f, 2);
     private final CheckBoxValue color = new CheckBoxValue("Color", "Color the hat?", this, true);
     private final StringBoxValue customColorMode = new StringBoxValue("Color Mode", "How will the hat be colored?", this, new String[]{"Static", "Fade", "Gradient", "Rainbow", "Astolfo Sky"}, new Supplier[]{() -> color.getValue()});

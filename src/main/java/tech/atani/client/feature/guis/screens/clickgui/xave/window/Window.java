@@ -2,11 +2,11 @@ package tech.atani.client.feature.guis.screens.clickgui.xave.window;
 
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.feature.module.value.Value;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.SliderValue;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
-import tech.atani.client.feature.module.value.storage.ValueStorage;
+import tech.atani.client.feature.value.Value;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.storage.ValueStorage;
 import tech.atani.client.feature.guis.screens.clickgui.xave.window.component.impl.CheckboxComponent;
 import tech.atani.client.feature.guis.screens.clickgui.xave.window.component.impl.ModeComponent;
 import tech.atani.client.feature.guis.screens.clickgui.xave.window.component.impl.SliderComponent;

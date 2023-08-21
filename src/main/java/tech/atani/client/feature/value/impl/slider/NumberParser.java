@@ -1,4 +1,4 @@
-package tech.atani.client.feature.module.value.impl.slider;
+package tech.atani.client.feature.value.impl.slider;
 
 public final class NumberParser {
 

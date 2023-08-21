@@ -60,7 +60,7 @@ public class XaveModuleList extends ModuleListElement {
 
     @Override
     public boolean shouldAnimate() {
-        return false;
+        return true;
     }
 
     @Override

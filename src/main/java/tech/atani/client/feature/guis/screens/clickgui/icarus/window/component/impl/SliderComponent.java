@@ -3,7 +3,7 @@ package tech.atani.client.feature.guis.screens.clickgui.icarus.window.component.
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
-import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.render.RenderUtil;

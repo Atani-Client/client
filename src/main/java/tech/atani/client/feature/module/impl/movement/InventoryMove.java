@@ -13,7 +13,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "InventoryMove", description = "Move inside your inventory.", category = Category.MOVEMENT)
 public class InventoryMove extends Module {

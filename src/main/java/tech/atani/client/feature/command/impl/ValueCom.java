@@ -4,13 +4,13 @@ import java.util.Optional;
 
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.feature.module.value.Value;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.SliderValue;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
-import tech.atani.client.feature.module.value.impl.bool.BooleanParser;
-import tech.atani.client.feature.module.value.impl.slider.NumberParser;
-import tech.atani.client.feature.module.value.storage.ValueStorage;
+import tech.atani.client.feature.value.Value;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.bool.BooleanParser;
+import tech.atani.client.feature.value.impl.slider.NumberParser;
+import tech.atani.client.feature.value.storage.ValueStorage;
 import tech.atani.client.feature.command.Command;
 import tech.atani.client.feature.command.data.CommandInfo;
 

@@ -23,9 +23,9 @@ import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.utility.player.PlayerHandler;
 import tech.atani.client.utility.player.PlayerUtil;
 import tech.atani.client.utility.player.rotation.RotationUtil;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.SliderValue;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.utility.world.BlockUtil;
 
 import java.util.ArrayList;

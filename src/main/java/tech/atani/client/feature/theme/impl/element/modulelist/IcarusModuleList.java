@@ -4,20 +4,12 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.Module;
-import tech.atani.client.feature.module.impl.hud.ModuleList;
-import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.feature.module.value.Value;
-import tech.atani.client.feature.module.value.impl.SliderValue;
-import tech.atani.client.feature.module.value.storage.ValueStorage;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
-import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.animation.Direction;
 import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
-import tech.atani.client.utility.render.color.ColorUtil;
-import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 import tech.atani.client.utility.render.shader.shaders.GradientShader;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
@@ -52,7 +44,7 @@ public class IcarusModuleList extends ModuleListElement {
                 moduleY += moduleHeight;
             }
         }
-        GradientShader.drawGradientTB(scaledResolution.getScaledWidth() - gradientWidth, rightY.get(), gradientWidth, moduleY, 1, new Color(ICARUS_FIRST), new Color(ICARUS_SECOND));
+        GradientShader.drawGradientTB(scaledResolution.getScaledWidth() - gradientWidth, rightY.get(), gradientWidth, moduleY + 0.5f, 1, new Color(ICARUS_FIRST), new Color(ICARUS_SECOND));
     }
 
     @Override

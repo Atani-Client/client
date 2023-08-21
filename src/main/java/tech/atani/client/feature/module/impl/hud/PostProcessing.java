@@ -5,8 +5,8 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "PostProcessing", description = "Cool little shaders", category = Category.HUD)
 public class PostProcessing extends Module {

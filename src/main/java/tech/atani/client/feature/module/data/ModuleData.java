@@ -14,5 +14,7 @@ public @interface ModuleData {
     String description();
     Category category();
     int key() default 0;
-    boolean alwaysEnabled() default false;
+    boolean enabled() default false;
+    boolean alwaysRegistered() default false;
+    boolean frozenState() default false;
 }

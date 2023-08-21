@@ -1,8 +1,8 @@
-package tech.atani.client.feature.module.value;
+package tech.atani.client.feature.value;
 
 import com.google.common.base.Supplier;
-import tech.atani.client.feature.module.value.interfaces.ValueChangeListener;
-import tech.atani.client.feature.module.value.storage.ValueStorage;
+import tech.atani.client.feature.value.interfaces.ValueChangeListener;
+import tech.atani.client.feature.value.storage.ValueStorage;
 
 import java.util.ArrayList;
 

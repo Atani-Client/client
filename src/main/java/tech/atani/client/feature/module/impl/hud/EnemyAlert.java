@@ -12,8 +12,8 @@ import tech.atani.client.listener.event.minecraft.render.Render2DEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.utility.player.rotation.RotationUtil;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.SliderValue;
 
 import java.awt.*;
 @ModuleData(name = "EnemyAlert", description = "Alerts about close enemies", category = Category.HUD)

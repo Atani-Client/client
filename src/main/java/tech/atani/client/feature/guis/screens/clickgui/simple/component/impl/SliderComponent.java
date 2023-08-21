@@ -6,8 +6,8 @@ import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.feature.module.value.Value;
-import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.value.Value;
+import tech.atani.client.feature.value.impl.SliderValue;
 
 import java.awt.*;
 

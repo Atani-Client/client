@@ -8,8 +8,8 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.color.ColorUtil;
-import tech.atani.client.feature.module.value.Value;
-import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.value.Value;
+import tech.atani.client.feature.value.impl.SliderValue;
 
 import java.awt.*;
 

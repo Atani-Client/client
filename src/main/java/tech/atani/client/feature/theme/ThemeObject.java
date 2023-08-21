@@ -2,10 +2,8 @@ package tech.atani.client.feature.theme;
 
 import com.google.gson.JsonObject;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.entity.Entity;
-import tech.atani.client.feature.module.data.ModuleData;
-import tech.atani.client.feature.module.value.Value;
-import tech.atani.client.feature.module.value.storage.ValueStorage;
+import tech.atani.client.feature.value.Value;
+import tech.atani.client.feature.value.storage.ValueStorage;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ScreenType;
@@ -14,9 +12,7 @@ import tech.atani.client.utility.interfaces.ColorPalette;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public abstract class ThemeObject implements Methods, ColorPalette {
 

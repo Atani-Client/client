@@ -5,7 +5,7 @@ import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "Timer", description = "Increases game speed", category = Category.MISCELLANEOUS)
 public class Timer extends Module {

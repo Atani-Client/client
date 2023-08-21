@@ -9,7 +9,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
-import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "Parkour", description = "Makes you jump on the edge of blocks.", category = Category.MOVEMENT)
 public class Parkour extends Module {

@@ -10,7 +10,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
-import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "Eagle", description = "Makes you shift on block edges.", category = Category.MOVEMENT)
 public class Eagle extends Module {

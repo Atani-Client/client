@@ -7,8 +7,8 @@ import tech.atani.client.listener.event.client.DisableModuleEvent;
 import tech.atani.client.listener.event.client.EnableModuleEvent;
 import tech.atani.client.listener.handling.EventHandling;
 import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.feature.module.value.Value;
-import tech.atani.client.feature.module.value.storage.ValueStorage;
+import tech.atani.client.feature.value.Value;
+import tech.atani.client.feature.value.storage.ValueStorage;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ public abstract class Module implements Methods {
     private final Category category;
     private int key;
     private boolean enabled;
-    private boolean alwaysEnabled;
-    private boolean listening;
+    private boolean alwaysRegistered;
+    private boolean frozenState;
 
     public Module() {
         ModuleData moduleData = this.getClass().getAnnotation(ModuleData.class);
@@ -29,10 +29,16 @@ public abstract class Module implements Methods {
         this.description = moduleData.description();
         this.category = moduleData.category();
         this.key = moduleData.key();
+        this.enabled = moduleData.enabled();
 
-        if(moduleData.alwaysEnabled()) {
+        if(moduleData.alwaysRegistered()) {
             EventHandling.getInstance().registerListener(this);
-            alwaysEnabled = true;
+            alwaysRegistered = true;
+        }
+
+        if(moduleData.frozenState()) {
+            this.enabled = true;
+            frozenState = true;
         }
     }
 
@@ -41,6 +47,10 @@ public abstract class Module implements Methods {
     }
 
     public void setEnabled(boolean enabled) {
+        if(this.frozenState) {
+            enabled = false;
+        }
+
         this.enabled = enabled;
         if(enabled) {
             onModuleEnable();
@@ -54,7 +64,7 @@ public abstract class Module implements Methods {
         if(enableModuleEvent.isCancelled())
             return;
         onEnable();
-        if(!alwaysEnabled)
+        if(!alwaysRegistered)
             EventHandling.getInstance().registerListener(this);
         new EnableModuleEvent(this, EnableModuleEvent.Type.POST).onFire();
     }
@@ -63,7 +73,7 @@ public abstract class Module implements Methods {
         DisableModuleEvent disableModuleEvent = new DisableModuleEvent(this, DisableModuleEvent.Type.PRE).onFire();
         if(disableModuleEvent.isCancelled())
             return;
-        if(!alwaysEnabled)
+        if(!alwaysRegistered)
             EventHandling.getInstance().unregisterListener(this);
         onDisable();
         new DisableModuleEvent(this, DisableModuleEvent.Type.POST).onFire();
@@ -138,11 +148,4 @@ public abstract class Module implements Methods {
         }
     }
 
-    public boolean isListening() {
-        return listening;
-    }
-
-    public void setListening(boolean listening) {
-        this.listening = listening;
-    }
 }

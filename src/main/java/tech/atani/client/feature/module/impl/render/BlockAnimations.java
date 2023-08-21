@@ -7,8 +7,8 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.impl.combat.KillAura;
 import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 
 //Hooked in ItemRenderer class && Minecraft class
 @ModuleData(name = "BlockAnimations", description = "Changes your item blocking animation", category = Category.RENDER)

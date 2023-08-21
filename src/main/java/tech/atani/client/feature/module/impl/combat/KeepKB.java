@@ -15,9 +15,9 @@ import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.random.RandomUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.PlayerHandler;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.SliderValue;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "KeepKB", description = "Helps you get people in combos", category = Category.COMBAT)
 public class KeepKB extends Module {

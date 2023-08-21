@@ -1,4 +1,4 @@
-package tech.atani.client.feature.module.value.impl.bool;
+package tech.atani.client.feature.value.impl.bool;
 
 import java.util.HashMap;
 import java.util.Map;

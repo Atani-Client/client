@@ -1,7 +1,7 @@
-package tech.atani.client.feature.module.value.storage;
+package tech.atani.client.feature.value.storage;
 
 import de.florianmichael.rclasses.storage.Storage;
-import tech.atani.client.feature.module.value.Value;
+import tech.atani.client.feature.value.Value;
 
 import java.util.*;
 

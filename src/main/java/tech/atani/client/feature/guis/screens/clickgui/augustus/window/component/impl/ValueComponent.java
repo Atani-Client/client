@@ -1,6 +1,6 @@
 package tech.atani.client.feature.guis.screens.clickgui.augustus.window.component.impl;
 
-import tech.atani.client.feature.module.value.Value;
+import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.guis.screens.clickgui.augustus.window.component.Component;
 
 public abstract class ValueComponent extends Component {

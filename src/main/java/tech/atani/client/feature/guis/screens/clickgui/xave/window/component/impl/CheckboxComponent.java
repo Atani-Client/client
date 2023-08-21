@@ -3,7 +3,7 @@ package tech.atani.client.feature.guis.screens.clickgui.xave.window.component.im
 import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 import java.awt.*;
 

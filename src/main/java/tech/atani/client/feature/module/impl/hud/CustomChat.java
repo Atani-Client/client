@@ -4,8 +4,8 @@ import com.google.common.base.Supplier;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 
 // Hooked in GuiChat class & GuiNewChat class
 @ModuleData(name = "CustomChat", description = "Improves the minecraft default chat.", category = Category.HUD)

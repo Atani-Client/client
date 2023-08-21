@@ -12,8 +12,8 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.player.movement.MoveUtil;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Spider", description = "Climb up walls", category = Category.MOVEMENT)
 public class Spider extends Module {

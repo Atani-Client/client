@@ -17,7 +17,7 @@ import tech.atani.client.protection.checks.manager.ProtectionManager;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.java.ArrayUtils;
 import tech.atani.client.utility.internet.NetUtils;
-import tech.atani.client.feature.module.value.storage.ValueStorage;
+import tech.atani.client.feature.value.storage.ValueStorage;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -68,7 +68,7 @@ public class Modification implements ClientInformationAccess {
                 .setStartTimestamps(System.currentTimeMillis())
                 .build();
         DiscordRPC.discordUpdatePresence(rich);
-        
+
         String[] fonts = {
                 "5 Line Oblique", "AMC AAA01", "ANSI Regular", "ANSI Shadow", "Alligator", "Alligator2","Alphabet", "Banner", "Banner3", "Bell",
                 "Big Chief", "Big Money-nw", "Block", "Calvin S", "Catwalk", "Colossal", "DOS Rebel", "Delta Corps Priest 1", "Doh",  "Speed",

@@ -3,7 +3,7 @@ package tech.atani.client.feature.guis.screens.clickgui.augustus.window.componen
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 
 import java.awt.*;
 

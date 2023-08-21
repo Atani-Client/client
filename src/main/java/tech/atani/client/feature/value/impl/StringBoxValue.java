@@ -1,8 +1,8 @@
-package tech.atani.client.feature.module.value.impl;
+package tech.atani.client.feature.value.impl;
 
 import com.google.common.base.Supplier;
-import tech.atani.client.feature.module.value.interfaces.ValueChangeListener;
-import tech.atani.client.feature.module.value.Value;
+import tech.atani.client.feature.value.interfaces.ValueChangeListener;
+import tech.atani.client.feature.value.Value;
 
 public class StringBoxValue extends Value<String> {
 

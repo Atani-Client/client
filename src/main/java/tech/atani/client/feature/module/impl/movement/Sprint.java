@@ -8,7 +8,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.player.movement.MoveUtil;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "Sprint", description = "Makes you sprint automatically.", category = Category.MOVEMENT)
 public class Sprint extends Module {

@@ -13,8 +13,8 @@ import tech.atani.client.feature.guis.screens.clickgui.golden.GoldenClickGuiScre
 import tech.atani.client.feature.guis.screens.clickgui.icarus.IcarusClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.ryu.RyuClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.xave.XaveClickGuiScreen;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "ClickGui", description = "A clicky gui", category = Category.HUD, key = Keyboard.KEY_RSHIFT)
 public class ClickGui extends Module {

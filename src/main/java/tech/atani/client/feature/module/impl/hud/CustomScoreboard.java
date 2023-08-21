@@ -4,8 +4,8 @@ import com.google.common.base.Supplier;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.module.value.impl.CheckBoxValue;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 
 // Hooked in GuiIngame class
 @ModuleData(name = "CustomScoreboard", description = "Improves the minecraft default scoreboard.", category = Category.HUD)

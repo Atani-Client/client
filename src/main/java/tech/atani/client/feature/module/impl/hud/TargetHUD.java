@@ -21,7 +21,7 @@ import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.color.ColorUtil;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.utility.interfaces.ColorPalette;
 import tech.atani.client.utility.render.shader.shaders.GradientShader;
 
@@ -37,6 +37,9 @@ public class TargetHUD extends Module implements ColorPalette {
     public void onRender2D(Render2DEvent render2DEvent) {
         if(ModuleStorage.getInstance().getByClass(KillAura.class).isEnabled() && KillAura.curEntity != null && FightUtil.getRange(KillAura.curEntity) <= ModuleStorage.getInstance().getByClass(KillAura.class).attackRange.getValue().floatValue() && KillAura.curEntity instanceof EntityPlayer) {
             EntityLivingBase target = KillAura.curEntity;
+
+            if(target == null)
+                return;
 
             float x = render2DEvent.getScaledResolution().getScaledWidth() / 2 + 10;
             float y = render2DEvent.getScaledResolution().getScaledHeight() / 2 + 5;

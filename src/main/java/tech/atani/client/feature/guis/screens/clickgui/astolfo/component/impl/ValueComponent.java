@@ -1,7 +1,7 @@
 package tech.atani.client.feature.guis.screens.clickgui.astolfo.component.impl;
 
 import tech.atani.client.feature.guis.screens.clickgui.astolfo.component.Component;
-import tech.atani.client.feature.module.value.Value;
+import tech.atani.client.feature.value.Value;
 
 public abstract class ValueComponent extends Component {
 

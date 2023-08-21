@@ -11,7 +11,7 @@ import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.module.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "ClientSpoofer", description = "Make servers think you are using a different client", category = Category.MISCELLANEOUS)
 public class ClientSpoofer extends Module {

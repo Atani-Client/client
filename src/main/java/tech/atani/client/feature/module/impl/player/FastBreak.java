@@ -7,7 +7,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.feature.module.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "FastBreak", description = "Break blocks faster", category = Category.PLAYER)
 public class FastBreak extends Module {

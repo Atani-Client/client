@@ -1,7 +1,7 @@
 package tech.atani.client.feature.module.data.enums;
 
 public enum Category {
-    COMBAT("Combat"), MOVEMENT("Movement"), PLAYER("Player"),MISCELLANEOUS("Miscellaneous"), RENDER("Render"), HUD("HUD and GUIs");
+    COMBAT("Combat"), MOVEMENT("Movement"), PLAYER("Player"), MISCELLANEOUS("Others"), RENDER("Render"), HUD("Design"), OPTIONS("Options");
 
     private final String name;
 

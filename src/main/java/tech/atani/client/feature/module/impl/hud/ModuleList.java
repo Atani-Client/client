@@ -53,7 +53,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
 
             List<Module> modulesToShow = new ArrayList<>();
             for (Module module : ModuleStorage.getInstance().getList()) {
-                if (!hideRenderModules.getValue() || module.getCategory() != Category.RENDER) {
+                if (!hideRenderModules.getValue() || (module.getCategory() != Category.RENDER && module.getCategory() != Category.HUD)) {
                     modulesToShow.add(module);
                 }
                 if (module.getName().equalsIgnoreCase("ClickGui")) {

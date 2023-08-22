@@ -1,4 +1,4 @@
-package tech.atani.client.feature.guis.screens.clickgui.augustus.frame;
+package tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -6,15 +6,15 @@ import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.frame.component.Component;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.frame.component.impl.ModuleComponent;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame.component.Component;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame.component.impl.ModuleComponent;
 import tech.atani.client.utility.render.RenderUtil;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class Frame extends tech.atani.client.feature.guis.screens.clickgui.augustus.frame.component.Component {
+public class Frame extends tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame.component.Component {
 
     private final Category category;
     private final float moduleHeight;
@@ -48,7 +48,7 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.augus
         RenderUtil.drawRect(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), getBaseHeight(), new Color(41, 146, 222).getRGB());
         Minecraft.getMinecraft().fontRendererObj.drawTotalCenteredStringWithShadow(category.getName(), this.getPosX() + this.getBaseWidth() / 2 + getAddX(), this.getPosY() + this.getBaseHeight() / 2 + getAddY(), -1);
         float moduleY = this.getPosY() + this.getBaseHeight();
-        for(tech.atani.client.feature.guis.screens.clickgui.augustus.frame.component.Component component : this.subComponents) {
+        for(tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame.component.Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
                 component.setPosX(this.getPosX() + 2);
                 component.setPosY(moduleY + getAddY());
@@ -62,7 +62,7 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.augus
     @Override
     public float getFinalHeight() {
         float totalComponentHeight = 0;
-        for(tech.atani.client.feature.guis.screens.clickgui.augustus.frame.component.Component component : this.subComponents) {
+        for(tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame.component.Component component : this.subComponents) {
             totalComponentHeight += component.getFinalHeight();
         }
         return this.getBaseHeight() + totalComponentHeight;

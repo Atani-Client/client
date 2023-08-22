@@ -1,4 +1,4 @@
-package tech.atani.client.feature.guis.screens.clickgui.augustus.window.component.impl;
+package tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

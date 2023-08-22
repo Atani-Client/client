@@ -1,10 +1,10 @@
-package tech.atani.client.feature.guis.screens.clickgui.augustus.window;
+package tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window;
 
 import tech.atani.client.feature.module.Module;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.window.component.impl.CheckboxComponent;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.window.component.impl.ModeComponent;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.window.component.impl.SliderComponent;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.window.component.impl.ValueComponent;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.CheckboxComponent;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.ModeComponent;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.SliderComponent;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.ValueComponent;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.CheckBoxValue;

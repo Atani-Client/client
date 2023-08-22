@@ -1,4 +1,4 @@
-package tech.atani.client.feature.guis.screens.clickgui.augustus.window.component;
+package tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component;
 
 public abstract class Component {
     private float posX, posY;

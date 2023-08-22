@@ -1,4 +1,4 @@
-package tech.atani.client.feature.guis.screens.clickgui.augustus.frame.component;
+package tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame.component;
 
 import java.util.ArrayList;
 

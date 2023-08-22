@@ -1,159 +1,303 @@
 package tech.atani.client.feature.guis.screens.clickgui.augustus;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
+import com.sun.org.apache.xpath.internal.operations.Mod;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
+import tech.atani.client.feature.font.storage.FontStorage;
+import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.impl.hud.ClickGui;
 import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.utility.render.animation.Animation;
+import tech.atani.client.feature.value.Value;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.SliderValue;
+import tech.atani.client.feature.value.impl.StringBoxValue;
+import tech.atani.client.feature.value.storage.ValueStorage;
+import tech.atani.client.utility.math.MathUtil;
+import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.animation.Direction;
 import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
-import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.frame.Frame;
+import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
+import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 public class AugustusClickGuiScreen extends GuiScreen {
-    private ArrayList<Frame> frames = new ArrayList<>();
-    private HashMap<Frame, Animation> framesAnimations = new HashMap<>();
-    private float scroll = 0;
+
+    float posX = -1337, posY = -1337;
+    float width = 600, height = 400;
+    Category selectedCategory = Category.COMBAT;
+    Module selectedModule;
+    float draggingX, draggingY;
+    boolean dragging = true;
+    float valueScroll = 0F, moduleScroll = 0F;
+    public boolean expandingRight;
     private ClickGui clickGui;
-    private DecelerateAnimation openingAnimation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
+    DecelerateAnimation openingAnimation = new DecelerateAnimation(600, 1, Direction.BACKWARDS);
+    float animationLeftRight = 0;
+    float animationUpDown = 0;
 
     @Override
     public void initGui() {
-        this.framesAnimations.clear();
         this.buttonList.clear();
-        this.buttonList.add(new GuiButton(0, this.width - 60, this.height - 25, 55, 20, "Reset Gui"));
-        this.clickGui = ModuleStorage.getInstance().getByClass(ClickGui.class);
+        this.buttonList.add(new GuiButton(0, super.width - 60, super.height - 25, 55, 20, "Reset Gui"));
         openingAnimation.setDirection(Direction.FORWARDS);
     }
 
+    @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        scroll += Mouse.getDWheel() / 10F;
-        if(frames.isEmpty()) {
-            float y = 50, width = 100, height = 18, x = (this.width - (Category.values().length * (width + 5))) / 2; /* The X is made like that so categories will be in the middle*/
-            for(Category category : Category.values()) {
-                Frame frame = new Frame(category, x, y, width, height, height);
-                Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
-                this.frames.add(frame);
-                this.framesAnimations.put(frame, animation);
-                // We need to set the direction backwards at first so it will start at 0, then to forwards so it will animate upwards
-                animation.setDirection(Direction.FORWARDS);
-                x += width + 5;
-            }
+        if(clickGui == null)
+            clickGui = ModuleStorage.getInstance().getByClass(ClickGui.class);
+        if (this.posX == -1337 || this.posY == -1337) {
+            this.posX = super.width / 2 - this.width / 2;
+            this.posY = super.height / 2 - this.height / 2;
         }
-        if(framesAnimations.isEmpty()) {
-            for(Frame frame : frames) {
-                Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
-                this.framesAnimations.put(frame, animation);
-                // We need to set the direction backwards at first so it will start at 0, then to forwards so it will animate upwards
-                animation.setDirection(Direction.FORWARDS);
-            }
+        /*
+        width = 450;
+        height = 250;
+         */
+        if(expandingRight) {
+            float deltaY = mouseY - (posY + height);
+            height = Math.max(250, height + deltaY);
+            float deltaX = mouseX - (posX + width);
+            width = Math.max(450, width + deltaX);
         }
-
+        if(RenderUtil.isHovered(mouseX, mouseY, posX, posY, width, 17) && dragging) {
+            posX = mouseX - draggingX;
+            posY = mouseY - draggingY;
+        }
         ScaledResolution sr = new ScaledResolution(mc);
-
-        float animationLeftRight = 0, animationUpDown = 0;
-        for(Frame frame : framesAnimations.keySet()) {
-            if(clickGui.openingAnimation.getValue()) {
-                switch (clickGui.dropdownAnimation.getValue()) {
-                    case "Left to Right":
-                        animationLeftRight = (float) (sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
-                        if(openingAnimation.getDirection() == Direction.FORWARDS) {
-                            animationLeftRight = (float) -(sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
-                        }
-                        break;
-                    case "Right to Left":
-                        animationLeftRight = (float) (sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
-                        if(openingAnimation.getDirection() == Direction.BACKWARDS) {
-                            animationLeftRight = (float) -(sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
-                        }
-                        break;
-                    case "Up to Down":
-                        animationUpDown = (float) (sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
-                        if(openingAnimation.getDirection() == Direction.FORWARDS) {
-                            animationUpDown = (float) -(sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
-                        }
-                        break;
-                    case "Down to Up":
-                        animationUpDown = (float) (sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
-                        if(openingAnimation.getDirection() == Direction.BACKWARDS) {
-                            animationUpDown = (float) -(sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
-                        }
-                        break;
-                    case "Scale-In":
-                        RenderUtil.scaleStart(sr.getScaledWidth() / 2f, sr.getScaledHeight() / 2f, openingAnimation.getOutput().floatValue());
-                        break;
-                    case "Frame Scale-In":
-                        RenderUtil.scaleStart(frame.getPosX() + frame.getFinalWidth() / 2, frame.getPosY() + frame.getFinalHeight() / 2, framesAnimations.get(frame).getOutput().floatValue());
-                        break;
-                }
-            }
-            frame.setAddY(scroll + animationUpDown);
-            frame.setAddX(animationLeftRight);
-            frame.drawScreen(mouseX, mouseY);
-            RenderUtil.scaleEnd();
-        }
+        animationLeftRight = 0;
+        animationUpDown = 0;
         if(clickGui.openingAnimation.getValue()) {
-            switch (clickGui.dropdownAnimation.getValue()) {
-                case "Up to Down":
-                case "Down to Up":
+            switch (clickGui.nonDropdownAnimation.getValue()) {
                 case "Left to Right":
-                case "Right to Left":
-                case "Scale-In":
-                    if(this.openingAnimation.finished(Direction.BACKWARDS))
-                        mc.displayGuiScreen(null);
-                    break;
-                case "Frame Scale-In":
-                    boolean unfinished = false;
-                    for(Animation animation : framesAnimations.values()) {
-                        if(!animation.finished(Direction.BACKWARDS)) {
-                            unfinished = true;
-                        }
+                    animationLeftRight = (float) ((width + posX) * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.FORWARDS) {
+                        animationLeftRight = (float) -((width + posX) * (1 - openingAnimation.getOutput()));
                     }
-                    if(!unfinished) {
-                        mc.displayGuiScreen(null);
+                    break;
+                case "Right to Left":
+                    animationLeftRight = (float) (sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.BACKWARDS) {
+                        animationLeftRight = (float) -(sr.getScaledWidth() * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+                case "Up to Down":
+                    animationUpDown = (float) ((height + posY) * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.FORWARDS) {
+                        animationUpDown = (float) -((height + posY) * (1 - openingAnimation.getOutput()));
+                    }
+                    break;
+                case "Down to Up":
+                    animationUpDown = (float) (sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
+                    if(openingAnimation.getDirection() == Direction.BACKWARDS) {
+                        animationUpDown = (float) -(sr.getScaledHeight() * (1 - openingAnimation.getOutput()));
                     }
                     break;
             }
         }
-        super.drawScreen(mouseX, mouseY, partialTicks);
-    }
-
-    @Override
-    public void actionPerformed(GuiButton button) {
-        switch (button.id){
-            case 0:
-                mc.displayGuiScreen(null);
-                ClickGui.clickGuiScreenSimple = null;
-                ModuleStorage.getInstance().getByClass(ClickGui.class).toggle();
-                break;
+        float oldX = posX, oldY = posY;
+        posX += animationLeftRight;
+        posY += animationUpDown;
+        FontRenderer esp = FontStorage.getInstance().findFont("ESP", 21);
+        RoundedShader.drawRound(posX, posY, width, height, 7, new Color(40, 40, 40, 170));
+        RenderUtil.startScissorBox();
+        RenderUtil.drawScissorBox(posX, posY, width, 17);
+        RoundedShader.drawRound(posX, posY, width, 25, 7, new Color(34, 34, 34));
+        RenderUtil.endScissorBox();
+        esp.drawString("CLICKGUI", posX + 5, posY + 6, new Color(200, 200, 200).getRGB());
+        RenderUtil.drawRect(posX + 110, posY + 0.5f, 2, height, new Color(34, 34, 34).getRGB());
+        RenderUtil.drawRect(posX + 110, posY + 50, width - 110 + 0.5f, 2, new Color(34, 34, 34).getRGB());
+        FontRenderer normal = FontStorage.getInstance().findFont("Consolas", 19);
+        FontRenderer small = FontStorage.getInstance().findFont("Consolas", 17);
+        float categoryX = posX + 110 + 20;
+        for(Category category : Category.values()) {
+            normal.drawString(category.getName().toUpperCase(), categoryX, posY + 30, new Color(200, 200, 200).getRGB());
+            if(category == selectedCategory) {
+                RenderUtil.drawRect(categoryX, posY + 30 + normal.FONT_HEIGHT, normal.getStringWidth(category.getName().toUpperCase()) - 0.5f, 1, new Color(200, 200, 200).getRGB());
+            }
+            categoryX += normal.getStringWidth(category.getName()) + 10;
         }
-    }
-
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for(Frame frame : framesAnimations.keySet()) {
-            frame.mouseClick(mouseX, mouseY, mouseButton);
+        int dWheel = Mouse.getDWheel();
+        RenderUtil.startScissorBox();
+        RenderUtil.drawScissorBox(posX, posY + 16.5f, 110, height - 16.5f);
+        if(selectedCategory != null) {
+            if (RenderUtil.isHovered(mouseX, mouseY, posX, posY + 16.5f, 110, height - 16.5f)) {
+                moduleScroll = Math.min(0, moduleScroll + dWheel / 10F);
+            }
+            float moduleY = posY + 25 + moduleScroll;
+            for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
+                normal.drawString(module.getName(), posX + 10, moduleY, module.isEnabled() ? new Color(clickGui.red.getValue(), clickGui.green.getValue(), clickGui.blue.getValue()).getRGB() : new Color(200, 200, 200).getRGB());
+                moduleY += normal.FONT_HEIGHT + 5;
+            }
         }
-        super.mouseClicked(mouseX, mouseY, mouseButton);
-    }
-
-    @Override
-    protected void keyTyped(char key, int code) {
-        if(code == 1) {
-            if(clickGui.openingAnimation.getValue()) {
-                this.openingAnimation.setDirection(Direction.BACKWARDS);
-                for(Animation animation : framesAnimations.values()) {
-                    animation.setDirection(Direction.BACKWARDS);
+        RenderUtil.endScissorBox();
+        RenderUtil.startScissorBox();
+        RenderUtil.drawScissorBox(posX + 110 + 1.5F + 0.5f, posY + 50 + 1.5f + 1, width - (110 + 1.5F), height - (50 + 1.5f));
+        if(selectedModule != null) {
+            float moduleY = posY + 50 + 10;
+            if (RenderUtil.isHovered(mouseX, mouseY, posX + 110 + 1.5F, posY + 50 + 1.5f + 1, width - (110 + 1.5F), height - (50 + 1.5f))) {
+                valueScroll = Math.min(0, valueScroll + dWheel / 10F);
+            }
+            moduleY += valueScroll;
+            esp.drawString(selectedModule.getName(), posX + 120, moduleY, new Color(clickGui.red.getValue(), clickGui.green.getValue(), clickGui.blue.getValue()).getRGB());
+            moduleY += esp.FONT_HEIGHT + 3;
+            for(Value value : ValueStorage.getInstance().getValues(selectedModule)) {
+                if(!value.isVisible())
+                    continue;
+                if(value instanceof CheckBoxValue) {
+                    CheckBoxValue checkBoxValue = (CheckBoxValue) value;
+                    normal.drawString(value.getName() + ": ", posX + 120, moduleY, new Color(200, 200, 200).getRGB());
+                    normal.drawString(checkBoxValue.getValue() ? "true" : "false", posX + 120 + normal.getStringWidth(value.getName() + ": "), moduleY, checkBoxValue.getValue() ? new Color(0, 180, 0).getRGB() : new Color(180, 0, 0).getRGB());
+                    moduleY += normal.FONT_HEIGHT + 2;
+                } else if(value instanceof SliderValue) {
+                    SliderValue sliderValue = (SliderValue)value;
+                    normal.drawString(value.getName() + ": ", posX + 120, moduleY, new Color(200, 200, 200).getRGB());
+                    RenderUtil.drawBorder(posX + 120 + normal.getStringWidth(value.getName() + ": "), moduleY - 2, (posX + 120 + normal.getStringWidth(value.getName() + ": ")) + 120, (moduleY - 2) + 10, 1, new Color(34, 34, 34).getRGB(), true);
+                    float sliderX = posX + 120 + normal.getStringWidth(value.getName() + ": ") + 1, sliderY = moduleY - 2 + 1, sliderWidth = 120 - 2, sliderHeight = 10 - 2;
+                    float length = MathHelper
+                            .floor_double(((sliderValue.getValue()).floatValue() - sliderValue.getMinimum().floatValue())
+                                    / (sliderValue.getMaximum().floatValue() - sliderValue.getMinimum().floatValue()) * sliderWidth);
+                    RenderUtil.drawRect(sliderX, sliderY, length, sliderHeight, new Color(clickGui.red.getValue(), clickGui.green.getValue(), clickGui.blue.getValue()).getRGB());
+                    small.drawTotalCenteredString(sliderValue.getValue().floatValue() + "", sliderX + sliderWidth / 2, sliderY + sliderHeight / 2 + 1.5f, new Color(200, 200, 200).getRGB());
+                    if(Mouse.isButtonDown(0) && RenderUtil.isHovered(mouseX, mouseY, sliderX, sliderY, sliderWidth, sliderHeight)) {
+                        double min1 = sliderValue.getMinimum().floatValue();
+                        double max1 = sliderValue.getMaximum().floatValue();
+                        double newValue = MathUtil.round((mouseX - sliderX) * (max1 - min1) / (sliderWidth - 1.0f) + min1, sliderValue.getDecimalPlaces());
+                        sliderValue.setValue(newValue);
+                    }
+                    moduleY += normal.FONT_HEIGHT + 2;
+                } else if(value instanceof StringBoxValue) {
+                    StringBoxValue stringBoxValue = ((StringBoxValue)value);
+                    normal.drawString(value.getName() + ": ", posX + 120, moduleY, new Color(200, 200, 200).getRGB());
+                    float modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                    for(String string : stringBoxValue.getValues()) {
+                        if(modeX >= (posX + width - 50)) {
+                            modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                            moduleY += normal.FONT_HEIGHT + 2;
+                        }
+                        normal.drawString(string, modeX, moduleY, value.getValue().equals(string) ? new Color(clickGui.red.getValue(), clickGui.green.getValue(), clickGui.blue.getValue()).getRGB() : new Color(200, 200, 200).getRGB());
+                        modeX += normal.getStringWidth(string);
+                        if(!stringBoxValue.getValues()[stringBoxValue.getValues().length - 1].equals(string)) {
+                            normal.drawString(", ", modeX, moduleY, new Color(200, 200, 200).getRGB());
+                            modeX += normal.getStringWidth(", ");
+                        }
+                    }
+                    moduleY += normal.FONT_HEIGHT + 2;
                 }
+            }
+        }
+        RenderUtil.endScissorBox();
+        if (clickGui.openingAnimation.getValue()) {
+            if (this.openingAnimation.finished(Direction.BACKWARDS))
+                mc.displayGuiScreen(null);
+        }
+        posX = oldX;
+        posY = oldY;
+    }
+
+    @Override
+    protected void mouseReleased(int mouseX, int mouseY, int state) {
+        dragging = false;
+        expandingRight = false;
+        super.mouseReleased(mouseX, mouseY, state);
+    }
+
+    @Override
+    public void keyTyped(char key, int code) throws IOException {
+        if (code == 1) {
+            if (clickGui.openingAnimation.getValue()) {
+                this.openingAnimation.setDirection(Direction.BACKWARDS);
             } else {
                 mc.displayGuiScreen(null);
             }
         }
     }
+
+    @Override
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
+        float oldX = posX, oldY = posY;
+        posX += animationLeftRight;
+        posY += animationUpDown;
+        FontRenderer normal = FontStorage.getInstance().findFont("Consolas", 19);
+        float categoryX = posX + 110 + 20;
+        if(RenderUtil.isHovered(mouseX, mouseY, posX, posY, width, 17) && mouseButton == 0) {
+            dragging = true;
+            draggingX = mouseX - posX;
+            draggingY = mouseY - posY;
+        }
+        if(RenderUtil.isHovered(mouseX, mouseY, posX + width - 8, posY + height - 8, 16, 16)) {
+            expandingRight = true;
+        }
+        for(Category category : Category.values()) {
+            if (RenderUtil.isHovered(mouseX, mouseY, categoryX, posY + 30, normal.getStringWidth(category.getName().toUpperCase()) - 0.5f, 1 + normal.FONT_HEIGHT)) {
+                selectedCategory = category;
+                selectedModule = null;
+                valueScroll = 0f;
+                moduleScroll = 0f;
+            }
+            categoryX += normal.getStringWidth(category.getName()) + 10;
+        }
+        if(selectedCategory != null) {
+            float moduleY = posY + 25;
+            for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
+                if (RenderUtil.isHovered(mouseX, mouseY, posX + 10, moduleY - 4, normal.getStringWidth(module.getName()) - 0.5f, normal.FONT_HEIGHT + 4)) {
+                    switch (mouseButton) {
+                        case 0:
+                            module.toggle();
+                            break;
+                        case 1:
+                            selectedModule = module;
+                            break;
+                    }
+                }
+                moduleY += normal.FONT_HEIGHT + 5;
+            }
+        }
+        FontRenderer small = FontStorage.getInstance().findFont("Consolas", 17);
+        FontRenderer esp = FontStorage.getInstance().findFont("ESP", 21);
+        if(selectedModule != null) {
+            float moduleY = posY + 50 + 10;
+            esp.drawString(selectedModule.getName(), posX + 120, moduleY, -1);
+            moduleY += esp.FONT_HEIGHT + 3;
+            for(Value value : ValueStorage.getInstance().getValues(selectedModule)) {
+                if(!value.isVisible())
+                    continue;
+                if(value instanceof CheckBoxValue) {
+                    CheckBoxValue checkBoxValue = (CheckBoxValue) value;
+                    if(RenderUtil.isHovered(mouseX, mouseY, posX + 120, moduleY - 2, normal.getStringWidth(checkBoxValue.getName() + ": " + (checkBoxValue.getValue() ? "true" : "false")), 10))
+                        checkBoxValue.setValue(!checkBoxValue.getValue());
+                    moduleY += normal.FONT_HEIGHT + 2;
+                } else if(value instanceof SliderValue) {
+                    moduleY += normal.FONT_HEIGHT + 2;
+                } else if(value instanceof StringBoxValue) {
+                    StringBoxValue stringBoxValue = ((StringBoxValue)value);
+                    float modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                    for(String string : stringBoxValue.getValues()) {
+                        if(RenderUtil.isHovered(mouseX, mouseY, modeX, moduleY - 2, normal.getStringWidth(string), 10))
+                            stringBoxValue.setValue(string);
+                        modeX += normal.getStringWidth(string);
+                        if(!stringBoxValue.getValues()[stringBoxValue.getValues().length - 1].equals(string)) {
+                            normal.drawString(", ", modeX, moduleY, new Color(200, 200, 200).getRGB());
+                            modeX += normal.getStringWidth(", ");
+                            if(modeX >= posX + width) {
+                                modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                                moduleY += normal.FONT_HEIGHT + 2;
+                            }
+                        }
+                    }
+                    moduleY += normal.FONT_HEIGHT + 2;
+                }
+            }
+        }
+        posX = oldX;
+        posY = oldY;
+    }
+
 }

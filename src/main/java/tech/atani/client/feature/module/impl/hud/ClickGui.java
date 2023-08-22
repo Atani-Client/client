@@ -3,24 +3,26 @@ package tech.atani.client.feature.module.impl.hud;
 import com.google.common.base.Supplier;
 import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.guis.screens.clickgui.atani.AtaniClickGuiScreen;
+import tech.atani.client.feature.guis.screens.clickgui.augustus.AugustusClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.fatality.FatalityClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.simple.SimpleClickGuiScreen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.guis.screens.clickgui.astolfo.AstolfoClickGuiScreen;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.AugustusClickGuiScreen;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.OldAugustusClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.golden.GoldenClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.icarus.IcarusClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.ryu.RyuClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.xave.XaveClickGuiScreen;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "ClickGui", description = "A clicky gui", category = Category.HUD, key = Keyboard.KEY_RSHIFT)
 public class ClickGui extends Module {
 
-    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Atani", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Astolfo"});
+    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Atani", "Golden", "Augustus", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Astolfo"});
     public final CheckBoxValue openingAnimation = new CheckBoxValue("Opening Animation", "Animate the opening and closing of the gui?", this, true);
     public final StringBoxValue dropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like", this, new String[]{"Scale-In", "Frame Scale-In", "Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
             mode.getValue().equalsIgnoreCase("Simple") || // Dropdown guis go here
@@ -33,12 +35,16 @@ public class ClickGui extends Module {
             mode.getValue().equalsIgnoreCase("Golden") || // Non-Dropdown guis go here
                     mode.getValue().equalsIgnoreCase("Atani") ||
                     mode.getValue().equalsIgnoreCase("Fatality")}).setIdName("Non-Dropdown Animation Mode");
+    public final SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the colored elements?", this, 255, 0, 255, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Augustus")});
+    public final SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the colored elements?", this, 197, 0, 255, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Augustus")});
+    public final SliderValue<Integer> blue = new SliderValue<>("Blue", "What'll be the blue of the colored elements?", this, 188, 0, 255, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Augustus")});
 
     public static FatalityClickGuiScreen clickGuiScreenFatality;
     public static SimpleClickGuiScreen clickGuiScreenSimple;
     public static AtaniClickGuiScreen clickGuiScreenAtani;
     public static GoldenClickGuiScreen clickGuiScreenGolden;
     public static AugustusClickGuiScreen clickGuiScreenAugustus;
+    public static OldAugustusClickGuiScreen clickGuiScreenOldAugustus;
     public static XaveClickGuiScreen clickGuiScreenXave;
     public static RyuClickGuiScreen clickGuiScreenRyu;
     public static IcarusClickGuiScreen clickGuiScreenIcarus;
@@ -47,6 +53,12 @@ public class ClickGui extends Module {
     @Override
     public void onEnable() {
         switch (this.mode.getValue()) {
+            case "Augustus":
+                if(clickGuiScreenAugustus == null) {
+                    clickGuiScreenAugustus = new AugustusClickGuiScreen();
+                }
+                mc.displayGuiScreen(clickGuiScreenAugustus);
+                break;
             case "Atani":
                 if(clickGuiScreenAtani == null) {
                     clickGuiScreenAtani = new AtaniClickGuiScreen();
@@ -72,10 +84,10 @@ public class ClickGui extends Module {
                 mc.displayGuiScreen(clickGuiScreenGolden);
                 break;
             case "Augustus 2.6":
-                if(clickGuiScreenAugustus == null) {
-                    clickGuiScreenAugustus = new AugustusClickGuiScreen();
+                if(clickGuiScreenOldAugustus == null) {
+                    clickGuiScreenOldAugustus = new OldAugustusClickGuiScreen();
                 }
-                mc.displayGuiScreen(clickGuiScreenAugustus);
+                mc.displayGuiScreen(clickGuiScreenOldAugustus);
                 break;
             case "Xave":
                 if(clickGuiScreenXave == null) {

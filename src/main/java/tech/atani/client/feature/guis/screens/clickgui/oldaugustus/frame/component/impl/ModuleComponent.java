@@ -1,11 +1,11 @@
-package tech.atani.client.feature.guis.screens.clickgui.augustus.frame.component.impl;
+package tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame.component.impl;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.frame.component.Component;
-import tech.atani.client.feature.guis.screens.clickgui.augustus.window.Window;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame.component.Component;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.Window;
 
 import java.awt.*;
 

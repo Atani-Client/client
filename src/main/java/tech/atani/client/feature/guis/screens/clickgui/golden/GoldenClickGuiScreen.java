@@ -112,10 +112,10 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
         int counter = 0;
         int dWheel = Mouse.getDWheel();
         if (RenderUtil.isHovered(mouseX, mouseY, x, startY, this.width / 2, height - (startY - y) + 0.5f)) {
-            moduleScroll += dWheel / 10F;
+            moduleScroll = (int) Math.min(0, moduleScroll + dWheel / 10F);
         }
         if (RenderUtil.isHovered(mouseX, mouseY, x + width / 2, startY, this.width / 2, height - (startY - y) + 0.5f)) {
-            valueScroll += dWheel / 10F;
+            valueScroll = (int) Math.min(0, valueScroll + dWheel / 10F);
         }
         float scissorY = startY;
         float scissorHeight = height - (scissorY - y) - 0.5f;

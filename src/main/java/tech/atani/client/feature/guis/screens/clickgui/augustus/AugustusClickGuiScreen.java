@@ -106,7 +106,7 @@ public class AugustusClickGuiScreen extends GuiScreen {
         posX += animationLeftRight;
         posY += animationUpDown;
         FontRenderer esp = FontStorage.getInstance().findFont("ESP", 21);
-        RoundedShader.drawRound(posX, posY, width, height, 7, new Color(40, 40, 40, 170));
+        RoundedShader.drawRound(posX, posY, width, height, 7, new Color(25, 25, 25, 180));
         RenderUtil.startScissorBox();
         RenderUtil.drawScissorBox(posX, posY, width, 17);
         RoundedShader.drawRound(posX, posY, width, 25, 7, new Color(34, 34, 34));
@@ -114,7 +114,7 @@ public class AugustusClickGuiScreen extends GuiScreen {
         esp.drawString("CLICKGUI", posX + 5, posY + 6, new Color(200, 200, 200).getRGB());
         RenderUtil.drawRect(posX + 110, posY + 0.5f, 2, height, new Color(34, 34, 34).getRGB());
         RenderUtil.drawRect(posX + 110, posY + 50, width - 110 + 0.5f, 2, new Color(34, 34, 34).getRGB());
-        FontRenderer normal = FontStorage.getInstance().findFont("Consolas", 19);
+        FontRenderer normal = FontStorage.getInstance().findFont("Consolas", 18);
         FontRenderer small = FontStorage.getInstance().findFont("Consolas", 17);
         float categoryX = posX + 110 + 20;
         for(Category category : Category.values()) {
@@ -225,7 +225,7 @@ public class AugustusClickGuiScreen extends GuiScreen {
         float oldX = posX, oldY = posY;
         posX += animationLeftRight;
         posY += animationUpDown;
-        FontRenderer normal = FontStorage.getInstance().findFont("Consolas", 19);
+        FontRenderer normal = FontStorage.getInstance().findFont("Consolas", 18);
         float categoryX = posX + 110 + 20;
         if(RenderUtil.isHovered(mouseX, mouseY, posX, posY, width, 17) && mouseButton == 0) {
             dragging = true;

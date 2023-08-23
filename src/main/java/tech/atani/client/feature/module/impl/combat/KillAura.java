@@ -127,16 +127,11 @@ public class KillAura extends Module {
 
     @Listen
     public void onPostTickEvent(PostTickEvent postTickEvent) {
-<<<<<<< Updated upstream
-
-        if(mc.thePlayer == null || mc.theWorld == null)
-=======
-        if (mc.thePlayer.ticksExisted % 5 != 0) {
->>>>>>> Stashed changes
+        if (mc.thePlayer.ticksExisted % 5 != 0)
             return;
 
         List<EntityLivingBase> targets = FightUtil.getMultipleTargets(findRange.getValue(), players.getValue(), animals.getValue(), walls.getValue(), monsters.getValue(), invisible.getValue());
-        switch (this.priority.getValue()){
+        switch (this.priority.getValue()) {
             case "Distance":
                 targets.sort(new DistanceSorter());
                 break;
@@ -154,14 +149,14 @@ public class KillAura extends Module {
                 curEntity = targets.get(0);
                 break;
             case "Single":
-                if(curEntity == null || !FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()))
+                if (curEntity == null || !FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()))
                     curEntity = targets.get(0);
                 break;
             case "Multi":
             case "Switch":
                 long switchDelay = targetMode.is("Multi") ? 0 : this.switchDelay.getValue();
-                if(!this.switchTimer.hasReached(switchDelay)) {
-                    if(curEntity == null || !FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()))
+                if (!this.switchTimer.hasReached(switchDelay)) {
+                    if (curEntity == null || !FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()))
                         curEntity = targets.get(0);
                     return;
                 }
@@ -188,7 +183,7 @@ public class KillAura extends Module {
     }
 
     @Listen
-    public final void onRotation(RotationEvent rotationEvent) {
+    public final void onRotatio(RotationEvent rotationEvent) {
         if (curEntity != null) {
             final float[] rotations = RotationUtil.getRotation(curEntity, mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
 

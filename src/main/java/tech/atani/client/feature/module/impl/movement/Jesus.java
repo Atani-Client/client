@@ -14,7 +14,6 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Jesus", description = "Walk on water like jesus", category = Category.MOVEMENT)
 public class Jesus extends Module {
-
     private final StringBoxValue mode = new StringBoxValue("Mode", "What mode should this module use?", this, new String[] {"Solid", "Matrix"});
 
     @Override

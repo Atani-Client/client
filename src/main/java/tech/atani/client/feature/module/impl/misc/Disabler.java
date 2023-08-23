@@ -20,23 +20,16 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
-
 	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat"});
 
-	private final CheckBoxValue keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?",
-			this, false, new Supplier[]{() -> mode.is("Custom")});
-	private final CheckBoxValue c0fConfirm = new CheckBoxValue("C0FConfirmTransaction", "Should the module cancel C0FConfirmTransaction?",
-			this, false, new Supplier[]{() -> mode.is("Custom")});
-	private final CheckBoxValue s2BChangeGameState = new CheckBoxValue("S2BChangeGameState", "Should the module cancel S2BChangeGameState?",
-			this, false, new Supplier[]{() -> mode.is("Custom")});
-	private final CheckBoxValue s07Respawn = new CheckBoxValue("S07Respawn", "Should the module cancel S07Respawn?",
-			this, false, new Supplier[]{() -> mode.is("Custom")});
-	private final CheckBoxValue c0bEntityAction = new CheckBoxValue("C0BEntityAction", "Should the module cancel C0BEntityAction?",
-			this, false, new Supplier[]{() -> mode.is("Custom")});
-	private final CheckBoxValue s05SpawnPosition = new CheckBoxValue("S05SpawnPosition", "Should the module cancel S05SpawnPosition?",
-			this, false, new Supplier[]{() -> mode.is("Custom")});
-	private final CheckBoxValue c0cInput = new CheckBoxValue("C0CInput", "Should the module cancel C0CInput?",
-			this, false, new Supplier[]{() -> mode.is("Custom")});
+	private final CheckBoxValue
+			keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?", this, false, new Supplier[]{() -> mode.is("Custom")}),
+			c0fConfirm = new CheckBoxValue("C0FConfirmTransaction", "Should the module cancel C0FConfirmTransaction?", this, false, new Supplier[]{() -> mode.is("Custom")}),
+			s2BChangeGameState = new CheckBoxValue("S2BChangeGameState", "Should the module cancel S2BChangeGameState?", this, false, new Supplier[]{() -> mode.is("Custom")}),
+			s07Respawn = new CheckBoxValue("S07Respawn", "Should the module cancel S07Respawn?", this, false, new Supplier[]{() -> mode.is("Custom")}),
+			c0bEntityAction = new CheckBoxValue("C0BEntityAction", "Should the module cancel C0BEntityAction?", this, false, new Supplier[]{() -> mode.is("Custom")}),
+			s05SpawnPosition = new CheckBoxValue("S05SpawnPosition", "Should the module cancel S05SpawnPosition?", this, false, new Supplier[]{() -> mode.is("Custom")}),
+			c0cInput = new CheckBoxValue("C0CInput", "Should the module cancel C0CInput?", this, false, new Supplier[]{() -> mode.is("Custom")});
 
 	// Verus Combat
 	private int verusCounter;

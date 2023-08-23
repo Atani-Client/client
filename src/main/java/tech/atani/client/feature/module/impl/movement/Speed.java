@@ -20,47 +20,48 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"});
-    private final StringBoxValue spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")});
-    private final StringBoxValue incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")});
-    private final SliderValue<Float> boost = new SliderValue<>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")});
-    private final SliderValue<Float> jumpHeight = new SliderValue<>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1.0f, 2, new Supplier[]{() -> mode.is("BHop")});
-
-    // Verus
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")});
-    private final SliderValue<Float> verusGroundSpeed = new SliderValue<>("Verus Ground Speed", "How much will the verus speed strafe onGround?", this, 0.53f, 0.1f, 0.55f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
-    private final SliderValue<Float> verusAirSpeed = new SliderValue<>("Verus Air Speed", "How much will the verus speed strafe inAir?", this, 0.33f, 0.1f, 0.4f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
-    private final SliderValue<Float> verusSpeedBoost = new SliderValue<>("Verus Speed Boost", "How Much Will the Verus Speed Boost?", this, 3F, 0, 5F, 1, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
+    private final StringBoxValue
+            mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"}),
+            spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
+            vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")}),
+            incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
+            ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe"}, new Supplier[]{() -> mode.is("NCP")}),
+            oldNcpMode = new StringBoxValue("Old NCP Mode", "Which mode will the old ncp mode use?", this, new String[]{"Timer", "Y-Port"}, new Supplier[]{() -> mode.is("Old NCP")}),
+            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")}),
+            watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});
+    private final SliderValue<Float>
+            boost = new SliderValue<Float>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")}),
+            jumpHeight = new SliderValue<Float>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1f, 2, new Supplier[]{() -> mode.is("BHop")});
+    private final SliderValue<Float>
+            verusGroundSpeed = new SliderValue<Float>("Verus Ground Speed", "How much will the verus speed strafe onGround?", this, 0.53f, 0.1f, 0.55f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")}),
+            verusAirSpeed = new SliderValue<Float>("Verus Air Speed", "How much will the verus speed strafe inAir?", this, 0.33f, 0.1f, 0.4f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")}),
+            verusSpeedBoost = new SliderValue<Float>("Verus Speed Boost", "How Much Will the Verus Speed Boost?", this, 3f, 0f, 5f, 1, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
     private final StringBoxValue verusCustomMode = new StringBoxValue("Verus Custom Mode", "Which custom mode will the verus speed use?", this, new String[]{"Normal", "Low", "Float"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
-    private final SliderValue<Float> verusFloatTicks = new SliderValue<>("Verus Float Ticks", "For how many ticks will the verus float speed float?", this, 5F, 1f, 9f, 0, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Float")});
-    private final StringBoxValue verusCustomLowMode = new StringBoxValue("Custom Low Mode", "What mode will the custom lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Low")});
-    private final StringBoxValue verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
-
-    // WatchDog
-    private final StringBoxValue watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});
-
-    // NCP
-    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe"}, new Supplier[]{() -> mode.is("NCP")});
-    private final SliderValue<Double> ncpJumpMotion = new SliderValue<>("NCP Jump Motion", "What Motion will the NCP Speed use?", this, 0.41d, 0.4, 0.42d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
-    private final SliderValue<Double> ncpOnGroundSpeed = new SliderValue<>("NCP onGround Speed", "How fast will the NCP Speed move onGround?", this, 0.485d, 0.1, 0.5d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
-    private final SliderValue<Float> ncpOnGroundSpeedBoost = new SliderValue<>("onGround Speed Boost", "How Much Will the NCP Speed Boost onGround?", this, 3F, 0, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
-    private final SliderValue<Float> ncpOnGroundTimer = new SliderValue<>("NCP onGround Timer", "What timer will the NCP Speed use onGround?", this, 2F, 0.1, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
-    private final SliderValue<Float> ncpInAirTimer = new SliderValue<>("NCP In Air Timer", "What timer will the NCP Speed use In Air?", this, 1F, 0.1, 5F, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
+    private final SliderValue<Float> verusFloatTicks = new SliderValue<Float>("Verus Float Ticks", "For how many ticks will the verus float speed float?", this, 5f, 1f, 9f, 0, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Float")});
+    private final StringBoxValue
+            verusCustomLowMode = new StringBoxValue("Custom Low Mode", "What mode will the custom lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Low")}),
+            verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
+    private final SliderValue<Double>
+            ncpJumpMotion = new SliderValue<Double>("NCP Jump Motion", "What motion will the NCP Speed use?", this, 0.41d, 0.4, 0.42d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")}),
+            ncpOnGroundSpeed = new SliderValue<Double>("NCP Ground Speed", "How fast will the NCP Speed move on ground?", this, 0.485d, 0.1d, 0.5d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
+    private final SliderValue<Float>
+            ncpOnGroundSpeedBoost = new SliderValue<Float>("onGround Speed Boost", "How Much Will the NCP Speed Boost on ground?", this, 3f, 0f, 5f, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")}),
+            ncpOnGroundTimer = new SliderValue<Float>("NCP onGround Timer", "What timer will the NCP Speed use on ground?", this, 2f, 0.1f, 5f, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")}),
+            ncpInAirTimer = new SliderValue<Float>("NCP In Air Timer", "What timer will the NCP Speed use In Air?", this, 1f, 0.1f, 5f, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final CheckBoxValue ncpMotionModify = new CheckBoxValue("NCP Motion Modification", "Will the speed modify Motion Y?", this, true, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
-    private final SliderValue<Double> ncpLowerMotion = new SliderValue<>("NCP Motion Lowered", "How Much will the NCP Motion Modify Lower Motion?", this, 0.1d, 0.01, 0.18d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom") && ncpMotionModify.getValue()});
-
-    // Custom
-    private final SliderValue<Double> motionY = new SliderValue<>("Motion Y", "How big will the y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom")});
-    private final SliderValue<Double> airSpeed = new SliderValue<>("Air Speed", "How fast will you go in air?", this, 1d, 0.01d, 3d, 2, new Supplier[]{() -> mode.is("Custom")});
-    private final SliderValue<Double> friction = new SliderValue<>("Friction", "How big or small will friction be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom")});
-    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How fast should the game speed be?", this, 1f, 0.1f, 5f, 1, new Supplier[]{() -> mode.is("Custom")});
-    private final SliderValue<Double> groundSpeed = new SliderValue<>("Ground Speed", "How big or small will the y motion be?", this, 1d, 0.01d, 3d, 2, new Supplier[]{() -> mode.is("Custom")});
-    private final CheckBoxValue strafe = new CheckBoxValue("Strafe", "Should the module enable strafing?", this, false, new Supplier[]{() -> mode.is("Custom")});
-    private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Should the module enable sprinting?", this, true, new Supplier[]{() -> mode.is("Custom")});
-    private final CheckBoxValue stop = new CheckBoxValue("Stop", "Should the module stop all motion when not moving?", this, false, new Supplier[]{() -> mode.is("Custom")});
-    private final CheckBoxValue yPort = new CheckBoxValue("Y-Port", "Should the module y-port?", this, false, new Supplier[]{() -> mode.is("Custom")});
-    private final SliderValue<Double> minusMotionY = new SliderValue<>("Minus Motion Y", "How big will the -y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom") && yPort.getValue()});
+    private final SliderValue<Double>
+            ncpLowerMotion = new SliderValue<Double>("NCP Motion Lowered", "How Much will the NCP Motion Modify Lower Motion?", this, 0.1d, 0.01d, 0.18d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom") && ncpMotionModify.getValue()}),
+            motionY = new SliderValue<Double>("Motion Y", "How big will the y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom")}),
+            airSpeed = new SliderValue<Double>("Air Speed", "How fast will you go in air?", this, 1d, 0.01d, 3d, 2, new Supplier[]{() -> mode.is("Custom")}),
+            friction = new SliderValue<Double>("Friction", "How big or small will friction be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom")}),
+            groundSpeed = new SliderValue<Double>("Ground Speed", "How big or small will the y motion be?", this, 1d, 0.01d, 3d, 2, new Supplier[]{() -> mode.is("Custom")});
+    private final SliderValue<Float> timer = new SliderValue<Float>("Timer", "How fast should the game speed be?", this, 1f, 0.1f, 5f, 1, new Supplier[]{() -> mode.is("Custom")});
+    private final CheckBoxValue
+            strafe = new CheckBoxValue("Strafe", "Should the module enable strafing?", this, false, new Supplier[]{() -> mode.is("Custom")}),
+            sprint = new CheckBoxValue("Sprint", "Should the module enable sprinting?", this, true, new Supplier[]{() -> mode.is("Custom")}),
+            stop = new CheckBoxValue("Stop", "Should the module stop all motion when not moving?", this, false, new Supplier[]{() -> mode.is("Custom")}),
+            yPort = new CheckBoxValue("Y-Port", "Should the module y-port?", this, false, new Supplier[]{() -> mode.is("Custom")});
+    private final SliderValue<Double> minusMotionY = new SliderValue<Double>("Minus Motion Y", "How big will the -y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom") && yPort.getValue()});
 
     // Spartan
     private final TimeHelper spartanTimer = new TimeHelper();
@@ -68,8 +69,6 @@ public class Speed extends Module {
 
     // Verus
     private int verusTicks;
-    private int verusY;
-    private boolean slowDown = true;
 
     // Vulcan
     private int vulcanTicks;
@@ -491,20 +490,35 @@ public class Speed extends Module {
                 break;
             case "Old NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    mc.thePlayer.setSprinting(true);
-                    if (isMoving()) {
-                        if (mc.thePlayer.onGround) {
-                            mc.thePlayer.jump();
-                            mc.thePlayer.motionX *= 0.75;
-                            mc.thePlayer.motionZ *= 0.75;
-                            mc.timer.timerSpeed = 1;
-                        } else {
-                            if (mc.thePlayer.motionY < 0.4) {
-                                mc.thePlayer.motionY = -1337.0;
-                                MoveUtil.setMoveSpeed(null, 0.261);
-                                mc.timer.timerSpeed = (float) (1.07 + Math.random() / 33);
+                    switch (oldNcpMode.getValue()) {
+                        case "Timer":
+                            if (isMoving()) {
+                                if (mc.thePlayer.onGround) {
+                                    mc.thePlayer.jump();
+                                    mc.timer.timerSpeed = 0.8f;
+                                } else {
+                                    mc.timer.timerSpeed = 1.12f;
+                                }
                             }
-                        }
+                            break;
+                        case "Y-Port":
+                            mc.thePlayer.setSprinting(true);
+
+                            if (isMoving()) {
+                                if (mc.thePlayer.onGround) {
+                                    mc.thePlayer.jump();
+                                    mc.thePlayer.motionX *= 0.75;
+                                    mc.thePlayer.motionZ *= 0.75;
+                                    mc.timer.timerSpeed = 1;
+                                } else {
+                                    if (mc.thePlayer.motionY < 0.4) {
+                                        mc.thePlayer.motionY = -1337.0;
+                                        MoveUtil.setMoveSpeed(null, 0.261);
+                                        mc.timer.timerSpeed = (float) (1.07 + Math.random() / 33);
+                                    }
+                                }
+                            }
+                            break;
                     }
                 }
                 break;

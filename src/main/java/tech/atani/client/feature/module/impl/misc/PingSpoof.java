@@ -15,9 +15,9 @@ import tech.atani.client.utility.math.random.RandomUtil;
 
 @ModuleData(name = "PingSpoof", description = "Spoofs your ping", category = Category.MISCELLANEOUS)
 public class PingSpoof extends Module {
-
-    private SliderValue<Long> minDelay = new SliderValue<>("Minimum Delay", "What'll be the minimum delay for freezing packets?", this, 1500L, 0L, 5000L, 0);
-    private SliderValue<Long> maxDelay = new SliderValue<>("Maximum Delay", "What'll be the maximum delay for freezing packets?", this, 2000L, 0L, 5000L, 0);
+    private SliderValue<Long>
+            minDelay = new SliderValue<>("Minimum Delay", "What'll be the minimum delay for freezing packets?", this, 1500L, 0L, 5000L, 0),
+            maxDelay = new SliderValue<>("Maximum Delay", "What'll be the maximum delay for freezing packets?", this, 2000L, 0L, 5000L, 0);
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {

@@ -20,7 +20,6 @@ import java.util.Random;
 
 @ModuleData(name = "Crasher", description = "Tries to crash a server", category = Category.MISCELLANEOUS)
 public class Crasher extends Module {
-
     public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Swing", "Sign", "Paralyze", "Chunk Load", "NaN Position", "Multiverse", "Fawe", "Mare", "Exploit Fixer (Old)"});
 
     private Random random = new Random();

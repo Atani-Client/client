@@ -10,7 +10,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "FastLadder", description = "Climb up ladders faster", category = Category.MOVEMENT)
 public class FastLadder extends Module {
-    private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the player climb?", this, 1.2F, 1F, 5F, 0);
+    private final SliderValue<Float> speed = new SliderValue<Float>("Speed", "How fast will the player climb?", this, 1.2f, 1f, 5f, 0);
 
     @Override
     public void onEnable() {}

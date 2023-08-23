@@ -13,9 +13,8 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Step", description = "Makes you walk up blocks.", category = Category.MOVEMENT)
 public class Step extends Module {
-
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "NCP", "Motion", "Spartan"});
-    private final SliderValue<Integer> height = new SliderValue<>("Height", "How high will the step go?", this, 2, 0, 10, 1, new Supplier[]{() -> mode.is("Vanilla")});
+    private final SliderValue<Integer> height = new SliderValue<Integer>("Height", "How high will the step go?", this, 2, 0, 10, 1, new Supplier[]{() -> mode.is("Vanilla")});
 
     // NCP
     private boolean hasStepped;

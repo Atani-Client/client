@@ -20,7 +20,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "LongJump", description = "Jumps long", category = Category.MOVEMENT)
 public class LongJump extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"NCP", "Test", "Vulcan", "Intave"});
-    private final SliderValue<Float> vulcanHeight = new SliderValue<>("Height", "High high will the player jump?", this, 4F, 0.4F, 10F, 0, new Supplier[]{() -> mode.is("Vulcan")});
+    private final SliderValue<Float> vulcanHeight = new SliderValue<Float>("Height", "High high will the player jump?", this, 4F, 0.4F, 10F, 0, new Supplier[]{() -> mode.is("Vulcan")});
 
     // NCP
     private int ncpTicks;

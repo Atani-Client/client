@@ -17,7 +17,6 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Spider", description = "Climb up walls", category = Category.MOVEMENT)
 public class Spider extends Module {
-
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Jump", "Collision", "Vulcan", "Verus"});
     private final CheckBoxValue jumpOnly = new CheckBoxValue("Jump Only", "Should the module only work when pressing the jump key?", this, false);
 

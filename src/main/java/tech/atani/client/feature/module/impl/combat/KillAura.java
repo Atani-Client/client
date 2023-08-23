@@ -12,6 +12,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.MultiStringBoxValue;
+import tech.atani.client.listener.event.minecraft.game.PostTickEvent;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
@@ -124,7 +125,7 @@ public class KillAura extends Module {
     }
 
     @Listen
-    public final void onMotion(UpdateMotionEvent updateMotionEvent) {
+    public void onPostTickEvent(PostTickEvent postTickEvent) {
 
         if (mc.thePlayer.ticksExisted % 100 != 0) {
             return;

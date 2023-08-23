@@ -26,9 +26,14 @@ public class FightUtil implements Methods {
     public static List<EntityLivingBase> getMultipleTargets(double range, boolean players, boolean animals, boolean walls, boolean mobs, boolean invis) {
         List<EntityLivingBase> list = new ArrayList<>();
         for (Entity entity : mc.theWorld.loadedEntityList) {
+            if (list.size() > 5)
+                break;
+
             if (!(entity instanceof EntityLivingBase))
                 continue;
+
             EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
+            
             if (entityLivingBase == mc.thePlayer ||
                     getRange(entityLivingBase) > range
                     || !entityLivingBase.canEntityBeSeen(mc.thePlayer) && !walls
@@ -42,8 +47,7 @@ public class FightUtil implements Methods {
                     || entityLivingBase instanceof EntitySlime && !mobs
                     || CombatManager.getInstance().isIgnored(entity)
                     || entityLivingBase.isInvisible() && !invis) continue;
-            if (list.size() > 5)
-                continue;
+
             list.add(entityLivingBase);
         }
         return list;

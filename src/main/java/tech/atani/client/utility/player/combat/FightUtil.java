@@ -33,7 +33,7 @@ public class FightUtil implements Methods {
                 continue;
 
             EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
-            
+
             if (entityLivingBase == mc.thePlayer ||
                     getRange(entityLivingBase) > range
                     || !entityLivingBase.canEntityBeSeen(mc.thePlayer) && !walls

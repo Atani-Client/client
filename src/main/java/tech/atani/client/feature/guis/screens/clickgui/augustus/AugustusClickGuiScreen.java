@@ -280,16 +280,16 @@ public class AugustusClickGuiScreen extends GuiScreen {
                     StringBoxValue stringBoxValue = ((StringBoxValue)value);
                     float modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
                     for(String string : stringBoxValue.getValues()) {
+                        if(modeX >= (posX + width - 50)) {
+                            modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                            moduleY += normal.FONT_HEIGHT + 2;
+                        }
                         if(RenderUtil.isHovered(mouseX, mouseY, modeX, moduleY - 2, normal.getStringWidth(string), 10))
                             stringBoxValue.setValue(string);
                         modeX += normal.getStringWidth(string);
                         if(!stringBoxValue.getValues()[stringBoxValue.getValues().length - 1].equals(string)) {
                             normal.drawString(", ", modeX, moduleY, new Color(200, 200, 200).getRGB());
                             modeX += normal.getStringWidth(", ");
-                            if(modeX >= posX + width) {
-                                modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
-                                moduleY += normal.FONT_HEIGHT + 2;
-                            }
                         }
                     }
                     moduleY += normal.FONT_HEIGHT + 2;

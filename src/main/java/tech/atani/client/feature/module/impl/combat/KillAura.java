@@ -22,6 +22,7 @@ import tech.atani.client.listener.event.minecraft.player.rotation.RayTraceRangeE
 import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
+import tech.atani.client.utility.math.random.RandomUtil;
 import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.rotation.RotationUtil;
@@ -126,8 +127,12 @@ public class KillAura extends Module {
 
     @Listen
     public void onPostTickEvent(PostTickEvent postTickEvent) {
+<<<<<<< Updated upstream
 
         if(mc.thePlayer == null || mc.theWorld == null)
+=======
+        if (mc.thePlayer.ticksExisted % 5 != 0) {
+>>>>>>> Stashed changes
             return;
 
         List<EntityLivingBase> targets = FightUtil.getMultipleTargets(findRange.getValue(), players.getValue(), animals.getValue(), walls.getValue(), monsters.getValue(), invisible.getValue());
@@ -224,20 +229,18 @@ public class KillAura extends Module {
                 // We need to calculate cps delay after checking if the timer has reached, since the delay would be first set to 0, therefore we hit earlier
                 switch (this.waitMode.getValue()) {
                     case "CPS":
-                        final double cps = this.cps.getValue() > 10 ? this.cps.getValue() + 5 : this.cps.getValue();
+                        final double cps = RandomUtil.nextSecureDouble(10, 15);
                         long calcCPS = (long) (1000 / cps);
-                        if(this.randomizeCps.getValue()) {
-                            try {
-                                calcCPS += SecureRandom.getInstanceStrong().nextGaussian() * 50;
-                            } catch (NoSuchAlgorithmException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
+
                         cpsDelay = calcCPS;
                         break;
                 }
                 MovingObjectPosition objectPosition = Methods.mc.objectMouseOver;
-                if (objectPosition != null && objectPosition.entityHit != null && objectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+                if (
+                        objectPosition != null && objectPosition.entityHit != null &&
+                        objectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY &&
+                        mc.thePlayer.getDistanceToEntity(objectPosition.entityHit) <= correctedRange
+                ) {
                     Methods.mc.thePlayer.swingItem();
                     Methods.mc.playerController.attackEntity(Methods.mc.thePlayer, objectPosition.entityHit);
                 }

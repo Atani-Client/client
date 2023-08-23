@@ -116,6 +116,10 @@ public class ClickGui extends Module {
                 mc.displayGuiScreen(clickGuiScreenFatality);
                 break;
             }
+            default: {
+                this.mode.setValue("Simple");
+                break;
+            }
         }
         this.setEnabled(false);
     }

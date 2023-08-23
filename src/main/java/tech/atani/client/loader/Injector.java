@@ -9,7 +9,7 @@ public final class Injector
         super.checkGLError(message);
         switch (message) {
             case "Post startup":
-                new Modification().start();
+                Modification.INSTANCE.start();
                 break;
         }
     }

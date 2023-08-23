@@ -23,10 +23,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Modification implements ClientInformationAccess {
+public enum Modification implements ClientInformationAccess {
+    INSTANCE;
 
     private boolean beta = true;
     private String username = "TempUser";
+    private boolean loaded = false;
 
     public void start() {
         String authors = "";
@@ -85,10 +87,15 @@ public class Modification implements ClientInformationAccess {
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(this::end));
+
+        loaded = true;
     }
 
     public void end() {
         FileStorage.getInstance().save();
     }
 
+    public boolean isLoaded() {
+        return loaded;
+    }
 }

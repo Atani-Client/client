@@ -2,6 +2,7 @@ package tech.atani.client.feature.font.storage;
 
 import de.florianmichael.rclasses.storage.Storage;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 import tech.atani.client.feature.font.renderer.CustomFontRenderer;
 import tech.atani.client.feature.font.FontEntry;
@@ -74,7 +75,7 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Android 101", 100, true));
     }
 
-    public CustomFontRenderer findFont(String name, float size) {
+    public FontRenderer findFont(String name, float size) {
         return this.getList().stream().filter(fontEntry -> fontEntry.getName().equalsIgnoreCase(name) && fontEntry.getSize() == size).findFirst().orElse(null).getFontRenderer();
     }
 

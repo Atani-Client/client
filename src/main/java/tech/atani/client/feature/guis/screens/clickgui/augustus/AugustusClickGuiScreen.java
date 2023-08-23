@@ -245,7 +245,7 @@ public class AugustusClickGuiScreen extends GuiScreen {
             categoryX += normal.getStringWidth(category.getName()) + 10;
         }
         if(selectedCategory != null) {
-            float moduleY = posY + 25;
+            float moduleY = posY + 25 + moduleScroll;
             for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
                 if (RenderUtil.isHovered(mouseX, mouseY, posX + 10, moduleY - 4, normal.getStringWidth(module.getName()) - 0.5f, normal.FONT_HEIGHT + 4)) {
                     switch (mouseButton) {
@@ -263,7 +263,7 @@ public class AugustusClickGuiScreen extends GuiScreen {
         FontRenderer small = FontStorage.getInstance().findFont("Consolas", 17);
         FontRenderer esp = FontStorage.getInstance().findFont("ESP", 21);
         if(selectedModule != null) {
-            float moduleY = posY + 50 + 10;
+            float moduleY = posY + 50 + 10 + valueScroll;
             esp.drawString(selectedModule.getName(), posX + 120, moduleY, -1);
             moduleY += esp.FONT_HEIGHT + 3;
             for(Value value : ValueStorage.getInstance().getValues(selectedModule)) {

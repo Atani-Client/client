@@ -497,7 +497,7 @@ public class Speed extends Module {
                                     mc.thePlayer.jump();
                                     mc.timer.timerSpeed = 0.8f;
                                 } else {
-                                    mc.timer.timerSpeed = 1.1f;
+                                    mc.timer.timerSpeed = 1.12f;
                                 }
                             }
                             break;

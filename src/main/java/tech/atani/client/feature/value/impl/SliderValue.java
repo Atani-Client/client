@@ -18,8 +18,22 @@ public class SliderValue<T extends Number> extends Value<T> {
         this.decimalPlaces = decimalPlaces;
     }
 
+    public SliderValue(String label, Object owner, T value, T minimum, T maximum, int decimalPlaces) {
+        super(label, "No description provided.", owner, value);
+        this.minimum = minimum;
+        this.maximum = maximum;
+        this.decimalPlaces = decimalPlaces;
+    }
+
     public SliderValue(String label, String description, Object owner, T value, T minimum, T maximum, int decimalPlaces, ValueChangeListener[] valueChangeListeners, Supplier<Boolean>[] suppliers) {
         super(label, description, owner, value, valueChangeListeners, suppliers);
+        this.minimum = minimum;
+        this.maximum = maximum;
+        this.decimalPlaces = decimalPlaces;
+    }
+
+    public SliderValue(String label, Object owner, T value, T minimum, T maximum, int decimalPlaces, ValueChangeListener[] valueChangeListeners, Supplier<Boolean>[] suppliers) {
+        super(label, "No description provided.", owner, value, valueChangeListeners, suppliers);
         this.minimum = minimum;
         this.maximum = maximum;
         this.decimalPlaces = decimalPlaces;
@@ -32,8 +46,22 @@ public class SliderValue<T extends Number> extends Value<T> {
         this.decimalPlaces = decimalPlaces;
     }
 
+    public SliderValue(String label, Object owner, T value, T minimum, T maximum, int decimalPlaces, ValueChangeListener[] valueChangeListeners) {
+        super(label, "No description provided.", owner, value, valueChangeListeners, null);
+        this.minimum = minimum;
+        this.maximum = maximum;
+        this.decimalPlaces = decimalPlaces;
+    }
+
     public SliderValue(String label, String description, Object owner, T value, T minimum, T maximum, int decimalPlaces, Supplier<Boolean>[] suppliers) {
         super(label, description, owner, value, null, suppliers);
+        this.minimum = minimum;
+        this.maximum = maximum;
+        this.decimalPlaces = decimalPlaces;
+    }
+
+    public SliderValue(String label, Object owner, T value, T minimum, T maximum, int decimalPlaces, Supplier<Boolean>[] suppliers) {
+        super(label, "No description provided.", owner, value, null, suppliers);
         this.minimum = minimum;
         this.maximum = maximum;
         this.decimalPlaces = decimalPlaces;

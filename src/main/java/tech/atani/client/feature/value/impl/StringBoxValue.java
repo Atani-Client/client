@@ -28,6 +28,12 @@ public class StringBoxValue extends Value<String> {
         this.values = values;
     }
 
+    public StringBoxValue(String name, Object owner, String values[]) {
+        super(name, "No description provided.", owner, values[0]);
+        this.values = values;
+    }
+
+
     public boolean is(String string) {
         return this.getValue().equalsIgnoreCase(string);
     }

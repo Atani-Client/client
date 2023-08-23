@@ -1,5 +1,6 @@
 package tech.atani.client.feature.guis.screens.clickgui.fatality;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -14,6 +15,7 @@ import tech.atani.client.feature.module.impl.hud.ClickGui;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.feature.value.storage.ValueStorage;
@@ -35,7 +37,7 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
     private float posX = -1337, posY = -1337;
     private Category selectedCategory = null;
     private Module selectedModule, bindingModule;
-    private ArrayList<StringBoxValue> expanded = new ArrayList<>();
+    private ArrayList<Value> expanded = new ArrayList<>();
     private float modScroll, valScroll;
     DecelerateAnimation openingAnimation = new DecelerateAnimation(600, 1, Direction.BACKWARDS);
     ClickGui clickGui;
@@ -151,6 +153,18 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
                     if(expanded.contains(value)) {
                         for(String string : stringBoxValue.getValues()) {
                             smallFont.drawCenteredString(string, valueX2 - 32.5f, valueY, -1);
+                            valueY += 10;
+                        }
+                    }
+                    valueY -= 10;
+                } else if(value instanceof MultiStringBoxValue) {
+                    MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
+                    RenderUtil.drawBorderedRect(valueX2 - 65, valueY - 2, valueX2, valueY - 2 + 10 + (expanded.contains(value) ? multiStringBoxValue.getValues().length * 10 : 0), 0.5f, new Color(30, 26, 68).getRGB(), new Color(170, 170, 170).getRGB(), true);
+                    smallFont.drawCenteredString(((MultiStringBoxValue)value).getValue().size() - 1 + " Enabled", valueX2 - 32.5f, valueY, -1);
+                    valueY += 10;
+                    if(expanded.contains(value)) {
+                        for(String string : multiStringBoxValue.getValues()) {
+                            smallFont.drawCenteredString((multiStringBoxValue.get(string) ? ChatFormatting.BOLD : "") + string, valueX2 - 32.5f, valueY, -1);
                             valueY += 10;
                         }
                     }
@@ -275,6 +289,29 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
                                     }
                                     valueY += 10;
                                 }
+                            }
+                            valueY -= 10;
+                        }
+                    } else if(value instanceof MultiStringBoxValue) {
+                        MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
+                        if(RenderUtil.isHovered(mouseX, mouseY, valueX2 - 65, valueY - 2, 65, 10)) {
+                            if(expanded.contains(value))
+                                expanded.remove(value);
+                            else
+                                expanded.add(multiStringBoxValue);
+                        }
+                        if(expanded.contains(value)) {
+                            valueY += 10;
+                            if(expanded.contains(value)) {
+                                String toToggle = null;
+                                for(String string : multiStringBoxValue.getValues()) {
+                                    if(RenderUtil.isHovered(mouseX, mouseY, valueX2 - 65, valueY - 2, 65, 10)) {
+                                        toToggle = string;
+                                    }
+                                    valueY += 10;
+                                }
+                                if(toToggle != null)
+                                    multiStringBoxValue.toggle(toToggle);
                             }
                             valueY -= 10;
                         }

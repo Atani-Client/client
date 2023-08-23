@@ -12,6 +12,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.impl.hud.ClickGui;
 import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.processor.impl.SessionProcessor;
 import tech.atani.client.utility.render.animation.Direction;
 import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
@@ -36,7 +37,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
     float draggingX = -1337, draggingY = -1337;
     float x = -1337, y = -1337;
     Category selectedCategory;
-    ArrayList<StringBoxValue> expanded = new ArrayList<>();
+    ArrayList<Value> expanded = new ArrayList<>();
     FontRenderer fontRendererSmall = FontStorage.getInstance().findFont("Arial",  18);
     FontRenderer fontRendererSmaller = FontStorage.getInstance().findFont("Arial",  17);
     Color textColor = new Color(15, 15, 15);
@@ -199,6 +200,14 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
                                 valY += (fontRendererSmall.FONT_HEIGHT + 2);
                             }
                         }
+                    } else if(value instanceof MultiStringBoxValue) {
+                        valY += (fontRendererSmall.FONT_HEIGHT + 2);
+                        if(this.expanded.contains(value)) {
+                            MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
+                            for(String s : multiStringBoxValue.getValues()) {
+                                valY += (fontRendererSmall.FONT_HEIGHT + 2);
+                            }
+                        }
                     }
                 }
                 // Rect
@@ -247,6 +256,16 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
                             StringBoxValue stringBoxValue = (StringBoxValue) value;
                             for(String s : stringBoxValue.getValues()) {
                                 fontRendererSmaller.drawString(" - " + s, modX + 10, valY2, textColor.getRGB());
+                                valY2 += (fontRendererSmall.FONT_HEIGHT + 2);
+                            }
+                        }
+                    } else if(value instanceof MultiStringBoxValue) {
+                        MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
+                        fontRendererSmaller.drawString(value.getName() + ": " + (multiStringBoxValue.getValue().size() - 1) + " Enabled", modX + 10, valY2, textColor.getRGB());
+                        valY2 += fontRendererSmall.FONT_HEIGHT + 2;
+                        if(this.expanded.contains(value)) {
+                            for(String s : multiStringBoxValue.getValues()) {
+                                fontRendererSmaller.drawString(" - " + (multiStringBoxValue.get(s) ? ChatFormatting.BOLD : "") + s, modX + 10, valY2, textColor.getRGB());
                                 valY2 += (fontRendererSmall.FONT_HEIGHT + 2);
                             }
                         }
@@ -343,6 +362,14 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
                                 valY += (fontRendererSmall.FONT_HEIGHT + 2);
                             }
                         }
+                    } else if(value instanceof MultiStringBoxValue) {
+                        valY += (fontRendererSmall.FONT_HEIGHT + 2);
+                        if(this.expanded.contains(value)) {
+                            MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
+                            for(String s : multiStringBoxValue.getValues()) {
+                                valY += (fontRendererSmall.FONT_HEIGHT + 2);
+                            }
+                        }
                     }
                 }
                 // Rect
@@ -379,6 +406,27 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
                                 }
                                 valY2 += (fontRendererSmall.FONT_HEIGHT + 2);
                             }
+                        }
+                    } else if(value instanceof MultiStringBoxValue) {
+                        if(RenderUtil.isHovered(mouseX, mouseY, modX, valY2 - 2.5f, modWidth, 11)) {
+                            if(this.expanded.contains(value))
+                                this.expanded.remove(value);
+                            else {
+                                this.expanded.add((MultiStringBoxValue) value);
+                            }
+                        }
+                        valY2 += fontRendererSmall.FONT_HEIGHT + 2;
+                        if(this.expanded.contains(value)) {
+                            MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
+                            String toToggle = null;
+                            for(String s : multiStringBoxValue.getValues()) {
+                                if(RenderUtil.isHovered(mouseX, mouseY, modX, valY2 - 2.5f, modWidth, 11)) {
+                                    toToggle = s;
+                                }
+                                valY2 += (fontRendererSmall.FONT_HEIGHT + 2);
+                            }
+                            if(toToggle != null)
+                                multiStringBoxValue.toggle(toToggle);
                         }
                     }
                 }

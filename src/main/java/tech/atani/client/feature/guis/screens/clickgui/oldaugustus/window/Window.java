@@ -1,10 +1,9 @@
 package tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window;
 
+import com.sun.org.apache.xpath.internal.operations.Mult;
+import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.*;
 import tech.atani.client.feature.module.Module;
-import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.CheckboxComponent;
-import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.ModeComponent;
-import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.SliderComponent;
-import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.ValueComponent;
+import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
@@ -41,8 +40,12 @@ public class Window {
                 SliderComponent component = new SliderComponent((SliderValue) value, posX, yPos, 14);
                 this.components.add(component);
                 yPos += component.getFinalHeight();
-            }else if(value instanceof StringBoxValue) {
+            } else if(value instanceof StringBoxValue) {
                 ModeComponent component = new ModeComponent((StringBoxValue) value, posX, yPos, 14);
+                this.components.add(component);
+                yPos += component.getFinalHeight();
+            } else if(value instanceof MultiStringBoxValue) {
+                MultiComponent component = new MultiComponent((MultiStringBoxValue) value, posX, yPos, 14);
                 this.components.add(component);
                 yPos += component.getFinalHeight();
             }
@@ -97,8 +100,12 @@ public class Window {
                     SliderComponent component = new SliderComponent((SliderValue) value, posX, yPos1, 14);
                     this.components.add(component);
                     yPos1 += component.getFinalHeight();
-                }else if(value instanceof StringBoxValue) {
+                } else if(value instanceof StringBoxValue) {
                     ModeComponent component = new ModeComponent((StringBoxValue) value, posX, yPos1, 14);
+                    this.components.add(component);
+                    yPos1 += component.getFinalHeight();
+                } else if(value instanceof MultiStringBoxValue) {
+                    MultiComponent component = new MultiComponent((MultiStringBoxValue) value, posX, yPos1, 14);
                     this.components.add(component);
                     yPos1 += component.getFinalHeight();
                 }

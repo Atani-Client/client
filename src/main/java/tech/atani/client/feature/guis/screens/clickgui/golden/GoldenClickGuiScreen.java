@@ -1,5 +1,6 @@
 package tech.atani.client.feature.guis.screens.clickgui.golden;
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -11,6 +12,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.impl.hud.ClickGui;
 import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.utility.render.animation.Direction;
 import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
 import tech.atani.client.utility.interfaces.ColorPalette;
@@ -136,8 +138,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
             if (value instanceof CheckBoxValue) {
                 CheckBoxValue checkBoxValue = (CheckBoxValue) value;
                 fontRenderer.drawStringWithShadow(value.getName() + ": " + (checkBoxValue.isEnabled() ? "X" : ""), halfX, valueY, -1);
-            }
-            if (value instanceof SliderValue) {
+            } else if (value instanceof SliderValue) {
                 SliderValue sliderValue = (SliderValue) value;
                 fontRenderer.drawStringWithShadow(value.getName() + ": " + sliderValue.getValue().floatValue(), halfX, valueY, -1);
                 valueY += fontRenderer.FONT_HEIGHT + 2;
@@ -158,14 +159,24 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
                     double newValue = MathUtil.round((mouseX - sliderX) * (max1 - min1) / (sliderWidth - 1.0f) + min1, sliderValue.getDecimalPlaces());
                     sliderValue.setValue(newValue);
                 }
-            }
-            if (value instanceof StringBoxValue) {
+            } else if (value instanceof StringBoxValue) {
                 StringBoxValue stringBoxValue = (StringBoxValue) value;
                 fontRenderer.drawStringWithShadow(value.getName() + ": " + stringBoxValue.getValue(), halfX, valueY, -1);
                 if (this.expandedValues.contains(value)) {
                     valueY += fontRenderer.FONT_HEIGHT + 2;
                     for (String string : stringBoxValue.getValues()) {
                         fontRenderer.drawStringWithShadow(string, halfX + fontRenderer.getStringWidth(value.getName() + ": "), valueY, -1);
+                        valueY += fontRenderer.FONT_HEIGHT + 2;
+                    }
+                    valueY -= fontRenderer.FONT_HEIGHT + 2;
+                }
+            } else if (value instanceof MultiStringBoxValue) {
+                MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
+                fontRenderer.drawStringWithShadow(value.getName() + ": " + (multiStringBoxValue.getValue().size() - 1) + " Enabled", halfX, valueY, -1);
+                if (this.expandedValues.contains(value)) {
+                    valueY += fontRenderer.FONT_HEIGHT + 2;
+                    for (String string : multiStringBoxValue.getValues()) {
+                        fontRenderer.drawStringWithShadow((multiStringBoxValue.get(string) ? ChatFormatting.BOLD.toString() : "") + string, halfX + fontRenderer.getStringWidth(value.getName() + ": "), valueY, -1);
                         valueY += fontRenderer.FONT_HEIGHT + 2;
                     }
                     valueY -= fontRenderer.FONT_HEIGHT + 2;
@@ -240,8 +251,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
                 if (RenderUtil.isHovered(mouseX, mouseY, halfX, valueY, endX - halfX, fontRenderer.FONT_HEIGHT + 2)) {
                     checkBoxValue.setValue(!checkBoxValue.getValue());
                 }
-            }
-            if (value instanceof SliderValue) {
+            } else if (value instanceof SliderValue) {
                 SliderValue sliderValue = (SliderValue) value;
                 fontRenderer.drawStringWithShadow(value.getName() + ": " + sliderValue.getValue().floatValue(), halfX, valueY, -1);
                 valueY += fontRenderer.FONT_HEIGHT + 2;
@@ -252,8 +262,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
                         this.expandedValues.add(value);
                     }
                 }
-            }
-            if (value instanceof StringBoxValue) {
+            } else if (value instanceof StringBoxValue) {
                 StringBoxValue stringBoxValue = (StringBoxValue) value;
                 if (RenderUtil.isHovered(mouseX, mouseY, halfX, valueY, endX - halfX, fontRenderer.FONT_HEIGHT + 2)) {
                     if (this.expandedValues.contains(value)) {
@@ -270,6 +279,28 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
                         }
                         valueY += fontRenderer.FONT_HEIGHT + 2;
                     }
+                    valueY -= fontRenderer.FONT_HEIGHT + 2;
+                }
+            } else if (value instanceof MultiStringBoxValue) {
+                MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
+                if (RenderUtil.isHovered(mouseX, mouseY, halfX, valueY, endX - halfX, fontRenderer.FONT_HEIGHT + 2)) {
+                    if (this.expandedValues.contains(value)) {
+                        this.expandedValues.remove(value);
+                    } else {
+                        this.expandedValues.add(value);
+                    }
+                }
+                if (this.expandedValues.contains(value)) {
+                    valueY += fontRenderer.FONT_HEIGHT + 2;
+                    String toToggle = null;
+                    for (String string : multiStringBoxValue.getValues()) {
+                        if (RenderUtil.isHovered(mouseX, mouseY, halfX, valueY, endX - halfX, fontRenderer.FONT_HEIGHT + 2)) {
+                            toToggle = string;
+                        }
+                        valueY += fontRenderer.FONT_HEIGHT + 2;
+                    }
+                    if(toToggle != null)
+                        multiStringBoxValue.toggle(toToggle);
                     valueY -= fontRenderer.FONT_HEIGHT + 2;
                 }
             }

@@ -3,6 +3,7 @@ package tech.atani.client.feature.guis.screens.clickgui.simple.component.impl;
 import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.guis.screens.clickgui.simple.component.Component;
+import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
@@ -68,6 +69,10 @@ public class ModuleComponent extends tech.atani.client.feature.guis.screens.clic
                     valueY += component.getFinalHeight();
                 } else if(value instanceof StringBoxValue) {
                     StringBoxComponent component = new StringBoxComponent(value, this.getPosX(), valueY, this.getBaseWidth(), this.getBaseHeight());
+                    this.subComponents.add(component);
+                    valueY += component.getFinalHeight();
+                } else if(value instanceof MultiStringBoxValue) {
+                    MultiStringBoxComponent component = new MultiStringBoxComponent(value, this.getPosX(), valueY, this.getBaseWidth(), this.getBaseHeight());
                     this.subComponents.add(component);
                     valueY += component.getFinalHeight();
                 } else if(value instanceof SliderValue) {

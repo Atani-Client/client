@@ -15,6 +15,7 @@ import tech.atani.client.feature.module.impl.hud.ClickGui;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.feature.value.storage.ValueStorage;
@@ -190,6 +191,23 @@ public class AugustusClickGuiScreen extends GuiScreen {
                         }
                     }
                     moduleY += normal.FONT_HEIGHT + 2;
+                } else if (value instanceof MultiStringBoxValue) {
+                    MultiStringBoxValue multiStringBoxValue = ((MultiStringBoxValue) value);
+                    normal.drawString(value.getName() + ": ", posX + 120, moduleY, new Color(200, 200, 200).getRGB());
+                    float modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                    for (String string : multiStringBoxValue.getValues()) {
+                        if (modeX >= (posX + width - 50)) {
+                            modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                            moduleY += normal.FONT_HEIGHT + 2;
+                        }
+                        normal.drawString(string, modeX, moduleY, multiStringBoxValue.get(string) ? new Color(clickGui.red.getValue(), clickGui.green.getValue(), clickGui.blue.getValue()).getRGB() : new Color(200, 200, 200).getRGB());
+                        modeX += normal.getStringWidth(string);
+                        if (!multiStringBoxValue.getValues()[multiStringBoxValue.getValues().length - 1].equals(string)) {
+                            normal.drawString(", ", modeX, moduleY, new Color(200, 200, 200).getRGB());
+                            modeX += normal.getStringWidth(", ");
+                        }
+                    }
+                    moduleY += normal.FONT_HEIGHT + 2;
                 }
             }
         }
@@ -292,6 +310,26 @@ public class AugustusClickGuiScreen extends GuiScreen {
                             modeX += normal.getStringWidth(", ");
                         }
                     }
+                    moduleY += normal.FONT_HEIGHT + 2;
+                } else if(value instanceof MultiStringBoxValue) {
+                    MultiStringBoxValue multiStringBoxValue = ((MultiStringBoxValue)value);
+                    float modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                    String toToggle = null;
+                    for(String string : multiStringBoxValue.getValues()) {
+                        if(modeX >= (posX + width - 50)) {
+                            modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                            moduleY += normal.FONT_HEIGHT + 2;
+                        }
+                        if(RenderUtil.isHovered(mouseX, mouseY, modeX, moduleY - 2, normal.getStringWidth(string), 10))
+                            toToggle = string;
+                        modeX += normal.getStringWidth(string);
+                        if(!multiStringBoxValue.getValues()[multiStringBoxValue.getValues().length - 1].equals(string)) {
+                            normal.drawString(", ", modeX, moduleY, new Color(200, 200, 200).getRGB());
+                            modeX += normal.getStringWidth(", ");
+                        }
+                    }
+                    if(toToggle != null)
+                        multiStringBoxValue.toggle(toToggle);
                     moduleY += normal.FONT_HEIGHT + 2;
                 }
             }

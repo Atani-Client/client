@@ -9,7 +9,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "Timer", description = "Increases game speed", category = Category.MISCELLANEOUS)
 public class Timer extends Module {
-    private final SliderValue<Float> timerSpeed = new SliderValue<>("Time Speed", "How fast should the game speed be?", this, 1f, 0.1f, 5f, 1);
+    private final SliderValue<Float> timerSpeed = new SliderValue<Float>("Time Speed", "How fast should the game speed be?", this, 1f, 0.1f, 5f, 1);
 
     @Listen
     public void onUpdate(UpdateEvent updateEvent) {

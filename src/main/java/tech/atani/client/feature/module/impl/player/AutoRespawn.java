@@ -9,7 +9,6 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "AutoRespawn", description = "Automatically respawn after dying.", category = Category.PLAYER)
 public class AutoRespawn extends Module {
-
     private final CheckBoxValue instant = new CheckBoxValue("Instant", "Do you want to respawn faster?", this, true);
 
     @Listen

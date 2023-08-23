@@ -14,8 +14,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "Eagle", description = "Makes you shift on block edges.", category = Category.MOVEMENT)
 public class Eagle extends Module {
-
-    private final SliderValue<Integer> delay = new SliderValue<>("Sneak Delay", "How big will the delay be to sneak?", this, 30, 0, 300, 0);
+    private final SliderValue<Integer> delay = new SliderValue<Integer>("Sneak Delay", "How big will the delay be to sneak?", this, 30, 0, 300, 0);
 
     private final TimeHelper timer = new TimeHelper();
 

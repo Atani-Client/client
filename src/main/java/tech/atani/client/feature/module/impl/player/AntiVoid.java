@@ -13,7 +13,6 @@ import tech.atani.client.utility.world.BlockUtil;
 
 @ModuleData(name = "AntiVoid", description = "Tries to make you not fall in the void.", category = Category.PLAYER)
 public class AntiVoid extends Module {
-
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, (new String[] {"Flag", "Position", "Ground"}));
     private final CheckBoxValue voidCheck = new CheckBoxValue("Void Check", "Should the module check for void?", this, true);
 

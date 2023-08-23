@@ -10,7 +10,6 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "NoWeb", description = "Prevents slowdown in Webs", category = Category.MOVEMENT)
 public class NoWeb extends Module {
-
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Intave", "Fast Fall", "AAC 4", "AAC 5"});
 
     @Override

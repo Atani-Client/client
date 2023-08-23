@@ -13,8 +13,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "Parkour", description = "Makes you jump on the edge of blocks.", category = Category.MOVEMENT)
 public class Parkour extends Module {
-
-    private final SliderValue<Integer> delay = new SliderValue<>("Jump Delay", "How big will the delay be to jump?", this, 30, 0, 300, 0);
+    private final SliderValue<Integer> delay = new SliderValue<Integer>("Jump Delay", "How big will the delay be to jump?", this, 30, 0, 300, 0);
 
     private final TimeHelper timer = new TimeHelper();
 

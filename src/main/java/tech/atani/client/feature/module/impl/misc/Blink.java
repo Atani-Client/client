@@ -16,13 +16,13 @@ import java.util.ArrayDeque;
 
 @ModuleData(name = "Blink", description = "Blocks your packets for a time being", category = Category.MISCELLANEOUS, alwaysRegistered = true)
 public class Blink extends Module {
+    private final CheckBoxValue
+            incoming = new CheckBoxValue("Incoming", "Queue incoming packets?", this, false),
+            pulse = new CheckBoxValue("Pulse", "Disable and enable the module every x amount of ms?", this, false);
+    private final SliderValue<Long> pulseDelay = new SliderValue<Long>("Pulse Delay", "What'll be the delay between pulsing?", this, 150L, 50L, 5000L, 1);
 
     private final ArrayDeque<Packet<?>> outPacketDeque = new ArrayDeque<>();
     private final TimeHelper fakeLagTimer = new TimeHelper();
-
-    private final CheckBoxValue incoming = new CheckBoxValue("Incoming", "Queue incoming packets?", this, false);
-    private final CheckBoxValue pulse = new CheckBoxValue("Pulse", "Disable and enable the module every x amount of ms?", this, false);
-    private final SliderValue<Long> pulseDelay = new SliderValue<>("Pulse Delay", "What'll be the delay between pulsing?", this, 150L, 50L, 5000L, 1);
 
     boolean active = false;
 

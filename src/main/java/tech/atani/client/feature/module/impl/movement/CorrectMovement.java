@@ -10,7 +10,6 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "CorrectMovement", description = "Corrects your movement according to your yaw", category = Category.MOVEMENT, alwaysRegistered = true)
 public class CorrectMovement extends Module {
-
     public CheckBoxValue moveFixSilent = new CheckBoxValue("Silent", "Silently fix your movement?", this, true);
 
     @Listen

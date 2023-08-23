@@ -22,13 +22,15 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "Test"});
-    private final StringBoxValue vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")});
-    private final StringBoxValue grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")});
-    private final StringBoxValue verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump"}, new Supplier[]{() -> mode.is("Verus")});
-    private final SliderValue<Integer> time = new SliderValue<>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
-    private final SliderValue<Float> timer = new SliderValue<>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
-    private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> ((mode.is("Vulcan") && vulcanMode.is("Normal")) || mode.is("Vanilla"))});
+    private final StringBoxValue
+            mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus"}),
+            vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")}),
+            grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")}),
+            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump"}, new Supplier[]{() -> mode.is("Verus")});
+    private final SliderValue<Integer> time = new SliderValue<Integer>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
+    private final SliderValue<Float>
+            timer = new SliderValue<Float>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")}),
+            speed = new SliderValue<Float>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> ((mode.is("Vulcan") && vulcanMode.is("Normal")) || mode.is("Vanilla"))});
 
     // Old NCP
     private double moveSpeed;
@@ -153,18 +155,6 @@ public class Flight extends Module {
                     mc.thePlayer.motionY = 0;
 
                 MoveUtil.strafe(moveSpeed);
-                break;
-            case "Test":
-                if(!isMoving())
-                    return;
-
-                mc.gameSettings.keyBindJump.pressed = mc.thePlayer.onGround;
-
-                if(mc.thePlayer.onGround) {
-                    mc.timer.timerSpeed = 0.8F;
-                } else {
-                    mc.timer.timerSpeed = 1.1F;
-                }
                 break;
             case "Old NCP":
                 if (mc.thePlayer.onGround && !jumped) {

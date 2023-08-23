@@ -18,7 +18,6 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 //Hooked in EntityLivingBase class & EntityPlayerSP class
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
 public class NoSlowDown extends Module {
-
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this,  new String[]{"Vanilla", "Spoof", "Old NCP", "WatchDog", "Old Intave", "Placement"});
 
     // Spoof

@@ -12,9 +12,9 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "Sprint", description = "Makes you sprint automatically.", category = Category.MOVEMENT)
 public class Sprint extends Module {
-
-    public CheckBoxValue legit = new CheckBoxValue("Legit", "Sprint legit?", this, false);
-    public CheckBoxValue omni = new CheckBoxValue("All Directions", "Sprint in all directions?", this, false);
+    public CheckBoxValue
+            legit = new CheckBoxValue("Legit", "Sprint legit?", this, false),
+            omni = new CheckBoxValue("All Directions", "Sprint in all directions?", this, false);
 
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
@@ -37,12 +37,8 @@ public class Sprint extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-        KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), false);
-    }
+    public void onDisable() { KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), false); }
 }

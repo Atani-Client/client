@@ -22,12 +22,12 @@ import java.util.List;
 
 @ModuleData(category = Category.PLAYER, description = "Automatically equips best armor", name = "AutoArmor")
 public class AutoArmor extends Module {
-
     private final CheckBoxValue openInventory = new CheckBoxValue("Open Inventory", "Operate only with open inventory?", this, true);
-    private final SliderValue<Long> minStartDelay = new SliderValue<>("Minimum Start Delay", "What will be the minimum delay for starting to operate?", this, 250L, 0L, 1000L, 0);
-    private final SliderValue<Long> maxStartDelay = new SliderValue<>("Maximum Start Delay", "What will be the maximum delay for starting to operate?", this, 300L, 0L, 1000L, 0);
-    private final SliderValue<Long> minThrowDelay = new SliderValue<>("Minimum Throw Delay", "What will be the minimum delay between throwing each item?", this, 250L, 0L, 1000L, 0);
-    private final SliderValue<Long> maxThrowDelay = new SliderValue<>("Maximum Throw Delay", "What will be the maximum delay between throwing each item?", this, 300L, 0L, 1000L, 0);
+    private final SliderValue<Long>
+            minStartDelay = new SliderValue<Long>("Minimum Start Delay", "What will be the minimum delay for starting to operate?", this, 250L, 0L, 1000L, 0),
+            maxStartDelay = new SliderValue<Long>("Maximum Start Delay", "What will be the maximum delay for starting to operate?", this, 300L, 0L, 1000L, 0),
+            minThrowDelay = new SliderValue<Long>("Minimum Throw Delay", "What will be the minimum delay between throwing each item?", this, 250L, 0L, 1000L, 0),
+            maxThrowDelay = new SliderValue<Long>("Maximum Throw Delay", "What will be the maximum delay between throwing each item?", this, 300L, 0L, 1000L, 0);
 
     private final List<ItemArmor> helmet = Arrays.asList(Items.leather_helmet, Items.golden_helmet, Items.chainmail_helmet, Items.iron_helmet, Items.diamond_helmet);
     private final List<ItemArmor> chest = Arrays.asList(Items.leather_chestplate, Items.golden_chestplate, Items.chainmail_chestplate, Items.iron_chestplate, Items.diamond_chestplate);

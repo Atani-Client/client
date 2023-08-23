@@ -23,61 +23,6 @@ public class FightUtil implements Methods {
         return Math.random() <= chance;
     }
 
-    public static List<EntityLivingBase> getMultipleTargets(double minRange, double maxRange, boolean players, boolean animals, boolean walls, boolean mobs, boolean invis) {
-        List<EntityLivingBase> list = new ArrayList<>();
-        for (Entity entity : mc.theWorld.loadedEntityList) {
-            if (!(entity instanceof EntityLivingBase))
-                continue;
-            EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
-            if (entityLivingBase == mc.thePlayer ||
-                    getRange(entityLivingBase) > maxRange
-                    || getRange(entityLivingBase) < minRange
-                    || !entityLivingBase.canEntityBeSeen(mc.thePlayer) && !walls
-                    || entityLivingBase.isDead
-                    || entityLivingBase instanceof EntityArmorStand
-                    || entityLivingBase instanceof EntityVillager
-                    || entityLivingBase instanceof EntityAnimal && !animals
-                    || entityLivingBase instanceof EntitySquid && !animals
-                    || entityLivingBase instanceof EntityPlayer && !players
-                    || entityLivingBase instanceof EntityMob && !mobs
-                    || entityLivingBase instanceof EntitySlime && !mobs
-                    || CombatManager.getInstance().isIgnored(entity)
-                    || entityLivingBase.isInvisible() && !invis) continue;
-            if (list.size() > 5)
-                continue;
-            list.add(entityLivingBase);
-        }
-        return list;
-    }
-
-    public static List<EntityLivingBase> getMultipleTargets(double range, int fov, boolean players, boolean animals, boolean walls, boolean mobs, boolean invis) {
-        List<EntityLivingBase> list = new ArrayList<>();
-        for (Entity entity : mc.theWorld.loadedEntityList) {
-            if (!(entity instanceof EntityLivingBase))
-                continue;
-            EntityLivingBase entityLivingBase = (EntityLivingBase) entity;
-            if (entityLivingBase == mc.thePlayer ||
-                    getRange(entityLivingBase) > range
-                    || !entityLivingBase.canEntityBeSeen(mc.thePlayer) && !walls
-                    || entityLivingBase.isDead
-                    || FightUtil.yawDist(entityLivingBase) > fov
-                    || entityLivingBase instanceof EntityArmorStand
-                    || entityLivingBase instanceof EntityVillager
-                    || entityLivingBase instanceof EntityAnimal && !animals
-                    || entityLivingBase instanceof EntitySquid && !animals
-                    || entityLivingBase instanceof EntityPlayer && !players
-                    || entityLivingBase instanceof EntityMob && !mobs
-                    || entityLivingBase instanceof EntitySlime && !mobs
-                    || CombatManager.getInstance().isIgnored(entity)
-                    || entityLivingBase.isInvisible() && !invis) continue;
-            if (list.size() > 5)
-                continue;
-            list.add(entityLivingBase);
-        }
-        return list;
-    }
-
-
     public static List<EntityLivingBase> getMultipleTargets(double range, boolean players, boolean animals, boolean walls, boolean mobs, boolean invis) {
         List<EntityLivingBase> list = new ArrayList<>();
         for (Entity entity : mc.theWorld.loadedEntityList) {

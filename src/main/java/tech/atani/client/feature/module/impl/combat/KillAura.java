@@ -127,7 +127,7 @@ public class KillAura extends Module {
 
     @Listen
     public void onPostTickEvent(PostTickEvent postTickEvent) {
-        if (mc.thePlayer.ticksExisted % 5 != 0)
+        if (mc.thePlayer == null || mc.thePlayer.ticksExisted % 5 != 0)
             return;
 
         List<EntityLivingBase> targets = FightUtil.getMultipleTargets(findRange.getValue(), players.getValue(), animals.getValue(), walls.getValue(), monsters.getValue(), invisible.getValue());

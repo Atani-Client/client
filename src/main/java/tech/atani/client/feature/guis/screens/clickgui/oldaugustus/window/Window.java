@@ -1,6 +1,5 @@
 package tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window;
 
-import com.sun.org.apache.xpath.internal.operations.Mult;
 import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.window.component.impl.*;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.value.impl.MultiStringBoxValue;

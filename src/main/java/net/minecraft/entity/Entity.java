@@ -48,6 +48,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import tech.atani.client.feature.module.impl.player.ScaffoldWalk;
 import tech.atani.client.listener.event.minecraft.player.movement.SafeWalkEvent;
 import tech.atani.client.feature.module.impl.movement.SafeWalk;
 import tech.atani.client.feature.module.impl.render.AntiBlind;
@@ -622,7 +623,7 @@ public abstract class Entity implements ICommandSender
             double d3 = x;
             double d4 = y;
             double d5 = z;
-            boolean flag = (this.onGround && this.isSneaking() && this instanceof EntityPlayer) || ((ModuleStorage.getInstance().getByClass(SafeWalk.class).isEnabled()) && Minecraft.getMinecraft().thePlayer != null && Minecraft.getMinecraft().thePlayer.onGround);
+            boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
 
             final SafeWalkEvent safewalkEvent = new SafeWalkEvent(flag).onFire();
 

@@ -9,6 +9,7 @@ import net.minecraft.util.*;
 import org.lwjgl.input.Keyboard;
 import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.event.minecraft.input.ClickingEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.SafeWalkEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.DirectionSprintCheckEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.SilentMoveEvent;
@@ -42,6 +43,7 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue addStrafe = new CheckBoxValue("Add Strafe", "Strafe a little?", this, false, new Supplier[]{() -> mode.is("Custom")});
     private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.is("Quickly") || mode.is("Custom")});
     private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false, new Supplier[]{() -> mode.is("Custom")});
+    private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false, new Supplier[]{() -> mode.is("Custom")});
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> mode.is("Custom") && sneak.getValue()});
     private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.is("Quickly") || (mode.is("Custom") && sneak.getValue() && sneakMode.is("Edge"))});
 
@@ -124,6 +126,15 @@ public class ScaffoldWalk extends Module {
         } else  if(this.mode.is("Slowly") || (this.mode.is("Custom") && sneak.getValue() && sneakMode.is("Constant"))) {
             getGameSettings().keyBindSneak.pressed = true;
         }
+    }
+
+    @Listen
+    public void onSafeWalkEvent(SafeWalkEvent event) {
+        if(mc.thePlayer == null && mc.theWorld == null)
+            return;
+
+        if(mode.is("Custom") && safeWalk.isEnabled())
+            event.setSafe(true);
     }
 
     @Listen

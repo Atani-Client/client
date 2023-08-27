@@ -73,6 +73,7 @@ public class Speed extends Module {
     // Vulcan
     private int vulcanTicks;
     private double y;
+    private boolean vulcanMoveForwardGround;
 
     // WatchDog
     private int watchDogTicks;
@@ -284,12 +285,14 @@ public class Speed extends Module {
                             }
                             break;
                         case "Strafe":
-                                mc.thePlayer.setSprinting(this.isMoving());
-
                                 if (mc.thePlayer.onGround && this.isMoving()){
                                     mc.thePlayer.jump();
+                                    vulcanMoveForwardGround = mc.thePlayer.moveForward > 0;
+                                    if(mc.thePlayer.moveForward < 0) {
+                                        MoveUtil.strafe(0.34 + MoveUtil.getSpeedBoost(1));
+                                    }
                                 } else {
-                                    if (mc.thePlayer.hurtTime <= 6 && mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing != 0) {
+                                    if (mc.thePlayer.hurtTime <= 6 && (vulcanMoveForwardGround ? mc.thePlayer.moveForward > 0 : mc.thePlayer.moveForward < 0) && mc.thePlayer.moveStrafing != 0) {
                                         MoveUtil.strafe();
                                     }
                                 }

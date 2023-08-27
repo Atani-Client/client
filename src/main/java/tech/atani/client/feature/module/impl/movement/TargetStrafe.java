@@ -17,8 +17,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 @ModuleData(name = "TargetStrafe", description = "Strafe around entities", category = Category.MOVEMENT)
 public class TargetStrafe extends Module {
     private final SliderValue<Float> strafeSize = new SliderValue<Float>("Size", "How far should the player strafe from the target?", this, 2.5F, 1F, 6F, 1);
-    private final CheckBoxValue
-            jumpOnly = new CheckBoxValue("Jump Only", "Should the module only strafe when the jump key is pressed?", this, false),
+    private final CheckBoxValue jumpOnly = new CheckBoxValue("Jump Only", "Should the module only strafe when the jump key is pressed?", this, false),
             controllable = new CheckBoxValue("Controllable", "Should the strafe change direction when left or right key is pressed?", this, true),
             voidCheck = new CheckBoxValue("Void Check", "Should the strafe change direction when void is below?", this, true),
             collideCheck = new CheckBoxValue("Collide Check", "Should the strafe change direction when colliding on a wall?", this, true);

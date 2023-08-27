@@ -27,13 +27,11 @@ import java.util.List;
 
 @ModuleData(category = Category.PLAYER, description = "Automatically takes items in chests", name = "ChestStealer")
 public class Stealer extends Module {
-    private final SliderValue<Long>
-            minStartDelay = new SliderValue<Long>("Minimum Start Delay", "What will be the minimum delay for starting to operate?", this, 250L, 0L, 1000L, 0),
+    private final SliderValue<Long> minStartDelay = new SliderValue<Long>("Minimum Start Delay", "What will be the minimum delay for starting to operate?", this, 250L, 0L, 1000L, 0),
             maxStartDelay = new SliderValue<Long>("Maximum Start Delay", "What will be the maximum delay for starting to operate?", this, 300L, 0L, 1000L, 0),
             minGrabDelay = new SliderValue<Long>("Minimum Grab Delay", "What will be the minimum delay between grabbing each item?", this, 250L, 0L, 1000L, 0),
             maxGrabDelay = new SliderValue<Long>("Maximum Grab Delay", "What will be the maximum delay between grabbing each item?", this, 300L, 0L, 1000L, 0);
-    private final CheckBoxValue
-            intelligent = new CheckBoxValue("Intelligent", "Pick items intelligently?", this, true),
+    private final CheckBoxValue intelligent = new CheckBoxValue("Intelligent", "Pick items intelligently?", this, true),
             stackItems = new CheckBoxValue("Stack items", "Steal items of the same type without reseting the timer?", this, false),
             randomPick = new CheckBoxValue("Random Pick", "Pick items randomly?", this, true),
             autoClose = new CheckBoxValue("Auto Close", "Close automatically?", this, true);

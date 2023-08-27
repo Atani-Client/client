@@ -23,8 +23,7 @@ import java.util.List;
 @ModuleData(category = Category.PLAYER, description = "Automatically equips best armor", name = "AutoArmor")
 public class AutoArmor extends Module {
     private final CheckBoxValue openInventory = new CheckBoxValue("Open Inventory", "Operate only with open inventory?", this, true);
-    private final SliderValue<Long>
-            minStartDelay = new SliderValue<Long>("Minimum Start Delay", "What will be the minimum delay for starting to operate?", this, 250L, 0L, 1000L, 0),
+    private final SliderValue<Long> minStartDelay = new SliderValue<Long>("Minimum Start Delay", "What will be the minimum delay for starting to operate?", this, 250L, 0L, 1000L, 0),
             maxStartDelay = new SliderValue<Long>("Maximum Start Delay", "What will be the maximum delay for starting to operate?", this, 300L, 0L, 1000L, 0),
             minThrowDelay = new SliderValue<Long>("Minimum Throw Delay", "What will be the minimum delay between throwing each item?", this, 250L, 0L, 1000L, 0),
             maxThrowDelay = new SliderValue<Long>("Maximum Throw Delay", "What will be the maximum delay between throwing each item?", this, 300L, 0L, 1000L, 0);

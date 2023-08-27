@@ -23,13 +23,11 @@ import java.util.List;
 @ModuleData(name = "InventoryManager", description = "Cleans and sorts your inventory", category = Category.PLAYER)
 public class InventoryManager extends Module {
     private final CheckBoxValue openInventory = new CheckBoxValue("Open Inventory", "Operate only with open inventory?", this, true);
-    private final SliderValue<Long>
-            minStartDelay = new SliderValue<Long>("Minimum Start Delay", "What will be the minimum delay for starting to operate?", this, 250L, 0L, 1000L, 0),
+    private final SliderValue<Long> minStartDelay = new SliderValue<Long>("Minimum Start Delay", "What will be the minimum delay for starting to operate?", this, 250L, 0L, 1000L, 0),
             maxStartDelay = new SliderValue<Long>("Maximum Start Delay", "What will be the maximum delay for starting to operate?", this, 300L, 0L, 1000L, 0),
             minThrowDelay = new SliderValue<Long>("Minimum Throw Delay", "What will be the minimum delay between throwing each item?", this, 250L, 0L, 1000L, 0),
             maxThrowDelay = new SliderValue<Long>("Maximum Throw Delay", "What will be the maximum delay between throwing each item?", this, 300L, 0L, 1000L, 0);
-    private final CheckBoxValue
-            preferSwords = new CheckBoxValue("Prefer Swords", "Prefer Swords instead of other weapons?", this, true),
+    private final CheckBoxValue preferSwords = new CheckBoxValue("Prefer Swords", "Prefer Swords instead of other weapons?", this, true),
             keepTools = new CheckBoxValue("Keep Tools", "Keep tools such as pickaxes and axes?", this, true);
     private final SliderValue<Integer> weaponSlot = new SliderValue<Integer>("Weapon Slot", "In which slot should the module put weapons?", this, 1, 0, 9, 0);
     private final SliderValue<Integer> bowSlot = new SliderValue<Integer>("Bow Slot", "In which slot should the module put bows?", this, 2, 0, 9, 0);

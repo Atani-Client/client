@@ -56,7 +56,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                 if (!hideRenderModules.getValue() || (module.getCategory() != Category.RENDER && module.getCategory() != Category.HUD)) {
                     modulesToShow.add(module);
                 }
-                if (module.getName().equalsIgnoreCase("ClickGui")) {
+                if (module.getName().equalsIgnoreCase("ClickGui") || module.getName().equalsIgnoreCase("ModuleList") || module.getName().equalsIgnoreCase("WaterMark") || module.getName().equalsIgnoreCase("ClientOverlay")) {
                     modulesToShow.remove(module);
                 }
             }

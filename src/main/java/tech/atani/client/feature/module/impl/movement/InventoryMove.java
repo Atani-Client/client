@@ -17,8 +17,7 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "InventoryMove", description = "Move inside your inventory.", category = Category.MOVEMENT)
 public class InventoryMove extends Module {
-    private final CheckBoxValue
-            openPacket = new CheckBoxValue("No Open Packet", "Should the module send open packets?", this, false),
+    private final CheckBoxValue openPacket = new CheckBoxValue("No Open Packet", "Should the module send open packets?", this, false),
             carry = new CheckBoxValue("Carry", "Should the crafting table allow carrying items?", this, false);
 
     @Listen

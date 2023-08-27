@@ -16,8 +16,7 @@ import java.util.ArrayDeque;
 
 @ModuleData(name = "Blink", description = "Blocks your packets for a time being", category = Category.MISCELLANEOUS, alwaysRegistered = true)
 public class Blink extends Module {
-    private final CheckBoxValue
-            incoming = new CheckBoxValue("Incoming", "Queue incoming packets?", this, false),
+    private final CheckBoxValue incoming = new CheckBoxValue("Incoming", "Queue incoming packets?", this, false),
             pulse = new CheckBoxValue("Pulse", "Disable and enable the module every x amount of ms?", this, false);
     private final SliderValue<Long> pulseDelay = new SliderValue<Long>("Pulse Delay", "What'll be the delay between pulsing?", this, 150L, 50L, 5000L, 1);
 

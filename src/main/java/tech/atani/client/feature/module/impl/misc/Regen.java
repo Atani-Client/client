@@ -10,8 +10,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "Regen", description = "Regenerates health faster", category = Category.MISCELLANEOUS)
 public class Regen extends Module {
-    private final SliderValue<Integer>
-            health = new SliderValue<Integer>("Health", "At what health should regen work?", this, 15, 1, 19, 0),
+    private final SliderValue<Integer> health = new SliderValue<Integer>("Health", "At what health should regen work?", this, 15, 1, 19, 0),
             packets = new SliderValue<Integer>("Packets", "How much packets should be sent?", this, 10, 1, 100, 0);
 
     @Listen

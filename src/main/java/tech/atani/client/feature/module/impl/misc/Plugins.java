@@ -2,6 +2,7 @@ package tech.atani.client.feature.module.impl.misc;
 
 import net.minecraft.network.play.server.S3APacketTabComplete;
 import net.minecraft.util.EnumChatFormatting;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
@@ -19,6 +20,9 @@ public class Plugins extends Module {
 
     @Listen
     public void onPacketEvent(PacketEvent event) {
+        if(ModuleStorage.getInstance().getByClass(AntiTabComplete.class).isEnabled())
+            return;
+
         if (event.getType() == PacketEvent.Type.INCOMING && event.getPacket() instanceof S3APacketTabComplete && timer.hasReached(200L)) {
             String[] pluginFound = ((S3APacketTabComplete) event.getPacket()).getMatches();
 

@@ -16,7 +16,6 @@ import tech.atani.client.feature.guis.screens.clickgui.icarus.IcarusClickGuiScre
 import tech.atani.client.feature.guis.screens.clickgui.ryu.RyuClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.xave.XaveClickGuiScreen;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
-import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 
@@ -125,8 +124,6 @@ public class ClickGui extends Module {
     }
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 
 }

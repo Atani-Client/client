@@ -12,8 +12,7 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "Sprint", description = "Makes you sprint automatically.", category = Category.MOVEMENT)
 public class Sprint extends Module {
-    public CheckBoxValue
-            legit = new CheckBoxValue("Legit", "Sprint legit?", this, false),
+    public CheckBoxValue legit = new CheckBoxValue("Legit", "Sprint legit?", this, false),
             omni = new CheckBoxValue("All Directions", "Sprint in all directions?", this, false);
 
     @Listen

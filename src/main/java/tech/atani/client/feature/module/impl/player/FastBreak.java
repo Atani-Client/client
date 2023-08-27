@@ -11,7 +11,6 @@ import tech.atani.client.feature.value.impl.SliderValue;
 
 @ModuleData(name = "FastBreak", description = "Break blocks faster", category = Category.PLAYER)
 public class FastBreak extends Module {
-
     private final SliderValue<Float> speed = new SliderValue<>("Speed", "How fast should the breaking speed be?", this, 4F, 0F, 10F, 1);
 
     @Listen

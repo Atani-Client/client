@@ -23,7 +23,7 @@ public class Speed extends Module {
     private final StringBoxValue
             mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
-            vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port"}, new Supplier[]{() -> mode.is("Vulcan")}),
+            vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
             ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe"}, new Supplier[]{() -> mode.is("NCP")}),
             oldNcpMode = new StringBoxValue("Old NCP Mode", "Which mode will the old ncp mode use?", this, new String[]{"Timer", "Y-Port"}, new Supplier[]{() -> mode.is("Old NCP")}),
@@ -282,6 +282,17 @@ public class Speed extends Module {
                             if(3 > vulcanTicks) {
                                 MoveUtil.strafe();
                             }
+                            break;
+                        case "Strafe":
+                                mc.thePlayer.setSprinting(this.isMoving());
+
+                                if (mc.thePlayer.onGround && this.isMoving()){
+                                    mc.thePlayer.jump();
+                                } else {
+                                    if (mc.thePlayer.hurtTime <= 6 && mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing != 0) {
+                                        MoveUtil.strafe();
+                                    }
+                                }
                             break;
                     }
                 }

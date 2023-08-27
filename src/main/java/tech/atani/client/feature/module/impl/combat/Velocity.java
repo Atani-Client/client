@@ -1,6 +1,7 @@
 package tech.atani.client.feature.module.impl.combat;
 
 import com.google.common.base.Supplier;
+import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
@@ -26,9 +27,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Velocity extends Module {
 
     public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar Under-Block"});
-    public SliderValue<Integer> horizontal = new SliderValue<>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
-    public SliderValue<Integer> vertical = new SliderValue<>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
-    public SliderValue<Float> aacv4Reduce = new SliderValue<>("Reduce", "How much motion will be reduced?", this, 0.62F,0F,1F, 1, new Supplier[] {() -> mode.is("AAC v4")});
+    public SliderValue<Integer> horizontal = new SliderValue<Integer>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
+    public SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
+    public SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
 
     private KillAura killAura;
 
@@ -88,8 +89,8 @@ public class Velocity extends Module {
                 break;
             case "AAC v4":
                 if (mc.thePlayer.hurtTime > 0 && !mc.thePlayer.onGround){
-                    mc.thePlayer.motionX *= aacv4Reduce.getValue().floatValue();
-                    mc.thePlayer.motionZ *= aacv4Reduce.getValue().floatValue();
+                    mc.thePlayer.motionX *= aacv4Reduce.getValue();
+                    mc.thePlayer.motionZ *= aacv4Reduce.getValue();
                 }
                 break;
             case "Old Grim":
@@ -132,63 +133,66 @@ public class Velocity extends Module {
                 }
                 break;
             }
-            case "Grim Spoof":
-                if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
+            case "Grim Spoof": {
+                if (packetEvent.getType() == PacketEvent.Type.INCOMING) {
                     Packet<?> p = packetEvent.getPacket();
                     if (p instanceof S12PacketEntityVelocity && ((S12PacketEntityVelocity) p).getEntityID() == mc.thePlayer.getEntityId()) {
                         packetEvent.setCancelled(true);
                         grimPacket = true;
-                    } else if(p instanceof S32PacketConfirmTransaction) {
+                    } else if (p instanceof S32PacketConfirmTransaction) {
                         if (!grimPacket) return;
                         packetEvent.setCancelled(true);
-                        transactionQueue.add(((S32PacketConfirmTransaction)p).getActionNumber());
+                        transactionQueue.add(((S32PacketConfirmTransaction) p).getActionNumber());
                     }
                 } else {
                     if (packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {
                         if (!grimPacket || transactionQueue.isEmpty()) return;
-                        if (transactionQueue.remove(((C0FPacketConfirmTransaction)packetEvent.getPacket()).getUid()))
+                        if (transactionQueue.remove(((C0FPacketConfirmTransaction) packetEvent.getPacket()).getUid()))
                             packetEvent.setCancelled(true);
                     }
                 }
                 break;
-            case "Grim Flag":
-                if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
+            }
+            case "Grim Flag": {
+                if (packetEvent.getType() == PacketEvent.Type.INCOMING) {
                     Packet<?> p = packetEvent.getPacket();
-                    if (p instanceof S12PacketEntityVelocity && ((S12PacketEntityVelocity)p).getEntityID() == mc.thePlayer.getEntityId()) {
+                    if (p instanceof S12PacketEntityVelocity && ((S12PacketEntityVelocity) p).getEntityID() == mc.thePlayer.getEntityId()) {
                         packetEvent.setCancelled(true);
                         mc.thePlayer.motionX += 0.1D;
                         mc.thePlayer.motionY += 0.1D;
                         mc.thePlayer.motionZ += 0.1D;
                     }
-                } else if(packetEvent.getType() == PacketEvent.Type.OUTGOING) {
+                } else if (packetEvent.getType() == PacketEvent.Type.OUTGOING) {
                     if (mc.thePlayer.hurtTime != 0)
                         this.grimFlag = true;
                     if (mc.thePlayer.onGround)
                         this.grimFlag = false;
                     if (this.grimFlag && packetEvent.getPacket() instanceof C03PacketPlayer) {
-                        ((C03PacketPlayer)packetEvent.getPacket()).setX(mc.thePlayer.posX + 210.0D);
-                        ((C03PacketPlayer)packetEvent.getPacket()).setZ(mc.thePlayer.posZ + 210.0D);
+                        ((C03PacketPlayer) packetEvent.getPacket()).setX(mc.thePlayer.posX + 210.0D);
+                        ((C03PacketPlayer) packetEvent.getPacket()).setZ(mc.thePlayer.posZ + 210.0D);
                     }
                 }
                 break;
-            case "Vulcan":
-                if(mc.thePlayer != null && mc.theWorld != null) {
+            }
+            case "Vulcan": {
+                if (mc.thePlayer != null && mc.theWorld != null) {
                     if (mc.thePlayer.hurtTime > 0 && packetEvent.getPacket() instanceof C0FPacketConfirmTransaction) {
                         packetEvent.setCancelled(true);
                     }
                 }
-                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
                     if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
                         packetEvent.setCancelled(true);
                     }
                 }
                 break;
-            case "Simple":
-                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+            }
+            case "Simple": {
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
-                    if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
-                        if(horizontal.getValue() == 0 && vertical.getValue() == 0)
+                    if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                        if (horizontal.getValue() == 0 && vertical.getValue() == 0)
                             packetEvent.setCancelled(true);
                         packet.setMotionX((int) (packet.getMotionX() * (horizontal.getValue().doubleValue() / 100D)));
                         packet.setMotionY((int) (packet.getMotionY() * (vertical.getValue().doubleValue() / 100D)));
@@ -196,11 +200,12 @@ public class Velocity extends Module {
                     }
                 }
                 break;
-            case "Reverse":
-                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+            }
+            case "Reverse": {
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
-                    if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
-                        if(horizontal.getValue() == 0 && vertical.getValue() == 0)
+                    if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                        if (horizontal.getValue() == 0 && vertical.getValue() == 0)
                             packetEvent.setCancelled(true);
                         packet.setMotionX((int) (packet.getMotionX() * (-horizontal.getValue().doubleValue() / 100D)));
                         packet.setMotionY((int) (packet.getMotionY() * (-vertical.getValue().doubleValue() / 100D)));
@@ -208,39 +213,43 @@ public class Velocity extends Module {
                     }
                 }
                 break;
-            case "Old Grim":
-                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+            }
+            case "Old Grim": {
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
-                    if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                    if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
                         packetEvent.setCancelled(true);
                         grimCancel = 6;
                     }
                 }
-                if(packetEvent.getPacket() instanceof S32PacketConfirmTransaction && grimCancel > 0) {
+                if (packetEvent.getPacket() instanceof S32PacketConfirmTransaction && grimCancel > 0) {
                     packetEvent.setCancelled(true);
                     grimCancel--;
                 }
                 break;
-            case "Matrix Reverse":
-                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+            }
+            case "Matrix Reverse": {
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     if (mc.thePlayer.hurtTime > 0) {
                         mc.thePlayer.motionX *= -0.3;
                         mc.thePlayer.motionZ *= -0.3;
                     }
                 }
                 break;
-            case "Matrix Semi":
-                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+            }
+            case "Matrix Semi": {
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     if (mc.thePlayer.hurtTime > 0) {
                         mc.thePlayer.motionX *= 0.6;
                         mc.thePlayer.motionZ *= 0.6;
                     }
                 }
                 break;
-            case "AAC v5 Packet":
-                if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+            }
+            case "AAC v5 Packet": {
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
-                    if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                    if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
                         sendPacketUnlogged(
                                 new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, 1.7976931348623157E+308, mc.thePlayer.posZ, true
                                 )
@@ -248,7 +257,8 @@ public class Velocity extends Module {
                         packetEvent.setCancelled(true);
                     }
                 }
-            break;
+                break;
+            }
         }
     }
 
@@ -260,6 +270,7 @@ public class Velocity extends Module {
                     Velocity.mc.thePlayer.movementInput.jump = true;
                     break;
                 }
+                break;
         }
     }
 

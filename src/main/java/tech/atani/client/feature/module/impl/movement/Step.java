@@ -13,11 +13,14 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Step", description = "Makes you walk up blocks.", category = Category.MOVEMENT)
 public class Step extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "NCP", "Motion", "Spartan"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "NCP", "Motion", "Spartan", "WatchDog"});
     private final SliderValue<Integer> height = new SliderValue<Integer>("Height", "How high will the step go?", this, 2, 0, 10, 1, new Supplier[]{() -> mode.is("Vanilla")});
 
     // NCP
     private boolean hasStepped;
+
+    // WatchDog
+    private boolean step;
 
     @Override
     public String getSuffix() {
@@ -28,6 +31,19 @@ public class Step extends Module {
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
         if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
             switch(mode.getValue()) {
+                case "WatchDog":
+                    if(Methods.mc.thePlayer.onGround && Methods.mc.thePlayer.isCollidedHorizontally) {
+                        Methods.mc.thePlayer.jump();
+                        MoveUtil.setMoveSpeed(0.43d);
+                        step = true;
+                    }
+
+                    if(!Methods.mc.thePlayer.onGround && !Methods.mc.thePlayer.isCollidedHorizontally && step) {
+                        Methods.mc.thePlayer.motionY = -0.078;
+                        MoveUtil.setMoveSpeed(0.45d);
+                        step = false;
+                    }
+                    break;
                 case "Vanilla":
                     Methods.mc.thePlayer.stepHeight = height.getValue();
                     break;
@@ -67,8 +83,13 @@ public class Step extends Module {
 
 
     @Override
-    public void onEnable() {}
+    public void onEnable() {
+        step = false;
+    }
 
     @Override
-    public void onDisable() { Methods.mc.thePlayer.stepHeight = 0.6F; }
+    public void onDisable() {
+        Methods.mc.thePlayer.stepHeight = 0.6F;
+        step = false;
+    }
 }

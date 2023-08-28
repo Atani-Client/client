@@ -43,7 +43,7 @@ public class EnemyAlert extends Module {
     }
 
     private void renderAlert(final EntityPlayer entityPlayer, final ScaledResolution scaledResolution) {
-        final float wrapAngleTo180_float = MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw - RotationUtil.getRotation(entityPlayer, false, false, 0, 0, 0, 0, false, 0, 0, 0, 0, true, true)[0]);
+        final float wrapAngleTo180_float = MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw - RotationUtil.getRotation(entityPlayer, "", false, false, 0, 0, 0, 0, false, 0, 0, 0, 0, true, true)[0]);
         if (Math.abs(wrapAngleTo180_float) >= 90.0f) {
             final double width = scaledResolution.getScaledWidth() / 2.0f;
             final double height = scaledResolution.getScaledHeight() / 2.0f;

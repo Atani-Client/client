@@ -1,6 +1,7 @@
 package tech.atani.client.feature.module.impl.combat;
 
 import com.google.common.base.Supplier;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
@@ -20,6 +21,7 @@ import tech.atani.client.listener.event.minecraft.input.ClickingEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RayTraceRangeEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.radbus.Listen;
+import tech.atani.client.utility.player.PlayerHandler;
 import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.rotation.RotationUtil;
@@ -51,6 +53,7 @@ public class KillAura extends Module {
     public CheckBoxValue lockView = new CheckBoxValue("Lock-view", "Rotate non-silently", this, false);
     public CheckBoxValue snapYaw = new CheckBoxValue("Snap Yaw", "Skip smoothing out yaw rotations?", this, false);
     public CheckBoxValue snapPitch = new CheckBoxValue("Snap Pitch", "Skip smoothing out pitch rotations?", this, false);
+    public StringBoxValue vectorMode = new StringBoxValue("Aim Vector", "Where to aim?", this, new String[]{"Perfect", "Bruteforce", "Head"});
     public CheckBoxValue skipUnnecessaryRotations = new CheckBoxValue("Necessary Rotations", "Rotate only if necessary?", this, false);
     public StringBoxValue unnecessaryRotations = new StringBoxValue("Necessary Rotations", "What rotations to skip?", this, new String[]{"Both", "Yaw", "Pitch"}, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
     public CheckBoxValue skipIfNear = new CheckBoxValue("Skip If Near", "Rotate only if far enough?", this, true, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
@@ -182,20 +185,24 @@ public class KillAura extends Module {
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
         if (curEntity != null) {
-            final float[] rotations = RotationUtil.getRotation(curEntity, mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
+            final float[] rotations = RotationUtil.getRotation(curEntity, vectorMode.getValue(), mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
 
-            boolean necessary = !skipUnnecessaryRotations.getValue() || (Methods.mc.objectMouseOver == null || Methods.mc.objectMouseOver.typeOfHit != MovingObjectPosition.MovingObjectType.ENTITY) || (getPlayer().getDistanceToEntity(curEntity) >= nearDistance.getValue() && skipIfNear.getValue());
-            boolean yaw = unnecessaryRotations.getValue().equalsIgnoreCase("Yaw");
-            boolean pitch = unnecessaryRotations.getValue().equalsIgnoreCase("Pitch");
-            boolean both = unnecessaryRotations.getValue().equalsIgnoreCase("Both");
-            if (both) {
-                yaw = true;
-                pitch = true;
-            }
-            if (!skipUnnecessaryRotations.getValue() || necessary || !yaw)
+            if(skipUnnecessaryRotations.getValue()) {
+                MovingObjectPosition movingObjectPosition = mc.objectMouseOver;
+                boolean shouldSkip = (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY || movingObjectPosition.entityHit == curEntity) || (skipIfNear.getValue() && FightUtil.getRange(curEntity) <= nearDistance.getValue());
+                if(shouldSkip) {
+                    if(unnecessaryRotations.getValue().equalsIgnoreCase("Yaw") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
+                        yawRot = PlayerHandler.yaw;
+                    if(unnecessaryRotations.getValue().equalsIgnoreCase("Pitch") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
+                        pitchRot = PlayerHandler.pitch;
+                } else {
+                    yawRot = rotations[0];
+                    pitchRot = rotations[1];
+                }
+            } else {
                 yawRot = rotations[0];
-            if (!skipUnnecessaryRotations.getValue() || necessary || !pitch)
                 pitchRot = rotations[1];
+            }
 
             rotationEvent.setYaw(yawRot);
             rotationEvent.setPitch(pitchRot);

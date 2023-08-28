@@ -5,6 +5,7 @@ import net.minecraft.util.*;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.random.RandomUtil;
 import tech.atani.client.utility.player.PlayerHandler;
+import tech.atani.client.utility.player.raytrace.RaytraceUtil;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -22,14 +23,43 @@ public class RotationUtil implements Methods {
         return new Vec3(f2 * f3, f4, f * f3);
     }
 
-    public static float[] getRotation(Entity entity, boolean mouseFix, boolean heuristics, double minRandomYaw, double maxRandomYaw, double minRandomPitch, double maxRandomPitch, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
-        final Vec3 bestVector = getBestVector(mc.thePlayer.getPositionEyes(1F), entity.getEntityBoundingBox());
-        bestVector.xCoord += RandomUtil.randomBetween(minRandomYaw, maxRandomYaw);
-        bestVector.yCoord += RandomUtil.randomBetween(minRandomPitch, maxRandomPitch);
-        bestVector.zCoord += RandomUtil.randomBetween(minRandomYaw, maxRandomYaw);
-        double x = bestVector.xCoord - mc.thePlayer.posX;
-        double y = bestVector.yCoord - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
-        double z = bestVector.zCoord - mc.thePlayer.posZ;
+    public static float[] getRotation(Vec3 aimVector) {
+        double x = aimVector.xCoord - mc.thePlayer.posX;
+        double y = aimVector.yCoord - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
+        double z = aimVector.zCoord - mc.thePlayer.posZ;
+
+        double d3 = MathHelper.sqrt(x * x + z * z);
+        float f = (float) (MathHelper.atan2(z, x) * (180 / Math.PI)) - 90.0F;
+        float f1 = (float) (-(MathHelper.atan2(y, d3) * (180 / Math.PI)));
+        f1 = MathHelper.clamp(f1, -90, 90);
+        return new float[]{f, f1};
+    }
+
+    public static float[] getRotation(Entity entity, String vectorMode, boolean mouseFix, boolean heuristics, double minRandomYaw, double maxRandomYaw, double minRandomPitch, double maxRandomPitch, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
+        Vec3 aimVector = getBestVector(mc.thePlayer.getPositionEyes(1F), entity.getEntityBoundingBox());
+        switch (vectorMode) {
+            case "Bruteforce":
+                for (double yPercent = 1; yPercent >= 0; yPercent -= 0.25) {
+                    for (double xPercent = 1; xPercent >= -0.5; xPercent -= 0.5) {
+                        for (double zPercent = 1; zPercent >= -0.5; zPercent -= 0.5) {
+                            Vec3 tempVec = new Vec3(xPercent, yPercent, zPercent);
+                            if (RaytraceUtil.rayCast(1F, getRotation(tempVec)).typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+                                aimVector = tempVec;
+                            }
+                        }
+                    }
+                }
+                break;
+            case "Head":
+                aimVector = new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
+                break;
+        }
+        aimVector.xCoord += RandomUtil.randomBetween(minRandomYaw, maxRandomYaw);
+        aimVector.yCoord += RandomUtil.randomBetween(minRandomPitch, maxRandomPitch);
+        aimVector.zCoord += RandomUtil.randomBetween(minRandomYaw, maxRandomYaw);
+        double x = aimVector.xCoord - mc.thePlayer.posX;
+        double y = aimVector.yCoord - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());
+        double z = aimVector.zCoord - mc.thePlayer.posZ;
 
         if (prediction) {
             final boolean targetIsSprinting = entity.isSprinting();

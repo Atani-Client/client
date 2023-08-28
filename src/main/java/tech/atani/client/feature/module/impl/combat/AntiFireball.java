@@ -57,7 +57,7 @@ public class AntiFireball extends Module {
     @Listen
     public void onRotate(RotationEvent rotationEvent) {
         if(this.entity != null) {
-            float[] rotations = RotationUtil.getRotation(entity, true, false, 0, 0, 0, 0, false, 180, 180, 180, 180, false, false);
+            float[] rotations = RotationUtil.getRotation(entity, "", true, false, 0, 0, 0, 0, false, 180, 180, 180, 180, false, false);
             rotationEvent.setYaw(rotations[0]);
             rotationEvent.setPitch(rotations[1]);
         }

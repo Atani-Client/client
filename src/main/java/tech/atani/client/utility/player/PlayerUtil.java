@@ -1,6 +1,7 @@
 package tech.atani.client.utility.player;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
@@ -43,5 +44,15 @@ public class PlayerUtil implements Methods {
             }
         }
         return armorColor;
+    }
+
+
+    public static int getIndexOfItem() {
+        final InventoryPlayer inventoryPlayer = mc.thePlayer.inventory;
+        return inventoryPlayer.currentItem;
+    }
+
+    public static ItemStack getItemStack() {
+        return (mc.thePlayer == null || mc.thePlayer.inventoryContainer == null ? null : mc.thePlayer.inventoryContainer.getSlot(getIndexOfItem() + 36).getStack());
     }
 }

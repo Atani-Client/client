@@ -1,7 +1,5 @@
 package tech.atani.client.feature.module.impl.movement;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
@@ -14,6 +12,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.StringBoxValue;
+import tech.atani.client.utility.player.PlayerUtil;
 
 //Hooked in EntityLivingBase class & EntityPlayerSP class
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
@@ -82,8 +81,8 @@ public class NoSlowDown extends Module {
                     break;
                 case "Old Intave":
                     if (mc.thePlayer.isUsingItem()) {
-                        mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(getIndexOfItem() % 8 + 1));
-                        mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(getIndexOfItem()));
+                        mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(PlayerUtil.getIndexOfItem() % 8 + 1));
+                        mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(PlayerUtil.getIndexOfItem()));
                     }
                     break;
                 case "Placement":
@@ -103,7 +102,7 @@ public class NoSlowDown extends Module {
                     break;
                 case "Old Intave":
                     if (mc.thePlayer.isUsingItem()) {
-                        mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(getItemStack()));
+                        mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(PlayerUtil.getItemStack()));
                     }
                     break;
             }
@@ -115,13 +114,4 @@ public class NoSlowDown extends Module {
 
     @Override
     public void onDisable() {}
-
-    private int getIndexOfItem() {
-        final InventoryPlayer inventoryPlayer = mc.thePlayer.inventory;
-        return inventoryPlayer.currentItem;
-    }
-
-    private ItemStack getItemStack() {
-        return (mc.thePlayer == null || mc.thePlayer.inventoryContainer == null ? null : mc.thePlayer.inventoryContainer.getSlot(getIndexOfItem() + 36).getStack());
-    }
 }

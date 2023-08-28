@@ -55,7 +55,7 @@ public class KillAura extends Module {
     public CheckBoxValue snapPitch = new CheckBoxValue("Snap Pitch", "Skip smoothing out pitch rotations?", this, false);
     public StringBoxValue vectorMode = new StringBoxValue("Aim Vector", "Where to aim?", this, new String[]{"Perfect", "Bruteforce", "Head"});
     public CheckBoxValue skipUnnecessaryRotations = new CheckBoxValue("Necessary Rotations", "Rotate only if necessary?", this, false);
-    public StringBoxValue unnecessaryRotations = new StringBoxValue("Necessary Rotations", "What rotations to skip?", this, new String[]{"Both", "Yaw", "Pitch"}, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
+    public StringBoxValue unnecessaryRotations = new StringBoxValue("Necessary Mode", "What rotations to skip?", this, new String[]{"Both", "Yaw", "Pitch"}, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
     public CheckBoxValue skipIfNear = new CheckBoxValue("Skip If Near", "Rotate only if far enough?", this, true, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
     public SliderValue<Float> nearDistance = new SliderValue<Float>("Near Distance", "How near to skip rotations?", this, 0.5F, 0F, 0.5F, 2, new Supplier[]{() -> skipUnnecessaryRotations.getValue() && skipIfNear.getValue()});
     public SliderValue<Float> minYaw = new SliderValue<>("Minimum Yaw", "What will be the minimum yaw for rotating?", this, 40f, 0f, 180f, 0);

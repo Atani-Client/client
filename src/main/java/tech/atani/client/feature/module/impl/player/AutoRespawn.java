@@ -6,6 +6,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.utility.interfaces.Methods;
 
 @ModuleData(name = "AutoRespawn", description = "Automatically respawn after dying.", category = Category.PLAYER)
 public class AutoRespawn extends Module {
@@ -13,6 +14,9 @@ public class AutoRespawn extends Module {
 
     @Listen
     public void onMotionEvent(UpdateMotionEvent event) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+
         if(event.getType() == UpdateMotionEvent.Type.MID) {
             if (this.isDead())
                 mc.thePlayer.respawnPlayer();

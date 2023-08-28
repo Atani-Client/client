@@ -20,14 +20,9 @@ import tech.atani.client.listener.event.minecraft.input.ClickingEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RayTraceRangeEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.radbus.Listen;
-import tech.atani.client.utility.math.random.RandomUtil;
 import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.rotation.RotationUtil;
-import net.minecraft.scoreboard.Team;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.EnumChatFormatting;
-import tech.atani.client.utility.player.PlayerUtil;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;

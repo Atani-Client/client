@@ -10,7 +10,10 @@ import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
+import tech.atani.client.feature.module.impl.option.Teams;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.utility.interfaces.Methods;
+import tech.atani.client.utility.player.PlayerUtil;
 import tech.atani.client.utility.player.rotation.RotationUtil;
 import tech.atani.client.feature.combat.CombatManager;
 
@@ -42,18 +45,53 @@ public class FightUtil implements Methods {
                     || entityLivingBase instanceof EntityVillager
                     || entityLivingBase instanceof EntityAnimal && !animals
                     || entityLivingBase instanceof EntitySquid && !animals
-                    || entityLivingBase instanceof EntityPlayer && !players
                     || entityLivingBase instanceof EntityMob && !mobs
                     || entityLivingBase instanceof EntitySlime && !mobs
                     || CombatManager.getInstance().isIgnored(entity)
-                    || entityLivingBase.isInvisible() && !invis) continue;
+                    || entityLivingBase.isInvisible() && !invis
+                    || (entityLivingBase instanceof EntityPlayer && ModuleStorage.getInstance().getByClass(Teams.class).isEnabled() && ModuleStorage.getInstance().getByClass(Teams.class).teams.getValue().equals("Armor Color") && shouldSkipPlayer(entityLivingBase))){
+                continue;
+            }
 
             list.add(entityLivingBase);
         }
         return list;
     }
 
+    private static boolean shouldSkipPlayer(EntityLivingBase entityLivingBase) {
+        if (!(entityLivingBase instanceof EntityPlayer))
+            return false;
+
+        EntityPlayer targetPlayer = (EntityPlayer) entityLivingBase;
+        Teams teamsModule = ModuleStorage.getInstance().getByClass(Teams.class);
+
+        if (!teamsModule.isEnabled())
+            return false;
+        // TODO: Implement Tablist name color mode
+        switch(teamsModule.teams.getValue()) {
+            case "Armor Color":
+                int targetArmorColor = PlayerUtil.getLeatherArmorColor(targetPlayer);
+                int localPlayerArmorColor = PlayerUtil.getLeatherArmorColor(mc.thePlayer);
+                return targetArmorColor != -1 && localPlayerArmorColor != -1 && targetArmorColor == localPlayerArmorColor;
+        }
+
+        return false;
+    }
+
     public static boolean isValid(EntityLivingBase entityLivingBase, double range, boolean invis, boolean players, boolean animals, boolean mobs) {
+
+        if (entityLivingBase == null || entityLivingBase.isDead)
+            return false;
+
+        if (entityLivingBase instanceof EntityPlayer && ModuleStorage.getInstance().getByClass(Teams.class).isEnabled() && ModuleStorage.getInstance().getByClass(Teams.class).teams.getValue().equals("Armor Color")) {
+            int targetArmorColor = PlayerUtil.getLeatherArmorColor((EntityPlayer) entityLivingBase);
+            int localPlayerArmorColor = PlayerUtil.getLeatherArmorColor(mc.thePlayer);
+
+            if (targetArmorColor != -1 && localPlayerArmorColor != -1 && targetArmorColor == localPlayerArmorColor) {
+                return false;
+            }
+        }
+
         return !(getRange(entityLivingBase) > range
                 || entityLivingBase.isDead
                 || entityLivingBase instanceof EntityArmorStand

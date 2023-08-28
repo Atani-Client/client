@@ -6,12 +6,16 @@ import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.utility.interfaces.Methods;
 
 @ModuleData(name = "NoRotate", description = "Stops flags from setting your yaw and pitch", category = Category.PLAYER)
 public class NoRotate extends Module {
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+
         if(packetEvent.getPacket() instanceof S08PacketPlayerPosLook) {
             if(mc.thePlayer.rotationYaw != -180 && mc.thePlayer.rotationPitch != 0) {
                 S08PacketPlayerPosLook packet = (S08PacketPlayerPosLook) packetEvent.getPacket();

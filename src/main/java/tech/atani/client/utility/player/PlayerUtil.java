@@ -4,8 +4,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.scoreboard.Team;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
+import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.interfaces.Methods;
 
 public class PlayerUtil implements Methods {
@@ -23,36 +26,6 @@ public class PlayerUtil implements Methods {
                 || (yaw > 167.5 || yaw < -167.0f)
                 || (yaw < -77.5 && yaw > -102.5)
                 || (yaw > -12.5 && yaw < 12.5);
-    }
-
-    public static boolean isFriendlyFireAllowed(EntityPlayer player) {
-        Team team = getPlayerTeam(player);
-        if (team != null) {
-            Team.EnumVisible nameTagVisibility = team.getNameTagVisibility();
-            return nameTagVisibility != Team.EnumVisible.HIDE_FOR_OWN_TEAM &&
-                    nameTagVisibility != Team.EnumVisible.HIDE_FOR_OTHER_TEAMS;
-        }
-        return true;
-    }
-
-    public static Team getPlayerTeam(EntityPlayer player) {
-        ScorePlayerTeam playerTeam = mc.theWorld.getScoreboard().getPlayersTeam(player.getCommandSenderName());
-        if (playerTeam != null) {
-            return mc.theWorld.getScoreboard().getTeam(playerTeam.getTeamName());
-        }
-        return null;
-    }
-
-    public static boolean hasLeatherArmor(EntityPlayer player) {
-        for (ItemStack itemStack : player.inventory.armorInventory) {
-            if (itemStack != null && itemStack.getItem() instanceof ItemArmor) {
-                ItemArmor armor = (ItemArmor) itemStack.getItem();
-                if (armor.getArmorMaterial() == ItemArmor.ArmorMaterial.LEATHER) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     public static int getLeatherArmorColor(EntityPlayer player) {

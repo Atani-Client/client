@@ -13,7 +13,7 @@ public class Event {
         this.cancelled = cancelled;
     }
 
-    public <T extends Event> T onFire() {
+    public <T extends Event> T publishItself() {
         EventHandling.getInstance().publishEvent(this);
         return (T) this;
     }

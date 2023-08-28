@@ -1586,7 +1586,7 @@ public abstract class EntityLivingBase extends Entity
             this.motionY += (double)((float)(this.getActivePotionEffect(Potion.jump).getAmplifier() + 1) * 0.1f);
         }
         if (this.isSprinting()) {
-            PlayerJumpEvent jumpEvent = new PlayerJumpEvent(this.rotationYaw).onFire();
+            PlayerJumpEvent jumpEvent = new PlayerJumpEvent(this.rotationYaw).publishItself();
             float f = PlayerHandler.moveFix ? PlayerHandler.yaw : this.rotationYaw;
             float f2 = f * ((float)Math.PI / 180);
             this.motionX -= (double)(MathHelper.sin(f2) * 0.2f);

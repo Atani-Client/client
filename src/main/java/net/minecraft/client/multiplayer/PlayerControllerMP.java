@@ -497,7 +497,7 @@ public class PlayerControllerMP
      */
     public void attackEntity(EntityPlayer playerIn, Entity targetEntity)
     {
-        new AttackEntityEvent(targetEntity).onFire();
+        new AttackEntityEvent(targetEntity).publishItself();
         this.syncCurrentPlayItem();
         this.netClientHandler.addToSendQueue(new C02PacketUseEntity(targetEntity, C02PacketUseEntity.Action.ATTACK));
 

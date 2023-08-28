@@ -60,23 +60,23 @@ public abstract class Module implements Methods {
     }
 
     private void onModuleEnable() {
-        EnableModuleEvent enableModuleEvent = new EnableModuleEvent(this, EnableModuleEvent.Type.PRE).onFire();
+        EnableModuleEvent enableModuleEvent = new EnableModuleEvent(this, EnableModuleEvent.Type.PRE).publishItself();
         if(enableModuleEvent.isCancelled())
             return;
         onEnable();
         if(!alwaysRegistered)
             EventHandling.getInstance().registerListener(this);
-        new EnableModuleEvent(this, EnableModuleEvent.Type.POST).onFire();
+        new EnableModuleEvent(this, EnableModuleEvent.Type.POST).publishItself();
     }
 
     private void onModuleDisable() {
-        DisableModuleEvent disableModuleEvent = new DisableModuleEvent(this, DisableModuleEvent.Type.PRE).onFire();
+        DisableModuleEvent disableModuleEvent = new DisableModuleEvent(this, DisableModuleEvent.Type.PRE).publishItself();
         if(disableModuleEvent.isCancelled())
             return;
         if(!alwaysRegistered)
             EventHandling.getInstance().unregisterListener(this);
         onDisable();
-        new DisableModuleEvent(this, DisableModuleEvent.Type.POST).onFire();
+        new DisableModuleEvent(this, DisableModuleEvent.Type.POST).publishItself();
     }
 
     public abstract void onEnable();

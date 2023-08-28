@@ -117,7 +117,7 @@ public class EffectRenderer
 
     public void emitParticleAtEntity(Entity entityIn, EnumParticleTypes particleTypes)
     {
-        final EmitParticleEvent emitParticleEvent = new EmitParticleEvent(1, particleTypes).onFire();
+        final EmitParticleEvent emitParticleEvent = new EmitParticleEvent(1, particleTypes).publishItself();
         for (int i = 0; i < emitParticleEvent.multiplier; i++)
             this.particleEmitters.add(new EntityParticleEmitter(this.worldObj, entityIn, particleTypes));
     }

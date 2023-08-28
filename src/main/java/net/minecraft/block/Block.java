@@ -491,7 +491,7 @@ public class Block
     {
         AxisAlignedBB axisalignedbb = this.getCollisionBoundingBox(worldIn, pos, state);
 
-        CollisionBoxesEvent event = new CollisionBoxesEvent(pos, axisalignedbb).onFire();
+        CollisionBoxesEvent event = new CollisionBoxesEvent(pos, axisalignedbb).publishItself();
 
         axisalignedbb = event.getBoundingBox();
 

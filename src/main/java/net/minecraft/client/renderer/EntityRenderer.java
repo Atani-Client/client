@@ -469,7 +469,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         final Entity renderViewEntity = this.mc.getRenderViewEntity();
         if (renderViewEntity != null && this.mc.theWorld != null) {
-            final RayTraceRangeEvent rayTraceRangeEvent = (RayTraceRangeEvent)new RayTraceRangeEvent(3.0f).onFire();
+            final RayTraceRangeEvent rayTraceRangeEvent = (RayTraceRangeEvent)new RayTraceRangeEvent(3.0f).publishItself();
             this.mc.mcProfiler.startSection("pick");
             this.mc.pointedEntity = null;
             final double n2 = rayTraceRangeEvent.getBlockReachDistance();
@@ -890,7 +890,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             GlStateManager.scale(this.cameraZoom, this.cameraZoom, 1.0D);
         }
 
-        PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight).onFire();
+        PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight).publishItself();
         Project.gluPerspective(this.getFOVModifier(partialTicks, true), perspectiveEvent.getAspect(), 0.05F, this.clipDistance);
         GlStateManager.matrixMode(5888);
         GlStateManager.loadIdentity();
@@ -981,7 +981,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 Shaders.applyHandDepth();
             }
 
-            PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight, true).onFire();
+            PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight, true).publishItself();
             Project.gluPerspective(this.getFOVModifier(p_renderHand_1_, false), perspectiveEvent.getAspect(), 0.05F, this.farPlaneDistance * 2.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.loadIdentity();
@@ -1278,7 +1278,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
         if (this.mc.inGameHasFocus && flag) {
             if (this.pointedEntity instanceof EntityLivingBase) {
                 final EntityLivingBase livingBase = (EntityLivingBase) this.mc.getRenderViewEntity();
-                final RendererEvent rendererEvent = new RendererEvent(livingBase.rotationYaw, livingBase.rotationPitch).onFire();
+                final RendererEvent rendererEvent = new RendererEvent(livingBase.rotationYaw, livingBase.rotationPitch).publishItself();
             }
 
             this.mc.mouseHelper.mouseXYChange();
@@ -1292,7 +1292,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 i = -1;
             }
 
-            final EntityRendererEvent entityRendererEvent = new EntityRendererEvent(this.mc.thePlayer).onFire();
+            final EntityRendererEvent entityRendererEvent = new EntityRendererEvent(this.mc.thePlayer).publishItself();
             if (entityRendererEvent.getEntity() != null)
                 if (this.mc.gameSettings.smoothCamera) {
                     this.smoothCamYaw += f2;
@@ -1309,7 +1309,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 }
             PlayerHandler.prevYaw = PlayerHandler.yaw;
             PlayerHandler.prevPitch = PlayerHandler.pitch;
-            final RotationEvent rotationEvent = new RotationEvent(entityRendererEvent.getEntity().rotationYaw, entityRendererEvent.getEntity().rotationPitch).onFire();
+            final RotationEvent rotationEvent = new RotationEvent(entityRendererEvent.getEntity().rotationYaw, entityRendererEvent.getEntity().rotationPitch).publishItself();
             PlayerHandler.yaw = rotationEvent.getYaw();
             PlayerHandler.pitch = rotationEvent.getPitch();
         }
@@ -1612,7 +1612,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("sky");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight).onFire();
+            PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight).publishItself();
             Project.gluPerspective(this.getFOVModifier(partialTicks, true), perspectiveEvent.getAspect(), 0.05F, this.clipDistance);
             GlStateManager.matrixMode(5888);
 
@@ -1898,7 +1898,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             Reflector.callVoid(Reflector.ForgeHooksClient_dispatchRenderLast, new Object[] {renderglobal, Float.valueOf(partialTicks)});
         }
 
-        new Render3DEvent(partialTicks).onFire();
+        new Render3DEvent(partialTicks).publishItself();
 
         this.mc.mcProfiler.endStartSection("hand");
 
@@ -1937,7 +1937,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             this.mc.mcProfiler.endStartSection("clouds");
             GlStateManager.matrixMode(5889);
             GlStateManager.loadIdentity();
-            PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight).onFire();
+            PerspectiveEvent perspectiveEvent = new PerspectiveEvent((float)this.mc.displayWidth / (float)this.mc.displayHeight).publishItself();
             Project.gluPerspective(this.getFOVModifier(partialTicks, true), perspectiveEvent.getAspect(), 0.05F, this.clipDistance * 4.0F);
             GlStateManager.matrixMode(5888);
             GlStateManager.pushMatrix();

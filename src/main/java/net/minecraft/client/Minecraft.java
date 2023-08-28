@@ -1601,7 +1601,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
             }
         }
 
-        new GuiHandleEvent().onFire();
+        new GuiHandleEvent().publishItself();
 
         if (this.currentScreen == null || this.currentScreen.allowUserInput)
         {
@@ -2125,7 +2125,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      */
     public void loadWorld(WorldClient worldClientIn, String loadingMessage)
     {
-        new WorldLoadEvent().onFire();
+        new WorldLoadEvent().publishItself();
         if (worldClientIn == null)
         {
             NetHandlerPlayClient nethandlerplayclient = this.getNetHandler();

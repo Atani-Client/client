@@ -710,7 +710,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
             f += PlayerHandler.yaw;
         }
 
-        final HeadLookEvent headLookEvent = new HeadLookEvent(f, f1, d0, d1, d2).onFire();
+        final HeadLookEvent headLookEvent = new HeadLookEvent(f, f1, d0, d1, d2).publishItself();
 
         final float yaw = f;
         final float pitch = f1;
@@ -816,7 +816,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
     public void addToSendQueue(Packet p_147297_1_)
     {
-        PacketEvent packetEvent = new PacketEvent(p_147297_1_, this, PacketEvent.Type.OUTGOING).onFire();
+        PacketEvent packetEvent = new PacketEvent(p_147297_1_, this, PacketEvent.Type.OUTGOING).publishItself();
         if(packetEvent.isCancelled())
             return;
         this.netManager.sendPacket(packetEvent.getPacket());

@@ -13,7 +13,6 @@ import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
-import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.crash.CrashReport;
@@ -48,9 +47,7 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import tech.atani.client.feature.module.impl.player.ScaffoldWalk;
 import tech.atani.client.listener.event.minecraft.player.movement.SafeWalkEvent;
-import tech.atani.client.feature.module.impl.movement.SafeWalk;
 import tech.atani.client.feature.module.impl.render.AntiBlind;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.performance.FastUUID;
@@ -625,7 +622,7 @@ public abstract class Entity implements ICommandSender
             double d5 = z;
             boolean flag = this.onGround && this.isSneaking() && this instanceof EntityPlayer;
 
-            final SafeWalkEvent safewalkEvent = new SafeWalkEvent(flag).onFire();
+            final SafeWalkEvent safewalkEvent = new SafeWalkEvent(flag).publishItself();
 
             if (safewalkEvent.isSafe()) {
                 double d6;

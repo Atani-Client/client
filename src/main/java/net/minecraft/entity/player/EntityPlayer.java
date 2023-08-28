@@ -1364,7 +1364,7 @@ public abstract class EntityPlayer extends EntityLivingBase
                     boolean flag2 = targetEntity.attackEntityFrom(DamageSource.causePlayerDamage(this), f);
 
                     if (flag2) {
-                        final KnockbackModifierEvent knockbackModifierEvent = new KnockbackModifierEvent(i > 0).onFire();
+                        final KnockbackModifierEvent knockbackModifierEvent = new KnockbackModifierEvent(i > 0).publishItself();
                         float yaw = this.rotationYaw;
                         if(this == Minecraft.getMinecraft().thePlayer)
                             yaw = PlayerHandler.yaw;

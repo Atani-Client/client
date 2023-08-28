@@ -167,7 +167,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     @Override
     public void moveFlying(float f, float f2, float f3) {
-        MoveFlyingEvent moveFlyingEvent = new MoveFlyingEvent(f, f2, f3).onFire();
+        MoveFlyingEvent moveFlyingEvent = new MoveFlyingEvent(f, f2, f3).publishItself();
         f = moveFlyingEvent.getStrafe();
         f2 = moveFlyingEvent.getForward();
         if (moveFlyingEvent.isCancelled()) {
@@ -192,12 +192,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
      */
     public void onUpdate() {
         if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ))) {
-            new UpdateEvent().onFire();
-            final UpdateMotionEvent updateMotionEvent = new UpdateMotionEvent(UpdateMotionEvent.Type.PRE, this.isCurrentViewEntity()).onFire();
+            new UpdateEvent().publishItself();
+            final UpdateMotionEvent updateMotionEvent = new UpdateMotionEvent(UpdateMotionEvent.Type.PRE, this.isCurrentViewEntity()).publishItself();
             if(updateMotionEvent.isCancelled())
                 return;
             super.onUpdate();
-            new UpdateMotionEvent(UpdateMotionEvent.Type.MID, updateMotionEvent.isCurrentView()).onFire();
+            new UpdateMotionEvent(UpdateMotionEvent.Type.MID, updateMotionEvent.isCurrentView()).publishItself();
             if (this.isRiding()) {
                 this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(PlayerHandler.yaw, PlayerHandler.pitch, this.onGround));
                 this.sendQueue.addToSendQueue(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
@@ -222,7 +222,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     @Override
     public void moveEntity(double x, double y, double z) {
-        final MovePlayerEvent movePlayerEvent = new MovePlayerEvent(x, y, z).onFire();
+        final MovePlayerEvent movePlayerEvent = new MovePlayerEvent(x, y, z).publishItself();
         if (!movePlayerEvent.isCancelled())
             super.moveEntity(movePlayerEvent.getX(), movePlayerEvent.getY(), movePlayerEvent.getZ());
     }
@@ -279,7 +279,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
                     this.sendQueue.addToSendQueue(new C03PacketPlayer(this.onGround));
                 }
             } else {
-                final RidingEntityEvent ridingEntityEvent = new RidingEntityEvent(this.motionX, -999D, this.motionZ, this.onGround).onFire();
+                final RidingEntityEvent ridingEntityEvent = new RidingEntityEvent(this.motionX, -999D, this.motionZ, this.onGround).publishItself();
                 this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(ridingEntityEvent.getMotionX(), ridingEntityEvent.getMotionY(), ridingEntityEvent.getMotionZ(), yaw, pitch, ridingEntityEvent.isOnGround()));
                 flag2 = false;
             }
@@ -298,7 +298,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
                 this.lastReportedPitch = pitch;
             }
 
-            new UpdateMotionEvent(UpdateMotionEvent.Type.POST, updateMotionEvent.isCurrentView()).onFire();
+            new UpdateMotionEvent(UpdateMotionEvent.Type.POST, updateMotionEvent.isCurrentView()).publishItself();
         }
     }
 
@@ -834,7 +834,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         final float forward = this.movementInput.moveForward;
         final float strafe = this.movementInput.moveStrafe;
         this.movementInput.updatePlayerMoveState();
-        new SilentMoveEvent().onFire();
+        new SilentMoveEvent().publishItself();
         if (PlayerHandler.moveFixSilent) {
             final float[] floats = this.mySilentStrafe(this.movementInput.moveStrafe, this.movementInput.moveForward, this.rotationYaw, true);
             final float diffForward = forward - floats[1];
@@ -891,7 +891,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             this.setSprinting(true);
         }
 
-        final DirectionSprintCheckEvent sprintCheckEvent = new DirectionSprintCheckEvent(this.movementInput.moveForward < f).onFire();
+        final DirectionSprintCheckEvent sprintCheckEvent = new DirectionSprintCheckEvent(this.movementInput.moveForward < f).publishItself();
         if (this.isSprinting() && (sprintCheckEvent.isSprintCheck() || this.isCollidedHorizontally || !flag69)) {
             this.setSprinting(false);
         }

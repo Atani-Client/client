@@ -15,7 +15,7 @@ public class MovementInputFromOptions extends MovementInput
     public void updatePlayerMoveState()
     {
         final MoveButtonEvent event = new MoveButtonEvent(new MoveButtonEvent.Button(this.gameSettings.keyBindLeft.isKeyDown(), 90), new MoveButtonEvent.Button(this.gameSettings.keyBindRight.isKeyDown(), -90), new MoveButtonEvent.Button(this.gameSettings.keyBindBack.isKeyDown(), 180), new MoveButtonEvent.Button(this.gameSettings.keyBindForward.isKeyDown(), 0), this.gameSettings.keyBindSneak.isKeyDown(), this.gameSettings.keyBindJump.isKeyDown());
-        event.onFire();
+        event.publishItself();
         if (event.isCancelled()) return;
 
         this.moveStrafe = 0.0F;

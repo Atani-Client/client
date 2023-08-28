@@ -52,11 +52,6 @@ public class Teams extends Module implements IgnoreList {
         if (!(targetPlayer instanceof EntityPlayer))
             return false;
 
-        Teams teamsModule = ModuleStorage.getInstance().getByClass(Teams.class);
-
-        if (!teamsModule.isEnabled())
-            return false;
-
         boolean skip = false;
 
         if (armorColor.getValue()) {

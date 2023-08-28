@@ -16,6 +16,7 @@ public abstract class Module implements Methods {
 
     private final String name, description;
     private final Category category;
+    private final String serverIP;
     private int key;
     private boolean enabled;
     private boolean alwaysRegistered;
@@ -28,6 +29,7 @@ public abstract class Module implements Methods {
         this.name = moduleData.name();
         this.description = moduleData.description();
         this.category = moduleData.category();
+        this.serverIP = moduleData.serverIP();
         this.key = moduleData.key();
         this.enabled = moduleData.enabled();
 
@@ -37,7 +39,6 @@ public abstract class Module implements Methods {
         }
 
         if(moduleData.frozenState()) {
-            this.enabled = true;
             frozenState = true;
         }
     }
@@ -81,6 +82,10 @@ public abstract class Module implements Methods {
 
     public abstract void onEnable();
     public abstract void onDisable();
+
+    public boolean shouldHide() {
+        return mc.getCurrentServerData() == null || mc.isSingleplayer() ? this.serverIP.equalsIgnoreCase("") : mc.getCurrentServerData().serverIP.equalsIgnoreCase(this.serverIP);
+    }
     
     public String getSuffix() {
 		return null;

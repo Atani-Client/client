@@ -1,4 +1,4 @@
-package tech.atani.client.feature.module.impl.misc;
+package tech.atani.client.feature.module.impl.option;
 
 import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 import net.minecraft.network.play.server.S48PacketResourcePackSend;
@@ -9,7 +9,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 
-@ModuleData(name = "Security", description = "Patches common exploits", category = Category.MISCELLANEOUS)
+@ModuleData(name = "Security", description = "Patches common exploits", category = Category.OPTIONS, frozenState = true, enabled = true)
 public class Security extends Module {
     public final CheckBoxValue antiResourcePackExploit = new CheckBoxValue("Anti Resource Pack Exploit", "Prevent servers using the resource pack exploit to scan your files?", this, true);
 

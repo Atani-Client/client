@@ -37,7 +37,7 @@ public class SimpleClickGuiScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scroll += Mouse.getDWheel() / 10F;
         if(frames.isEmpty()) {
-            float y = 50, width = 130, height = 15, x = (this.width - (Category.values().length * (width + 5))) / 2; /* The X is made like that so categories will be in the middle*/
+            float y = 50, width = 110, height = 15, x = (this.width - (Category.values().length * (width + 5))) / 2; /* The X is made like that so categories will be in the middle*/
             for(Category category : Category.values()) {
                 Frame frame = new Frame(category, x, y, width, height, height);
                 Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);

@@ -11,7 +11,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.feature.value.interfaces.ValueChangeListener;
 import tech.atani.client.loader.Modification;
 
-@ModuleData(name = "Theme", description = "Load theme presets", category = Category.OPTIONS, frozenState = true)
+@ModuleData(name = "Theme", description = "Load theme presets", category = Category.OPTIONS, frozenState = true, enabled = true)
 public class Theme extends Module {
 
     private WaterMark waterMark;

@@ -1,4 +1,4 @@
-package tech.atani.client.feature.module.impl.misc;
+package tech.atani.client.feature.module.impl.player;
 
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.EnumChatFormatting;

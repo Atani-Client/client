@@ -1,4 +1,4 @@
-package tech.atani.client.feature.module.impl.misc;
+package tech.atani.client.feature.module.impl.player;
 
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;

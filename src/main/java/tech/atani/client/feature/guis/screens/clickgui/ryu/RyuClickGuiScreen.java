@@ -38,7 +38,7 @@ public class RyuClickGuiScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scroll += Mouse.getDWheel() / 10F;
         if(frames.isEmpty()) {
-            float y = 50, width = 100, height = 22, x = (this.width - (Category.values().length * (width + 5))) / 2; /* The X is made like that so categories will be in the middle*/
+            float y = 30, width = 100, height = 22, x = 30;
             for(Category category : Category.values()) {
                 Frame frame = new Frame(category, x, y, width, height, 18);
                 Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);

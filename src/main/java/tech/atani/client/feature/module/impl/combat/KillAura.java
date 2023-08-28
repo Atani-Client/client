@@ -49,16 +49,16 @@ public class KillAura extends Module {
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
-    public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Server-Side Misplace", "Fix Server-Side Misplace?", this, true);
-    public CheckBoxValue waitBeforeAttack = new CheckBoxValue("Wait before attacking", "Wait before attacking the target?", this, true);
+    public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Misplace", "Fix Server-Side Misplace?", this, true);
+    public CheckBoxValue waitBeforeAttack = new CheckBoxValue("Delay Clicks", "Wait before attacking the target?", this, true);
     public StringBoxValue waitMode = new StringBoxValue("Wait for", "For what will the module wait before attacking?", this, new String[]{"CPS", "1.9"}, new Supplier[]{() -> waitBeforeAttack.getValue()});
     public SliderValue<Float> cps = new SliderValue<Float>("CPS", "How much will the killaura click every second?", this, 12f, 0f, 20f, 1, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
     public CheckBoxValue randomizeCps = new CheckBoxValue("Randomize CPS", "Randomize CPS Value to bypass anticheats?", this, true, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
     public CheckBoxValue lockView = new CheckBoxValue("Lock-view", "Rotate non-silently", this, false);
     public CheckBoxValue snapYaw = new CheckBoxValue("Snap Yaw", "Skip smoothing out yaw rotations?", this, false);
     public CheckBoxValue snapPitch = new CheckBoxValue("Snap Pitch", "Skip smoothing out pitch rotations?", this, false);
-    public CheckBoxValue skipUnnecessaryRotations = new CheckBoxValue("Skip unnecessary Rotations", "Rotate only if necessary?", this, false);
-    public StringBoxValue unnecessaryRotations = new StringBoxValue("Unnecessary Rotations", "What rotations to skip?", this, new String[]{"Both", "Yaw", "Pitch"}, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
+    public CheckBoxValue skipUnnecessaryRotations = new CheckBoxValue("Necessary Rotations", "Rotate only if necessary?", this, false);
+    public StringBoxValue unnecessaryRotations = new StringBoxValue("Necessary Rotations", "What rotations to skip?", this, new String[]{"Both", "Yaw", "Pitch"}, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
     public CheckBoxValue skipIfNear = new CheckBoxValue("Skip If Near", "Rotate only if far enough?", this, true, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
     public SliderValue<Float> nearDistance = new SliderValue<Float>("Near Distance", "How near to skip rotations?", this, 0.5F, 0F, 0.5F, 2, new Supplier[]{() -> skipUnnecessaryRotations.getValue() && skipIfNear.getValue()});
     public SliderValue<Float> minYaw = new SliderValue<>("Minimum Yaw", "What will be the minimum yaw for rotating?", this, 40f, 0f, 180f, 0);
@@ -284,11 +284,9 @@ public class KillAura extends Module {
                         break;
                 }
                 MovingObjectPosition objectPosition = Methods.mc.objectMouseOver;
-                if (
-                        objectPosition != null && objectPosition.entityHit != null &&
+                if (objectPosition != null && objectPosition.entityHit != null &&
                         objectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY &&
-                        mc.thePlayer.getDistanceToEntity(objectPosition.entityHit) <= correctedRange
-                ) {
+                        mc.thePlayer.getDistanceToEntity(objectPosition.entityHit) <= correctedRange) {
                     Methods.mc.thePlayer.swingItem();
                     Methods.mc.playerController.attackEntity(Methods.mc.thePlayer, objectPosition.entityHit);
                 }

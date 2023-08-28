@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 public class FatalityClickGuiScreen extends GuiScreen implements ClientInformationAccess, ColorPalette {
 
-    private final float width = 410, height = 320;
+    private final float width = 420, height = 320;
     private float posX = -1337, posY = -1337;
     private Category selectedCategory = null;
     private Module selectedModule, bindingModule;

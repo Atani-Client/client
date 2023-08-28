@@ -13,6 +13,7 @@ public @interface ModuleData {
     String name();
     String description();
     Category category();
+    String serverIP() default "";
     int key() default 0;
     boolean enabled() default false;
     boolean alwaysRegistered() default false;

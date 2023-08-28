@@ -1,4 +1,4 @@
-package tech.atani.client.feature.module.impl.misc;
+package tech.atani.client.feature.module.impl.player;
 
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;

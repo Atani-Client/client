@@ -320,7 +320,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     public MinecraftSessionService sessionService;
     public SkinManager skinManager;
     public Queue < FutureTask<? >> scheduledTasks = Queues. < FutureTask<? >> newArrayDeque();
-    public long field_175615_aJ = 0L;
     public Thread mcThread = Thread.currentThread();
     public ModelManager modelManager;
 
@@ -336,9 +335,6 @@ public class Minecraft implements IThreadListener, IPlayerUsage
 
     /** String that shows the debug information */
     public String debug = "";
-    public boolean field_175613_B = false;
-    public boolean field_175614_C = false;
-    public boolean field_175611_D = false;
     public boolean renderChunksMany = true;
 
     /** Approximate time (in ms) of last update to debug string */

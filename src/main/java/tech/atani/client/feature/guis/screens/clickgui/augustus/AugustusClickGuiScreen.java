@@ -33,7 +33,7 @@ public class AugustusClickGuiScreen extends GuiScreen {
     Category selectedCategory = Category.COMBAT;
     Module selectedModule;
     float draggingX, draggingY;
-    boolean dragging = true;
+    boolean dragging = false;
     float valueScroll = 0F, moduleScroll = 0F;
     public boolean expandingRight;
     private ClickGui clickGui;

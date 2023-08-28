@@ -1,11 +1,14 @@
 package tech.atani.client.feature.module;
 
+import com.google.common.base.Supplier;
 import com.google.gson.JsonObject;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.listener.event.client.DisableModuleEvent;
 import tech.atani.client.listener.event.client.EnableModuleEvent;
+import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.handling.EventHandling;
+import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.storage.ValueStorage;
@@ -84,7 +87,16 @@ public abstract class Module implements Methods {
     public abstract void onDisable();
 
     public boolean shouldHide() {
-        return mc.getCurrentServerData() == null || mc.isSingleplayer() ? this.serverIP.equalsIgnoreCase("") : mc.getCurrentServerData().serverIP.equalsIgnoreCase(this.serverIP);
+        return category != Category.SERVER ? false : (mc.getCurrentServerData() == null || mc.isSingleplayer() ? !this.serverIP.equalsIgnoreCase("") : !mc.getCurrentServerData().serverIP.equalsIgnoreCase(this.serverIP));
+    }
+
+    @Listen
+    public void onTick(RunTickEvent runTickEvent) {
+        if(this.isEnabled()) { // This shouldn't be needed, but just in case
+            if(category == Category.SERVER && (mc.getCurrentServerData() == null || mc.getCurrentServerData().serverIP != this.serverIP)) {
+                this.setEnabled(false);
+            }
+        }
     }
     
     public String getSuffix() {

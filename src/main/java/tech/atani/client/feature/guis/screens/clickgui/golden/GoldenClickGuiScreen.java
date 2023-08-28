@@ -111,6 +111,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
         moduleY += moduleScroll;
         ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.selectedCategory);
         modules.sort(Comparator.comparingInt(o -> fontRenderer.getStringWidth(((Module) o).getName())).reversed());
+        modules.removeIf(module -> module.shouldHide());
         int counter = 0;
         int dWheel = Mouse.getDWheel();
         if (RenderUtil.isHovered(mouseX, mouseY, x, startY, this.width / 2, height - (startY - y) + 0.5f)) {
@@ -227,6 +228,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
         moduleY += moduleScroll;
         ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.selectedCategory);
         modules.sort(Comparator.comparingInt(o -> fontRenderer.getStringWidth(((Module) o).getName())).reversed());
+        modules.removeIf(module -> module.shouldHide());
         int counter = 0;
         for (Module module : modules) {
             if (RenderUtil.isHovered(mouseX, mouseY, startX, moduleY, fontRenderer.getStringWidth(module.getName()), fontRenderer.FONT_HEIGHT)) {

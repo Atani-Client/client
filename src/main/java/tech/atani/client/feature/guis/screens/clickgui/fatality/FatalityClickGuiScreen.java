@@ -119,6 +119,8 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
                 modScroll = Math.min(0, modScroll + Mouse.getDWheel() / 10F);
             float moduleY = posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2 + modScroll;
             for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
+                if(module.shouldHide())
+                    continue;
                 //RenderUtil.drawRect(posX, moduleY, 2 * (width / 5), 40, Color.red.getRGB());
                 bigFont.drawString(module.getName(), posX + 11, moduleY + 9, module.isEnabled() ? -1 : new Color(170, 170, 170).getRGB());
                 normalFont.drawString(String.format("Bind (%s)", bindingModule == module ? "?" : module.getKey() == 0 ? "  " : Keyboard.getKeyName(module.getKey())), posX + 11, moduleY + 9 + bigFont.FONT_HEIGHT + 2, new Color(170, 170, 170).getRGB());
@@ -238,6 +240,8 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
             if(selectedCategory != null) {
                 float moduleY = posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2 + modScroll;
                 for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
+                    if(module.shouldHide())
+                        continue;
                     if(RenderUtil.isHovered(mouseX, mouseY, posX, moduleY, 2 * (width / 5), 40)) {
                         switch (mouseButton) {
                             case 0:

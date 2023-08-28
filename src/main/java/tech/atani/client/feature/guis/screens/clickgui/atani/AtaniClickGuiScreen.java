@@ -167,6 +167,8 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
             float modX = x + 2 + 10;
             float modWidth = third - 13.5f;
             for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
+                if(module.shouldHide())
+                    continue;
                 float modY = 0;
                 switch (counter) {
                     case 0:
@@ -330,6 +332,8 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
             float modX = x + 2 + 10;
             float modWidth = third - 13.5f;
             for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
+                if(module.shouldHide())
+                    continue;
                 float modY = 0;
                 switch (counter) {
                     case 0:

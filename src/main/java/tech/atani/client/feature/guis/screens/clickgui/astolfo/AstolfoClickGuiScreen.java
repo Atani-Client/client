@@ -37,7 +37,17 @@ public class AstolfoClickGuiScreen extends GuiScreen {
         scroll += Mouse.getDWheel() / 10F;
         if (frames.isEmpty()) {
             float y = 20, width = 118, height = 16, x = 20;
+            int count = 0;
             for (Category category : Category.values()) {
+                if(count == 7) {
+                    x = 20;
+                    float catY = 20 * 2 + ModuleStorage.getInstance().getModules(Category.SERVER).size() * 20 + 15;
+                    if(catY <= super.height / 2) {
+                        y = catY;
+                    } else {
+                        y = super.height / 2;
+                    }
+                }
                 Frame frame = new Frame(category, x, y, width, height, height);
                 Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
                 this.frames.add(frame);
@@ -45,6 +55,7 @@ public class AstolfoClickGuiScreen extends GuiScreen {
                 // We need to set the direction backwards at first so it will start at 0, then to forwards so it will animate upwards
                 animation.setDirection(Direction.FORWARDS);
                 x += width + 15;
+                count++;
             }
         }
         if (framesAnimations.isEmpty()) {

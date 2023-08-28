@@ -67,7 +67,7 @@ public class ClickGui extends Module {
                 mc.displayGuiScreen(clickGuiScreenAtani);
                 break;
             case "Astolfo":
-                if(clickGuiScreenAstolfo == null) {
+                if(clickGuiScreenAstolfo == null || true) {
                     clickGuiScreenAstolfo = new AstolfoClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenAstolfo);

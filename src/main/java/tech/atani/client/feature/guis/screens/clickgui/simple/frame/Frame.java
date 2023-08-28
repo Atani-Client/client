@@ -41,6 +41,8 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.simpl
         float moduleY = this.getPosY() + this.getBaseHeight();
         for(tech.atani.client.feature.guis.screens.clickgui.simple.component.Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
+                if(((ModuleComponent)component).getModule().shouldHide())
+                    continue;
                 component.setPosX(component.getPosX());
                 component.setPosY(moduleY + getAddY());
                 component.setAddX(this.getAddX());
@@ -64,6 +66,8 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.simpl
         float moduleY = this.getPosY() + this.getBaseHeight();
         for(Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
+                if(((ModuleComponent)component).getModule().shouldHide())
+                    continue;
                 component.setPosY(moduleY + getAddY());
                 component.mouseClick(mouseX, mouseY, mouseButton);
                 moduleY += component.getFinalHeight();

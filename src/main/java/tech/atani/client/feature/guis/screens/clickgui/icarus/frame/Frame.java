@@ -1,5 +1,6 @@
 package tech.atani.client.feature.guis.screens.clickgui.icarus.frame;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.module.Module;
@@ -50,6 +51,8 @@ public class Frame extends Component {
         float moduleY = this.getPosY() + this.getBaseHeight();
         for(Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
+                if(((ModuleComponent)component).getModule().shouldHide())
+                    continue;
                 component.setPosX(getPosX() + 2);
                 component.setPosY(moduleY + getAddY());
                 component.setAddX(this.getAddX());
@@ -62,6 +65,8 @@ public class Frame extends Component {
         GradientShader.drawGradientLR(getPosX() + getAddX() - 1, getPosY() + getAddY() + getBaseHeight() - 0.5f, getBaseWidth() + 2, 1, 1, new Color(ICARUS_FIRST), new Color(ICARUS_SECOND));
         for(Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
+                if(((ModuleComponent)component).getModule().shouldHide())
+                    continue;
                 component.drawScreen(mouseX, mouseY);
             }
         }
@@ -86,6 +91,8 @@ public class Frame extends Component {
         float moduleY = this.getPosY() + this.getBaseHeight();
         for(Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
+                if(((ModuleComponent)component).getModule().shouldHide())
+                    continue;
                 component.setPosY(moduleY + getAddY());
                 component.mouseClick(mouseX, mouseY, mouseButton);
                 moduleY += component.getFinalHeight();

@@ -40,7 +40,6 @@ public class KillAura extends Module {
     public SliderValue<Float> findRange = new SliderValue<>("Search Range", "What'll be the range for searching for targets?", this, 4f, 3f, 10f, 1);
     public StringBoxValue targetMode = new StringBoxValue("Target Mode", "How will the aura search for targets?", this, new String[]{"Single", "Hybrid", "Switch", "Multi"});
     public StringBoxValue priority = new StringBoxValue("Priority", "How will the aura sort targets?", this, new String[]{"Health", "Distance"});
-    public StringBoxValue teams = new StringBoxValue("Teams", "How will the aura behave with teammates?", this, new String[]{"Off", "Scoreboard", "Armor Color"});
     public SliderValue<Long> switchDelay = new SliderValue<Long>("Switch Delay", "How long will it take to switch between targets?", this, 300L, 0L, 1000L, 0, new Supplier[]{() -> targetMode.is("Switch")});
     public CheckBoxValue players = new CheckBoxValue("Players", "Attack Players?", this, true);
     public CheckBoxValue animals = new CheckBoxValue("Animals", "Attack Animals", this, true);
@@ -216,49 +215,6 @@ public class KillAura extends Module {
     @Listen
     public final void onClick(ClickingEvent clickingEvent) {
         if(curEntity != null) {
-
-            EntityPlayer targetPlayer = (EntityPlayer) curEntity;
-            EntityPlayer localPlayer = getPlayer();
-
-            switch(this.teams.getValue()) {
-                case "Scoreboard":
-                    if (localPlayer != null && targetPlayer != null) {
-                        Team localPlayerTeam = PlayerUtil.getPlayerTeam(localPlayer);
-                        Team targetPlayerTeam = PlayerUtil.getPlayerTeam(targetPlayer);
-
-                        if (localPlayerTeam != null && targetPlayerTeam != null &&
-                                localPlayerTeam.isSameTeam(targetPlayerTeam) &&
-                                !PlayerUtil.isFriendlyFireAllowed(mc.thePlayer)) {
-                            return;
-                        }
-                    }
-                    break;
-                case "Armor Color":
-                    if (localPlayer != null && targetPlayer != null) {
-                        Team localPlayerTeam = PlayerUtil.getPlayerTeam(localPlayer);
-                        Team targetPlayerTeam = PlayerUtil.getPlayerTeam(targetPlayer);
-
-                        if (localPlayerTeam != null && targetPlayerTeam != null &&
-                                localPlayerTeam.isSameTeam(targetPlayerTeam) &&
-                                !PlayerUtil.isFriendlyFireAllowed(mc.thePlayer)) {
-                            return;
-                        }
-                        
-                        boolean localPlayerHasLeatherArmor = PlayerUtil.hasLeatherArmor(localPlayer);
-                        boolean targetPlayerHasLeatherArmor = PlayerUtil.hasLeatherArmor(targetPlayer);
-
-                        if (localPlayerHasLeatherArmor && targetPlayerHasLeatherArmor) {
-                            int localPlayerArmorColor = PlayerUtil.getLeatherArmorColor(localPlayer);
-                            int targetPlayerArmorColor = PlayerUtil.getLeatherArmorColor(targetPlayer);
-
-                            if (localPlayerArmorColor == targetPlayerArmorColor) {
-                                return;
-                            }
-                        }
-                    }
-                    break;
-            }
-
             // We need to calculate 1.9 wait BEFORE attempting to attack to make sure we hit the cooldown correctly
             switch (this.waitMode.getValue()) {
                 case "1.9":

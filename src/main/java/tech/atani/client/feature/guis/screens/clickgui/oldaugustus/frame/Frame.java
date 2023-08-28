@@ -50,6 +50,8 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.oldau
         float moduleY = this.getPosY() + this.getBaseHeight();
         for(tech.atani.client.feature.guis.screens.clickgui.oldaugustus.frame.component.Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
+                if(((ModuleComponent)component).getModule().shouldHide())
+                    continue;
                 component.setPosX(this.getPosX() + 2);
                 component.setPosY(moduleY + getAddY());
                 component.setAddX(this.getAddX());
@@ -78,6 +80,8 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.oldau
         float moduleY = this.getPosY() + this.getBaseHeight();
         for(Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
+                 if(((ModuleComponent)component).getModule().shouldHide())
+                    continue;
                 component.setPosY(moduleY + getAddY());
                 component.mouseClick(mouseX, mouseY, mouseButton);
                 moduleY += component.getFinalHeight();

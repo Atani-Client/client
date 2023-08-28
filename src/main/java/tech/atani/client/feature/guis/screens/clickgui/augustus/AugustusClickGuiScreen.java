@@ -50,6 +50,8 @@ public class AugustusClickGuiScreen extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        if(!Mouse.isButtonDown(0))
+            dragging = false;
         if(clickGui == null)
             clickGui = ModuleStorage.getInstance().getByClass(ClickGui.class);
         if (this.posX == -1337 || this.posY == -1337) {
@@ -132,6 +134,8 @@ public class AugustusClickGuiScreen extends GuiScreen {
             }
             float moduleY = posY + 25 + moduleScroll;
             for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
+                if(module.shouldHide())
+                    continue;
                 normal.drawString(module.getName(), posX + 10, moduleY, module.isEnabled() ? new Color(clickGui.red.getValue(), clickGui.green.getValue(), clickGui.blue.getValue()).getRGB() : new Color(200, 200, 200).getRGB());
                 moduleY += normal.FONT_HEIGHT + 5;
             }
@@ -263,6 +267,8 @@ public class AugustusClickGuiScreen extends GuiScreen {
         if(selectedCategory != null) {
             float moduleY = posY + 25 + moduleScroll;
             for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
+                if(module.shouldHide())
+                    continue;
                 if (RenderUtil.isHovered(mouseX, mouseY, posX + 10, moduleY - 4, normal.getStringWidth(module.getName()) - 0.5f, normal.FONT_HEIGHT + 4)) {
                     switch (mouseButton) {
                         case 0:

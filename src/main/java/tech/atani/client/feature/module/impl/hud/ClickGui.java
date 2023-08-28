@@ -29,12 +29,12 @@ public class ClickGui extends Module {
             mode.getValue().equalsIgnoreCase("Astolfo") ||
             mode.getValue().equalsIgnoreCase("Augustus 2.6") ||
             mode.getValue().equalsIgnoreCase("Xave") ||
-            mode.getValue().equalsIgnoreCase("Ryu") ||
             mode.getValue().equalsIgnoreCase("Icarus")}).setIdName("Dropdown Animation Mode");
     public final StringBoxValue nonDropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like", this, new String[]{"Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
             mode.getValue().equalsIgnoreCase("Golden") || // Non-Dropdown guis go here
                     mode.getValue().equalsIgnoreCase("Atani") ||
                     mode.getValue().equalsIgnoreCase("Augustus") ||
+                    mode.getValue().equalsIgnoreCase("Ryu") || // Ryu is special cause it's tarded
                     mode.getValue().equalsIgnoreCase("Fatality")}).setIdName("Non-Dropdown Animation Mode");
     public final SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the colored elements?", this, 255, 0, 255, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Augustus")});
     public final SliderValue<Integer> green = new SliderValue<>("Green", "What'll be the green of the colored elements?", this, 197, 0, 255, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Augustus")});

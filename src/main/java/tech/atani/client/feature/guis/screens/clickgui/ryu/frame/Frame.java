@@ -37,6 +37,21 @@ public class Frame extends Component implements ColorPalette {
         }
     }
 
+    public void renderShader() {
+        float moduleY = this.getPosY() + this.getBaseHeight();
+        for(Component component : this.subComponents) {
+            if(component instanceof ModuleComponent) {
+                component.setPosX(component.getPosX());
+                component.setPosY(moduleY + getAddY());
+                component.setAddX(this.getAddX());
+                //component.drawScreen(mouseX, mouseY);
+                moduleY += component.getFinalHeight();
+            }
+        }
+        final float finalY = moduleY;
+        RoundedShader.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), finalY - getPosY(), 7,  2, new Color(0, 0, 0, 0), new Color(0, 0, 0, 255));
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY) {
         float moduleY = this.getPosY() + this.getBaseHeight();
@@ -50,16 +65,10 @@ public class Frame extends Component implements ColorPalette {
             }
         }
         final float finalY = moduleY;
-        RenderableShaders.render(true, false, () -> {
-            RoundedShader.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), finalY - getPosY(), 7,  2, new Color(0, 0, 0, 0), new Color(0, 0, 0, 255));
-        });
         RoundedShader.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), moduleY - getPosY(), 7,  2, new Color(RYU), new Color(-1));
         RoundedShader.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY() + getBaseHeight(), getBaseWidth(), moduleY - getPosY() - getBaseHeight(), 7,  2, new Color(36, 37, 41), new Color(36, 37, 41, 0));
         FontRenderer medium24 = FontStorage.getInstance().findFont("Roboto Medium", 24);
-        RenderableShaders.render(true, false, () -> {
-            FontStorage.getInstance().findFont("Roboto", 24).drawString(category.getName(), this.getPosX() + 7.5f + getAddX(), this.getPosY() + 6 + getAddY() + 0.5f, new Color(0, 0, 0, 255).getRGB());
-            FontStorage.getInstance().findFont("Roboto", 17).drawString("8", this.getPosX() + 7 + medium24.getStringWidth(category.getName()) + 2 + 0.5f + getAddX(), this.getPosY() + 6 + 0.5f + getAddY(), new Color(0, 0, 0, 255).getRGB());
-        });
+
         medium24.drawString(category.getName(), this.getPosX() + 7 + getAddX(), this.getPosY() + 6 + getAddY(), -1);
         FontStorage.getInstance().findFont("Roboto Medium", 17).drawString(ChatFormatting.GRAY.toString() + ModuleStorage.getInstance().getModules(category).size() + "", this.getPosX() + 7 + medium24.getStringWidth(category.getName()) + 2 + getAddX(), this.getPosY() + 6 + getAddY(), -1);
         for(Component component : this.subComponents) {
@@ -67,6 +76,8 @@ public class Frame extends Component implements ColorPalette {
                 component.drawScreen(mouseX, mouseY);
             }
         }
+        RoundedShader.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), moduleY - getPosY(), 7,  2, new Color(0, 0, 0, 0), new Color(-1));
+
     }
 
     @Override

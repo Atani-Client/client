@@ -11,7 +11,6 @@ import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.listener.event.minecraft.game.PostTickEvent;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
@@ -20,12 +19,15 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.input.ClickingEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RayTraceRangeEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
-import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.random.RandomUtil;
 import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.rotation.RotationUtil;
+import net.minecraft.scoreboard.Team;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumChatFormatting;
+import tech.atani.client.utility.player.PlayerUtil;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -38,7 +40,8 @@ public class KillAura extends Module {
     public SliderValue<Float> findRange = new SliderValue<>("Search Range", "What'll be the range for searching for targets?", this, 4f, 3f, 10f, 1);
     public StringBoxValue targetMode = new StringBoxValue("Target Mode", "How will the aura search for targets?", this, new String[]{"Single", "Hybrid", "Switch", "Multi"});
     public StringBoxValue priority = new StringBoxValue("Priority", "How will the aura sort targets?", this, new String[]{"Health", "Distance"});
-    public SliderValue<Long> switchDelay = new SliderValue<>("Switch Delay", "How long will it take to switch between targets?", this, 300L, 0L, 1000L, 0, new Supplier[]{() -> targetMode.is("Switch")});
+    public StringBoxValue teams = new StringBoxValue("Teams", "How will the aura behave with teammates?", this, new String[]{"Off", "Scoreboard", "Armor Color"});
+    public SliderValue<Long> switchDelay = new SliderValue<Long>("Switch Delay", "How long will it take to switch between targets?", this, 300L, 0L, 1000L, 0, new Supplier[]{() -> targetMode.is("Switch")});
     public CheckBoxValue players = new CheckBoxValue("Players", "Attack Players?", this, true);
     public CheckBoxValue animals = new CheckBoxValue("Animals", "Attack Animals", this, true);
     public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters", this, true);
@@ -49,15 +52,15 @@ public class KillAura extends Module {
     public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Server-Side Misplace", "Fix Server-Side Misplace?", this, true);
     public CheckBoxValue waitBeforeAttack = new CheckBoxValue("Wait before attacking", "Wait before attacking the target?", this, true);
     public StringBoxValue waitMode = new StringBoxValue("Wait for", "For what will the module wait before attacking?", this, new String[]{"CPS", "1.9"}, new Supplier[]{() -> waitBeforeAttack.getValue()});
-    public SliderValue<Float> cps = new SliderValue<>("CPS", "How much will the killaura click every second?", this, 12f, 0f, 20f, 1, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
+    public SliderValue<Float> cps = new SliderValue<Float>("CPS", "How much will the killaura click every second?", this, 12f, 0f, 20f, 1, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
     public CheckBoxValue randomizeCps = new CheckBoxValue("Randomize CPS", "Randomize CPS Value to bypass anticheats?", this, true, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
-    public CheckBoxValue lockview = new CheckBoxValue("Lock-view", "Rotate non-silently", this, false);
+    public CheckBoxValue lockView = new CheckBoxValue("Lock-view", "Rotate non-silently", this, false);
     public CheckBoxValue snapYaw = new CheckBoxValue("Snap Yaw", "Skip smoothing out yaw rotations?", this, false);
     public CheckBoxValue snapPitch = new CheckBoxValue("Snap Pitch", "Skip smoothing out pitch rotations?", this, false);
     public CheckBoxValue skipUnnecessaryRotations = new CheckBoxValue("Skip unnecessary Rotations", "Rotate only if necessary?", this, false);
     public StringBoxValue unnecessaryRotations = new StringBoxValue("Unnecessary Rotations", "What rotations to skip?", this, new String[]{"Both", "Yaw", "Pitch"}, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
     public CheckBoxValue skipIfNear = new CheckBoxValue("Skip If Near", "Rotate only if far enough?", this, true, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
-    public SliderValue<Float> nearDistance = new SliderValue<>("Near Distance", "How near to skip rotations?", this, 0.5F, 0F, 0.5F, 2, new Supplier[]{() -> skipUnnecessaryRotations.getValue() && skipIfNear.getValue()});
+    public SliderValue<Float> nearDistance = new SliderValue<Float>("Near Distance", "How near to skip rotations?", this, 0.5F, 0F, 0.5F, 2, new Supplier[]{() -> skipUnnecessaryRotations.getValue() && skipIfNear.getValue()});
     public SliderValue<Float> minYaw = new SliderValue<>("Minimum Yaw", "What will be the minimum yaw for rotating?", this, 40f, 0f, 180f, 0);
     public SliderValue<Float> maxYaw = new SliderValue<>("Maximum Yaw", "What will be the maximum yaw for rotating?", this, 40f, 0f, 180f, 0);
     public SliderValue<Float> minPitch = new SliderValue<>("Minimum Pitch", "What will be the minimum pitch for rotating?", this, 40f, 0f, 180f, 0);
@@ -183,7 +186,7 @@ public class KillAura extends Module {
     }
 
     @Listen
-    public final void onRotatio(RotationEvent rotationEvent) {
+    public final void onRotation(RotationEvent rotationEvent) {
         if (curEntity != null) {
             final float[] rotations = RotationUtil.getRotation(curEntity, mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
 
@@ -203,7 +206,7 @@ public class KillAura extends Module {
             rotationEvent.setYaw(yawRot);
             rotationEvent.setPitch(pitchRot);
 
-            if(this.lockview.getValue()) {
+            if(this.lockView.getValue()) {
                 Methods.mc.thePlayer.rotationYaw = yawRot;
                 Methods.mc.thePlayer.rotationPitch = pitchRot;
             }
@@ -213,6 +216,49 @@ public class KillAura extends Module {
     @Listen
     public final void onClick(ClickingEvent clickingEvent) {
         if(curEntity != null) {
+
+            EntityPlayer targetPlayer = (EntityPlayer) curEntity;
+            EntityPlayer localPlayer = getPlayer();
+
+            switch(this.teams.getValue()) {
+                case "Scoreboard":
+                    if (localPlayer != null && targetPlayer != null) {
+                        Team localPlayerTeam = PlayerUtil.getPlayerTeam(localPlayer);
+                        Team targetPlayerTeam = PlayerUtil.getPlayerTeam(targetPlayer);
+
+                        if (localPlayerTeam != null && targetPlayerTeam != null &&
+                                localPlayerTeam.isSameTeam(targetPlayerTeam) &&
+                                !PlayerUtil.isFriendlyFireAllowed(mc.thePlayer)) {
+                            return;
+                        }
+                    }
+                    break;
+                case "Armor Color":
+                    if (localPlayer != null && targetPlayer != null) {
+                        Team localPlayerTeam = PlayerUtil.getPlayerTeam(localPlayer);
+                        Team targetPlayerTeam = PlayerUtil.getPlayerTeam(targetPlayer);
+
+                        if (localPlayerTeam != null && targetPlayerTeam != null &&
+                                localPlayerTeam.isSameTeam(targetPlayerTeam) &&
+                                !PlayerUtil.isFriendlyFireAllowed(mc.thePlayer)) {
+                            return;
+                        }
+                        
+                        boolean localPlayerHasLeatherArmor = PlayerUtil.hasLeatherArmor(localPlayer);
+                        boolean targetPlayerHasLeatherArmor = PlayerUtil.hasLeatherArmor(targetPlayer);
+
+                        if (localPlayerHasLeatherArmor && targetPlayerHasLeatherArmor) {
+                            int localPlayerArmorColor = PlayerUtil.getLeatherArmorColor(localPlayer);
+                            int targetPlayerArmorColor = PlayerUtil.getLeatherArmorColor(targetPlayer);
+
+                            if (localPlayerArmorColor == targetPlayerArmorColor) {
+                                return;
+                            }
+                        }
+                    }
+                    break;
+            }
+
             // We need to calculate 1.9 wait BEFORE attempting to attack to make sure we hit the cooldown correctly
             switch (this.waitMode.getValue()) {
                 case "1.9":
@@ -224,8 +270,15 @@ public class KillAura extends Module {
                 // We need to calculate cps delay after checking if the timer has reached, since the delay would be first set to 0, therefore we hit earlier
                 switch (this.waitMode.getValue()) {
                     case "CPS":
-                        final double cps = RandomUtil.nextSecureDouble(10, 15);
+                        final double cps = this.cps.getValue() > 10 ? this.cps.getValue() + 5 : this.cps.getValue();
                         long calcCPS = (long) (1000 / cps);
+                        if(this.randomizeCps.getValue()) {
+                            try {
+                                calcCPS += SecureRandom.getInstanceStrong().nextGaussian() * 50;
+                            } catch (NoSuchAlgorithmException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
 
                         cpsDelay = calcCPS;
                         break;

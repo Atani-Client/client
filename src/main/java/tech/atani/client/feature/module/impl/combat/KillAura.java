@@ -243,8 +243,7 @@ public class KillAura extends Module {
                 }
                 MovingObjectPosition objectPosition = Methods.mc.objectMouseOver;
                 if (objectPosition != null && objectPosition.entityHit != null &&
-                        objectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY &&
-                        mc.thePlayer.getDistanceToEntity(objectPosition.entityHit) <= correctedRange) {
+                        objectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
                     Methods.mc.thePlayer.swingItem();
                     Methods.mc.playerController.attackEntity(Methods.mc.thePlayer, objectPosition.entityHit);
                 }

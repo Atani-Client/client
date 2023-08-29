@@ -187,21 +187,28 @@ public class KillAura extends Module {
         if (curEntity != null) {
             final float[] rotations = RotationUtil.getRotation(curEntity, vectorMode.getValue(), mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
 
-            if(skipUnnecessaryRotations.getValue()) {
-                MovingObjectPosition movingObjectPosition = mc.objectMouseOver;
-                boolean shouldSkip = (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY || movingObjectPosition.entityHit == curEntity) || (skipIfNear.getValue() && FightUtil.getRange(curEntity) <= nearDistance.getValue());
-                if(shouldSkip) {
-                    if(unnecessaryRotations.getValue().equalsIgnoreCase("Yaw") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
-                        yawRot = PlayerHandler.yaw;
-                    if(unnecessaryRotations.getValue().equalsIgnoreCase("Pitch") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
-                        pitchRot = PlayerHandler.pitch;
+            neccessaryRots: {
+                if(skipUnnecessaryRotations.getValue()) {
+                    MovingObjectPosition movingObjectPosition = mc.objectMouseOver;
+                    if(movingObjectPosition == null) {
+                        yawRot = rotations[0];
+                        pitchRot = rotations[1];
+                        break neccessaryRots;
+                    }
+                    boolean shouldSkip = (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY || movingObjectPosition.entityHit == curEntity) || (skipIfNear.getValue() && FightUtil.getRange(curEntity) <= nearDistance.getValue());
+                    if(shouldSkip) {
+                        if(unnecessaryRotations.getValue().equalsIgnoreCase("Yaw") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
+                            yawRot = PlayerHandler.yaw;
+                        if(unnecessaryRotations.getValue().equalsIgnoreCase("Pitch") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
+                            pitchRot = PlayerHandler.pitch;
+                    } else {
+                        yawRot = rotations[0];
+                        pitchRot = rotations[1];
+                    }
                 } else {
                     yawRot = rotations[0];
                     pitchRot = rotations[1];
                 }
-            } else {
-                yawRot = rotations[0];
-                pitchRot = rotations[1];
             }
 
             rotationEvent.setYaw(yawRot);

@@ -1,14 +1,12 @@
 package tech.atani.client.feature.module.impl.combat;
 
 import com.google.common.base.Supplier;
-import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
 import net.minecraft.util.AxisAlignedBB;
-import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.SilentMoveEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
@@ -30,8 +28,6 @@ public class Velocity extends Module {
     public SliderValue<Integer> horizontal = new SliderValue<Integer>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
-
-    private KillAura killAura;
 
     private double packetX = 0;
     private double packetY = 0;
@@ -276,7 +272,6 @@ public class Velocity extends Module {
 
     @Override
     public void onEnable() {
-        this.killAura = ModuleStorage.getInstance().getByClass(KillAura.class);
         grimCancel = 0;
         packetX = 0;
         packetY = 0;

@@ -1,7 +1,6 @@
 package tech.atani.client.feature.module.impl.combat;
 
 import com.google.common.base.Supplier;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;

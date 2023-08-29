@@ -2,7 +2,6 @@ package tech.atani.client.feature.module.impl.option;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import tech.atani.client.feature.combat.CombatManager;
@@ -10,9 +9,7 @@ import tech.atani.client.feature.combat.interfaces.IgnoreList;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
-import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;

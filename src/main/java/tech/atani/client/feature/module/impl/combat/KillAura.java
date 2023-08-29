@@ -63,9 +63,9 @@ public class KillAura extends Module {
     public SliderValue<Float> maxPitch = new SliderValue<>("Maximum Pitch", "What will be the maximum pitch for rotating?", this, 40f, 0f, 180f, 0);
     public CheckBoxValue mouseFix = new CheckBoxValue("Mouse Fix", "Simulate mouse movements in rotations?", this, true);
     public CheckBoxValue heuristics = new CheckBoxValue("Heuristics", "Bypass heuristics checks?", this, true);
-    public SliderValue<Float> minRandomYaw = new SliderValue<>("Min Random Yaw", "What'll be the minimum randomization for yaw?", this, 0f, 0f, 1f, 2);
+    public SliderValue<Float> minRandomYaw = new SliderValue<>("Min Random Yaw", "What'll be the minimum randomization for yaw?", this, 0f, -1f, 0f, 2);
     public SliderValue<Float> maxRandomYaw = new SliderValue<>("Max Random Yaw", "What'll be the maximum randomization for yaw?", this, 0f, 0f, 1f, 2);
-    public SliderValue<Float> minRandomPitch = new SliderValue<>("Min Random Pitch", "What'll be the minimum randomization for pitch?", this, 0f, 0f, 1f, 2);
+    public SliderValue<Float> minRandomPitch = new SliderValue<>("Min Random Pitch", "What'll be the minimum randomization for pitch?", this, 0f, -1f, 0f, 2);
     public SliderValue<Float> maxRandomPitch = new SliderValue<>("Max Random Pitch", "What'll be the maximum randomization for pitch?", this, 0f, 0f, 1f, 2);
     public CheckBoxValue prediction = new CheckBoxValue("Prediction", "Predict the players position?", this, false);
 
@@ -140,6 +140,7 @@ public class KillAura extends Module {
         }
         targets.sort(new AttackRangeSorter());
         if (targets.isEmpty() || (curEntity != null && !targets.contains(curEntity))) {
+            cpsDelay = 0L;
             curEntity = null;
             return;
         }
@@ -249,6 +250,8 @@ public class KillAura extends Module {
                 }
                 this.attackTimer.reset();
             }
+        } else {
+            cpsDelay = 0L;
         }
     }
 

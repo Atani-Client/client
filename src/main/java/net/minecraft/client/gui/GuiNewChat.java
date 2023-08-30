@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
+
 import java.util.Iterator;
 import java.util.List;
 import net.minecraft.client.Minecraft;
@@ -34,7 +35,7 @@ public class GuiNewChat extends Gui
 
     public void drawChat(int p_146230_1_)
     {
-        RenderableShaders.renderAndRun(false, ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).backgroundBlur.isEnabled(), () -> {
+        RenderableShaders.renderAndRun(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).bloom.isEnabled(), ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).blur.isEnabled(), () -> {
             if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN)
             {
                 int i = this.getLineCount();
@@ -50,11 +51,10 @@ public class GuiNewChat extends Gui
                         flag = true;
                     }
 
-                    float f1 = this.getChatScale();
-                    int l = MathHelper.ceiling_float_int((float)this.getChatWidth() / f1);
+                    int l = MathHelper.ceiling_float_int((float)this.getChatWidth() / this.getChatScale());
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(2.0F, 20.0F, 0.0F);
-                    GlStateManager.scale(f1, f1, 1.0F);
+                    GlStateManager.scale(this.getChatScale(), this.getChatScale(), 1.0F);
 
                     for (int i1 = 0; i1 + this.scrollPos < this.field_146253_i.size() && i1 < i; ++i1)
                     {
@@ -83,30 +83,28 @@ public class GuiNewChat extends Gui
 
                                 if (l1 > 3)
                                 {
-                                    int i2 = 0;
-                                    int j2 = -i1 * 9;
                                     String s = chatline.getChatComponent().getFormattedText();
                                     boolean font = ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled();
 
                                     if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled()) {
                                         switch(ModuleStorage.getInstance().getByClass(CustomChat.class).background.getValue()) {
                                             case "Normal":
-                                                drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
+                                                drawRect(0, (-i1 * 9) - 9, l + 4, -i1 * 9, l1 / 2 << 24);
                                                 break;
                                             case "Adaptive":
                                                 int strWidth = font ? customFontRenderer.getStringWidth(s) : mc.fontRendererObj.getStringWidth(s);
-                                                drawRect(i2, j2 - 9, strWidth + 1, j2, l1 / 2 << 24);
+                                                drawRect(0, (-i1 * 9) - 9, strWidth + 1, -i1 * 9, l1 / 2 << 24);
                                                 break;
                                         }
                                     } else {
-                                        drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
+                                        drawRect(0, (-i1 * 9) - 9, l + 4, -i1 * 9, l1 / 2 << 24);
                                     }
                                     GlStateManager.enableBlend();
 
                                     if(font) {
-                                        this.customFontRenderer.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                        this.customFontRenderer.drawStringWithShadow(s, 0, (float)((-i1 * 9) - 8), 16777215 + (l1 << 24));
                                     } else {
-                                        this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                        this.mc.fontRendererObj.drawStringWithShadow(s, 0, (float)((-i1 * 9) - 8), 16777215 + (l1 << 24));
                                     }
 
                                     GlStateManager.disableAlpha();
@@ -216,7 +214,7 @@ public class GuiNewChat extends Gui
 
         for (int i = this.chatLines.size() - 1; i >= 0; --i)
         {
-            ChatLine chatline = (ChatLine)this.chatLines.get(i);
+            ChatLine chatline = this.chatLines.get(i);
             this.setChatLine(chatline.getChatComponent(), chatline.getChatLineID(), chatline.getUpdatedCounter(), true);
         }
     }

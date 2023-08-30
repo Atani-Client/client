@@ -20,6 +20,7 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldSettings;
 import tech.atani.client.feature.font.storage.FontStorage;
+import tech.atani.client.feature.module.impl.hud.CustomScoreboard;
 import tech.atani.client.feature.module.impl.hud.CustomTabList;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
@@ -76,7 +77,7 @@ public class GuiPlayerTabOverlay extends Gui
      */
     public void renderPlayerlist(int width, Scoreboard scoreboardIn, ScoreObjective scoreObjectiveIn)
     {
-        RenderableShaders.renderAndRun(false, ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).backgroundBlur.isEnabled(), () -> {
+        RenderableShaders.renderAndRun(ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).bloom.isEnabled(), ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).blur.isEnabled(), () -> {
             NetHandlerPlayClient nethandlerplayclient = this.mc.thePlayer.sendQueue;
             List<NetworkPlayerInfo> list = field_175252_a.<NetworkPlayerInfo>sortedCopy(nethandlerplayclient.getPlayerInfoMap());
             int i = 0;

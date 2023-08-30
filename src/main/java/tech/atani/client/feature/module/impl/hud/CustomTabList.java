@@ -13,7 +13,8 @@ public class CustomTabList extends Module {
 
     public final StringBoxValue background = new StringBoxValue("Background", "Which background should the tab list use?", this, new String[] {"Normal", "Off"});
     public final CheckBoxValue customFont = new CheckBoxValue("Custom Font", "Should the tab list have a custom font?", this, false);
-    public final CheckBoxValue backgroundBlur = new CheckBoxValue("Blur Background", "Should the tab list have a blur?", this, false, new Supplier[]{() -> background.is("Normal")});
+    public final CheckBoxValue blur = new CheckBoxValue("Blur", "Should the tab list have a blur?", this, false, new Supplier[]{() -> background.is("Normal")});
+    public final CheckBoxValue bloom = new CheckBoxValue("Bloom", "Should the tab list have a bloom?", this, false, new Supplier[]{() -> background.is("Normal")});
 
     @Override
     public void onEnable() {}

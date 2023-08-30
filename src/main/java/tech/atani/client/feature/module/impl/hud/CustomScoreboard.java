@@ -13,7 +13,8 @@ public class CustomScoreboard extends Module {
 
     public final StringBoxValue background = new StringBoxValue("Background", "Which background should the scoreboard use?", this, new String[] {"Normal", "Off"});
     public final CheckBoxValue customFont = new CheckBoxValue("Custom Font", "Should the scoreboard have a custom font?", this, false);
-    public final CheckBoxValue backgroundBlur = new CheckBoxValue("Blur Background", "Should the scoreboard have a blur?", this, false, new Supplier[]{() -> background.is("Normal")});
+    public final CheckBoxValue blur = new CheckBoxValue("Blur", "Should the scoreboard have a blur?", this, false, new Supplier[]{() -> background.is("Normal")});
+    public final CheckBoxValue bloom = new CheckBoxValue("Bloom", "Should the scoreboard have a bloom?", this, false, new Supplier[]{() -> background.is("Normal")});
 
     @Override
     public void onEnable() {}

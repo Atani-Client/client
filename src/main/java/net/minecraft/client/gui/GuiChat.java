@@ -1,6 +1,7 @@
 package net.minecraft.client.gui;
 
 import com.google.common.collect.Lists;
+
 import java.io.IOException;
 import java.util.List;
 import net.minecraft.network.play.client.C14PacketTabComplete;
@@ -319,7 +320,7 @@ public class GuiChat extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
-        RenderableShaders.renderAndRun(false, ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).backgroundBlur.isEnabled(), () -> {
+        RenderableShaders.renderAndRun(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).bloom.isEnabled(), ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).blur.isEnabled(), () -> {
             boolean font = ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled();
 
             if(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled()) {

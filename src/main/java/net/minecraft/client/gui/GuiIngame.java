@@ -554,7 +554,7 @@ public class GuiIngame extends Gui
 
     private void renderScoreboard(ScoreObjective p_180475_1_, ScaledResolution p_180475_2_)
     {
-        RenderableShaders.renderAndRun(false, ModuleStorage.getInstance().getByClass(CustomScoreboard.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomScoreboard.class).backgroundBlur.isEnabled(), () -> {
+        RenderableShaders.renderAndRun(ModuleStorage.getInstance().getByClass(CustomScoreboard.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomScoreboard.class).bloom.isEnabled(), ModuleStorage.getInstance().getByClass(CustomScoreboard.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomScoreboard.class).blur.isEnabled(), () -> {
             Scoreboard scoreboard = p_180475_1_.getScoreboard();
             Collection<Score> collection = scoreboard.getSortedScores(p_180475_1_);
             List<Score> list = Lists.newArrayList(Iterables.filter(collection, new Predicate<Score>()
@@ -608,7 +608,7 @@ public class GuiIngame extends Gui
                 } else {
                     drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
                 }
-                //553648127
+
                 this.getFontRenderer().drawString(s1, l1, k, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
                 this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
 

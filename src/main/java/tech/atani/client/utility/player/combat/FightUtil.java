@@ -1,6 +1,7 @@
 package tech.atani.client.utility.player.combat;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntityMob;
@@ -93,6 +94,8 @@ public class FightUtil implements Methods {
 
     public static boolean isValidWithPlayer(Entity entity, float range, boolean invis, boolean players, boolean animals, boolean mobs) {
         return !(entity.isDead
+                || entity == null
+                || !(entity instanceof EntityLivingBase)
                 || mc.thePlayer == entity && mc.gameSettings.thirdPersonView == 0
                 || getRange(entity) > range
                 || entity instanceof EntityArmorStand

@@ -206,7 +206,7 @@ public class Speed extends Module {
                                     break;
 
                                 case 5:
-                                    mc.thePlayer.motionY = MoveUtil.getPredictedMotion(mc.thePlayer.motionY, 3);
+                                    mc.thePlayer.motionY = -0.175;
                                     break;
                                 case 10:
                                     MoveUtil.strafe((float) (MoveUtil.getSpeed() * 0.8));

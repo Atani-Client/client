@@ -204,7 +204,6 @@ public class Speed extends Module {
                                     MoveUtil.strafe();
                                     mc.timer.timerSpeed = 1;
                                     break;
-
                                 case 5:
                                     mc.thePlayer.motionY = -0.175;
                                     break;
@@ -256,7 +255,7 @@ public class Speed extends Module {
                                 }
                             }
                             break;
-                        case "YPort":
+                        case "Y-Port":
                             if(mc.thePlayer.onGround) {
                                 vulcanTicks = 0;
                                 mc.thePlayer.jump();
@@ -268,7 +267,7 @@ public class Speed extends Module {
                             }
 
                             if(mc.thePlayer.fallDistance > 0.1) {
-                                mc.timer.timerSpeed = 1.3F;
+                                mc.timer.timerSpeed = 1.4F;
                                 mc.thePlayer.motionY = -1337;
                             }
 

@@ -60,6 +60,7 @@ public class Flight extends Module {
 
         switch(mode.getValue()) {
         case "Collision":
+            if(!mc.gameSettings.keyBindSneak.pressed)
             collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(collisionBoxesEvent.getBlockPos().getX(), collisionBoxesEvent.getBlockPos().getY(), collisionBoxesEvent.getBlockPos().getZ()));
             break;
         }

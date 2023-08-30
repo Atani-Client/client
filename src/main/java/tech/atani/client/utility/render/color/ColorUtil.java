@@ -20,6 +20,14 @@ public class ColorUtil {
             0xFF000000, 0xFFFE0000, 0xFFFFCF00, 0xFF000000,
     };
 
+    private static final int[] HEALTH_COLOURS = {
+            0xFF006B32, // Darker green
+            0xFFFFFF00,
+            0xFFFF8000,
+            0xFFFF0000,
+            0xFF800000
+    };
+
     public static int blendCzechiaColours(final double progress) {
         return blendColours(CZECHIA_COLORS, progress);
     }
@@ -42,6 +50,10 @@ public class ColorUtil {
 
     public static int blendGermanColours(final long offset) {
         return blendGermanColours(getFadingFromSysTime(offset));
+    }
+
+    public static int blendHealthColours(final double progress) {
+        return blendColours(HEALTH_COLOURS, progress);
     }
 
     public static float[] colorToRGBA(int col) {

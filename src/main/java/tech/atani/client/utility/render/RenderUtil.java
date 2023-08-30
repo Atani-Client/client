@@ -1,5 +1,6 @@
 package tech.atani.client.utility.render;
 
+import com.sun.javafx.geom.Vec3d;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -12,11 +13,16 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.Config;
 import net.minecraft.util.AxisAlignedBB;
 import net.optifine.shaders.Shaders;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.glu.GLU;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.render.color.ColorUtil;
 
 import java.awt.*;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class RenderUtil implements Methods {
 
@@ -424,6 +430,23 @@ public class RenderUtil implements Methods {
         return framebuffer == null || framebuffer.framebufferWidth != mc.displayWidth || framebuffer.framebufferHeight != mc.displayHeight;
     }
 
+    public static Vec3d to2D(double x, double y, double z) {
+        FloatBuffer screenCoords = BufferUtils.createFloatBuffer(3);
+        IntBuffer viewport = BufferUtils.createIntBuffer(16);
+        FloatBuffer modelView = BufferUtils.createFloatBuffer(16);
+        FloatBuffer projection = BufferUtils.createFloatBuffer(16);
+
+        GL11.glGetFloat(GL11.GL_MODELVIEW_MATRIX, modelView);
+        GL11.glGetFloat(GL11.GL_PROJECTION_MATRIX, projection);
+        GL11.glGetInteger(GL11.GL_VIEWPORT, viewport);
+
+        boolean result = GLU.gluProject((float) x, (float) y, (float) z, modelView, projection, viewport, screenCoords);
+        if (result) {
+            return new Vec3d(screenCoords.get(0), Display.getHeight() - screenCoords.get(1), screenCoords.get(2));
+        }
+        return null;
+    }
+
     public static void setAlphaLimit(float limit) {
         GlStateManager.enableAlpha();
         GlStateManager.alphaFunc(GL11.GL_GREATER, (float) (limit * .01));
@@ -435,6 +458,10 @@ public class RenderUtil implements Methods {
 
     public static void color(final double red, final double green, final double blue, final double alpha) {
         GL11.glColor4d(red, green, blue, alpha);
+    }
+
+    public static void color(int color) {
+        color(new Color(color));
     }
 
     public static void color(final double red, final double green, final double blue) {
@@ -455,6 +482,16 @@ public class RenderUtil implements Methods {
 
     public static void resetColor() {
         GlStateManager.color(1, 1, 1, 1);
+    }
+
+    public static void pushMatrixAndAttrib() {
+        GlStateManager.pushMatrix();
+        GlStateManager.pushAttrib();
+    }
+
+    public static void popMatrixAndAttrib() {
+        GlStateManager.popAttrib();
+        GlStateManager.popMatrix();
     }
 
     public static void enableDepth() {

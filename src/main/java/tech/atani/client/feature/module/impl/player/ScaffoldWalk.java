@@ -1,7 +1,9 @@
 package tech.atani.client.feature.module.impl.player;
 
 import com.google.common.base.Supplier;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
@@ -27,25 +29,25 @@ import tech.atani.client.utility.player.rotation.RotationUtil;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
-import tech.atani.client.utility.world.BlockUtil;
+import tech.atani.client.utility.world.block.BlockUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
 @ModuleData(name = "ScaffoldWalk", description = "Bridging automatically", category = Category.PLAYER)
 public class ScaffoldWalk extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Slowly", "Quickly", "Breezily", "Godly", "Custom"});
     private final CheckBoxValue swinging = new CheckBoxValue("Swing Client-Side", "Swing client-side when placing blocks?", this, true);
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
     private final CheckBoxValue switchItems = new CheckBoxValue("Switch Items", "Switch to blocks?", this, true);
     private final CheckBoxValue reverseMovement = new CheckBoxValue("Reverse Movement", "Reverse your movement?", this, false);
-    private final CheckBoxValue addStrafe = new CheckBoxValue("Add Strafe", "Strafe a little?", this, false, new Supplier[]{() -> mode.is("Custom")});
-    private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.is("Quickly") || mode.is("Custom")});
-    private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false, new Supplier[]{() -> mode.is("Custom")});
-    private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false, new Supplier[]{() -> mode.is("Custom")});
-    private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> mode.is("Custom") && sneak.getValue()});
-    private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> mode.is("Quickly") || (mode.is("Custom") && sneak.getValue() && sneakMode.is("Edge"))});
+    private final CheckBoxValue addStrafe = new CheckBoxValue("Add Strafe", "Strafe a little?", this, false);
+    private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0);
+    private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false);
+    private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
+    private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
+    private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
 
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper(), startingTimeHelper = new TimeHelper();
     private double[] lastPos = new double[3];
@@ -85,6 +87,21 @@ public class ScaffoldWalk extends Module {
         }
     }
 
+    private static final List<Block> invalidBlocks = Arrays.asList(Blocks.air, Blocks.water, Blocks.tnt, Blocks.chest,
+            Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.tnt, Blocks.enchanting_table, Blocks.carpet,
+            Blocks.glass_pane, Blocks.stained_glass_pane, Blocks.iron_bars, Blocks.snow_layer, Blocks.ice,
+            Blocks.packed_ice, Blocks.coal_ore, Blocks.diamond_ore, Blocks.emerald_ore, Blocks.chest, Blocks.torch,
+            Blocks.anvil, Blocks.trapped_chest, Blocks.noteblock, Blocks.jukebox, Blocks.tnt, Blocks.gold_ore,
+            Blocks.iron_ore, Blocks.lapis_ore, Blocks.sand, Blocks.lit_redstone_ore, Blocks.quartz_ore,
+            Blocks.redstone_ore, Blocks.wooden_pressure_plate, Blocks.stone_pressure_plate,
+            Blocks.light_weighted_pressure_plate, Blocks.heavy_weighted_pressure_plate, Blocks.stone_button,
+            Blocks.wooden_button, Blocks.lever, Blocks.enchanting_table, Blocks.red_flower, Blocks.double_plant,
+            Blocks.yellow_flower, Blocks.bed, Blocks.ladder, Blocks.waterlily, Blocks.double_stone_slab, Blocks.stone_slab,
+            Blocks.double_wooden_slab, Blocks.wooden_slab, Blocks.heavy_weighted_pressure_plate,
+            Blocks.light_weighted_pressure_plate, Blocks.stone_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_slab2,
+            Blocks.double_stone_slab2, Blocks.tripwire, Blocks.tripwire_hook, Blocks.tallgrass, Blocks.dispenser,
+            Blocks.command_block, Blocks.web);
+
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         if (switchItems.getValue()) {
@@ -92,7 +109,7 @@ public class ScaffoldWalk extends Module {
                 for (int i = 0; i < 9; i++) {
                     ItemStack stack = Methods.mc.thePlayer.inventory.getStackInSlot(i);
 
-                    if (stack != null && stack.stackSize != 0 && stack.getItem() instanceof ItemBlock) {
+                    if (stack != null && stack.stackSize != 0 && stack.getItem() instanceof ItemBlock && !invalidBlocks.contains(((ItemBlock) stack.getItem()).getBlock())) {
                         if(lastItem == -1)
                             lastItem = Methods.mc.thePlayer.inventory.currentItem;
                         Methods.mc.thePlayer.inventory.currentItem = i;
@@ -110,7 +127,7 @@ public class ScaffoldWalk extends Module {
             getGameSettings().keyBindForward.pressed = false;
         }
 
-        if(this.mode.is("Quickly") || (this.mode.is("Custom") && sneak.getValue() && sneakMode.is("Edge"))) {
+        if(sneak.getValue() && sneakMode.is("Edge")) {
             if (unSneakDelay.getValue() == 0 || unsneakTimeHelper.hasReached((long) (unSneakDelay.getValue()))) {
                 getGameSettings().keyBindSneak.pressed = false;
             }
@@ -123,7 +140,7 @@ public class ScaffoldWalk extends Module {
                     unsneakTimeHelper.reset();
                 }
             }
-        } else  if(this.mode.is("Slowly") || (this.mode.is("Custom") && sneak.getValue() && sneakMode.is("Constant"))) {
+        } else if(sneak.getValue() && sneakMode.is("Constant")) {
             getGameSettings().keyBindSneak.pressed = true;
         }
     }
@@ -133,13 +150,13 @@ public class ScaffoldWalk extends Module {
         if(mc.thePlayer == null && mc.theWorld == null)
             return;
 
-        if(mode.is("Custom") && safeWalk.isEnabled())
+        if(safeWalk.isEnabled())
             event.setSafe(true);
     }
 
     @Listen
     public void onSilent(SilentMoveEvent silentMoveEvent) {
-        if(this.mode.is("Breezily") || (this.mode.is("Custom") && addStrafe.getValue())) {
+        if(addStrafe.getValue()) {
             final BlockPos b = new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 0.5, Methods.mc.thePlayer.posZ);
             if (Methods.mc.theWorld.getBlockState(b).getBlock().getMaterial() == Material.air && Methods.mc.currentScreen == null && !Keyboard.isKeyDown(Methods.mc.gameSettings.keyBindJump.getKeyCodeDefault()) && Methods.mc.thePlayer.movementInput.moveForward != 0.0f) {
                 if (Methods.mc.thePlayer.getHorizontalFacing(PlayerHandler.yaw) == EnumFacing.EAST) {
@@ -192,9 +209,7 @@ public class ScaffoldWalk extends Module {
             return;
         }
 
-        boolean necessaryPlacement = mode.is("Breezily") || mode.is("Godly");
-
-        if (necessaryPlacement || this.timeHelper.hasReached(this.delay.getValue())) {
+        if (this.timeHelper.hasReached(this.delay.getValue())) {
             if (Methods.mc.playerController.onPlayerRightClick(Methods.mc.thePlayer, Methods.mc.theWorld, itemstack, blockpos, objectOver.sideHit, objectOver.hitVec)) {
                 if(this.swinging.getValue())
                     Methods.mc.thePlayer.swingItem();
@@ -212,7 +227,7 @@ public class ScaffoldWalk extends Module {
 
     @Override
     public String getSuffix() {
-        return this.mode.getValue();
+        return this.delay.getValue() + "ms";
     }
 
     @Override

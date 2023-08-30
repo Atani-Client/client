@@ -12,7 +12,6 @@ import java.util.Map;
 
 public class NetUtils {
 
-
     public static String sendPostRequest(String apiUrl, HashMap<String, String> parameters) throws IOException {
         URL url = new URL(apiUrl);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();

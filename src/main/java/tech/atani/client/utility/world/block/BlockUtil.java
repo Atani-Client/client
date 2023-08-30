@@ -1,4 +1,4 @@
-package tech.atani.client.utility.world;
+package tech.atani.client.utility.world.block;
 
 import net.minecraft.block.*;
 import net.minecraft.util.AxisAlignedBB;

@@ -1,5 +1,10 @@
 package net.minecraft.util;
 
+import net.minecraft.client.entity.EntityPlayerSP;
+import tech.atani.client.utility.player.PlayerHandler;
+import tech.atani.client.utility.player.PlayerUtil;
+import tech.atani.client.utility.player.rotation.RotationUtil;
+
 public class AxisAlignedBB
 {
     public final double minX;
@@ -27,6 +32,23 @@ public class AxisAlignedBB
         this.maxX = (double)pos2.getX();
         this.maxY = (double)pos2.getY();
         this.maxZ = (double)pos2.getZ();
+    }
+
+    public double getLookingTargetRange(EntityPlayerSP thePlayer, float[] rotation, double range) {
+        Vec3 eyes = thePlayer.getPositionEyes(1F);
+        MovingObjectPosition movingObj = calculateIntercept(eyes, (rotation != null ? RotationUtil.toDirection(rotation[0], rotation[1]) : RotationUtil.toDirection(PlayerHandler.yaw, PlayerHandler.pitch)).multiply(range).add(eyes));
+        if (movingObj == null) {
+            return Double.MAX_VALUE;
+        }
+        return movingObj.hitVec.distanceTo(eyes);
+    }
+
+    public double getLookingTargetRange(EntityPlayerSP thePlayer, double range) {
+        return getLookingTargetRange(thePlayer, null, range);
+    }
+
+    public double getLookingTargetRange(EntityPlayerSP thePlayer) {
+        return getLookingTargetRange(thePlayer, 6.0D);
     }
 
     /**

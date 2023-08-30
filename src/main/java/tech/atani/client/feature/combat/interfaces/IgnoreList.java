@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IgnoreList {
 
-    List<Entity> getIgnored();
+    boolean shouldSkipEntity(Entity entity);
 
 }

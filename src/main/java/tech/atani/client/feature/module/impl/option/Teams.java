@@ -27,42 +27,32 @@ public class Teams extends Module implements IgnoreList {
     public CheckBoxValue armorColor = new CheckBoxValue("Armor Color", "Check armor color?", this, false);
     public CheckBoxValue tabColor = new CheckBoxValue("Tab Color", "Check tab color?", this, true);
 
-    private final ArrayList<Entity> bots = new ArrayList<>();
-
     public Teams() {
         CombatManager.getInstance().addIgnoreList(this);
     }
 
-    @Listen
-    public void onUpdate(UpdateEvent updateEvent) {
-        Methods.mc.theWorld.playerEntities.forEach(player -> {
-            if(shouldSkipPlayer(player)) {
-                this.bots.add(player);
-            } else {
-                if(this.bots.contains(player))
-                    this.bots.remove(player);
-            }
-        });
-    }
+    @Override
+    public boolean shouldSkipEntity(Entity targetPlayer) {
+        if(!this.isEnabled())
+            return false;
 
-    private boolean shouldSkipPlayer(EntityPlayer targetPlayer) {
         if (!(targetPlayer instanceof EntityPlayer))
             return false;
 
         boolean skip = false;
 
         if (armorColor.getValue()) {
-            int targetArmorColor = PlayerUtil.getLeatherArmorColor(targetPlayer);
+            int targetArmorColor = PlayerUtil.getLeatherArmorColor((EntityPlayer) targetPlayer);
             int localPlayerArmorColor = PlayerUtil.getLeatherArmorColor(mc.thePlayer);
             if(targetArmorColor != -1 && localPlayerArmorColor != -1 && targetArmorColor == localPlayerArmorColor)
                 skip = true;
         }
         if(tabColor.getValue()) {
-            if(getTeamColor(targetPlayer).getRGB() == getTeamColor(mc.thePlayer).getRGB())
+            if(getTeamColor((EntityPlayer) targetPlayer).getRGB() == getTeamColor(mc.thePlayer).getRGB())
                 skip = true;
         }
         if(vanilla.getValue()) {
-            if(mc.thePlayer.getTeam() != null && targetPlayer.getTeam() != null && mc.thePlayer.getTeam().isSameTeam(targetPlayer.getTeam())) {
+            if(mc.thePlayer.getTeam() != null && ((EntityPlayer) targetPlayer).getTeam() != null && mc.thePlayer.getTeam().isSameTeam(((EntityPlayer) targetPlayer).getTeam())) {
                 skip = true;
             }
         }
@@ -94,8 +84,4 @@ public class Teams extends Module implements IgnoreList {
     @Override
     public void onDisable() {}
 
-    @Override
-    public List<Entity> getIgnored() {
-        return bots;
-    }
 }

@@ -101,6 +101,13 @@ public class AntiBot extends Module implements IgnoreList {
     }
 
     @Override
+    public boolean shouldSkipEntity(Entity entity) {
+        if(!this.isEnabled())
+            return false;
+        return this.bots.contains(entity);
+    }
+
+    @Override
     public void onEnable() {
 
     }
@@ -110,8 +117,4 @@ public class AntiBot extends Module implements IgnoreList {
         this.bots.clear();
     }
 
-    @Override
-    public List<Entity> getIgnored() {
-        return this.bots;
-    }
 }

@@ -130,7 +130,7 @@ public class IcarusClickGuiScreen extends GuiScreen {
         switch (button.id){
             case 0:
                 mc.displayGuiScreen(null);
-                ClickGui.clickGuiScreenSimple = null;
+                ClickGui.clickGuiScreenIcarus = null;
                 ModuleStorage.getInstance().getByClass(ClickGui.class).toggle();
                 break;
         }

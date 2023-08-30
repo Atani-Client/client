@@ -20,7 +20,7 @@ public class S14PacketEntity implements Packet<INetHandlerPlayClient>
     protected byte posZ;
     protected byte yaw;
     protected byte pitch;
-    protected boolean onGround;
+    public boolean onGround;
     protected boolean field_149069_g;
 
     public S14PacketEntity()

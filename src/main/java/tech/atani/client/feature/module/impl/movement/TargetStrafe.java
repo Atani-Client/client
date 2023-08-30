@@ -55,7 +55,7 @@ public class TargetStrafe extends Module {
             if(jumpOnly.getValue() && !isKeyDown(Methods.mc.gameSettings.keyBindJump.getKeyCode())) {
                 return;
             }
-            float yaw = RotationUtil.getRotation(KillAura.curEntity, "", false, false, 0, 0, 0, 0, false, 180, 180, 180, 180, false, false)[0];
+            float yaw = RotationUtil.getRotation(KillAura.curEntity, "", 0, false, false, 0, 0, 0, 0, false, 180, 180, 180, 180, false, false)[0];
 
             MoveUtil.setMoveSpeed(MoveUtil.getSpeed(), yaw, direction, (Methods.mc.thePlayer.getDistanceToEntity(KillAura.curEntity) <= strafeSize.getValue() - 1) ? 0 : 1);
         }

@@ -52,7 +52,8 @@ public class KillAura extends Module {
     public CheckBoxValue lockView = new CheckBoxValue("Lock-view", "Rotate non-silently", this, false);
     public CheckBoxValue snapYaw = new CheckBoxValue("Snap Yaw", "Skip smoothing out yaw rotations?", this, false);
     public CheckBoxValue snapPitch = new CheckBoxValue("Snap Pitch", "Skip smoothing out pitch rotations?", this, false);
-    public StringBoxValue vectorMode = new StringBoxValue("Aim Vector", "Where to aim?", this, new String[]{"Perfect", "Bruteforce", "Head"});
+    public StringBoxValue aimVector = new StringBoxValue("Aim Vector", "Where to aim?", this, new String[]{"Perfect", "Bruteforce", "Head", "Torso", "Feet", "Custom", "Random"});
+    public SliderValue<Float> heightDivisor = new SliderValue<>("Height Divisor", "By what amount to divide the height?", this, 2f, 1f, 10f, 1, new Supplier[]{() -> aimVector.getValue().equalsIgnoreCase("Custom")});
     public CheckBoxValue skipUnnecessaryRotations = new CheckBoxValue("Necessary Rotations", "Rotate only if necessary?", this, false);
     public StringBoxValue unnecessaryRotations = new StringBoxValue("Necessary Mode", "What rotations to skip?", this, new String[]{"Both", "Yaw", "Pitch"}, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
     public CheckBoxValue skipIfNear = new CheckBoxValue("Skip If Near", "Rotate only if far enough?", this, true, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
@@ -185,7 +186,7 @@ public class KillAura extends Module {
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
         if (curEntity != null) {
-            final float[] rotations = RotationUtil.getRotation(curEntity, vectorMode.getValue(), mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
+            final float[] rotations = RotationUtil.getRotation(curEntity, aimVector.getValue(), heightDivisor.getValue(), mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
 
             neccessaryRots: {
                 if(skipUnnecessaryRotations.getValue()) {

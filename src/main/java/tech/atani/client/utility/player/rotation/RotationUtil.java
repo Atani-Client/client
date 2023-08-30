@@ -15,6 +15,15 @@ public class RotationUtil implements Methods {
     public static Vec3 getBestVector(Vec3 look, AxisAlignedBB axisAlignedBB) {
         return new Vec3(MathHelper.clamp(look.xCoord, axisAlignedBB.minX, axisAlignedBB.maxX), MathHelper.clamp(look.yCoord, axisAlignedBB.minY, axisAlignedBB.maxY), MathHelper.clamp(look.zCoord, axisAlignedBB.minZ, axisAlignedBB.maxZ));
     }
+
+    public static Vec3 toDirection(float yaw, float pitch) {
+        float f = MathHelper.cos(-yaw * 0.017453292F - (float) Math.PI);
+        float f1 = MathHelper.sin(-yaw * 0.017453292F - (float) Math.PI);
+        float f2 = -MathHelper.cos(-pitch * 0.017453292F);
+        float f3 = MathHelper.sin(-pitch * 0.017453292F);
+        return new Vec3((double) (f1 * f2), (double) f3, (double) (f * f2));
+    }
+
     public static Vec3 getVectorForRotation(float yaw, float pitch) {
         float f = MathHelper.cos((float) (-yaw * 0.017163291F - Math.PI));
         float f2 = MathHelper.sin((float) (-yaw * 0.017163291F - Math.PI));
@@ -35,7 +44,7 @@ public class RotationUtil implements Methods {
         return new float[]{f, f1};
     }
 
-    public static float[] getRotation(Entity entity, String vectorMode, boolean mouseFix, boolean heuristics, double minRandomYaw, double maxRandomYaw, double minRandomPitch, double maxRandomPitch, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
+    public static float[] getRotation(Entity entity, String vectorMode, float heightDivisor, boolean mouseFix, boolean heuristics, double minRandomYaw, double maxRandomYaw, double minRandomPitch, double maxRandomPitch, boolean prediction, float minYaw, float maxYaw, float minPitch, float maxPitch, boolean snapYaw, boolean snapPitch) {
         Vec3 aimVector = getBestVector(mc.thePlayer.getPositionEyes(1F), entity.getEntityBoundingBox());
         switch (vectorMode) {
             case "Bruteforce":
@@ -52,6 +61,21 @@ public class RotationUtil implements Methods {
                 break;
             case "Head":
                 aimVector = new Vec3(entity.posX, entity.posY + entity.getEyeHeight(), entity.posZ);
+                break;
+            case "Torso":
+                aimVector = new Vec3(entity.posX, entity.posY + entity.getEyeHeight() / 2d, entity.posZ);
+                break;
+            case "Feet":
+                aimVector = new Vec3(entity.posX, entity.posY, entity.posZ);
+                break;
+            case "Custom":
+                aimVector = new Vec3(entity.posX, entity.posY + entity.getEyeHeight() / heightDivisor, entity.posZ);
+                break;
+            case "Random":
+                double x = RandomUtil.randomBetween(0, 0.4) - 0.2;
+                double y = RandomUtil.randomBetween(0, 1) + 1;
+                double z = RandomUtil.randomBetween(0, 0.4) - 0.2;
+                aimVector = new Vec3(entity.posX + x, entity.posY + y, entity.posZ + z);
                 break;
         }
         aimVector.xCoord += RandomUtil.randomBetween(minRandomYaw, maxRandomYaw);

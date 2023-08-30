@@ -9,7 +9,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
-import tech.atani.client.utility.world.BlockUtil;
+import tech.atani.client.utility.world.block.BlockUtil;
 
 @ModuleData(name = "AntiVoid", description = "Tries to make you not fall in the void.", category = Category.PLAYER)
 public class AntiVoid extends Module {

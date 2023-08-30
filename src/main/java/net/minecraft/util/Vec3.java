@@ -38,6 +38,14 @@ public class Vec3
         this((double)p_i46377_1_.getX(), (double)p_i46377_1_.getY(), (double)p_i46377_1_.getZ());
     }
 
+    public Vec3 multiply(double range) {
+        return multiply(range, range, range);
+    }
+
+    public Vec3 multiply(double x, double y, double z) {
+        return new Vec3(this.xCoord * x, this.yCoord * y, this.zCoord * z);
+    }
+
     /**
      * Returns a new vector with the result of the specified vector minus this.
      */

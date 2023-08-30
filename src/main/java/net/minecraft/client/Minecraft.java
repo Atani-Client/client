@@ -2121,7 +2121,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
      */
     public void loadWorld(WorldClient worldClientIn, String loadingMessage)
     {
-        new WorldLoadEvent().publishItself();
+        new WorldLoadEvent(worldClientIn).publishItself();
         if (worldClientIn == null)
         {
             NetHandlerPlayClient nethandlerplayclient = this.getNetHandler();

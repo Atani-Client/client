@@ -29,7 +29,7 @@ public class CombatManager implements Methods {
 
         for(Entity entity : mc.theWorld.loadedEntityList) {
             for(IgnoreList ignoreList : ignoreLists) {
-                if(ignoreList.getIgnored().stream().filter(entity1 -> entity1.getEntityId() == entity.getEntityId()).findFirst().orElse(null) != null) {
+                if(ignoreList.shouldSkipEntity(entity)) {
                     this.ignored.add(entity);
                 }
             }

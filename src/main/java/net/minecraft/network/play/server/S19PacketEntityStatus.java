@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 public class S19PacketEntityStatus implements Packet<INetHandlerPlayClient>
 {
     private int entityId;
-    private byte logicOpcode;
+    public byte logicOpcode;
 
     public S19PacketEntityStatus()
     {

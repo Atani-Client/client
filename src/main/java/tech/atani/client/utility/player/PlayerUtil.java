@@ -1,25 +1,19 @@
 package tech.atani.client.utility.player;
 
+import net.minecraft.client.network.NetworkPlayerInfo;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.*;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.interfaces.Methods;
+import tech.atani.client.utility.math.VecUtil;
+import tech.atani.client.utility.player.rotation.RotationUtil;
 
 public class PlayerUtil implements Methods {
-
-    public static double getDistance(double x, double y, double z) {
-        double d0 = mc.thePlayer.posX - x;
-        double d1 = mc.thePlayer.posY + mc.thePlayer.getEyeHeight() - y;
-        double d2 = mc.thePlayer.posZ - z;
-        return MathHelper.sqrt_double(d0 * d0 + d1 * d1 + d2 * d2);
-    }
 
     public static boolean canBuildForward() {
         final float yaw = MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw);

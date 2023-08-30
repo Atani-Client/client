@@ -62,7 +62,7 @@ public class MCF extends Module implements IgnoreList {
     }
 
     @Override
-    public List<Entity> getIgnored() {
-        return this.friends;
+    public boolean shouldSkipEntity(Entity entity) {
+        return friends.contains(entity);
     }
 }

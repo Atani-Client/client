@@ -1,6 +1,8 @@
 package tech.atani.client.utility.world.block;
 
 import net.minecraft.block.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import tech.atani.client.utility.interfaces.Methods;
@@ -93,5 +95,18 @@ public class BlockUtil implements Methods {
 
         return false;
     }
-    
+
+    public static boolean isCollidingOnGround(BlockPos pos, double size) {
+        for(double x = -size; x < size * 2; x += size) {
+            for(double z = -size; z < size * 2; z += size) {
+                Block block = Minecraft.getMinecraft().theWorld.getBlockState(new BlockPos(pos.getX() + x, pos.getY(), pos.getZ() + z)).getBlock();
+
+                if(block.isFullBlock() && block != Blocks.air) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

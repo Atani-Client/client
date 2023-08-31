@@ -12,7 +12,7 @@ import tech.atani.client.utility.player.PlayerHandler;
 
 public class S18PacketEntityTeleport implements Packet<INetHandlerPlayClient>
 {
-    private int entityId;
+    public int entityId;
     private int posX;
     private int posY;
     private int posZ;

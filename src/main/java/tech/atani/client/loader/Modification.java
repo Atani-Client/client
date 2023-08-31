@@ -4,6 +4,7 @@ import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
 import org.lwjgl.opengl.Display;
+import tech.atani.client.feature.anticheat.check.CheckStorage;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.account.storage.AccountStorage;
 import tech.atani.client.feature.combat.CombatManager;
@@ -48,6 +49,7 @@ public enum Modification implements ClientInformationAccess {
         CommandStorage.setInstance(new CommandStorage());
         AccountStorage.setInstance(new AccountStorage());
         FileStorage.setInstance(new FileStorage());
+        CheckStorage.setInstance(new CheckStorage());
 
         ProtectionManager.getInstance().init();
         FontStorage.getInstance().init();
@@ -59,6 +61,7 @@ public enum Modification implements ClientInformationAccess {
         CommandStorage.getInstance().init();
         AccountStorage.getInstance().init();
         FileStorage.getInstance().init();
+        CheckStorage.getInstance().init();
 
         DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
             System.out.println("Welcome " + user.username + "!");

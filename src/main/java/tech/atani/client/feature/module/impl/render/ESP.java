@@ -89,7 +89,7 @@ public class ESP extends Module {
         int color = 0;
         switch (this.customColorMode.getValue()) {
             case "Static":
-                color = new Color(red.getValue(), green.getValue(), blue.getValue(), 254).getRGB();
+                color = new Color(red.getValue(), green.getValue(), blue.getValue(), 255).getRGB();
                 break;
             case "Fade": {
                 int firstColor = new Color(red.getValue(), green.getValue(), blue.getValue()).getRGB();

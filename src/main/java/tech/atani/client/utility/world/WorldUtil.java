@@ -11,6 +11,10 @@ public class WorldUtil implements Methods {
         return mc.theWorld.getBlockState(pos);
     }
 
+    public static Block getBlock(double posX, double posY, double posZ) {
+        return getBlock(new BlockPos(posX, posY, posZ));
+    }
+
     public static Block getBlock(final BlockPos pos) {
         return getBlockState(pos).getBlock();
     }

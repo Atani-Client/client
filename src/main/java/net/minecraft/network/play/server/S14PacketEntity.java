@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 
 public class S14PacketEntity implements Packet<INetHandlerPlayClient>
 {
-    protected int entityId;
+    public int entityId;
 
     public int getEntityId() {
         return entityId;

@@ -223,6 +223,49 @@ public abstract class GuiSlot
         }
     }
 
+    public void drawScreen2(int mouseXIn, int mouseYIn, float p_148128_3_)
+    {
+        if (this.field_178041_q)
+        {
+            this.mouseX = mouseXIn;
+            this.mouseY = mouseYIn;
+            int i = this.getScrollBarX();
+            int j = i + 6;
+            this.bindAmountScrolled();
+            GlStateManager.disableLighting();
+            GlStateManager.disableFog();
+            Tessellator tessellator = Tessellator.getInstance();
+            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+            int k = this.left + this.width / 2 - this.getListWidth() / 2 + 2;
+            int l = this.top + 4 - (int)this.amountScrolled + 20;
+            RenderUtil.drawRect(0, 0, this.width, this.height, new Color(16, 16, 16).getRGB());
+
+            if (this.hasListHeader)
+            {
+                this.drawListHeader(k, l, tessellator);
+            }
+
+            this.drawSelectionBox(k, l, mouseXIn, mouseYIn);
+            GlStateManager.disableDepth();
+            int i1 = 4;
+
+            int j1 = this.func_148135_f();
+
+            if (j1 > 0)
+            {
+                int k1 = (this.bottom - this.top) * (this.bottom - this.top) / this.getContentHeight();
+                k1 = MathHelper.clamp_int(k1, 32, this.bottom - this.top - 8);
+
+            }
+
+            this.func_148142_b(mouseXIn, mouseYIn);
+            GlStateManager.enableTexture2D();
+            GlStateManager.shadeModel(7424);
+            GlStateManager.enableAlpha();
+            GlStateManager.disableBlend();
+        }
+    }
+
     public void drawScreen(int mouseXIn, int mouseYIn, float p_148128_3_)
     {
         if (this.field_178041_q)

@@ -53,7 +53,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import tech.atani.client.listener.event.minecraft.player.movement.PlayerJumpEvent;
 import tech.atani.client.feature.module.impl.movement.NoJumpDelay;
-import tech.atani.client.feature.module.impl.movement.NoSlowDown;
 import tech.atani.client.feature.module.impl.render.HitAnimations;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.performance.FastUUID;
@@ -532,10 +531,6 @@ public abstract class EntityLivingBase extends Entity
         tagCompound.setInteger("HurtByTimestamp", this.revengeTimer);
         tagCompound.setShort("DeathTime", (short)this.deathTime);
         tagCompound.setFloat("AbsorptionAmount", this.getAbsorptionAmount());
-
-        if(ModuleStorage.getInstance().getByClass(NoSlowDown.class).isEnabled()) {
-            return;
-        }
 
         for (ItemStack itemstack : this.getInventory())
         {

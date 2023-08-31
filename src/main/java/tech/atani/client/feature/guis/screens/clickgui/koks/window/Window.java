@@ -49,6 +49,8 @@ public class Window extends GuiScreen{
         RenderUtil.startScissorBox();
         RenderUtil.drawScissorBox(x, y, width, height);
         for(Value value : ValueStorage.getInstance().getValues(module)) {
+            if(!value.isVisible())
+                continue;
             if(value instanceof CheckBoxValue) {
                 CheckBoxValue checkBoxValue = (CheckBoxValue)value;
                 fontRenderer.drawStringWithShadow(value.getName(), valueX, valueY, -1);
@@ -134,6 +136,8 @@ public class Window extends GuiScreen{
         float valueY = y + 20 + scroll;
         float valueX = x + 20;
         for(Value value : ValueStorage.getInstance().getValues(module)) {
+            if(!value.isVisible())
+                continue;
             if(value instanceof CheckBoxValue) {
                 if (RenderUtil.isHovered(mouseX, mouseY, valueX + width - 40 - 20, valueY - 1, 20, 10)) {
                     CheckBoxValue checkBoxValue = (CheckBoxValue) value;

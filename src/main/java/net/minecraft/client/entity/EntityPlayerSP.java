@@ -46,8 +46,6 @@ import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import tech.atani.client.feature.command.storage.CommandStorage;
-import tech.atani.client.feature.module.impl.movement.NoSlowDown;
-import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.player.movement.*;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.utility.player.PlayerHandler;
@@ -765,7 +763,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             --this.sprintingTicksLeft;
 
-            if (this.sprintingTicksLeft == 0 && !ModuleStorage.getInstance().getByClass(NoSlowDown.class).isEnabled())
+            if (this.sprintingTicksLeft == 0)
             {
                 this.setSprinting(false);
             }
@@ -861,10 +859,15 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
         }
 
-        if (this.isUsingItem() && !this.isRiding() && !ModuleStorage.getInstance().getByClass(NoSlowDown.class).isEnabled())
+        NoSlowEvent noSlowEvent = new NoSlowEvent(0.2f, 0.2f);
+        noSlowEvent.publishItself();
+
+        if (this.isUsingItem() && !this.isRiding())
         {
-            this.movementInput.moveStrafe *= 0.2F;
-            this.movementInput.moveForward *= 0.2F;
+            MovementInput moveInput1 = this.movementInput;
+            moveInput1.moveStrafe *= noSlowEvent.getStrafe();
+            MovementInput moveInput2 = this.movementInput;
+            moveInput2.moveForward *= noSlowEvent.getForward();
             this.sprintToggleTimer = 0;
         }
 
@@ -879,7 +882,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             movef = this.movementInput.moveForward;
             this.movementInput.moveForward = 0;
         }
-        if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= f && !this.isSprinting() && flag69 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness)) {
+        if (this.onGround && !flag1 && !flag2 && this.movementInput.moveForward >= f && !this.isSprinting() && flag69 && (!this.isUsingItem() || noSlowEvent.isSprint()) && !this.isPotionActive(Potion.blindness)) {
             if (this.sprintToggleTimer <= 0 && !this.mc.gameSettings.keyBindSprint.isKeyDown()) {
                 this.sprintToggleTimer = 7;
             } else {
@@ -887,12 +890,16 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
         }
 
-        if (!this.isSprinting() && this.movementInput.moveForward >= f && flag69 && !this.isUsingItem() && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown()) {
+        if (!this.isSprinting() && this.movementInput.moveForward >= f && flag69 && (!this.isUsingItem() || noSlowEvent.isSprint()) && !this.isPotionActive(Potion.blindness) && this.mc.gameSettings.keyBindSprint.isKeyDown()) {
             this.setSprinting(true);
         }
 
         final DirectionSprintCheckEvent sprintCheckEvent = new DirectionSprintCheckEvent(this.movementInput.moveForward < f).publishItself();
         if (this.isSprinting() && (sprintCheckEvent.isSprintCheck() || this.isCollidedHorizontally || !flag69)) {
+            this.setSprinting(false);
+        }
+
+        if (!noSlowEvent.isSprint() && this.isUsingItem() && !this.isRiding()) {
             this.setSprinting(false);
         }
 

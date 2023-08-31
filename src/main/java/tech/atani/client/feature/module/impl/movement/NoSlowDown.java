@@ -17,13 +17,10 @@ import tech.atani.client.utility.player.PlayerUtil;
 //Hooked in EntityLivingBase class & EntityPlayerSP class
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
 public class NoSlowDown extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this,  new String[]{"Vanilla", "Spoof", "Old NCP", "WatchDog", "Old Intave", "Placement"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this,  new String[]{"Vanilla", "Spoof", "Old NCP", "Old Intave", "Placement"});
 
     // Spoof
     private int spoofSlot;
-
-    // WatchDog
-    private int watchDogSlot;
 
     @Override
     public String getSuffix() {
@@ -34,8 +31,6 @@ public class NoSlowDown extends Module {
     public void onMotionEvent(UpdateMotionEvent event) {
         if(event.getType() == UpdateMotionEvent.Type.MID) {
             switch(mode.getValue()) {
-                case "Vanilla":
-                    break;
                 case "Spoof":
                     spoofSlot += 1;
 
@@ -56,29 +51,6 @@ public class NoSlowDown extends Module {
                         mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                     }
                     break;
-                case "WatchDog":
-                    if(this.isMoving()) {
-                        if (mc.thePlayer.isBlocking()) {
-                            watchDogSlot += 1;
-
-                            if (1 > watchDogSlot || watchDogSlot > 8) {
-                                watchDogSlot = 1;
-                            }
-
-                            if (mc.thePlayer.inventory.currentItem == watchDogSlot) {
-                                watchDogSlot += 1;
-                            }
-
-                            mc.thePlayer.sendQueue.addToSendQueue(new C09PacketHeldItemChange(watchDogSlot));
-                        }
-
-                        if(mc.thePlayer.isUsingItem()) {
-                            if(mc.thePlayer.ticksExisted % 2 + Math.round(Math.random()) == 0) {
-                                mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(null));
-                            }
-                        }
-                    }
-                    break;
                 case "Old Intave":
                     if (mc.thePlayer.isUsingItem()) {
                         mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(PlayerUtil.getIndexOfItem() % 8 + 1));
@@ -88,8 +60,10 @@ public class NoSlowDown extends Module {
                 case "Placement":
                     if (mc.thePlayer.isUsingItem() && mc.thePlayer.getItemInUse().getItem() instanceof ItemSword) {
                         mc.playerController.sendUseItem(mc.thePlayer, mc.theWorld, mc.thePlayer.getHeldItem());
-                        this.sendPacketUnlogged(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
+                        sendPacketUnlogged(new C08PacketPlayerBlockPlacement(mc.thePlayer.getHeldItem()));
                     }
+                default:
+                    break;
             }
         }
 
@@ -104,6 +78,8 @@ public class NoSlowDown extends Module {
                     if (mc.thePlayer.isUsingItem()) {
                         mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(PlayerUtil.getItemStack()));
                     }
+                    break;
+                default:
                     break;
             }
         }

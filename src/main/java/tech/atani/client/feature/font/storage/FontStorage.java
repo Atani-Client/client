@@ -67,6 +67,8 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Consolas", 17),
                 this.createFontEntry("Consolas", 18),
                 this.createFontEntry("Consolas", 19),
+                this.createFontEntry("Raleway Regular", 30),
+                this.createFontEntry("Raleway Regular", 35),
                 this.createFontEntry("Greycliff Medium", 18),
                 this.createFontEntry("Greycliff Medium", 19),
                 this.createFontEntry("Greycliff Medium", 21),

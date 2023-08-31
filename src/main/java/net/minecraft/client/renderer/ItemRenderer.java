@@ -371,7 +371,6 @@ public class ItemRenderer
             this.func_178110_a((EntityPlayerSP)abstractclientplayer, partialTicks);
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
-
             spinCounter++;
 
             if (this.itemToRender != null)
@@ -444,6 +443,34 @@ public class ItemRenderer
                                         GlStateManager.rotate(-90, 1, 0, 0.2f);
                                         GlStateManager.rotate(spinCounter, 0, -1, 0);
                                         break;
+                                    case "Warped":
+                                        transformFirstPersonItem(equippedProgress, 0);
+                                        this.doBlockTransformations();
+                                        GlStateManager.rotate(-swingProgressFactor * 55, 1.0F, 0.0F, 0.0F);
+                                        GlStateManager.rotate(-swingProgressFactor * 45, 1.0F, 1, 0.0F);
+                                        break;
+                                    case "Push":
+                                        transformFirstPersonItem(equippedProgress - 0.2f, 0.0f);
+                                        doBlockTransformations();
+                                        GlStateManager.rotate(-swingProgressFactor * 17.0F, 1.0F, 0.0F, 1.0F);
+                                        GlStateManager.rotate(-swingProgressFactor * 17.0F, 1.0F, 0.0F, 1.0F);
+                                        GL11.glTranslated(-0.1, -0.4, 0);
+                                        GlStateManager.rotate(-swingProgressFactor * -48.0F, 32.0F, 128.0F, 54.0F);
+                                        GlStateManager.translate(equippedProgress * 0.3, equippedProgress * 0.3, equippedProgress * 0.3);
+                                        break;
+                                    case "Slide":
+                                        final float smooth = swingProgressFactor * 0.78f - swingProgressFactor * swingProgressFactor * 0.78f;
+                                        transformFirstPersonItem(-0.25F, 0.0F);
+                                        GlStateManager.scale(1.7f, 1.7f, 1.7f);
+                                        GlStateManager.rotate(48.0f, 0.0f, -0.6f, 0.0f);
+                                        GlStateManager.translate(-0.3f, 0.4f, 0.0f);
+                                        GlStateManager.translate(0.0f, 0.08f, 0.0f);
+                                        GlStateManager.translate(0.56f, -0.489f, -0.71999997f);
+                                        GlStateManager.translate(0.0f, 0.0f, 0.0f);
+                                        GlStateManager.rotate(52.0f, 0.0f, 180.0f + smooth * 0.5f, smooth * 20.0f);
+                                        GlStateManager.rotate(swingProgressFactor * -31.3f, 2.0f, 0.0f, 0.0f);
+                                        GlStateManager.translate(0.0f, -0.2f, 0.0f);
+                                        doBlockTransformations();
                                 }
                             }
 

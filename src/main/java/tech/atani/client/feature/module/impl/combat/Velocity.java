@@ -7,9 +7,12 @@ import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MovingObjectPosition;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.SilentMoveEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
@@ -24,7 +27,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @ModuleData(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar Under-Block"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block"});
     public SliderValue<Integer> horizontal = new SliderValue<Integer>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
@@ -51,11 +54,39 @@ public class Velocity extends Module {
     private final Queue<Short> transactionQueue = new ConcurrentLinkedQueue<>();
     private boolean grimPacket;
 
+    private boolean attacked;
+
     @Override
     public String getSuffix() {
     	return mode.getValue();
     }
-    
+
+    @Listen
+    public void onUpdateMotionEvent(UpdateMotionEvent event) {
+        switch (mode.getValue()) {
+            case "Polar": {
+                if (mode.is("Polar")) {
+                    if (mc.thePlayer.isSwingInProgress) {
+                        attacked = true;
+                    }
+
+                    if (
+                            mc.objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY)
+                                    && mc.thePlayer.hurtTime > 0
+                                    && !attacked
+                    ) {
+                        mc.thePlayer.motionX *= 0.45D;
+                        mc.thePlayer.motionZ *= 0.45D;
+                        mc.thePlayer.setSprinting(false);
+                    }
+
+                    attacked = false;
+                }
+                break;
+            }
+        }
+    }
+
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         switch (mode.getValue()) {

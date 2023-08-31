@@ -35,13 +35,19 @@ public class Window extends GuiScreen{
         this.prevScreen = prevScreen;
     }
 
+    float scroll;
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        scroll += Mouse.getDWheel() / 10F;
+        scroll = Math.min(scroll, 0);
         float x = super.width / 2 - 170, y = super.height / 2 - 230, width = 340, height = 460;
         RoundedShader.drawRound(x, y, width, height, 10, new Color(21, 23, 24, 255));
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto", 18);
-        float valueY = y + 20;
+        float valueY = y + 20 + scroll;
         float valueX = x + 20;
+        RenderUtil.startScissorBox();
+        RenderUtil.drawScissorBox(x, y, width, height);
         for(Value value : ValueStorage.getInstance().getValues(module)) {
             if(value instanceof CheckBoxValue) {
                 CheckBoxValue checkBoxValue = (CheckBoxValue)value;
@@ -93,7 +99,7 @@ public class Window extends GuiScreen{
                     fontRenderer.drawStringWithShadow(stringBoxValue.getValue(), valueX + width - 50 - length + 5.5f, valueY + 3, -1);
                 }
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(stringBoxValue) ? stringBoxValue.getValues().length * 15 : 0);
-            } if(value instanceof SliderValue) {
+            } else if(value instanceof SliderValue) {
                 SliderValue sliderValue = (SliderValue) value;
                 fontRenderer.drawStringWithShadow(value.getName(), valueX, valueY, -1);
                 fontRenderer.drawStringWithShadow(sliderValue.getValue().floatValue() + "", valueX + width - fontRenderer.getStringWidth(sliderValue.getValue().floatValue() + "") - 40, valueY, -1);
@@ -112,6 +118,7 @@ public class Window extends GuiScreen{
                 valueY += fontRenderer.FONT_HEIGHT + 13;
             }
         }
+        RenderUtil.endScissorBox();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -183,6 +190,8 @@ public class Window extends GuiScreen{
                     }
                 }
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(multiStringBoxValue) ? multiStringBoxValue.getValues().length * 15 : 0);
+            } else if(value instanceof SliderValue) {
+                valueY += fontRenderer.FONT_HEIGHT + 13;
             }
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);

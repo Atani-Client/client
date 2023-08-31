@@ -65,25 +65,23 @@ public class Velocity extends Module {
     public void onUpdateMotionEvent(UpdateMotionEvent event) {
         switch (mode.getValue()) {
             case "Polar": {
-                if (mode.is("Polar")) {
-                    if (mc.thePlayer.isSwingInProgress) {
-                        attacked = true;
-                    }
-
-                    if (
-                            mc.objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY)
-                                    && mc.thePlayer.hurtTime > 0
-                                    && !attacked
-                    ) {
-                        mc.thePlayer.motionX *= 0.45D;
-                        mc.thePlayer.motionZ *= 0.45D;
-                        mc.thePlayer.setSprinting(false);
-                    }
-
-                    attacked = false;
+                if (mc.thePlayer.isSwingInProgress) {
+                    attacked = true;
                 }
-                break;
+
+                if (
+                        mc.objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY)
+                                && mc.thePlayer.hurtTime > 0
+                                && !attacked
+                ) {
+                    mc.thePlayer.motionX *= 0.45D;
+                    mc.thePlayer.motionZ *= 0.45D;
+                    mc.thePlayer.setSprinting(false);
+                }
+
+                attacked = false;
             }
+            break;
         }
     }
 

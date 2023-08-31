@@ -89,15 +89,6 @@ public abstract class Module implements Methods {
     public boolean shouldHide() {
         return category != Category.SERVER ? false : (mc.getCurrentServerData() == null || mc.isSingleplayer() ? !this.serverIP.equalsIgnoreCase("") : !mc.getCurrentServerData().serverIP.equalsIgnoreCase(this.serverIP));
     }
-
-    @Listen
-    public void onTick(RunTickEvent runTickEvent) {
-        if(this.isEnabled()) { // This shouldn't be needed, but just in case
-            if(category == Category.SERVER && (mc.getCurrentServerData() == null || mc.getCurrentServerData().serverIP != this.serverIP)) {
-                this.setEnabled(false);
-            }
-        }
-    }
     
     public String getSuffix() {
 		return null;
@@ -125,6 +116,10 @@ public abstract class Module implements Methods {
 
     public void setKey(int key) {
         this.key = key;
+    }
+
+    public String getServerIP() {
+        return serverIP;
     }
 
     public JsonObject save() {

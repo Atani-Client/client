@@ -131,7 +131,7 @@ public class Window extends GuiScreen{
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         float x = super.width / 2 - 170, y = super.height / 2 - 230, width = 340, height = 460;
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto", 18);
-        float valueY = y + 20;
+        float valueY = y + 20 + scroll;
         float valueX = x + 20;
         for(Value value : ValueStorage.getInstance().getValues(module)) {
             if(value instanceof CheckBoxValue) {

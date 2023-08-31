@@ -18,7 +18,7 @@ public class Theme extends Module {
     private ModuleList moduleList;
     private ClickGui clickGui;
 
-    public final StringBoxValue preset = new StringBoxValue("Preset", "Which preset to load", this, new String[]{"None", "Modern", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality"}, new ValueChangeListener[]{(stage, value, oldValue, newValue) -> {
+    public final StringBoxValue preset = new StringBoxValue("Preset", "Which preset to load", this, new String[]{"None", "Modern", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks"}, new ValueChangeListener[]{(stage, value, oldValue, newValue) -> {
         if(Modification.INSTANCE.isLoaded()) {
             if(waterMark == null || moduleList == null || clickGui == null){
                 waterMark = ModuleStorage.getInstance().getByClass(WaterMark.class);

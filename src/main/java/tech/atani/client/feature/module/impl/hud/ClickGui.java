@@ -5,6 +5,7 @@ import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.guis.screens.clickgui.atani.AtaniClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.augustus.AugustusClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.fatality.FatalityClickGuiScreen;
+import tech.atani.client.feature.guis.screens.clickgui.koks.KoksClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.simple.SimpleClickGuiScreen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
@@ -22,11 +23,12 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "ClickGui", description = "A clicky gui", category = Category.HUD, key = Keyboard.KEY_RSHIFT)
 public class ClickGui extends Module {
 
-    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Atani", "Golden", "Augustus", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Astolfo"});
+    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Atani", "Golden", "Augustus", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Astolfo", "Koks"});
     public final CheckBoxValue openingAnimation = new CheckBoxValue("Opening Animation", "Animate the opening and closing of the gui?", this, true);
     public final StringBoxValue dropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like", this, new String[]{"Scale-In", "Frame Scale-In", "Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
             mode.getValue().equalsIgnoreCase("Simple") || // Dropdown guis go here
             mode.getValue().equalsIgnoreCase("Astolfo") ||
+            mode.getValue().equalsIgnoreCase("Koks") ||
             mode.getValue().equalsIgnoreCase("Augustus 2.6") ||
             mode.getValue().equalsIgnoreCase("Xave") ||
             mode.getValue().equalsIgnoreCase("Icarus")}).setIdName("Dropdown Animation Mode");
@@ -50,10 +52,17 @@ public class ClickGui extends Module {
     public static RyuClickGuiScreen clickGuiScreenRyu;
     public static IcarusClickGuiScreen clickGuiScreenIcarus;
     public static AstolfoClickGuiScreen clickGuiScreenAstolfo;
+    public static KoksClickGuiScreen clickGuiScreenKoks;
 
     @Override
     public void onEnable() {
         switch (this.mode.getValue()) {
+            case "Koks":
+                if(clickGuiScreenKoks == null || true) {
+                    clickGuiScreenKoks = new KoksClickGuiScreen();
+                }
+                mc.displayGuiScreen(clickGuiScreenKoks);
+                break;
             case "Augustus":
                 if(clickGuiScreenAugustus == null) {
                     clickGuiScreenAugustus = new AugustusClickGuiScreen();

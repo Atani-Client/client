@@ -2,6 +2,7 @@ package tech.atani.client.feature.module;
 
 import com.google.common.base.Supplier;
 import com.google.gson.JsonObject;
+import org.lwjgl.Sys;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.listener.event.client.DisableModuleEvent;
@@ -68,7 +69,12 @@ public abstract class Module implements Methods {
         EnableModuleEvent enableModuleEvent = new EnableModuleEvent(this, EnableModuleEvent.Type.PRE).publishItself();
         if(enableModuleEvent.isCancelled())
             return;
-        onEnable();
+        try {
+            onEnable();
+        } catch (Exception e) {
+            System.out.println("FAILED TO ENABLE: " + getName());
+            e.printStackTrace();
+        }
         if(!alwaysRegistered)
             EventHandling.getInstance().registerListener(this);
         new EnableModuleEvent(this, EnableModuleEvent.Type.POST).publishItself();
@@ -80,7 +86,12 @@ public abstract class Module implements Methods {
             return;
         if(!alwaysRegistered)
             EventHandling.getInstance().unregisterListener(this);
-        onDisable();
+        try {
+            onDisable();
+        } catch (Exception e) {
+            System.out.println("FAILED TO DISABLE: " + getName());
+            e.printStackTrace();
+        }
         new DisableModuleEvent(this, DisableModuleEvent.Type.POST).publishItself();
     }
 

@@ -2,6 +2,8 @@ package tech.atani.client.feature.guis.screens.clickgui.ryu.component.impl;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.MathHelper;
+import org.lwjgl.input.Mouse;
+import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 import tech.atani.client.feature.value.Value;
@@ -34,6 +36,12 @@ public class SliderComponent extends ValueComponent {
         RoundedShader.drawRound(sliderX + length - 2, sliderY - 2 + 1, 4, 4, 2, new Color(-1));
         FontRenderer small = FontStorage.getInstance().findFont("Roboto Medium", 15);
         small.drawString(sliderValue.getValue().floatValue() + "", sliderX + length - small.getStringWidth(sliderValue.getValue().floatValue() + "") / 2, sliderY + 4, -1);
+        if(Mouse.isButtonDown(0) && RenderUtil.isHovered(mouseX, mouseY, this.getPosX() + getAddX(), this.getPosY(), this.getBaseWidth(), this.getBaseHeight())) {
+            double min1 = sliderValue.getMinimum().floatValue();
+            double max1 = sliderValue.getMaximum().floatValue();
+            double newValue = MathUtil.round((mouseX - sliderX) * (max1 - min1) / (sliderWidth - 1.0f) + min1, sliderValue.getDecimalPlaces());
+            sliderValue.setValue(newValue);
+        }
         RenderUtil.endScissorBox();
     }
 

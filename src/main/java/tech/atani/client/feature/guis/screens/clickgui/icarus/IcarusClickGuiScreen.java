@@ -36,7 +36,7 @@ public class IcarusClickGuiScreen extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         scroll += Mouse.getDWheel() / 10F;
         if(frames.isEmpty()) {
-            float y = 50, width = 100, height = 26, x = (this.width - (Category.values().length * (width + 5))) / 2; /* The X is made like that so categories will be in the middle*/
+            float y = 10, width = 100, height = 26, x = (this.width - (Category.values().length * (width + 5))) / 2; /* The X is made like that so categories will be in the middle*/
             for(Category category : Category.values()) {
                 Frame frame = new Frame(category, x, y, width, height, height - 6);
                 Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);

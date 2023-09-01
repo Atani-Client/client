@@ -36,7 +36,12 @@ public abstract class Module implements Methods {
         this.category = moduleData.category();
         this.supportedIPs = moduleData.supportedIPs();
         this.key = moduleData.key();
-        this.setEnabled(moduleData.enabled());
+        try {
+            this.setEnabled(moduleData.enabled());
+        } catch (Exception e) {
+            System.out.println(String.format("failed to properly toggle %s to %s, this shouldn't be a problem (?)", this.getName(), moduleData.enabled() + ""));
+            this.enabled = moduleData.enabled();
+        }
 
         if(moduleData.alwaysRegistered()) {
             EventHandling.getInstance().registerListener(this);
@@ -69,12 +74,7 @@ public abstract class Module implements Methods {
         EnableModuleEvent enableModuleEvent = new EnableModuleEvent(this, EnableModuleEvent.Type.PRE).publishItself();
         if(enableModuleEvent.isCancelled())
             return;
-        try {
-            onEnable();
-        } catch (Exception e) {
-            System.out.println("FAILED TO ENABLE: " + getName());
-            e.printStackTrace();
-        }
+        onEnable();
         if(!alwaysRegistered)
             EventHandling.getInstance().registerListener(this);
         new EnableModuleEvent(this, EnableModuleEvent.Type.POST).publishItself();
@@ -86,12 +86,7 @@ public abstract class Module implements Methods {
             return;
         if(!alwaysRegistered)
             EventHandling.getInstance().unregisterListener(this);
-        try {
-            onDisable();
-        } catch (Exception e) {
-            System.out.println("FAILED TO DISABLE: " + getName());
-            e.printStackTrace();
-        }
+        onDisable();
         new DisableModuleEvent(this, DisableModuleEvent.Type.POST).publishItself();
     }
 
@@ -173,7 +168,7 @@ public abstract class Module implements Methods {
             if (object.has("Enabled"))
                 setEnabled(object.get("Enabled").getAsBoolean());
         } catch (Exception e) {
-
+            // Ignored
         }
 
         if (object.has("Key"))

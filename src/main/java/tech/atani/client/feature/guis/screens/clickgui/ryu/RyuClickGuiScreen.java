@@ -39,7 +39,13 @@ public class RyuClickGuiScreen extends GuiScreen {
         scroll += Mouse.getDWheel() / 10F;
         if(frames.isEmpty()) {
             float y = 30, width = 100, height = 22, x = 30;
+            int counter = 0;
             for(Category category : Category.values()) {
+                if(counter == 8) {
+                    x = 30;
+                    Frame prevFrame = frames.get(counter - 8);
+                    y = prevFrame.getPosY() + prevFrame.getFinalHeight() + 20;
+                }
                 Frame frame = new Frame(category, x, y, width, height, 18);
                 Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
                 this.frames.add(frame);
@@ -47,6 +53,7 @@ public class RyuClickGuiScreen extends GuiScreen {
                 // We need to set the direction backwards at first so it will start at 0, then to forwards so it will animate upwards
                 animation.setDirection(Direction.FORWARDS);
                 x += width + 15;
+                counter++;
             }
         }
         if(framesAnimations.isEmpty()) {
@@ -139,7 +146,7 @@ public class RyuClickGuiScreen extends GuiScreen {
         switch (button.id){
             case 0:
                 mc.displayGuiScreen(null);
-                ClickGui.clickGuiScreenSimple = null;
+                ClickGui.clickGuiScreenRyu = null;
                 ModuleStorage.getInstance().getByClass(ClickGui.class).toggle();
                 break;
         }

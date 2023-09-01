@@ -87,6 +87,7 @@ public class ModuleComponent extends Component {
                 if(component instanceof ValueComponent) {
                     ValueComponent valueComponent = (ValueComponent) component;
                     valueComponent.setAddX(this.getAddX());
+                    valueComponent.setPosX(this.getPosX());
                     valueComponent.setPosY(valueY);
                     Value value = valueComponent.getValue();
                     valueComponent.setVisible(value.isVisible());
@@ -116,6 +117,7 @@ public class ModuleComponent extends Component {
             for(Component component : this.subComponents) {
                 if(component instanceof ValueComponent) {
                     ValueComponent valueComponent = (ValueComponent) component;
+                    valueComponent.setPosX(this.getPosX());
                     valueComponent.setPosY(valueY);
                     Value value = valueComponent.getValue();
                     valueComponent.setVisible(value.isVisible());

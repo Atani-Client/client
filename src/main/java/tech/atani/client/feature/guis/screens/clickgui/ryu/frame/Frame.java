@@ -1,6 +1,7 @@
 package tech.atani.client.feature.guis.screens.clickgui.ryu.frame;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.module.Module;
@@ -84,7 +85,9 @@ public class Frame extends Component implements ColorPalette {
         FontRenderer medium24 = FontStorage.getInstance().findFont("Roboto Medium", 24);
 
         medium24.drawString(category.getName(), this.getPosX() + 7 + getAddX(), this.getPosY() + 6 + getAddY(), -1);
-        FontStorage.getInstance().findFont("Roboto Medium", 17).drawString(ChatFormatting.GRAY.toString() + ModuleStorage.getInstance().getModules(category).size() + "", this.getPosX() + 7 + medium24.getStringWidth(category.getName()) + 2 + getAddX(), this.getPosY() + 6 + getAddY(), -1);
+        ArrayList<Module> modules2 = ModuleStorage.getInstance().getModules(category);
+        modules2.removeIf(module -> module.getCategory() == Category.SERVER && !module.correctServer());
+        FontStorage.getInstance().findFont("Roboto Medium", 17).drawString(ChatFormatting.GRAY.toString() + modules2.size() + "", this.getPosX() + 7 + medium24.getStringWidth(category.getName()) + 2 + getAddX(), this.getPosY() + 6 + getAddY(), -1);
         for(Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
                 if(((ModuleComponent)component).getModule().shouldHide())

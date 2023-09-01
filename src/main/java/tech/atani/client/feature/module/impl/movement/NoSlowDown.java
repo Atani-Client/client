@@ -25,7 +25,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
 public class NoSlowDown extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Intave", "Old NCP"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP"});
 
     private final MultiStringBoxValue items = new MultiStringBoxValue("Items", "Should the module disable slowdown with these items?", this, new String[] {"Sword"}, new String[] {"Sword", "Food", "Bow"});
     private final SliderValue<Float> swordForward = new SliderValue<Float>("Sword Forward", "How high should the sword forward multiplier be?", this, 1f, 0f, 1f, 2, new Supplier[]{() -> items.get("Sword")}),
@@ -35,11 +35,11 @@ public class NoSlowDown extends Module {
             bowForward = new SliderValue<Float>("Bow Forward", "How high should the bow forward multiplier be?", this, 1f, 0f, 1f, 2, new Supplier[]{() -> items.get("Bow")}),
             bowStrafe = new SliderValue<Float>("Bow Strafe", "How high should the bow strafe multiplier be?", this, 1f, 0f, 1f, 2, new Supplier[]{() -> items.get("Bow")});
 
-    // Intave
+    // Old Intave
     private final TimeHelper intaveTimer = new TimeHelper();
 
     // Matrix
-//    private final TimeHelper matrixTimer = new TimeHelper();
+    //private final TimeHelper matrixTimer = new TimeHelper();
 
     @Override
     public String getSuffix() {
@@ -100,7 +100,7 @@ public class NoSlowDown extends Module {
                     }
                 }
                 break;
-            case "Intave":
+            case "Old Intave":
                 if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword && intaveTimer.hasReached(150L)) {
                     if(event.getType() == UpdateMotionEvent.Type.MID) {
                         mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
@@ -129,7 +129,7 @@ public class NoSlowDown extends Module {
         switch (mode.getValue()) {
             case "Grim":
                 if(mc.thePlayer.isBlocking()) {
-                    mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(new BlockPos(-1, -1, -1), 255, mc.thePlayer.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
+                    mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.thePlayer.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
                 } else if (mc.thePlayer.isUsingItem()) {
                     mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1) % 9));
                     mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));

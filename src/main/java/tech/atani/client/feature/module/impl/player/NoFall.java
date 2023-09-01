@@ -67,6 +67,9 @@ public class NoFall extends Module {
 
     @Listen
     public void onTickEvent(RunTickEvent runTickEvent) {
+        if(mc.thePlayer == null || mc.theWorld == null)
+            return;
+
     	switch(mode.getValue()) {
     	    case "Spartan":
                 spartanTimer.update();

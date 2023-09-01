@@ -91,12 +91,14 @@ public class Flight extends Module {
     public final void onUpdateMotion(UpdateMotionEvent event) {
         switch (mode.getValue()) {
             case "Blockdrop":
+                mc.timer.timerSpeed = 0.3f;
                 mc.gameSettings.keyBindForward.pressed = false;
                 mc.thePlayer.onGround = true;
                 mc.thePlayer.motionY = 0.0f;
                 double x = -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw)) * .28;
                 double z = Math.cos(Math.toRadians(mc.thePlayer.rotationYaw)) * .28;
                 mc.getNetHandler().addToSendQueueSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + x, mc.thePlayer.posY, mc.thePlayer.posZ + z, false));
+                mc.getNetHandler().addToSendQueueSilent(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + x, mc.thePlayer.posY + 30, mc.thePlayer.posZ + z, true));
                 mc.thePlayer.posX += x;
                 mc.thePlayer.posZ += z;
                 mc.thePlayer.motionX *= 1.02;

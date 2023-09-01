@@ -15,7 +15,7 @@ public class ModulesProcessor extends Processor {
     public void onTick(RunTickEvent runTickEvent) {
         for(Module module : ModuleStorage.getInstance().getList()) {
             if(module.getCategory() == Category.SERVER) {
-                if(module.correctServer()) {
+                if(!module.correctServer()) {
                     if(module.isEnabled())
                         module.setEnabled(false);
                 }

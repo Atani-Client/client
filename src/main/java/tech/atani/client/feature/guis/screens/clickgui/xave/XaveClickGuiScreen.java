@@ -8,9 +8,9 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.impl.hud.ClickGui;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.guis.screens.clickgui.xave.frame.Frame;
-import tech.atani.client.utility.render.animation.Animation;
-import tech.atani.client.utility.render.animation.Direction;
-import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
+import tech.atani.client.utility.render.animation.advanced.Animation;
+import tech.atani.client.utility.render.animation.advanced.Direction;
+import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 import tech.atani.client.utility.render.RenderUtil;
 
 import java.io.IOException;

@@ -2,19 +2,15 @@ package tech.atani.client.feature.theme.impl.element.modulelist;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
-import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
-import tech.atani.client.utility.render.animation.Direction;
-import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
+import tech.atani.client.utility.render.animation.advanced.Direction;
+import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 import tech.atani.client.utility.render.color.ColorUtil;
-import tech.atani.client.utility.render.shader.shaders.GradientShader;
-import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
-import java.awt.*;
 import java.util.LinkedHashMap;
 
 @ThemeObjectInfo(name = "Fatality", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)

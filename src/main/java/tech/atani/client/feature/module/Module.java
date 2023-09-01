@@ -17,9 +17,9 @@ import java.util.List;
 
 public abstract class Module implements Methods {
 
-    private final String name, description;
+    private final String name, identifier, description;
     private final Category category;
-    private final String serverIP;
+    private final String[] supportedIPs;
     private int key;
     private boolean enabled;
     private boolean alwaysRegistered;
@@ -30,9 +30,10 @@ public abstract class Module implements Methods {
         if(moduleData == null)
             throw new RuntimeException();
         this.name = moduleData.name();
+        this.identifier = moduleData.identifier().equals("") ? moduleData.name() : moduleData.identifier();
         this.description = moduleData.description();
         this.category = moduleData.category();
-        this.serverIP = moduleData.serverIP();
+        this.supportedIPs = moduleData.supportedIPs();
         this.key = moduleData.key();
         this.enabled = moduleData.enabled();
 
@@ -87,7 +88,22 @@ public abstract class Module implements Methods {
     public abstract void onDisable();
 
     public boolean shouldHide() {
-        return category != Category.SERVER ? false : (mc.getCurrentServerData() == null || mc.isSingleplayer() ? !this.serverIP.equalsIgnoreCase("") : !mc.getCurrentServerData().serverIP.equalsIgnoreCase(this.serverIP));
+        boolean hidden = false;
+        if(category == Category.SERVER) {
+            if(!correctServer())
+                hidden = true;
+        }
+        return hidden;
+    }
+
+    public boolean correctServer() {
+        boolean found = false;
+        for(String ip : supportedIPs) {
+            if(mc.getCurrentServerData() != null && mc.getCurrentServerData().serverIP.equalsIgnoreCase(ip)) {
+                found = true;
+            }
+        }
+        return found;
     }
     
     public String getSuffix() {
@@ -96,6 +112,10 @@ public abstract class Module implements Methods {
 
     public String getName() {
         return name;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     public String getDescription() {
@@ -118,8 +138,8 @@ public abstract class Module implements Methods {
         this.key = key;
     }
 
-    public String getServerIP() {
-        return serverIP;
+    public String[] getSupportedIPs() {
+        return supportedIPs;
     }
 
     public JsonObject save() {

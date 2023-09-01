@@ -1,8 +1,8 @@
-package tech.atani.client.utility.render.animation.impl;
+package tech.atani.client.utility.render.animation.advanced.impl;
 
 
-import tech.atani.client.utility.render.animation.Animation;
-import tech.atani.client.utility.render.animation.Direction;
+import tech.atani.client.utility.render.animation.advanced.Animation;
+import tech.atani.client.utility.render.animation.advanced.Direction;
 
 public class EaseBackIn extends Animation {
     private final float easeAmount;

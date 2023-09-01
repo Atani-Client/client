@@ -8,7 +8,7 @@ import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.time.TimeHelper;
 
-@ModuleData(name = "AutoHeal", description = "Automatically /heal-s", category = Category.SERVER, serverIP = "eu.loyisa.cn")
+@ModuleData(name = "AutoHeal", identifier = "eu.loyisa.cn AutoHeal", description = "Automatically /heal-s", category = Category.SERVER, supportedIPs = {"eu.loyisa.cn"})
 public class AutoHeal extends Module {
 
     public SliderValue<Integer> minHealth = new SliderValue<>("Min Health", "What will the minimum health before healing?", this, 5, 0, 20, 0);

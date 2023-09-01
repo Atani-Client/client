@@ -23,12 +23,11 @@ import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.interfaces.ColorPalette;
 import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.utility.render.animation.Direction;
-import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
+import tech.atani.client.utility.render.animation.advanced.Direction;
+import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 import tech.atani.client.utility.render.shader.shaders.GradientShader;
 
 import java.awt.*;
-import java.security.Key;
 import java.util.ArrayList;
 
 public class FatalityClickGuiScreen extends GuiScreen implements ClientInformationAccess, ColorPalette {

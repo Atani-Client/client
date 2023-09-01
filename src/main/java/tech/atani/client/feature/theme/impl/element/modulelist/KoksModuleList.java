@@ -11,15 +11,12 @@ import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
 import tech.atani.client.utility.java.MapUtil;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
-import tech.atani.client.utility.render.animation.Direction;
-import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
-import tech.atani.client.utility.render.shader.shaders.GradientShader;
-import tech.atani.client.utility.render.shader.shaders.RoundedShader;
+import tech.atani.client.utility.render.animation.advanced.Direction;
+import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 @ThemeObjectInfo(name = "Koks", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)
 public class KoksModuleList extends ModuleListElement {

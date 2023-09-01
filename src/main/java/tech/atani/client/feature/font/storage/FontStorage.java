@@ -65,6 +65,7 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("SF Semibold", 19),
                 this.createFontEntry("SF Semibold", 20),
                 this.createFontEntry("SF Semibold", 21),
+                this.createFontEntry("IcoMoon", 12),
                 this.createFontEntry("Consolas", 17),
                 this.createFontEntry("Consolas", 18),
                 this.createFontEntry("Consolas", 19),

@@ -5,7 +5,7 @@ import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.theme.ThemeObject;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
-import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
+import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 
 import java.util.LinkedHashMap;
 

@@ -34,6 +34,7 @@ import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.world.entities.EntitiesUtil;
 
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 @ModuleData(name = "NBacktrack", description = "New backtrack", category = Category.COMBAT)
 public class NBacktrack extends Module {
@@ -201,8 +202,12 @@ public class NBacktrack extends Module {
         GL11.glPushMatrix();
         GlStateManager.disableAlpha();
 
-        for (Entity entity : targets) {
-            renderFrozenEntity(entity, event);
+        try {
+            for (Entity entity : targets) {
+                renderFrozenEntity(entity, event);
+            }
+        } catch (ConcurrentModificationException e) {
+
         }
 
         GlStateManager.enableAlpha();

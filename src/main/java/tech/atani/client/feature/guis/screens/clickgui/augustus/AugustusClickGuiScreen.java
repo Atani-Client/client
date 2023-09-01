@@ -19,8 +19,8 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.feature.value.storage.ValueStorage;
 import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.utility.render.animation.Direction;
-import tech.atani.client.utility.render.animation.impl.DecelerateAnimation;
+import tech.atani.client.utility.render.animation.advanced.Direction;
+import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;

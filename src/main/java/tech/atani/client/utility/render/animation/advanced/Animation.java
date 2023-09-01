@@ -1,4 +1,4 @@
-package tech.atani.client.utility.render.animation;
+package tech.atani.client.utility.render.animation.advanced;
 
 import tech.atani.client.utility.math.time.TimeHelper;
 

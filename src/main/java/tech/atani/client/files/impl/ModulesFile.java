@@ -19,7 +19,7 @@ public class ModulesFile implements IFile {
         JsonObject modulesObject = new JsonObject();
 
         for (Module module : ModuleStorage.getInstance().getList())
-            modulesObject.add(module.getName(), module.save());
+            modulesObject.add(module.getIdentifier(), module.save());
 
         object.add("Modules", modulesObject);
 
@@ -37,8 +37,8 @@ public class ModulesFile implements IFile {
             JsonObject modulesObject = object.getAsJsonObject("Modules");
 
             for (Module module : ModuleStorage.getInstance().getList()) {
-                if (modulesObject.has(module.getName()))
-                    module.load(modulesObject.getAsJsonObject(module.getName()));
+                if (modulesObject.has(module.getIdentifier()))
+                    module.load(modulesObject.getAsJsonObject(module.getIdentifier()));
             }
         }
     }

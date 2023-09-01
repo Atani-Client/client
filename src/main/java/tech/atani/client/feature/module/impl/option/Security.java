@@ -1,6 +1,10 @@
 package tech.atani.client.feature.module.impl.option;
 
+import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C19PacketResourcePackStatus;
+import net.minecraft.network.play.server.S27PacketExplosion;
+import net.minecraft.network.play.server.S2APacketParticles;
+import net.minecraft.network.play.server.S2DPacketOpenWindow;
 import net.minecraft.network.play.server.S48PacketResourcePackSend;
 import tech.atani.client.listener.event.Event;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
@@ -18,7 +22,9 @@ import java.nio.charset.StandardCharsets;
 
 @ModuleData(name = "Security", description = "Patches common exploits", category = Category.OPTIONS, frozenState = true, enabled = true)
 public class Security extends Module {
+
     public final CheckBoxValue antiResourcePackExploit = new CheckBoxValue("Anti Resource Pack Exploit", "Prevent servers using the resource pack exploit to scan your files?", this, true);
+    public final CheckBoxValue antiCrashExploits = new CheckBoxValue("Anti Crash Exploits", "Prevent servers using exploits to try and crash the client?", this, true);
 
     @Listen
     public void onUpdate(PacketEvent event) {
@@ -45,6 +51,29 @@ public class Security extends Module {
                     } catch (URISyntaxException | UnsupportedEncodingException ex) {
                         event.setCancelled(true);
                     }
+                }
+            }
+        }
+        if(antiCrashExploits.getValue()) {
+            if (event.getPacket() instanceof S2APacketParticles) {
+                final S2APacketParticles packetParticles = (S2APacketParticles) event.getPacket();
+                if (packetParticles.getParticleCount() > 400 || Math.abs(packetParticles.getParticleSpeed()) > 400) {
+                    event.setCancelled(true);
+                    sendMessage("Server tried to crash the client with particles packet");
+                }
+            }
+            if (event.getPacket() instanceof S27PacketExplosion) {
+                final S27PacketExplosion ePacket = (S27PacketExplosion) event.getPacket();
+                if (Math.abs(ePacket.getStrength()) > 99 || Math.abs(ePacket.getX()) > 99 || Math.abs(ePacket.getZ()) > 99 || Math.abs(ePacket.getY()) > 99) {
+                    event.setCancelled(true);
+                    sendMessage("Server tried to crash the server with explosion packet");
+                }
+            }
+            if (event.getPacket() instanceof S2DPacketOpenWindow) {
+                final S2DPacketOpenWindow packetOpenWindow = (S2DPacketOpenWindow) event.getPacket();
+                if (Math.abs(packetOpenWindow.getSlotCount()) > 70) {
+                    sendMessage("Server tried to crash the server with window packet");
+                    event.setCancelled(true);
                 }
             }
         }

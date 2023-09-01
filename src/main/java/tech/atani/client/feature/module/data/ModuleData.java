@@ -14,9 +14,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ModuleData {
     String name();
+    String identifier() default "";
     String description();
     Category category();
-    String serverIP() default "";
+    String[] supportedIPs() default {""};
     int key() default 0;
     boolean enabled() default false;
     boolean alwaysRegistered() default false;

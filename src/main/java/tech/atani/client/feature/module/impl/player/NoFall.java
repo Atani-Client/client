@@ -68,15 +68,15 @@ public class NoFall extends Module {
     @Listen
     public void onTickEvent(RunTickEvent runTickEvent) {
     	switch(mode.getValue()) {
-    	case "Spartan":
-            spartanTimer.update();
+    	    case "Spartan":
+                spartanTimer.update();
 
-            if(mc.thePlayer.fallDistance > 1.5 && spartanTimer.hasReached(10)) {
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 10, mc.thePlayer.posZ, true));
-                mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY - 10, mc.thePlayer.posZ, true));
-                spartanTimer.reset();
-            }
-    		break;
+                if(mc.thePlayer.fallDistance > 1.5 && spartanTimer.hasReached(10)) {
+                    mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 10, mc.thePlayer.posZ, true));
+                    mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY - 10, mc.thePlayer.posZ, true));
+                    spartanTimer.reset();
+                }
+    		    break;
     	}
     }
 

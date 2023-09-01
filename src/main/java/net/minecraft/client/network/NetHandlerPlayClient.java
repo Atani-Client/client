@@ -814,17 +814,17 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
     }
 
-    public void addToSendQueue(Packet p_147297_1_)
+    public void addToSendQueue(Packet packetIn)
     {
-        PacketEvent packetEvent = new PacketEvent(p_147297_1_, this, PacketEvent.Type.OUTGOING).publishItself();
+        PacketEvent packetEvent = new PacketEvent(packetIn, this, PacketEvent.Type.OUTGOING).publishItself();
         if(packetEvent.isCancelled())
             return;
         this.netManager.sendPacket(packetEvent.getPacket());
     }
 
-    public void addToSendQueueSilent(Packet p_147297_1_)
+    public void addToSendQueueSilent(Packet packetIn)
     {
-        this.netManager.sendPacket(p_147297_1_);
+        this.netManager.sendPacket(packetIn);
     }
 
     public void addToReceiveQueue(final Packet p_147297_1_) {

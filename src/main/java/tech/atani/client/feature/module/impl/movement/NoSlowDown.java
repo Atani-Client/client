@@ -41,6 +41,11 @@ public class NoSlowDown extends Module {
     // Matrix
 //    private final TimeHelper matrixTimer = new TimeHelper();
 
+    @Override
+    public String getSuffix() {
+        return mode.getValue();
+    }
+
     @Listen
     public void onNoSlowEvent(NoSlowEvent event) {
         ItemStack currentItem = mc.thePlayer.getCurrentEquippedItem();
@@ -108,14 +113,6 @@ public class NoSlowDown extends Module {
                 }
                 break;
             case "Grim":
-                if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword) {
-                    if(event.getType() == UpdateMotionEvent.Type.MID) {
-                        if (mc.gameSettings.keyBindUseItem.isKeyDown()) {
-                            mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
-                        }
-                    }
-                }
-                break;
             case "Switch":
                 if(event.getType() == UpdateMotionEvent.Type.MID) {
                     mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1) % 9));

@@ -172,7 +172,7 @@ public class Window extends GuiScreen{
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(stringBoxValue) ? stringBoxValue.getValues().length * 15 : 0);
             } else if(value instanceof MultiStringBoxValue) {
                 MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue)value;
-                float length = fontRenderer.getStringWidth(multiStringBoxValue.getValue().size() + " Enabled");
+                float length = fontRenderer.getStringWidth(multiStringBoxValue.getValue().size() - 1 + " Enabled");
                 if(this.expanded.contains(multiStringBoxValue)) {
                     if(RenderUtil.isHovered(mouseX, mouseY, valueX + width - 50 - length, valueY - 1, length + 10, 15 + multiStringBoxValue.getValues().length * 15)) {
                         this.expanded.remove(multiStringBoxValue);

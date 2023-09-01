@@ -54,20 +54,20 @@ public class Flight extends Module {
     }
 
     @Listen
-    public final void onCollisionBoxes(CollisionBoxesEvent event) {
+    public final void onCollisionBoxes(CollisionBoxesEvent boxesEvent) {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
 
         switch(mode.getValue()) {
-        case "Collision":
-            if(!mc.gameSettings.keyBindSneak.pressed)
-            event.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(event.getBlockPos().getX(), event.getBlockPos().getY(), event.getBlockPos().getZ()));
-            break;
+            case "Collision":
+                if(!mc.gameSettings.keyBindSneak.pressed)
+                    boxesEvent.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(boxesEvent.getBlockPos().getX(), boxesEvent.getBlockPos().getY(), boxesEvent.getBlockPos().getZ()));
+                break;
         }
     }
 
     @Listen
-    public final void onRotation(RotationEvent event) {
+    public final void onRotation(RotationEvent rotationEvent) {
         switch (this.mode.getValue()) {
             case "Grim":
                 switch (this.grimMode.getValue()) {
@@ -77,8 +77,8 @@ public class Flight extends Module {
                                 EntityBoat boat = (EntityBoat) mc.thePlayer.ridingEntity;
                                 float yaw = boat.rotationYaw;
                                 float pitch = 90;
-                                event.setYaw(yaw);
-                                event.setPitch(pitch);
+                                rotationEvent.setYaw(yaw);
+                                rotationEvent.setPitch(pitch);
                             }
                         }
                         break;
@@ -88,7 +88,7 @@ public class Flight extends Module {
     }
 
     @Listen
-    public final void onUpdateMotion(UpdateMotionEvent event) {
+    public final void onUpdateMotion(UpdateMotionEvent motionEvent) {
         switch (mode.getValue()) {
             case "Blockdrop":
                 mc.timer.timerSpeed = 0.3f;
@@ -105,7 +105,7 @@ public class Flight extends Module {
                 mc.thePlayer.motionZ *= 1.02;
                 break;
             case "Verus":
-                if (event.getType() == UpdateMotionEvent.Type.MID) {
+                if (motionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     switch (verusMode.getValue()) {
                         case "Damage":
                             if (mc.thePlayer.hurtTime != 0) {
@@ -128,7 +128,7 @@ public class Flight extends Module {
                 }
                 break;
             case "Grim":
-                if (event.getType() == UpdateMotionEvent.Type.MID) {
+                if (motionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     switch (grimMode.getValue()) {
                         case "Explosion":
                             if (velo) {
@@ -176,7 +176,7 @@ public class Flight extends Module {
                 }
                 break;
             case "Vulcan":
-                if (event.getType() == UpdateMotionEvent.Type.PRE) {
+                if (motionEvent.getType() == UpdateMotionEvent.Type.PRE) {
                     switch (vulcanMode.getValue()) {
                         case "Clip & Glide":
                             if(mc.thePlayer.onGround) {
@@ -245,13 +245,13 @@ public class Flight extends Module {
     }
 
     @Listen
-    public final void onPacket(PacketEvent event) {
+    public final void onPacket(PacketEvent packetEvent) {
         switch (mode.getValue()) {
             case "Grim":
                 switch(grimMode.getValue()){
                     case "Explosion":
-                        if (event.getPacket() instanceof S12PacketEntityVelocity) {
-                            S12PacketEntityVelocity packet = (S12PacketEntityVelocity) event.getPacket();
+                        if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                            S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
                             if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
                                 velo = true;
                             }
@@ -262,8 +262,8 @@ public class Flight extends Module {
             case "Vulcan":
                 switch(vulcanMode.getValue()){
                     case "Clip & Glide":
-                        if(jumped && event.getPacket() instanceof C03PacketPlayer) {
-                            C03PacketPlayer packet = (C03PacketPlayer) event.getPacket();
+                        if(jumped && packetEvent.getPacket() instanceof C03PacketPlayer) {
+                            C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
 
                             if(mc.thePlayer.ticksExisted % 11 == 0) {
                                 packet.setOnGround(true);
@@ -271,8 +271,8 @@ public class Flight extends Module {
                         }
                         break;
                     case "Vanilla":
-                        if(event.getPacket() instanceof C03PacketPlayer) {
-                            event.setCancelled(true);
+                        if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                            packetEvent.setCancelled(true);
                         }
                         break;
                 }
@@ -281,11 +281,11 @@ public class Flight extends Module {
     }
 
     @Listen
-    public final void onMove(MovePlayerEvent event) {
+    public final void onMove(MovePlayerEvent movePlayerEvent) {
         switch (mode.getValue()) {
             case "Old NCP":
                 if (!mc.thePlayer.onGround) {
-                    event.setY(mc.thePlayer.ticksExisted % 2 == 0 ? -1.0E-9 : 1.0E-9);
+                    movePlayerEvent.setY(mc.thePlayer.ticksExisted % 2 == 0 ? -1.0E-9 : 1.0E-9);
                     mc.thePlayer.motionY = 0;
 
                     if (moveSpeed >= MoveUtil.getBaseMoveSpeed()) {

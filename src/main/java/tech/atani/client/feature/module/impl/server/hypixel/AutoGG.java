@@ -14,7 +14,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 @ModuleData(name = "AutoGG", identifier = "mc.hypixel.net AutoGG", description = "Automatically types gg", category = Category.SERVER, supportedIPs = {"mc.hypixel.net"})
 public class AutoGG extends Module {
 
-    public SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between heals?", this, 500L, 0L, 10000L, 0);
+    public SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between gg's?", this, 1000L, 0L, 5000L, 0);
 
     private final TimeHelper timeHelper = new TimeHelper();
 
@@ -30,7 +30,7 @@ public class AutoGG extends Module {
 
     @Listen
     public void onUpdate(UpdateEvent event) {
-        if(timeHelper != null && timeHelper.hasReached(delay.getValue(), false)) {
+        if(timeHelper != null && timeHelper.hasReached(delay.getValue())) {
             mc.thePlayer.sendChatMessage("gg");
             timeHelper.reset();
         }

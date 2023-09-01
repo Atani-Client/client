@@ -245,6 +245,21 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
         }
     }
 
+    public void sendPacketWithoutEvent(Packet packetIn) {
+        if (isChannelOpen()) {
+            flushOutboundQueue();
+            dispatchPacket(packetIn, (GenericFutureListener<? extends Future<? super Void>>[])null);
+        } else {
+            this.field_181680_j.writeLock().lock();
+
+            try {
+                this.outboundPacketsQueue.add(new InboundHandlerTuplePacketListener(packetIn, (GenericFutureListener<? extends Future<? super Void>>[])null));
+            } finally {
+                this.field_181680_j.writeLock().unlock();
+            }
+        }
+    }
+
     /**
      * Will commit the packet to the channel. If the current thread 'owns' the channel it will write and flush the
      * packet, otherwise it will add a task for the channel eventloop thread to do that.

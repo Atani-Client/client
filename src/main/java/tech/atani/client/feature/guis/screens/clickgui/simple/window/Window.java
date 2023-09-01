@@ -64,7 +64,7 @@ public class Window extends GuiScreen{
                 float length = fontRenderer.getStringWidth(multiStringBoxValue.getValue().size() - 1 + " Enabled");
                 fontRenderer.drawStringWithShadow(value.getName(), valueX, valueY, -1);
                 if(this.expanded.contains(multiStringBoxValue)) {
-                    RoundedShader.drawRound(valueX + width - 50 - length, valueY - 1, length + 10, 15 + multiStringBoxValue.getValues().length * 15, 3, new Color(31, 33, 35));
+                    RenderUtil.drawRect(valueX + width - 50 - length, valueY - 1, length + 10, 15 + multiStringBoxValue.getValues().length * 15, new Color(0, 0, 0, 50).getRGB());
                     float stringsY = valueY - 1 + 15;
                     for(String string : multiStringBoxValue.getValues()) {
                         fontRenderer.drawStringWithShadow(string, valueX + width - 50 - length + 5.5f, stringsY + 3, multiStringBoxValue.getValue().contains(string) ? new Color(14, 223, 39).getRGB() : -1);
@@ -72,7 +72,7 @@ public class Window extends GuiScreen{
                     }
                     fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() - 1 + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
                 } else {
-                    RoundedShader.drawRound(valueX + width - 50 - length, valueY - 1, length + 10, 15, 3, new Color(31, 33, 35));
+                    RenderUtil.drawRect(valueX + width - 50 - length, valueY - 1, length + 10, 15, new Color(0, 0, 0, 50).getRGB());
                     fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() - 1 + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
                 }
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(multiStringBoxValue) ? multiStringBoxValue.getValues().length * 15 : 0);

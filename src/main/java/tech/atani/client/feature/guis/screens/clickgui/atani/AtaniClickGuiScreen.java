@@ -38,8 +38,8 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
     float x = -1337, y = -1337;
     Category selectedCategory;
     ArrayList<Value> expanded = new ArrayList<>();
-    FontRenderer fontRendererSmall = FontStorage.getInstance().findFont("Arial",  18);
-    FontRenderer fontRendererSmaller = FontStorage.getInstance().findFont("Arial",  17);
+    FontRenderer fontRendererSmall = FontStorage.getInstance().findFont("Roboto",  18);
+    FontRenderer fontRendererSmaller = FontStorage.getInstance().findFont("Roboto",  17);
     Color textColor = new Color(15, 15, 15);
     DecelerateAnimation openingAnimation = new DecelerateAnimation(600, 1, Direction.BACKWARDS);
     ClickGui clickGui;
@@ -130,7 +130,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
         GradientShader.drawGradientTB(x + 2, y + 2, width - 4, 30, 1, new Color(0, 48, 95).brighter().brighter(), new Color(0, 48, 95).brighter());
         RenderUtil.drawRect(x + 2, y + 32, width - 4, height - 34, new Color(0, 48, 95).brighter().getRGB());
         RenderUtil.drawRect(x + 2, y + 2 + 30 + 2, width - 4, height - (2 + 30 + 2) - 2, new Color(240, 240, 240).getRGB());
-        FontRenderer fontRenderer = FontStorage.getInstance().findFont("Arial", 21);
+        FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto", 21);
         fontRenderer.drawStringWithShadow(CLIENT_NAME + " Client", x + 10, y + 2 + 30 / 2 - fontRenderer.FONT_HEIGHT, -1);
         fontRenderer.drawStringWithShadow("v" + VERSION, x + 10, y + 2 + 30 / 2 + 2, -1);
         fontRenderer.drawStringWithShadow(mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP, x + width - 10 - fontRenderer.getStringWidth(mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP), y + 2 + 30 / 2 - fontRenderer.FONT_HEIGHT, -1);
@@ -153,7 +153,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
         float categoryWidth = spaceWidth / Category.values().length;
         float categoryX = x + 2;
         for(Category category : Category.values()) {
-            fontRendererSmall.drawTotalCenteredStringWithShadow((selectedCategory == category ? ChatFormatting.BOLD.toString() : "") + category.getName(), categoryX + categoryWidth / 2, y + 30 + 4 + 20 / 2, -1);
+            fontRendererSmall.drawTotalCenteredStringWithShadow((selectedCategory == category ? ChatFormatting.BOLD.toString() : "") + category.getName().replace("Movement", "Move"), categoryX + categoryWidth / 2, y + 30 + 4 + 20 / 2, -1);
             if(RenderUtil.isHovered(mouseX, mouseY, categoryX, y + 30 + 4, categoryWidth, 20))
                 RenderUtil.drawRect(categoryX, y + 30 + 4, categoryWidth, 20, new Color(0, 0, 0, 40).getRGB());
             categoryX += categoryWidth;

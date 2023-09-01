@@ -21,7 +21,6 @@ import java.util.HashMap;
 public class SimpleClickGuiScreen extends GuiScreen {
     private ArrayList<Frame> frames = new ArrayList<>();
     private HashMap<Frame, Animation> framesAnimations = new HashMap<>();
-    private float scroll = 0;
     private ClickGui clickGui;
     private DecelerateAnimation openingAnimation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
 
@@ -35,17 +34,22 @@ public class SimpleClickGuiScreen extends GuiScreen {
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        scroll += Mouse.getDWheel() / 10F;
         if(frames.isEmpty()) {
-            float y = 50, width = 110, height = 15, x = (this.width - (Category.values().length * (width + 5))) / 2; /* The X is made like that so categories will be in the middle*/
+            float y = 50, width = 110, height = 15, x = (this.width - (7 * (width + 5))) / 2;
+            int counter = 0;
             for(Category category : Category.values()) {
-                Frame frame = new Frame(category, x, y, width, height, height);
+                if(counter == 7) {
+                    x = (this.width - (7 * (width + 5))) / 2;
+                    y += 10 * height + 20;
+                }
+                Frame frame = new Frame(category, x, y, width, height, height, this);
                 Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
                 this.frames.add(frame);
                 this.framesAnimations.put(frame, animation);
                 // We need to set the direction backwards at first so it will start at 0, then to forwards so it will animate upwards
                 animation.setDirection(Direction.FORWARDS);
                 x += width + 5;
+                counter++;
             }
         }
         if(framesAnimations.isEmpty()) {
@@ -61,6 +65,7 @@ public class SimpleClickGuiScreen extends GuiScreen {
 
         RenderableShaders.renderAndRun(() -> {
             float animationLeftRight = 0, animationUpDown = 0;
+            int dWheel = Mouse.getDWheel();
             for(Frame frame : framesAnimations.keySet()) {
                 if(clickGui.openingAnimation.getValue()) {
                     switch (clickGui.dropdownAnimation.getValue()) {
@@ -96,7 +101,8 @@ public class SimpleClickGuiScreen extends GuiScreen {
                             break;
                     }
                 }
-                frame.setAddY(scroll + animationUpDown);
+                frame.dWheel = dWheel;
+                frame.setAddY(animationUpDown);
                 frame.setAddX(animationLeftRight);
                 frame.drawScreen(mouseX, mouseY);
                 RenderUtil.scaleEnd();

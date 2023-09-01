@@ -144,6 +144,12 @@ public class ColorUtil {
                 return new Color(245, 155, 27).getRGB();
             case HUD:
                 return new Color(56, 0, 196).getRGB();
+            case CHAT:
+                return new Color(251, 219, 101).getRGB();
+            case OPTIONS:
+                return new Color(26, 188, 156).getRGB();
+            case SERVER:
+                return new Color(37, 153, 87).getRGB();
         }
         return -1;
     }

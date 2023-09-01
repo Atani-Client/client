@@ -39,14 +39,11 @@ public class AstolfoClickGuiScreen extends GuiScreen {
             float y = 20, width = 118, height = 16, x = 20;
             int count = 0;
             for (Category category : Category.values()) {
-                if(count == 7) {
-                    x = 20;
-                    float catY = 20 * 2 + ModuleStorage.getInstance().getModules(Category.SERVER).size() * 20 + 15;
-                    if(catY <= super.height / 2) {
-                        y = catY;
-                    } else {
-                        y = super.height / 2;
-                    }
+                if(count >= 7) {
+                    if(count == 7)
+                        x = 20;
+                    Frame prevFrame = frames.get(count - 7);
+                    y = prevFrame.getPosY() + prevFrame.getFinalHeight() + 20;
                 }
                 Frame frame = new Frame(category, x, y, width, height, height);
                 Animation animation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);

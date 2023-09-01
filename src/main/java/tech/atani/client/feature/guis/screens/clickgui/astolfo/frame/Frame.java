@@ -78,6 +78,10 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.astol
     public float getFinalHeight() {
         float totalComponentHeight = 0;
         for(tech.atani.client.feature.guis.screens.clickgui.astolfo.component.Component component : this.subComponents) {
+            if(component instanceof ModuleComponent) {
+                if (((ModuleComponent) component).getModule().shouldHide())
+                    continue;
+            }
             totalComponentHeight += component.getFinalHeight();
         }
         return this.getBaseHeight() + totalComponentHeight;

@@ -1,27 +1,25 @@
 package tech.atani.client.feature.guis.screens.clickgui.simple.component.impl;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import tech.atani.client.feature.module.Module;
-import tech.atani.client.feature.guis.screens.clickgui.simple.component.Component;
-import tech.atani.client.feature.value.impl.MultiStringBoxValue;
-import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.feature.value.Value;
-import tech.atani.client.feature.value.impl.CheckBoxValue;
-import tech.atani.client.feature.value.impl.SliderValue;
-import tech.atani.client.feature.value.impl.StringBoxValue;
-import tech.atani.client.feature.value.storage.ValueStorage;
+import net.minecraft.client.gui.GuiScreen;
 import tech.atani.client.feature.font.storage.FontStorage;
+import tech.atani.client.feature.guis.screens.clickgui.simple.window.Window;
+import tech.atani.client.feature.module.Module;
+import tech.atani.client.feature.value.storage.ValueStorage;
+import tech.atani.client.utility.render.RenderUtil;
 
 import java.awt.*;
 
 public class ModuleComponent extends tech.atani.client.feature.guis.screens.clickgui.simple.component.Component {
 
     private final Module module;
-    private boolean expanded = false;
+    private GuiScreen parent;
 
-    public ModuleComponent(Module module, float posX, float posY, float width, float height) {
+    public ModuleComponent(Module module, float posX, float posY, float width, float height, GuiScreen parent) {
         super(posX, posY, width, height);
         this.module = module;
+        this.parent = parent;
     }
 
     @Override
@@ -29,77 +27,6 @@ public class ModuleComponent extends tech.atani.client.feature.guis.screens.clic
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
         RenderUtil.drawRect(getPosX() + getAddX(), getPosY(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
         normal.drawTotalCenteredStringWithShadow(module.getName(), getPosX() + getBaseWidth() / 2 + getAddX(), getPosY() + getBaseHeight() / 2, !module.isEnabled() ? new Color(200, 200, 200).getRGB() : -1);
-        boolean reset = false;
-        for(Value value : ValueStorage.getInstance().getValues(module)) {
-            boolean found = false;
-            for(Component component : this.subComponents) {
-                if(component instanceof ValueComponent) {
-                    ValueComponent valueComponent = (ValueComponent) component;
-                    if(valueComponent.getValue() == value)
-                        found = true;
-                }
-            }
-            if(!found) {
-                reset = true;
-                break;
-            }
-        }
-        for(Component component : this.subComponents) {
-            if (component instanceof ValueComponent) {
-                ValueComponent valueComponent = (ValueComponent) component;
-                boolean found = false;
-                for(Value value : ValueStorage.getInstance().getValues(module)) {
-                    if(valueComponent.getValue() == value)
-                        found = true;
-                }
-                if(!found) {
-                    reset = true;
-                    break;
-                }
-            }
-        }
-        if(reset)
-            this.subComponents.clear();
-        if(expanded && this.subComponents.isEmpty()) {
-            for(Value value : ValueStorage.getInstance().getValues(module)) {
-                float valueY = this.getPosY() + this.getBaseHeight();
-                if(value instanceof CheckBoxValue) {
-                    CheckBoxComponent component = new CheckBoxComponent(value, this.getPosX(), valueY, this.getBaseWidth(), this.getBaseHeight());
-                    this.subComponents.add(component);
-                    valueY += component.getFinalHeight();
-                } else if(value instanceof StringBoxValue) {
-                    StringBoxComponent component = new StringBoxComponent(value, this.getPosX(), valueY, this.getBaseWidth(), this.getBaseHeight());
-                    this.subComponents.add(component);
-                    valueY += component.getFinalHeight();
-                } else if(value instanceof MultiStringBoxValue) {
-                    MultiStringBoxComponent component = new MultiStringBoxComponent(value, this.getPosX(), valueY, this.getBaseWidth(), this.getBaseHeight());
-                    this.subComponents.add(component);
-                    valueY += component.getFinalHeight();
-                } else if(value instanceof SliderValue) {
-                    SliderComponent component = new SliderComponent(value, this.getPosX(), valueY, this.getBaseWidth(), this.getBaseHeight());
-                    this.subComponents.add(component);
-                    valueY += component.getFinalHeight();
-                }
-            }
-        } else if(!this.expanded) {
-            subComponents.clear();
-        }
-        if(expanded) {
-            float valueY = this.getPosY() + this.getBaseHeight();
-            for(tech.atani.client.feature.guis.screens.clickgui.simple.component.Component component : this.subComponents) {
-                if(component instanceof ValueComponent) {
-                    ValueComponent valueComponent = (ValueComponent) component;
-                    valueComponent.setAddX(this.getAddX());
-                    valueComponent.setPosY(valueY);
-                    Value value = valueComponent.getValue();
-                    valueComponent.setVisible(value.isVisible());
-                    if(!valueComponent.isVisible())
-                        continue;
-                    valueComponent.drawScreen(mouseX, mouseY);
-                    valueY += valueComponent.getFinalHeight();
-                }
-            }
-        }
     }
 
     @Override
@@ -110,36 +37,16 @@ public class ModuleComponent extends tech.atani.client.feature.guis.screens.clic
                     module.toggle();
                     break;
                 case 1:
-                    this.expanded = !this.expanded;
+                    if(!ValueStorage.getInstance().getValues(module).isEmpty())
+                        Minecraft.getMinecraft().displayGuiScreen(new Window(getModule(), parent));
                     break;
-            }
-        }
-        if(expanded) {
-            float valueY = this.getPosY() + this.getBaseHeight();
-            for(tech.atani.client.feature.guis.screens.clickgui.simple.component.Component component : this.subComponents) {
-                if(component instanceof ValueComponent) {
-                    ValueComponent valueComponent = (ValueComponent) component;
-                    valueComponent.setPosY(valueY);
-                    Value value = valueComponent.getValue();
-                    valueComponent.setVisible(value.isVisible());
-                    if(!valueComponent.isVisible())
-                        continue;
-                    valueComponent.mouseClick(mouseX, mouseY, mouseButton);
-                    valueY += valueComponent.getFinalHeight();
-                }
             }
         }
     }
 
     @Override
     public float getFinalHeight() {
-        float totalComponentHeight = 0;
-        if(this.expanded) {
-            for(Component component : this.subComponents) {
-                totalComponentHeight += component.isVisible() ? component.getFinalHeight() : 0;
-            }
-        }
-        return this.getBaseHeight() + totalComponentHeight;
+        return this.getBaseHeight();
     }
 
     public Module getModule() {

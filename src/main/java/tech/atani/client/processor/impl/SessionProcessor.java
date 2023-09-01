@@ -1,11 +1,14 @@
 package tech.atani.client.processor.impl;
 
 import net.minecraft.network.play.server.S02PacketChat;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StringUtils;
+import tech.atani.client.listener.event.game.*;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.event.minecraft.world.WorldLoadEvent;
 import tech.atani.client.listener.radbus.Listen;
+import tech.atani.client.loader.Modification;
 import tech.atani.client.processor.Processor;
 import tech.atani.client.processor.data.ProcessorInfo;
 import tech.atani.client.utility.interfaces.Methods;
@@ -68,18 +71,26 @@ public class SessionProcessor extends Processor {
         if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
             if(packetEvent.getPacket() instanceof S02PacketChat) {
                 S02PacketChat s02PacketChat = (S02PacketChat) packetEvent.getPacket();
-                String message = StringUtils.stripControlCodes(s02PacketChat.getChatComponent().getUnformattedText()).toLowerCase();
+                String message = EnumChatFormatting.getTextWithoutFormattingCodes(s02PacketChat.getChatComponent().getUnformattedText()).toLowerCase();
+                if(message.contains("pro tuto hru aktivovan") || message.contains("cages opened"))
+                    new GameStartEvent().publishItself();
+                if(message.contains("1stkiller") || message.contains("1. killer") || message.contains("1st killer"))
+                    new GameEndEvent(false).publishItself();
                 for(String killMessageUnfinished : killMessages) {
+                    new KilledPlayerEvent().publishItself();
                     String killMessage = killMessageUnfinished.replace("%player%", Methods.mc.thePlayer.getCommandSenderName());
                     if(message.contains(killMessage))
                         kills++;
                 }
                 for(String deathMessageUnfinished : deathMessages) {
+                    new GameDeathEvent().publishItself();
                     String deathMessage = deathMessageUnfinished.replace("%player%", Methods.mc.thePlayer.getCommandSenderName());
                     if(message.contains(deathMessage))
                         deaths++;
                 }
                 for(String winMessageUnfinished : winMessages) {
+                    new GameWinEvent().publishItself();
+                    new GameEndEvent(true).publishItself();
                     String winMessage = winMessageUnfinished.replace("%player%", Methods.mc.thePlayer.getCommandSenderName());
                     if(message.contains(winMessage))
                         wins++;

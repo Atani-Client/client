@@ -44,7 +44,8 @@ public class ModuleComponent extends Component {
                     module.toggle();
                     break;
                 case 1:
-                    Minecraft.getMinecraft().displayGuiScreen(new Window(getModule(), parent));
+                    if(!ValueStorage.getInstance().getValues(module).isEmpty())
+                        Minecraft.getMinecraft().displayGuiScreen(new Window(getModule(), parent));
                     break;
             }
         }

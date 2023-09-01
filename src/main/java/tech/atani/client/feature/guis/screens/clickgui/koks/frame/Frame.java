@@ -74,6 +74,7 @@ public class Frame extends Component {
         for(Component component : this.subComponents) {
             totalComponentHeight += component.getFinalHeight();
         }
+        totalComponentHeight = Math.min(totalComponentHeight, 8 * moduleHeight);
         return this.getBaseHeight() + totalComponentHeight;
     }
 

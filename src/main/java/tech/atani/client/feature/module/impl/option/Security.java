@@ -28,7 +28,7 @@ public class Security extends Module {
 
     @Listen
     public void onUpdate(PacketEvent event) {
-    	if(mc.thePlayer == null || mc.theWorld == null)
+        if(mc.thePlayer == null || mc.theWorld == null)
     		return;
         if(antiResourcePackExploit.getValue()) {
             if (event.getType() == PacketEvent.Type.INCOMING) {

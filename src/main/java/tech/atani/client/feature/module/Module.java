@@ -35,7 +35,7 @@ public abstract class Module implements Methods {
         this.category = moduleData.category();
         this.supportedIPs = moduleData.supportedIPs();
         this.key = moduleData.key();
-        this.enabled = moduleData.enabled();
+        this.setEnabled(moduleData.enabled());
 
         if(moduleData.alwaysRegistered()) {
             EventHandling.getInstance().registerListener(this);
@@ -53,7 +53,7 @@ public abstract class Module implements Methods {
 
     public void setEnabled(boolean enabled) {
         if(this.frozenState) {
-            enabled = false;
+            return;
         }
 
         this.enabled = enabled;

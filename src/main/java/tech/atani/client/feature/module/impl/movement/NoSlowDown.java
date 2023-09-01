@@ -127,6 +127,8 @@ public class NoSlowDown extends Module {
 
     @Listen
     public void onTickEvent(RunTickEvent event) {
+        if(mc.thePlayer == null || mc.theWorld == null)
+            return;
         switch (mode.getValue()) {
             case "Grim":
                 if(mc.thePlayer.isBlocking()) {

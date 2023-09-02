@@ -67,7 +67,7 @@ public class Window extends GuiScreen{
                     RenderUtil.drawRect(valueX + width - 50 - length, valueY - 1, length + 10, 15 + multiStringBoxValue.getValues().length * 15, new Color(0, 0, 0, 50).getRGB());
                     float stringsY = valueY - 1 + 15;
                     for(String string : multiStringBoxValue.getValues()) {
-                        fontRenderer.drawStringWithShadow(string, valueX + width - 50 - length + 5.5f, stringsY + 3, multiStringBoxValue.getValue().contains(string) ? new Color(14, 223, 39).getRGB() : -1);
+                        fontRenderer.drawStringWithShadow(string, valueX + width - 50 - length + 5.5f, stringsY + 3, multiStringBoxValue.getValue().contains(string) ? new Color(200, 200, 200).getRGB() : -1);
                         stringsY += 15;
                     }
                     fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() - 1 + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);

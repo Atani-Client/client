@@ -4,6 +4,7 @@ import com.google.common.base.Supplier;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.potion.Potion;
 import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
@@ -152,6 +153,11 @@ public class Speed extends Module {
                 }
                 break;
             case "Matrix":
+                /*
+                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging());
+                mc.thePlayer.onGround = false;
+                MoveUtil.strafe();
+                 */
                 mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
 
                 if(mc.thePlayer.onGround && isMoving()) {

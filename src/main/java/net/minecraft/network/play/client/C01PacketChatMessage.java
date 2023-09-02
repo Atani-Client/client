@@ -9,6 +9,10 @@ public class C01PacketChatMessage implements Packet<INetHandlerPlayServer>
 {
     private String message;
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public C01PacketChatMessage()
     {
     }

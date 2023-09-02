@@ -1,5 +1,7 @@
 package tech.atani.client.processor.impl;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StringUtils;
@@ -77,7 +79,13 @@ public class SessionProcessor extends Processor {
                 if(message.contains("1stkiller") || message.contains("1. killer") || message.contains("1st killer"))
                     new GameEndEvent(false).publishItself();
                 for(String killMessageUnfinished : killMessages) {
-                    new KilledPlayerEvent().publishItself();
+                    EntityPlayer player = null;
+                    for(Entity entity : mc.theWorld.loadedEntityList) {
+                        if(entity instanceof EntityPlayer && entity.getEntityId() != mc.thePlayer.getEntityId() && message.contains(entity.getCommandSenderName().toLowerCase())) {
+                            player = (EntityPlayer) entity;
+                        }
+                    }
+                    new KilledPlayerEvent(player != null, player != null ? player.getCommandSenderName() : "null").publishItself();
                     String killMessage = killMessageUnfinished.replace("%player%", Methods.mc.thePlayer.getCommandSenderName());
                     if(message.contains(killMessage))
                         kills++;

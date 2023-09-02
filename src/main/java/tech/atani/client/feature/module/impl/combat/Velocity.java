@@ -20,6 +20,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
+import tech.atani.client.utility.player.movement.MoveUtil;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -27,7 +28,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @ModuleData(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block", "Fake Lag"});
     public SliderValue<Integer> horizontal = new SliderValue<Integer>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
@@ -146,6 +147,20 @@ public class Velocity extends Module {
             }
         }
         switch (mode.getValue()) {
+            case "Fake Lag": {
+                if(mc.thePlayer.hurtTime > 0 || (packetEvent.getPacket() instanceof S12PacketEntityVelocity && ((S12PacketEntityVelocity)packetEvent.getPacket()).getEntityID() == mc.thePlayer.getEntityId())) {
+                    if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                        S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
+                        if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                            packet.setMotionX(0);
+                            packet.setMotionY(0);
+                            packet.setMotionZ(0);
+                        }
+                    }
+                    packetEvent.setCancelled(true);
+                }
+                break;
+            }
             case "Polar Under-Block": {
                 Packet<?> packet = packetEvent.getPacket();
                 AxisAlignedBB axisAlignedBB = mc.thePlayer.getEntityBoundingBox().offset(0.0, 1.0, 0.0);

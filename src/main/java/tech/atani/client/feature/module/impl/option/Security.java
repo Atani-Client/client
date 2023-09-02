@@ -66,13 +66,13 @@ public class Security extends Module {
                 final S27PacketExplosion ePacket = (S27PacketExplosion) event.getPacket();
                 if (Math.abs(ePacket.getStrength()) > 99 || Math.abs(ePacket.getX()) > 99 || Math.abs(ePacket.getZ()) > 99 || Math.abs(ePacket.getY()) > 99) {
                     event.setCancelled(true);
-                    sendMessage("Server tried to crash the server with explosion packet");
+                    sendMessage("Server tried to crash the client with explosion packet");
                 }
             }
             if (event.getPacket() instanceof S2DPacketOpenWindow) {
                 final S2DPacketOpenWindow packetOpenWindow = (S2DPacketOpenWindow) event.getPacket();
                 if (Math.abs(packetOpenWindow.getSlotCount()) > 70) {
-                    sendMessage("Server tried to crash the server with window packet");
+                    sendMessage("Server tried to crash the client with window packet");
                     event.setCancelled(true);
                 }
             }

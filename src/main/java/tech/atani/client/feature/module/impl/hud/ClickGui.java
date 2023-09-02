@@ -61,7 +61,7 @@ public class ClickGui extends Module {
     public void onEnable() {
         switch (this.mode.getValue()) {
             case "Tarasande":
-                if(clickGuiScreenTarasande == null || true) {
+                if(clickGuiScreenTarasande == null) {
                     clickGuiScreenTarasande = new TarasandeClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenTarasande);

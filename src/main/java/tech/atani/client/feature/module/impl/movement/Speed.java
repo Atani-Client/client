@@ -602,20 +602,21 @@ public class Speed extends Module {
                             }
                             break;
                         case "Hop":
-                            if(mc.thePlayer.onGround)
-                                mc.thePlayer.jump();
-
-                            if(mc.thePlayer.fallDistance > 0.9) {
-                                mc.timer.timerSpeed = 1.13f;
-                            } else if(!mc.thePlayer.onGround) {
-                                mc.timer.timerSpeed = 1f;
-                            }
-
                             if(isMoving()) {
-                                MoveUtil.strafe(MoveUtil.getSpeed() * 1);
-                            } else {
-                                mc.thePlayer.motionX = 0;
-                                mc.thePlayer.motionZ = 0;
+                                if(mc.thePlayer.onGround)
+                                    mc.thePlayer.jump();
+                                if(mc.thePlayer.fallDistance > 0.9) {
+                                    mc.timer.timerSpeed = 1.13f;
+                                } else if(!mc.thePlayer.onGround) {
+                                    mc.timer.timerSpeed = 1f;
+                                }
+
+                                if(isMoving()) {
+                                    MoveUtil.strafe(MoveUtil.getSpeed() * 1);
+                                } else {
+                                    mc.thePlayer.motionX = 0;
+                                    mc.thePlayer.motionZ = 0;
+                                }
                             }
                             break;
                     }

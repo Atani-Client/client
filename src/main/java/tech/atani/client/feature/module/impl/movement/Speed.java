@@ -20,7 +20,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Matrix", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
@@ -137,31 +137,6 @@ public class Speed extends Module {
                             mc.thePlayer.motionX *= 1.0;
                             mc.thePlayer.motionZ *= 1.0;
                         }
-                    }
-                }
-                break;
-            case "Matrix":
-                if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    if (!isMoving()) {
-                        mc.gameSettings.keyBindJump.pressed = false;
-                        return;
-                    }
-
-                    mc.gameSettings.keyBindJump.pressed = true;
-
-                    mc.thePlayer.speedInAir = 0.0204F;
-
-                    if(mc.thePlayer.motionY > 0.4) {
-                        mc.thePlayer.motionX *= 1.003F;
-                        mc.thePlayer.motionZ *= 1.003F;
-                    }
-
-                    if(mc.thePlayer.onGround) {
-                        mc.timer.timerSpeed = (float) (1.1 - Math.random() / 10);
-                        mc.thePlayer.motionX *= 1.0045F;
-                        mc.thePlayer.motionZ *= 1.0045F;
-                    } else {
-                        mc.timer.timerSpeed = Math.random() > 0.95 ? 1.03F : (float) (1 - Math.random() / 500);
                     }
                 }
                 break;

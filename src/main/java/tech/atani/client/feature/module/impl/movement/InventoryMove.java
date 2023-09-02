@@ -46,6 +46,10 @@ public class InventoryMove extends Module {
 
     @Listen
     public final void onPacketEvent(PacketEvent packetEvent) {
+        if(mc.thePlayer == null || mc.theWorld == null) {
+            return;
+        }
+
         if (packetEvent.getType() == PacketEvent.Type.OUTGOING) {
             if(openPacket.getValue() && (packetEvent.getPacket() instanceof S2DPacketOpenWindow || packetEvent.getPacket() instanceof S2EPacketCloseWindow)) {
                 packetEvent.setCancelled(true);

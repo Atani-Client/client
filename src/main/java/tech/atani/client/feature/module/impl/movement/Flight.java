@@ -246,6 +246,10 @@ public class Flight extends Module {
 
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
+        if(mc.thePlayer == null || mc.theWorld == null) {
+            return;
+        }
+
         switch (mode.getValue()) {
             case "Grim":
                 switch(grimMode.getValue()){

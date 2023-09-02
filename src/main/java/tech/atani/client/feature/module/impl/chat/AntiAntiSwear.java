@@ -34,6 +34,10 @@ public class AntiAntiSwear extends Module {
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
+        if(mc.thePlayer == null || mc.theWorld == null) {
+            return;
+        }
+
         if(packetEvent.getPacket() instanceof C01PacketChatMessage) {
             C01PacketChatMessage c01 = (C01PacketChatMessage) packetEvent.getPacket();
             String newMessage = c01.getMessage();

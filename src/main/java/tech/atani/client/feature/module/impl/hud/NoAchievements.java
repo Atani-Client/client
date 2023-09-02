@@ -12,6 +12,10 @@ public class NoAchievements extends Module {
 
     @Listen
     public void onPacketEvent(PacketEvent event) {
+        if(mc.thePlayer == null || mc.theWorld == null) {
+            return;
+        }
+
         if (event.getType() == PacketEvent.Type.INCOMING) {
             if(event.getPacket() instanceof S37PacketStatistics) {
                 event.setCancelled(true);

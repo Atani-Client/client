@@ -14,6 +14,10 @@ public class AntiDumbMessages extends Module {
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
+        if(mc.thePlayer == null || mc.theWorld == null) {
+            return;
+        }
+
         if(packetEvent.getPacket() instanceof S02PacketChat) {
             S02PacketChat s02PacketChat = (S02PacketChat) packetEvent.getPacket();
             String message = EnumChatFormatting.getTextWithoutFormattingCodes(s02PacketChat.getChatComponent().getUnformattedText()).toLowerCase();

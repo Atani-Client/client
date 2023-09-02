@@ -140,8 +140,9 @@ public class Backtrack extends Module {
         if (killAura == null)
             killAura = ModuleStorage.getInstance().getByClass(KillAura.class);
 
-        if (mc.thePlayer == null)
+        if(mc.thePlayer == null || mc.theWorld == null) {
             return;
+        }
 
         if(this.mode.is("Packet")) {
             Packet<?> packet = event.getPacket();

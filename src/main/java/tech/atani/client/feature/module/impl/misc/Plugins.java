@@ -20,6 +20,10 @@ public class Plugins extends Module {
 
     @Listen
     public void onPacketEvent(PacketEvent event) {
+        if(mc.thePlayer == null || mc.theWorld == null) {
+            return;
+        }
+
         if(ModuleStorage.getInstance().getByClass(AntiTabComplete.class).isEnabled())
             return;
 

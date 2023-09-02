@@ -31,6 +31,10 @@ public class AdBlocker extends Module {
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
+        if(mc.thePlayer == null || mc.theWorld == null) {
+            return;
+        }
+
         if(chatCommonAdvertisementsRegex == null || chatRankBeggingRegex == null) {
             chatCommonAdvertisementsRegex = Pattern.compile(chatCommonAdvertisements, Pattern.CASE_INSENSITIVE);
             chatRankBeggingRegex = Pattern.compile(chatRankBegging, Pattern.CASE_INSENSITIVE);

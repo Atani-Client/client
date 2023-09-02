@@ -39,7 +39,7 @@ import tech.atani.client.utility.world.entities.EntitiesUtil;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
-@ModuleData(name = "acktrack", description = "Delay target's position update to get higher reach", category = Category.COMBAT)
+@ModuleData(name = "Backtrack", description = "Delay target's position update to get higher reach", category = Category.COMBAT)
 public class Backtrack extends Module {
 
     private final StringBoxValue mode = new StringBoxValue("Mode", "How will the module operate?", this, new String[]{"Packet", "Packet (Old)", "AABB"});

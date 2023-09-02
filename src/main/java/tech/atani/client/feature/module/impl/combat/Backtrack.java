@@ -39,7 +39,7 @@ import tech.atani.client.utility.world.entities.EntitiesUtil;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
-@ModuleData(name = "Backtrack", description = "Delay target's position update to get higher reach", category = Category.COMBAT)
+@ModuleData(name = "Backtrack", description = "Delay packets to get higher reach", category = Category.COMBAT)
 public class Backtrack extends Module {
 
     private final StringBoxValue mode = new StringBoxValue("Mode", "How will the module operate?", this, new String[]{"Packet", "Packet (Old)", "AABB"});
@@ -47,20 +47,20 @@ public class Backtrack extends Module {
     private SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the packet delay?", this, 450L, 0L, 5000L, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet (Old)")});
     public SliderValue<Float> maximumRange = new SliderValue<>("Maximum Range", "What'll be the maximum range?", this, 6f, 3f, 6f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet (Old)")});
     public CheckBoxValue onlyWhenNeeded = new CheckBoxValue("Only When Out of Reach", "Backtrack target only if it is out of reach?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet (Old)")});
-    private final SliderValue<Float> minRange = new SliderValue<>("Min Range", this, 2.9f, 2f, 4f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
-    private final SliderValue<Float> maxStartRange = new SliderValue<>("Max Start Range", this, 3.2f, 2f, 4f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
-    private final SliderValue<Float> maxActiveRange = new SliderValue<>("Max Active Range", this, 5f, 2f, 6f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
-    private final SliderValue<Integer> minDelay = new SliderValue<>("Min Delay", this, 100, 0, 500, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
-    private final SliderValue<Integer> maxDelay = new SliderValue<>("Max Delay", this, 200, 0, 1000, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
-    private final SliderValue<Integer> maxHurtTime = new SliderValue<>("Max Hurt Time", this, 6, 0, 10, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    private final SliderValue<Float> minRange = new SliderValue<>("Min Range",  "What will be the minimum range for operating?", this, 2.9f, 2f, 4f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    private final SliderValue<Float> maxStartRange = new SliderValue<>("Max Start Range", "What will be the maximum range to start?", this, 3.2f, 2f, 4f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    private final SliderValue<Float> maxActiveRange = new SliderValue<>("Max Active Range", "What will be the maximum range for being active?", this, 5f, 2f, 6f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    private final SliderValue<Integer> minDelay = new SliderValue<>("Min Delay", "What will the minimum packet delay?", this, 100, 0, 500, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    private final SliderValue<Integer> maxDelay = new SliderValue<>("Max Delay", "What will the maximum packet delay?", this, 200, 0, 1000, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    private final SliderValue<Integer> maxHurtTime = new SliderValue<>("Max Hurt Time", "What will the minimum hurt time?", this, 6, 0, 10, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     private final CheckBoxValue syncHurtTime = new CheckBoxValue("Sync HT with Ping", "Sync hurt time with ping?",this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
-    private final SliderValue<Float> minReleaseRange = new SliderValue<>("Min Release Range", this, 3.2F, 2f, 6f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    private final SliderValue<Float> minReleaseRange = new SliderValue<>("Min Release Range", "What will be the minimum range for releasing?",this, 3.2F, 2f, 6f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     private final CheckBoxValue onlyKillAura = new CheckBoxValue("Only KillAura", "Operate only on killaura targets?",this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     private final CheckBoxValue resetOnVelocity = new CheckBoxValue("Release on Velocity", "Release after getting knockback?",this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     private final CheckBoxValue resetOnLagging = new CheckBoxValue("Release on Flag", "Release player after flagging?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     public CheckBoxValue players = new CheckBoxValue("Players", "Attack Players?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
-    public CheckBoxValue animals = new CheckBoxValue("Animals", "Attack Animals", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
-    public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    public CheckBoxValue animals = new CheckBoxValue("Animals", "Attack Animals?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
 
     // Old

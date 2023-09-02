@@ -8,7 +8,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.player.PlayerHandler;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 
-@ModuleData(name = "CorrectMovement", description = "Corrects your movement according to your yaw", category = Category.MOVEMENT, alwaysRegistered = true)
+@ModuleData(name = "CorrectMovement", description = "Aligns your movement yaw properly", category = Category.MOVEMENT, alwaysRegistered = true)
 public class CorrectMovement extends Module {
     public CheckBoxValue moveFixSilent = new CheckBoxValue("Silent", "Silently fix your movement?", this, true);
 

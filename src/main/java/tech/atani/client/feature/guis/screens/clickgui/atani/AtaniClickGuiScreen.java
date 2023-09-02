@@ -132,7 +132,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
         RenderUtil.drawRect(x + 2, y + 2 + 30 + 2, width - 4, height - (2 + 30 + 2) - 2, new Color(240, 240, 240).getRGB());
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto", 21);
         fontRenderer.drawStringWithShadow(CLIENT_NAME + " Client", x + 10, y + 2 + 30 / 2 - fontRenderer.FONT_HEIGHT, -1);
-        fontRenderer.drawStringWithShadow("v" + VERSION, x + 10, y + 2 + 30 / 2 + 2, -1);
+        fontRenderer.drawStringWithShadow("v" + CLIENT_VERSION, x + 10, y + 2 + 30 / 2 + 2, -1);
         fontRenderer.drawStringWithShadow(mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP, x + width - 10 - fontRenderer.getStringWidth(mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP), y + 2 + 30 / 2 - fontRenderer.FONT_HEIGHT, -1);
         long milliseconds = SessionProcessor.getInstance().getTotalPlayTime();
         long days = TimeUnit.MILLISECONDS.toDays(milliseconds);

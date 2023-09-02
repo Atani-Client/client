@@ -20,7 +20,7 @@ public class GoldenWatermark extends ThemeObject {
     @Override
     public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         RenderableShaders.renderAndRun(() -> {
-            String text = CLIENT_NAME + " v" + VERSION + " | " + mc.getDebugFPS() + " fps";
+            String text = CLIENT_NAME + " v" + CLIENT_VERSION + " | " + mc.getDebugFPS() + " fps";
             FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
             float length = roboto17.getStringWidth(text);
             float x = 5 + 2, y = 5, lineHeight = 2;

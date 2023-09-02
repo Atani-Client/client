@@ -10,7 +10,7 @@ import tech.atani.client.utility.interfaces.Methods;
 
 import java.util.UUID;
 
-@ModuleData(name = "FakePlayer", description = "Spawns in a fake player to be used for testing", category = Category.MISCELLANEOUS)
+@ModuleData(name = "FakePlayer", description = "Spawns in a fake player", category = Category.MISCELLANEOUS)
 public class FakePlayer extends Module {
 
     @Override

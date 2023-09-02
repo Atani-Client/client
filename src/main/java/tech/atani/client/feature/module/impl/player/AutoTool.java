@@ -9,7 +9,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 
-@ModuleData(name = "AutoTool", description = "Automatically equips the best tool for the job.", category = Category.PLAYER)
+@ModuleData(name = "AutoTool", description = "Switches to best tools", category = Category.PLAYER)
 public class AutoTool extends Module {
 
     @Listen

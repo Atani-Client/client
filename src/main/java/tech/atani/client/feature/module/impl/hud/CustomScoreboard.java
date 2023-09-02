@@ -8,7 +8,7 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 
 // Hooked in GuiIngame class
-@ModuleData(name = "CustomScoreboard", description = "Improves the minecraft default scoreboard.", category = Category.HUD)
+@ModuleData(name = "CustomScoreboard", description = "Modifies the scoreboard", category = Category.HUD)
 public class CustomScoreboard extends Module {
 
     public final StringBoxValue background = new StringBoxValue("Background", "Which background should the scoreboard use?", this, new String[] {"Normal", "Off"});

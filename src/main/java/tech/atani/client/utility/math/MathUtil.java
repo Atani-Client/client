@@ -26,5 +26,8 @@ public class MathUtil {
         return interpolate(oldValue, newValue, (float) interpolationValue).intValue();
     }
 
+    public static double getBias(double time, double bias) {
+        return time / ((1.0 / bias - 2.0) * (1.0 - time) + 1.0);
+    }
 
 }

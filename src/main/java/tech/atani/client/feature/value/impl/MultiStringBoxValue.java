@@ -31,11 +31,6 @@ public class MultiStringBoxValue extends Value<List<String>> {
         this.values = values;
     }
 
-    public MultiStringBoxValue(String name, Object owner, String[] enabled, String values[]) {
-        super(name, "No description provided.", owner, new ArrayList<>(Arrays.asList(enabled)));
-        this.values = values;
-    }
-
     public void toggle(String input) {
         this.set(input, !this.get(input));
     }

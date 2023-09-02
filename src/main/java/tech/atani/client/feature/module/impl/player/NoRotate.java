@@ -8,7 +8,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 
-@ModuleData(name = "NoRotate", description = "Stops flags from setting your yaw and pitch", category = Category.PLAYER)
+@ModuleData(name = "NoRotate", description = "Prevents server from rotating you", category = Category.PLAYER)
 public class NoRotate extends Module {
 
     @Listen

@@ -13,7 +13,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 
-@ModuleData(name = "ClientSpoofer", description = "Make servers think you are using a different client", category = Category.MISCELLANEOUS)
+@ModuleData(name = "ClientSpoofer", description = "Spoof your client brand", category = Category.MISCELLANEOUS)
 public class ClientSpoofer extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "What client should we spoof as?", this, new String[] {"Lunar", "Forge"});
 

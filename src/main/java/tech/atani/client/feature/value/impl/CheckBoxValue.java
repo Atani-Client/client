@@ -25,10 +25,6 @@ public class CheckBoxValue extends Value<Boolean> {
         super(label, description, owner, value);
     }
 
-    public CheckBoxValue(String label, Object owner, Boolean value) {
-        super(label, "No description provided.", owner, value);
-    }
-
     @Override
     public String getValueAsString() {
         return getValue().toString();

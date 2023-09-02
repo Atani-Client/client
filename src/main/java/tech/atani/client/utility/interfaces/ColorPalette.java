@@ -12,6 +12,5 @@ public interface ColorPalette {
     int ICARUS_SECOND = new Color(125, 18, 255).getRGB();
     int FATALITY_FIRST = new Color(54, 41, 160).getRGB();
     int FATALITY_SECOND = new Color(147, 28, 95).getRGB();
-    int VESTIGE_FIRST = new Color(255, 35, 230).getRGB();
-    int VESTIGE_SECOND = new Color(49, 148, 255).getRGB();
+    int TARASANDE = new Color(92, 0, 255).getRGB();
 }

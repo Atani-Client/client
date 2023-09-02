@@ -21,7 +21,7 @@ import tech.atani.client.feature.combat.interfaces.IgnoreList;
 import java.util.ArrayList;
 import java.util.List;
 
-@ModuleData(name = "AntiBot", description = "Prevents you from attacking bots in your game", category = Category.COMBAT)
+@ModuleData(name = "AntiBot", description = "Blocks anticheat bots", category = Category.COMBAT)
 public class AntiBot extends Module implements IgnoreList {
 
     private final ArrayList<Entity> bots = new ArrayList<>();

@@ -6,7 +6,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 
-@ModuleData(name = "FastPlace", description = "Removes placing delay while holding use key", category = Category.MISCELLANEOUS)
+@ModuleData(name = "FastPlace", description = "Removes placing delay", category = Category.MISCELLANEOUS)
 public class FastPlace extends Module {
 
     @Listen

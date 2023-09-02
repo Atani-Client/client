@@ -38,8 +38,8 @@ public class KillAura extends Module {
     public StringBoxValue priority = new StringBoxValue("Priority", "How will the aura sort targets?", this, new String[]{"Health", "Distance"});
     public SliderValue<Long> switchDelay = new SliderValue<Long>("Switch Delay", "How long will it take to switch between targets?", this, 300L, 0L, 1000L, 0, new Supplier[]{() -> targetMode.is("Switch")});
     public CheckBoxValue players = new CheckBoxValue("Players", "Attack Players?", this, true);
-    public CheckBoxValue animals = new CheckBoxValue("Animals", "Attack Animals", this, true);
-    public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters", this, true);
+    public CheckBoxValue animals = new CheckBoxValue("Animals", "Attack Animals?", this, true);
+    public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters?", this, true);
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true);
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
@@ -49,7 +49,7 @@ public class KillAura extends Module {
     public StringBoxValue waitMode = new StringBoxValue("Wait for", "For what will the module wait before attacking?", this, new String[]{"CPS", "1.9"}, new Supplier[]{() -> waitBeforeAttack.getValue()});
     public SliderValue<Float> cps = new SliderValue<Float>("CPS", "How much will the killaura click every second?", this, 12f, 0f, 20f, 1, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
     public CheckBoxValue randomizeCps = new CheckBoxValue("Randomize CPS", "Randomize CPS Value to bypass anticheats?", this, true, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
-    public CheckBoxValue lockView = new CheckBoxValue("Lock-view", "Rotate non-silently", this, false);
+    public CheckBoxValue lockView = new CheckBoxValue("Lock-view", "Rotate non-silently?", this, false);
     public CheckBoxValue snapYaw = new CheckBoxValue("Snap Yaw", "Skip smoothing out yaw rotations?", this, false);
     public CheckBoxValue snapPitch = new CheckBoxValue("Snap Pitch", "Skip smoothing out pitch rotations?", this, false);
     public StringBoxValue aimVector = new StringBoxValue("Aim Vector", "Where to aim?", this, new String[]{"Perfect", "Bruteforce", "Head", "Torso", "Feet", "Custom", "Random"});

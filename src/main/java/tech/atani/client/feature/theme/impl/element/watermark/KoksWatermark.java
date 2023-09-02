@@ -17,7 +17,7 @@ public class KoksWatermark extends ThemeObject {
 
     @Override
     public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
-        final String version = "v" + VERSION;
+        final String version = "v" + CLIENT_VERSION;
 
         FontRenderer roboto18 = FontStorage.getInstance().findFont("Roboto", 18);
         FontRenderer raleway30 = FontStorage.getInstance().findFont("Raleway Regular", 30);

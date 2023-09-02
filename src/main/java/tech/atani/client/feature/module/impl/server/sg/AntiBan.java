@@ -9,7 +9,7 @@ import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 
-@ModuleData(name = "AntiBan", identifier = "mc.survival-games.cz AntiBan", description = "Tries and prevents ban by abusing ban system skidded from liquiddev :skull:", category = Category.SERVER, supportedIPs = {"mc.survival-games.cz", "play.survival-games.cz"})
+@ModuleData(name = "AntiBan", identifier = "mc.survival-games.cz AntiBan", description = "This actually works sometimes xd", category = Category.SERVER, supportedIPs = {"mc.survival-games.cz", "play.survival-games.cz"})
 public class AntiBan extends Module {
 
     private Security security;

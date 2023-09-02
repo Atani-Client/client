@@ -17,7 +17,7 @@ public class SimpleWatermark extends ThemeObject {
     @Override
     public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         RenderableShaders.renderAndRun(() -> {
-            String text = CLIENT_NAME + " v" + VERSION + " | " + mc.getDebugFPS() + " fps";
+            String text = CLIENT_NAME + " v" + CLIENT_VERSION + " | " + mc.getDebugFPS() + " fps";
             FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
             float length = roboto17.getStringWidth(text);
             float rectX = 10, rectY = 10;

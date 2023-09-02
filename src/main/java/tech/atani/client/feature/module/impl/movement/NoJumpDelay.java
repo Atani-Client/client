@@ -5,7 +5,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 
 // Hooked in EntityLivingBase.java
-@ModuleData(name = "NoJumpDelay", description = "Removes jump delays when holding jump key", category = Category.PLAYER)
+@ModuleData(name = "NoJumpDelay", description = "Removes jump delay", category = Category.PLAYER)
 public class NoJumpDelay extends Module {
 
     @Override

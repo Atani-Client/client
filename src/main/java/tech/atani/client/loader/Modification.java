@@ -36,7 +36,7 @@ public enum Modification implements ClientInformationAccess {
         for (String author : AUTHORS)
             authors += author + ", ";
         authors = authors.substring(0, authors.length() - 2);
-        Display.setTitle(CLIENT_NAME + " v" + VERSION + " | Made by " + authors);
+        Display.setTitle(CLIENT_NAME + " v" + CLIENT_VERSION + " | Made by " + authors);
 
         EventHandling.setInstance(new EventHandling());
         ProtectionManager.setInstance(new ProtectionManager());
@@ -68,7 +68,7 @@ public enum Modification implements ClientInformationAccess {
         }).build();
         DiscordRPC.discordInitialize("1141582938127998988", handlers, true);
         final DiscordRichPresence rich = new DiscordRichPresence.Builder(username)
-                .setBigImage("icon", CLIENT_NAME + " - " + VERSION)
+                .setBigImage("icon", CLIENT_NAME + " - " + CLIENT_VERSION)
                 .setDetails((beta ? "Beta" : "Free") + " Version")
                 .setStartTimestamps(System.currentTimeMillis())
                 .build();

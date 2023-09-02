@@ -26,9 +26,9 @@ import tech.atani.client.feature.value.interfaces.ValueChangeListener;
 import java.util.List;
 import java.util.*;
 
-@ModuleData(name = "ModuleList", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
+@ModuleData(name = "ModuleList", description = "Shows a list of enabled modules", category = Category.HUD)
 public class ModuleList extends Module implements ColorPalette, IClientOverlayComponent {
-    public StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Modern", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Custom"}, new ValueChangeListener[]{new ValueChangeListener() {
+    public StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Modern", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Tarasande", "Custom"}, new ValueChangeListener[]{new ValueChangeListener() {
         @Override
         public void onChange(Stage stage, Value value, Object oldValue, Object newValue) {
             if(stage == Stage.PRE) {

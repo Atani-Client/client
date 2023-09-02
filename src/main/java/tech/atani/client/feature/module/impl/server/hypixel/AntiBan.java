@@ -8,7 +8,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 
-@ModuleData(name = "AntiBan", identifier = "mc.hypixel.net AntiBan", description = "Automatically leaves from games when someone gets banned", category = Category.SERVER, supportedIPs = {"mc.hypixel.net"})
+@ModuleData(name = "AntiBan", identifier = "mc.hypixel.net AntiBan", description = "Leaves games when someone gets banned", category = Category.SERVER, supportedIPs = {"mc.hypixel.net"})
 public class AntiBan extends Module {
 
     @Listen

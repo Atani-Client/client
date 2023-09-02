@@ -12,7 +12,7 @@ import tech.atani.client.utility.math.atomic.AtomicFloat;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-@ModuleData(name = "ClientOverlay", description = "A nice little overlay that shows you info about the client", category = Category.HUD)
+@ModuleData(name = "ClientOverlay", description = "Displays a neat little overlay", category = Category.HUD)
 public class ClientOverlay extends Module {
 
     private ArrayList<IClientOverlayComponent> clientOverlayComponents = new ArrayList<>();

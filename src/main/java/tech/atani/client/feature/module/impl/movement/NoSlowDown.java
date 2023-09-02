@@ -5,15 +5,14 @@ import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.network.play.client.C09PacketHeldItemChange;
+import net.minecraft.network.play.client.*;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
+import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.NoSlowEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
@@ -25,7 +24,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
 public class NoSlowDown extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP", "Matrix"});
 
     private final MultiStringBoxValue items = new MultiStringBoxValue("Items", "Should the module disable slowdown with these items?", this, new String[] {"Sword"}, new String[] {"Sword", "Food", "Bow"});
     private final SliderValue<Float> swordForward = new SliderValue<Float>("Sword Forward", "How high should the sword forward multiplier be?", this, 1f, 0f, 1f, 2, new Supplier[]{() -> items.get("Sword")}),
@@ -80,15 +79,14 @@ public class NoSlowDown extends Module {
         }
 
         switch (mode.getValue()) {
-//            case "Matrix":
-//                if (event.getType() == UpdateMotionEvent.Type.MID) {
-//                    if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword && matrixTimer.hasReached(400L)) {
-//                        mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1) % 9));
-//                        mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
-//                        matrixTimer.reset();
-//                    }
-//                }
-//                break;
+            case "Matrix":
+                if (event.getType() == UpdateMotionEvent.Type.MID) {
+                    if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword) {
+                        mc.thePlayer.sendQueue.addToSendQueue(new C0BPacketEntityAction());
+                        mc.thePlayer.onGround = false;
+                    }
+                }
+                break;
             case "Old NCP":
                 if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword) {
                     if (event.getType() == UpdateMotionEvent.Type.MID) {
@@ -136,6 +134,18 @@ public class NoSlowDown extends Module {
                 }
                 break;
         }
+    }
+
+
+    @Listen
+    public final void onPacket(PacketEvent packetEvent) {
+        /*
+        if(mode.is("Matrix")) {
+            if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(false);
+            }
+        }
+         */
     }
 
     @Override

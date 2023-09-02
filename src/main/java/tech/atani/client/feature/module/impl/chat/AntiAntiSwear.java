@@ -16,7 +16,7 @@ import java.security.SecureRandom;
 @ModuleData(name = "AntiAntiSwear", description = "Prevents detection of naughty words", category = Category.CHAT)
 public class AntiAntiSwear extends Module {
 
-    private MultiStringBoxValue langs = new MultiStringBoxValue("Languages", "In what languages should the module try and detect swears?", this, new String[]{"English"}, new String[]{"English", "Czech"});
+    private MultiStringBoxValue langs = new MultiStringBoxValue("Languages", "In what languages should the module try and detect swears?", this, new String[]{"English"}, new String[]{"English", "Czech", "Finnish"});
 
     private final String[] ENGLISH = new String[] {
         "autist", "autism", "arse", "ass", "bastard", "bitch", "fucker", "shit", "cock", "crap", "cunt", "damn", "dick", "fuck", "kike", "nigga", "nigger", "piss", "pussy", "shit", "slut", "whore", "turd", "twat", "wanker", "fag", "tranny", "tard", "degen", "kill", "suicide"
@@ -24,6 +24,10 @@ public class AntiAntiSwear extends Module {
 
     private final String[] CZECH = new String[] {
         "prdel", "hovn", "kurv", "píč", "pic", "srač", "sráč", "srac", "negře", "negr", "buzn", "kund", "děvk", "devk", "chcíp", "chcip", "zabí", "zabi", "ojeb", "ojed", "opích", "opich"
+    };
+
+    private final String[] FINNISH = new String [] {
+            "autisti", "autismi", "perse", "kusipää", "mulkku", "vittuilia", "paska", "kulli", "saatana", "muna", "vittu", "", "nekru", "neekeri", "kusi", "huora", "tapa", "itsemurha"
     };
 
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which method to use?", this, new String[]{"Parentheses"});
@@ -40,6 +44,11 @@ public class AntiAntiSwear extends Module {
             }
             if(this.langs.getValue().contains("Czech")) {
                 for(String s : CZECH) {
+                    newMessage = replace(newMessage, s);
+                }
+            }
+            if(this.langs.getValue().contains("Finnish")) {
+                for(String s : FINNISH) {
                     newMessage = replace(newMessage, s);
                 }
             }

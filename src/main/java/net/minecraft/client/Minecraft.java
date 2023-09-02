@@ -577,7 +577,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     {
         BufferedImage bufferedimage = ImageIO.read(imageStream);
         int[] aint = bufferedimage.getRGB(0, 0, bufferedimage.getWidth(), bufferedimage.getHeight(), (int[])null, 0, bufferedimage.getWidth());
-        ByteBuffer bytebuffer = ByteBuffer.allocate(4 * aint.length);
+        ByteBuffer bytebuffer = (ByteBuffer) ByteBuffer.allocate(4 * aint.length);
 
         for (int i : aint)
         {

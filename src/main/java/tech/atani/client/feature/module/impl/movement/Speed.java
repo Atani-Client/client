@@ -24,7 +24,7 @@ public class Speed extends Module {
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
-            ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe"}, new Supplier[]{() -> mode.is("NCP")}),
+            ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop"}, new Supplier[]{() -> mode.is("NCP")}),
             oldNcpMode = new StringBoxValue("Old NCP Mode", "Which mode will the old ncp mode use?", this, new String[]{"Timer", "Y-Port"}, new Supplier[]{() -> mode.is("Old NCP")}),
             verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")}),
             watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});
@@ -582,6 +582,23 @@ public class Speed extends Module {
                                 mc.timer.timerSpeed = (float) (1 + Math.random() / 7.5);
                                 // this can be patched any moment, currently works on eu.loyisa.cn
                                 MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() - 0.02 + MoveUtil.getSpeedBoost(1.75F));
+                            }
+                            break;
+                        case "Hop":
+                            if(mc.thePlayer.onGround)
+                                mc.thePlayer.jump();
+
+                            if(mc.thePlayer.fallDistance > 0.9) {
+                                mc.timer.timerSpeed = 1.13f;
+                            } else if(!mc.thePlayer.onGround) {
+                                mc.timer.timerSpeed = 1f;
+                            }
+
+                            if(isMoving()) {
+                                MoveUtil.strafe(MoveUtil.getSpeed() * 1);
+                            } else {
+                                mc.thePlayer.motionX = 0;
+                                mc.thePlayer.motionZ = 0;
                             }
                             break;
                     }

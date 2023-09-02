@@ -20,7 +20,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Spartan", "Grim", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
@@ -149,6 +149,16 @@ public class Speed extends Module {
                             mc.thePlayer.jump();
                         }
                     }
+                }
+                break;
+            case "Matrix":
+                mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
+
+                if(mc.thePlayer.onGround && isMoving()) {
+                    // Making better rn, PLEASE dont tell me how shit this is.
+                    mc.timer.timerSpeed = 1.05F;
+                } else {
+                    mc.timer.timerSpeed = 1;
                 }
                 break;
             case "Vulcan":

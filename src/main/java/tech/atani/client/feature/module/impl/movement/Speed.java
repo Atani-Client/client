@@ -155,7 +155,8 @@ public class Speed extends Module {
                 mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
 
                 if(mc.thePlayer.onGround && isMoving()) {
-                    // Making better rn, PLEASE dont tell me how shit this is.
+                    mc.thePlayer.motionX *= 1.002;
+                    mc.thePlayer.motionZ *= 1.002;
                     mc.timer.timerSpeed = 1.05F;
                 } else {
                     mc.timer.timerSpeed = 1;

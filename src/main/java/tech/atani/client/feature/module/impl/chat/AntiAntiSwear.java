@@ -27,7 +27,7 @@ public class AntiAntiSwear extends Module {
     };
 
     private final String[] FINNISH = new String [] {
-            "autisti", "autismi", "perse", "kusipää", "mulkku", "vittuilia", "paska", "kulli", "saatana", "muna", "vittu", "", "nekru", "neekeri", "kusi", "huora", "tapa", "itsemurha"
+            "autisti", "autismi", "perse", "kusipää", "mulkku", "vittuilia", "paska", "kulli", "saatana", "muna", "vittu", "nekru", "neekeri", "kusi", "huora", "tapa", "itsemurha"
     };
 
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which method to use?", this, new String[]{"Parentheses"});

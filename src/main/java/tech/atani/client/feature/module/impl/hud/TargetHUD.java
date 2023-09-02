@@ -35,10 +35,10 @@ import java.awt.*;
 @ModuleData(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)
 public class TargetHUD extends Module implements ColorPalette {
 
-    public final StringBoxValue targethudMode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Modern", "Golden", "Augustus 2.6", "Xave", "Ryu", "Fatality", "Icarus", "Atani", "Koks", "Astolfo"});
-    private final SliderValue<Integer> red = new SliderValue<>("Red", "What red will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Modern")});
-    private final SliderValue<Integer> green = new SliderValue<>("Green", "What green will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Modern")});
-    private final SliderValue<Integer> blue = new SliderValue<>("Blue", "What blue will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Modern")});
+    public final StringBoxValue targethudMode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Fatality", "Icarus", "Atani", "Koks", "Astolfo"});
+    private final SliderValue<Integer> red = new SliderValue<>("Red", "What red will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
+    private final SliderValue<Integer> green = new SliderValue<>("Green", "What green will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
+    private final SliderValue<Integer> blue = new SliderValue<>("Blue", "What blue will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
 
     private SimpleAnimation koksHealthAnim = new SimpleAnimation(1, 0.5f);
 
@@ -166,7 +166,7 @@ public class TargetHUD extends Module implements ColorPalette {
                     roboto17.drawStringWithShadow(text, textX, textY, -1);
                 }
                 break;
-                case "Simple":
+                case "Atani Simple":
                     RenderableShaders.renderAndRun(() -> {
                         String text = target.getCommandSenderName() + " | " + Math.round(target.getHealth());
                         FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
@@ -177,7 +177,7 @@ public class TargetHUD extends Module implements ColorPalette {
                         roboto17.drawStringWithShadow(text, textX, textY, -1);
                     });
                     break;
-                case "Modern":
+                case "Atani Modern":
                     RenderableShaders.renderAndRun(() -> {
                         FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
                         float textX = x + 4, textY = y + 4.5f;
@@ -199,7 +199,7 @@ public class TargetHUD extends Module implements ColorPalette {
                         roboto17.drawString(predictedOutcome, x + 36, y + 6 + (roboto17.FONT_HEIGHT + 2) * 2, -1);
                     });
                     break;
-                case "Golden":
+                case "Atani Golden":
                     float width = 100;
                     float height = 2 + 3 * (small.FONT_HEIGHT + 1);
                     RenderUtil.drawRect(x, y, width, height, new Color(20, 20, 20).getRGB());

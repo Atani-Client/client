@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.hud;
 
+import tech.atani.client.feature.theme.ThemeObject;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.interfaces.ValueChangeListener;
 import tech.atani.client.feature.theme.data.enums.ElementType;
@@ -16,22 +17,27 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "WaterMark", description = "Shows a watermark", category = Category.HUD)
 public class WaterMark extends Module implements ColorPalette, IClientOverlayComponent {
 
-    public StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Simple", "Modern", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Tarasande"}, new ValueChangeListener[]{new ValueChangeListener() {
+    public StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Tarasande"}, new ValueChangeListener[]{new ValueChangeListener() {
         @Override
         public void onChange(Stage stage, Value value, Object oldValue, Object newValue) {
-            if(stage == Stage.POST) {
-                if(oldValue != null && !((String) oldValue).equalsIgnoreCase("None"))
-                    ThemeStorage.getInstance().getThemeObject(((String) oldValue), ElementType.WATERMARK).onDisable();
-                if(newValue != null && !((String) newValue).equalsIgnoreCase("None"))
-                    ThemeStorage.getInstance().getThemeObject(((String) newValue), ElementType.WATERMARK).onEnable();
+            try {
+                if(stage == Stage.POST) {
+                    if(oldValue != null && !((String) oldValue).equalsIgnoreCase("None"))
+                        ThemeStorage.getInstance().getThemeObject(((String) oldValue), ElementType.WATERMARK).onDisable();
+                    if(newValue != null && !((String) newValue).equalsIgnoreCase("None"))
+                        ThemeStorage.getInstance().getThemeObject(((String) newValue), ElementType.WATERMARK).onEnable();
+                }
+            } catch (Exception e) {
+                // ignored
             }
         }
     }});
 
     @Override
     public void draw(Render2DEvent render2DEvent, AtomicFloat leftY, AtomicFloat rightY) {
-        if(this.isEnabled() && !this.watermarkMode.getValue().equalsIgnoreCase("None")) {
-            ThemeStorage.getInstance().getThemeObject(watermarkMode.getValue(), ElementType.WATERMARK).onDraw(render2DEvent.getScaledResolution(), render2DEvent.getPartialTicks(), leftY, rightY, new Object[0]);
+        ThemeObject themeObject = ThemeStorage.getInstance().getThemeObject(watermarkMode.getValue(), ElementType.WATERMARK);
+        if(this.isEnabled() && !this.watermarkMode.getValue().equalsIgnoreCase("None") && themeObject != null) {
+            themeObject.onDraw(render2DEvent.getScaledResolution(), render2DEvent.getPartialTicks(), leftY, rightY, new Object[0]);
         }
     }
 

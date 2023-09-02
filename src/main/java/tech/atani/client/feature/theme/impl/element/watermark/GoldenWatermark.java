@@ -14,7 +14,7 @@ import tech.atani.client.utility.render.shader.shaders.GradientShader;
 
 import java.awt.*;
 
-@ThemeObjectInfo(name = "Golden", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.WATERMARK)
+@ThemeObjectInfo(name = "Atani Golden", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.WATERMARK)
 public class GoldenWatermark extends ThemeObject {
 
     @Override

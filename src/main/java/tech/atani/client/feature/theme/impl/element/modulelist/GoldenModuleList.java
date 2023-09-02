@@ -17,7 +17,7 @@ import tech.atani.client.utility.render.shader.shaders.GradientShader;
 import java.awt.*;
 import java.util.LinkedHashMap;
 
-@ThemeObjectInfo(name = "Golden", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)
+@ThemeObjectInfo(name = "Atani Golden", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)
 public class GoldenModuleList extends ModuleListElement {
 
     @Override

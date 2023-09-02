@@ -22,7 +22,7 @@ import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 import java.awt.*;
 import java.util.LinkedHashMap;
 
-@ThemeObjectInfo(name = "Modern", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)
+@ThemeObjectInfo(name = "Atani Modern", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)
 public class ModernModuleList extends ModuleListElement {
 
     private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0);

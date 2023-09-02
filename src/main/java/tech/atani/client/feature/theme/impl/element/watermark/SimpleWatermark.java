@@ -11,7 +11,7 @@ import tech.atani.client.utility.math.atomic.AtomicFloat;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 
-@ThemeObjectInfo(name = "Simple", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.WATERMARK)
+@ThemeObjectInfo(name = "Atani Simple", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.WATERMARK)
 public class SimpleWatermark extends ThemeObject {
 
     @Override

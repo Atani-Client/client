@@ -28,16 +28,20 @@ import java.util.*;
 
 @ModuleData(name = "ModuleList", description = "Shows a list of enabled modules", category = Category.HUD)
 public class ModuleList extends Module implements ColorPalette, IClientOverlayComponent {
-    public StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Modern", "Simple", "Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Tarasande", "Custom"}, new ValueChangeListener[]{new ValueChangeListener() {
+    public StringBoxValue moduleListMode = new StringBoxValue("Module List Mode", "Which module list will be displayed?", this, new String[]{"None", "Atani Modern", "Atani Simple", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Tarasande", "Custom"}, new ValueChangeListener[]{new ValueChangeListener() {
         @Override
         public void onChange(Stage stage, Value value, Object oldValue, Object newValue) {
-            if(stage == Stage.PRE) {
-                moduleHashMap.clear();
-            } else if(stage == Stage.POST) {
-                if(oldValue != null && !((String) oldValue).equalsIgnoreCase("None"))
-                    ThemeStorage.getInstance().getThemeObject(((String) oldValue), ElementType.MODULE_LIST).onDisable();
-                if(newValue != null && !((String) newValue).equalsIgnoreCase("None"))
-                    ThemeStorage.getInstance().getThemeObject(((String) newValue), ElementType.MODULE_LIST).onEnable();
+            try {
+                if(stage == Stage.PRE) {
+                    moduleHashMap.clear();
+                } else if(stage == Stage.POST) {
+                    if(oldValue != null && !((String) oldValue).equalsIgnoreCase("None"))
+                        ThemeStorage.getInstance().getThemeObject(((String) oldValue), ElementType.MODULE_LIST).onDisable();
+                    if(newValue != null && !((String) newValue).equalsIgnoreCase("None"))
+                        ThemeStorage.getInstance().getThemeObject(((String) newValue), ElementType.MODULE_LIST).onEnable();
+                }
+            } catch (Exception e) {
+                // ignored
             }
         }
     }});

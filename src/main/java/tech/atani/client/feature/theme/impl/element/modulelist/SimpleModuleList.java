@@ -15,7 +15,7 @@ import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 
 import java.util.LinkedHashMap;
 
-@ThemeObjectInfo(name = "Simple", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)
+@ThemeObjectInfo(name = "Atani Simple", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)
 public class SimpleModuleList extends ModuleListElement {
 
     @Override

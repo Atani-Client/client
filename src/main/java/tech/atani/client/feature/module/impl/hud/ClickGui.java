@@ -24,10 +24,10 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "ClickGui", description = "A clicky gui", category = Category.HUD, key = Keyboard.KEY_RSHIFT)
 public class ClickGui extends Module {
 
-    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Simple", "Atani", "Golden", "Augustus", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Astolfo", "Koks", "Tarasande"});
+    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani CS:GO", "Atani Golden", "Augustus", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Astolfo", "Koks", "Tarasande"});
     public final CheckBoxValue openingAnimation = new CheckBoxValue("Opening Animation", "Animate the opening and closing of the gui?", this, true);
     public final StringBoxValue dropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like?", this, new String[]{"Scale-In", "Frame Scale-In", "Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
-            mode.getValue().equalsIgnoreCase("Simple") || // Dropdown guis go here
+            mode.getValue().equalsIgnoreCase("Atani Simple") || // Dropdown guis go here
             mode.getValue().equalsIgnoreCase("Astolfo") ||
             mode.getValue().equalsIgnoreCase("Koks") ||
             mode.getValue().equalsIgnoreCase("Augustus 2.6") ||
@@ -35,8 +35,8 @@ public class ClickGui extends Module {
             mode.getValue().equalsIgnoreCase("Tarasande") ||
             mode.getValue().equalsIgnoreCase("Icarus")}).setIdName("Dropdown Animation Mode");
     public final StringBoxValue nonDropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like?", this, new String[]{"Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
-            mode.getValue().equalsIgnoreCase("Golden") || // Non-Dropdown guis go here
-                    mode.getValue().equalsIgnoreCase("Atani") ||
+            mode.getValue().equalsIgnoreCase("Atani Golden") || // Non-Dropdown guis go here
+                    mode.getValue().equalsIgnoreCase("Atani CS:GO") ||
                     mode.getValue().equalsIgnoreCase("Augustus") ||
                     mode.getValue().equalsIgnoreCase("Ryu") || // Ryu is special cause it's retarded
                     mode.getValue().equalsIgnoreCase("Fatality")}).setIdName("Non-Dropdown Animation Mode");
@@ -78,7 +78,7 @@ public class ClickGui extends Module {
                 }
                 mc.displayGuiScreen(clickGuiScreenAugustus);
                 break;
-            case "Atani":
+            case "Atani CS:GO":
                 if(clickGuiScreenAtani == null) {
                     clickGuiScreenAtani = new AtaniClickGuiScreen();
                 }
@@ -90,13 +90,13 @@ public class ClickGui extends Module {
                 }
                 mc.displayGuiScreen(clickGuiScreenAstolfo);
                 break;
-            case "Simple":
+            case "Atani Simple":
                 if(clickGuiScreenSimple == null) {
                     clickGuiScreenSimple = new SimpleClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenSimple);
                 break;
-            case "Golden":
+            case "Atani Golden":
                 if(clickGuiScreenGolden == null) {
                     clickGuiScreenGolden = new GoldenClickGuiScreen();
                 }
@@ -134,7 +134,7 @@ public class ClickGui extends Module {
                 break;
             }
             default: {
-                this.mode.setValue("Simple");
+                this.mode.setValue("Atani Simple");
                 break;
             }
         }

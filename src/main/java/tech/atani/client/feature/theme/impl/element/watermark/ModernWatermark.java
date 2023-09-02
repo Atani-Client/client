@@ -18,7 +18,7 @@ import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
 
-@ThemeObjectInfo(name = "Modern", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.WATERMARK)
+@ThemeObjectInfo(name = "Atani Modern", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.WATERMARK)
 public class ModernWatermark extends ThemeObject {
 
     private SliderValue<Integer> red = new SliderValue<>("Red", "What'll be the red of the color?", this, 255, 0, 255, 0);

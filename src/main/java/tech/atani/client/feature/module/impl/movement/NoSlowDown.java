@@ -12,7 +12,6 @@ import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
-import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.NoSlowEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
@@ -24,7 +23,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
 public class NoSlowDown extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP", "Matrix"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP", "Matrix", "Hypixel"});
 
     private final MultiStringBoxValue items = new MultiStringBoxValue("Items", "Should the module disable slowdown with these items?", this, new String[] {"Sword"}, new String[] {"Sword", "Food", "Bow"});
     private final SliderValue<Float> swordForward = new SliderValue<Float>("Sword Forward", "How high should the sword forward multiplier be?", this, 1f, 0f, 1f, 2, new Supplier[]{() -> items.get("Sword")}),
@@ -36,9 +35,6 @@ public class NoSlowDown extends Module {
 
     // Old Intave
     private final TimeHelper intaveTimer = new TimeHelper();
-
-    // Matrix
-    //private final TimeHelper matrixTimer = new TimeHelper();
 
     @Override
     public String getSuffix() {
@@ -79,6 +75,13 @@ public class NoSlowDown extends Module {
         }
 
         switch (mode.getValue()) {
+            case "Hypixel":
+                if (event.getType() == UpdateMotionEvent.Type.POST) {
+                    if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword) {
+                        mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventoryContainer.getSlot(mc.thePlayer.inventory.currentItem + 36).getStack()));
+                    }
+                }
+                break;
             case "Matrix":
                 if (event.getType() == UpdateMotionEvent.Type.MID) {
                     if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword) {
@@ -122,8 +125,10 @@ public class NoSlowDown extends Module {
 
     @Listen
     public void onTickEvent(RunTickEvent event) {
-        if(mc.thePlayer == null || mc.theWorld == null)
+        if(mc.thePlayer == null || mc.theWorld == null) {
             return;
+        }
+
         switch (mode.getValue()) {
             case "Grim":
                 if(mc.thePlayer.isBlocking()) {
@@ -134,18 +139,6 @@ public class NoSlowDown extends Module {
                 }
                 break;
         }
-    }
-
-
-    @Listen
-    public final void onPacket(PacketEvent packetEvent) {
-        /*
-        if(mode.is("Matrix")) {
-            if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(false);
-            }
-        }
-         */
     }
 
     @Override

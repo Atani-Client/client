@@ -81,7 +81,7 @@ public class Window extends GuiScreen implements ColorPalette {
             } else if(value instanceof MultiStringBoxValue) {
                 MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue)value;
                 RenderUtil.drawRect(valueX - 2, valueY - 3, width - 40 + 4, (fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(multiStringBoxValue) ? multiStringBoxValue.getValues().length * 15 : 0)) - 2, new Color(0, 0, 0, 100).getRGB());
-                float length = fontRenderer.getStringWidth(multiStringBoxValue.getValue().size() - 1 + " Enabled");
+                float length = fontRenderer.getStringWidth(multiStringBoxValue.getValue().size() + " Enabled");
                 RenderUtil.scaleStart(valueX + 1, valueY - 1, 0.7f);
                 fontRenderer.drawStringWithShadow(value.getName(), valueX + 1, valueY - 1, -1);
                 fontRenderer.drawStringWithShadow(value.getDescription(), valueX + 1, valueY + fontRenderer.FONT_HEIGHT + 1 - 1, new Color(180, 180, 180).getRGB());
@@ -93,10 +93,10 @@ public class Window extends GuiScreen implements ColorPalette {
                         fontRenderer.drawStringWithShadow(string, valueX + width - 50 - length + 5.5f, stringsY + 3, multiStringBoxValue.getValue().contains(string) ? TARASANDE : -1);
                         stringsY += 15;
                     }
-                    fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() - 1 + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
+                    fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
                 } else {
                     RenderUtil.drawRect(valueX + width - 50 - length, valueY - 1, length + 10, 15, new Color(0, 0, 0, 80).getRGB());
-                    fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() - 1 + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
+                    fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
                 }
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(multiStringBoxValue) ? multiStringBoxValue.getValues().length * 15 : 0);
             } else if(value instanceof StringBoxValue) {
@@ -203,7 +203,7 @@ public class Window extends GuiScreen implements ColorPalette {
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(stringBoxValue) ? stringBoxValue.getValues().length * 15 : 0);
             } else if(value instanceof MultiStringBoxValue) {
                 MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue)value;
-                float length = fontRenderer.getStringWidth(multiStringBoxValue.getValue().size() - 1  + " Enabled");
+                float length = fontRenderer.getStringWidth(multiStringBoxValue.getValue().size()   + " Enabled");
                 if(this.expanded.contains(multiStringBoxValue)) {
                     if(RenderUtil.isHovered(mouseX, mouseY, valueX + width - 50 - length, valueY - 1, length + 10, 15 + multiStringBoxValue.getValues().length * 15)) {
                         this.expanded.remove(multiStringBoxValue);

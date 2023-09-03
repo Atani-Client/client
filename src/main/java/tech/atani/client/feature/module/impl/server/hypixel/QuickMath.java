@@ -26,7 +26,7 @@ public class QuickMath extends Module {
                 ScriptEngine engine = mgr.getEngineByName("JavaScript");
 
                 try {
-                    mc.thePlayer.sendQueue.addToSendQueueSilent(new C01PacketChatMessage(engine.eval(array[1].replace("x", "*")).toString()));
+                    sendPacketUnlogged(new C01PacketChatMessage(engine.eval(array[1].replace("x", "*")).toString()));
                 } catch (ScriptException he) {
                     he.printStackTrace();
                 }

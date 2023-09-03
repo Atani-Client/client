@@ -17,7 +17,7 @@ public class AutoReconnect extends Module {
         if(event.getPacket() instanceof S02PacketChat) {
             String unformatted = EnumChatFormatting.getTextWithoutFormattingCodes(((S02PacketChat)event.getPacket()).getChatComponent().getUnformattedText()), text = unformatted.replace(" ", "");
             if(unformatted.contains("Flying or related")) {
-                mc.thePlayer.sendQueue.addToSendQueueSilent(new C01PacketChatMessage("/back"));
+                sendPacketUnlogged(new C01PacketChatMessage("/back"));
             }
         }
     }

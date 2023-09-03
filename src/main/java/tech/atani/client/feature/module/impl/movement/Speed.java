@@ -153,11 +153,6 @@ public class Speed extends Module {
                 }
                 break;
             case "Matrix":
-                /*
-                mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging());
-                mc.thePlayer.onGround = false;
-                MoveUtil.strafe();
-                 */
                 mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
 
                 if(mc.thePlayer.onGround && isMoving()) {

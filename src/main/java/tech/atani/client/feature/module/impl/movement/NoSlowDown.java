@@ -78,14 +78,14 @@ public class NoSlowDown extends Module {
             case "Hypixel":
                 if (event.getType() == UpdateMotionEvent.Type.POST) {
                     if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword) {
-                        mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(mc.thePlayer.inventoryContainer.getSlot(mc.thePlayer.inventory.currentItem + 36).getStack()));
+                        sendPacket(new C08PacketPlayerBlockPlacement(currentItem));
                     }
                 }
                 break;
             case "Matrix":
                 if (event.getType() == UpdateMotionEvent.Type.MID) {
                     if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword) {
-                        mc.thePlayer.sendQueue.addToSendQueue(new C0BPacketEntityAction());
+                        sendPacketUnlogged(new C0BPacketEntityAction());
                         mc.thePlayer.onGround = false;
                     }
                 }
@@ -93,22 +93,22 @@ public class NoSlowDown extends Module {
             case "Old NCP":
                 if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword) {
                     if (event.getType() == UpdateMotionEvent.Type.MID) {
-                        mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                     }
 
                     if (event.getType() == UpdateMotionEvent.Type.POST) {
-                        mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(currentItem));
+                        sendPacket(new C08PacketPlayerBlockPlacement(currentItem));
                     }
                 }
                 break;
             case "Old Intave":
                 if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword && intaveTimer.hasReached(150L)) {
                     if(event.getType() == UpdateMotionEvent.Type.MID) {
-                        mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                     }
 
                     if(event.getType() == UpdateMotionEvent.Type.POST) {
-                        mc.getNetHandler().addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
+                        sendPacket(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, BlockPos.ORIGIN, EnumFacing.DOWN));
                         intaveTimer.reset();
                     }
                 }
@@ -116,8 +116,8 @@ public class NoSlowDown extends Module {
             case "Grim":
             case "Switch":
                 if(event.getType() == UpdateMotionEvent.Type.MID) {
-                    mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1) % 9));
-                    mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                    sendPacket(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1) % 9));
+                    sendPacket(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                 }
                 break;
         }
@@ -132,10 +132,10 @@ public class NoSlowDown extends Module {
         switch (mode.getValue()) {
             case "Grim":
                 if(mc.thePlayer.isBlocking()) {
-                    mc.getNetHandler().addToSendQueue(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.thePlayer.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
+                    sendPacket(new C08PacketPlayerBlockPlacement(BlockPos.ORIGIN, 255, mc.thePlayer.inventory.getCurrentItem(), 0.0f, 0.0f, 0.0f));
                 } else if (mc.thePlayer.isUsingItem()) {
-                    mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1) % 9));
-                    mc.getNetHandler().addToSendQueue(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
+                    sendPacket(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1) % 9));
+                    sendPacket(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                 }
                 break;
         }

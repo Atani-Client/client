@@ -57,7 +57,7 @@ public class NoFall extends Module {
                         mc.thePlayer.motionY = 0.0;
                         mc.thePlayer.motionX *= 0.6;
                         mc.thePlayer.motionZ *= 0.6;
-                        mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer(true));
+                        sendPacketUnlogged(new C03PacketPlayer(true));
                     }
                     break;
 

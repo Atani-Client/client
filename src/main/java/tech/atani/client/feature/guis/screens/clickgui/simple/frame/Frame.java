@@ -50,7 +50,7 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.simpl
                 scroll += 1;
             }
             scroll = Math.min(0, scroll);
-            scroll = Math.max(-(ModuleStorage.getInstance().getModules(category).size() - 1 - 10), scroll);
+            scroll = Math.max(-(ModuleStorage.getInstance().getModules(category).size() - 10), scroll);
         }
         RenderUtil.drawRect(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), getBaseHeight(), new Color(0, 0, 0, 180).getRGB());
         FontStorage.getInstance().findFont("Roboto", 19).drawTotalCenteredStringWithShadow(category.getName(), this.getPosX() + this.getBaseWidth() / 2 + getAddX(), this.getPosY() + this.getBaseHeight() / 2 + getAddY(), -1);

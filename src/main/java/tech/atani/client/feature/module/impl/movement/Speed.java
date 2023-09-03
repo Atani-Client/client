@@ -27,7 +27,7 @@ public class Speed extends Module {
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
             ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop"}, new Supplier[]{() -> mode.is("NCP")}),
             oldNcpMode = new StringBoxValue("Old NCP Mode", "Which mode will the old ncp mode use?", this, new String[]{"Timer", "Y-Port"}, new Supplier[]{() -> mode.is("Old NCP")}),
-            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")}),
+            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Hop", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")}),
             watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});
     private final SliderValue<Float> boost = new SliderValue<Float>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")}),
             jumpHeight = new SliderValue<Float>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1f, 2, new Supplier[]{() -> mode.is("BHop")});
@@ -297,14 +297,26 @@ public class Speed extends Module {
                     }
 
                     switch(verusMode.getValue()) {
-                        case "Normal":
+                        case "Hop":
                             if (mc.thePlayer.onGround) {
                                 mc.thePlayer.jump();
+                            //    MoveUtil.strafe(0.53);
+                                // This ^^ bypasses, idk if I should add it.
                             }
 
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 100);
 
                             MoveUtil.strafe((float) MoveUtil.getSpeed());
+                            break;
+                        case "Normal":
+                            if(mc.thePlayer.onGround) {
+                                MoveUtil.strafe(0.53 + MoveUtil.getSpeedBoost(0.08F));
+                                mc.thePlayer.jump();
+                                mc.timer.timerSpeed = 1.04F;
+                            } else {
+                                mc.timer.timerSpeed = 1;
+                                MoveUtil.strafe(0.33 + MoveUtil.getSpeedBoost(0.05F));
+                            }
                             break;
                         case "Float":
                             if(mc.thePlayer.onGround) {

@@ -35,7 +35,7 @@ import java.awt.*;
 @ModuleData(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)
 public class TargetHUD extends Module implements ColorPalette {
 
-    public final StringBoxValue targethudMode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Fatality", "Icarus", "Atani", "Koks", "Astolfo"});
+    public final StringBoxValue targethudMode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Fatality", "Icarus", "Atani CS:GO", "Koks", "Astolfo"});
     private final SliderValue<Integer> red = new SliderValue<>("Red", "What red will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
     private final SliderValue<Integer> green = new SliderValue<>("Green", "What green will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
     private final SliderValue<Integer> blue = new SliderValue<>("Blue", "What blue will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
@@ -106,7 +106,7 @@ public class TargetHUD extends Module implements ColorPalette {
                     medium17.drawString("Distance " + ChatFormatting.WHITE + MathUtil.round(FightUtil.getRange(target), 1), x + height + 3 + 4, y + 5 + medium21.FONT_HEIGHT + 2 + medium17.FONT_HEIGHT, RYU);
                     break;
                 }
-                case "Atani": {
+                case "Atani CS:GO": {
                     float width = 120, height = 50;
                     RenderUtil.drawRect(x, y, width, height, new Color(0, 58, 105).brighter().getRGB());
                     GradientShader.drawGradientTB(x + 2, y + 2, width - 4, 14, 1, new Color(0, 48, 95).brighter().brighter(), new Color(0, 48, 95).brighter());
@@ -244,13 +244,9 @@ public class TargetHUD extends Module implements ColorPalette {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 
 }

@@ -16,9 +16,11 @@ public class Step extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Intave", "NCP", "Motion", "Spartan", "WatchDog"});
     private final SliderValue<Integer> height = new SliderValue<Integer>("Height", "How high will the step go?", this, 2, 0, 10, 1, new Supplier[]{() -> mode.is("Vanilla")});
 
+    // Intave
+    private boolean timered;
+
     // NCP
     private boolean hasStepped;
-    private boolean sneak;
 
     // WatchDog
     private boolean step;
@@ -46,11 +48,11 @@ public class Step extends Module {
                     }
                     break;
                 case "Intave":
-                    if(sneak) {
-                        mc.thePlayer.setSneaking(false);
-                        sneak = false;
+                    if(timered) {
+                        mc.timer.timerSpeed = 1;
+                        timered = false;
                     }
-                    
+
                     Methods.mc.thePlayer.stepHeight = 0.6F;
 
                     if(Methods.mc.thePlayer.onGround) {
@@ -62,9 +64,10 @@ public class Step extends Module {
                         hasStepped = true;
                     } else {
                         if (!Methods.mc.thePlayer.isCollidedHorizontally && hasStepped && this.isMoving()) {
-                            mc.thePlayer.motionY -= 0.01;
-                            mc.thePlayer.setSneaking(true);
-                            sneak = true;
+                            mc.timer.timerSpeed = 1.4F;
+                            mc.thePlayer.motionY -= 0.0035;
+                            timered = true;
+                            hasStepped = false;
                         }
                     }
 

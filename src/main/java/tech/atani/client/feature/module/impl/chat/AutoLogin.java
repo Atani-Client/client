@@ -1,4 +1,4 @@
-package tech.atani.client.feature.module.impl.player;
+package tech.atani.client.feature.module.impl.chat;
 
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.EnumChatFormatting;
@@ -9,7 +9,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 
-@ModuleData(name = "AutoLogin", description = "Automatically logins for you", category = Category.MISCELLANEOUS)
+@ModuleData(name = "AutoLogin", description = "Automatically logins for you", category = Category.CHAT)
 public class AutoLogin extends Module {
     private final CheckBoxValue login = new CheckBoxValue("Login", "Should the module automatically login for you?", this, true),
             register = new CheckBoxValue("Register", "Should the module automatically register for you?", this, true),

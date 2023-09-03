@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.nio.IntBuffer;
 import javax.imageio.ImageIO;
 
-import com.jcraft.jogg.Buffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.GlStateManager;

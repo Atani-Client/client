@@ -1,9 +1,7 @@
 package tech.atani.client.feature.module.impl.player;
 
 import net.minecraft.network.play.client.C03PacketPlayer;
-import tech.atani.client.utility.math.time.TickHelper;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
-import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
@@ -14,11 +12,9 @@ import com.google.common.base.Supplier;
 
 @ModuleData(name = "NoFall", description = "Reduces fall damage", category = Category.PLAYER)
 public class NoFall extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Edit", "Vulcan", "Verus", "Spartan"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Edit", "Smart", "Vulcan", "Verus"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[] {"Instant Motion"}, new Supplier[] {() -> mode.is("Vulcan")});
     private final CheckBoxValue modulo = new CheckBoxValue("Modulo", "Set on ground only every 3 blocks?", this, true, new Supplier[] {() -> mode.is("Edit")});
-
-    private final TickHelper spartanTimer = new TickHelper();
 
     @Override
     public String getSuffix() {
@@ -31,10 +27,17 @@ public class NoFall extends Module {
             float modulo =  mc.thePlayer.fallDistance % 3;
             boolean correctModulo = modulo < 1f && mc.thePlayer.fallDistance > 3;
             boolean editGround = this.modulo.getValue() ? correctModulo : mc.thePlayer.fallDistance > 3;
+
             switch(mode.getValue()) {
                 case "Edit":
                     if(packetEvent.getPacket() instanceof C03PacketPlayer && editGround) {
                         ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
+                    }
+                    break;
+                case "Smart":
+                    if (mc.thePlayer.fallDistance - mc.thePlayer.motionY > 3f && packetEvent.getPacket() instanceof C03PacketPlayer) {
+                        ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
+                        mc.thePlayer.fallDistance = 0f;
                     }
                     break;
                 case "Vulcan":
@@ -63,24 +66,6 @@ public class NoFall extends Module {
 
             }
         }
-    }
-
-    @Listen
-    public void onTickEvent(RunTickEvent runTickEvent) {
-        if(mc.thePlayer == null || mc.theWorld == null)
-            return;
-
-    	switch(mode.getValue()) {
-    	    case "Spartan":
-                spartanTimer.update();
-
-                if(mc.thePlayer.fallDistance > 1.5 && spartanTimer.hasReached(10)) {
-                    mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 10, mc.thePlayer.posZ, true));
-                    mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY - 10, mc.thePlayer.posZ, true));
-                    spartanTimer.reset();
-                }
-    		    break;
-    	}
     }
 
     @Override

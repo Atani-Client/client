@@ -2,10 +2,7 @@ package tech.atani.client.feature.module.impl.misc;
 
 import com.google.common.base.Supplier;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C00PacketKeepAlive;
-import net.minecraft.network.play.client.C0BPacketEntityAction;
-import net.minecraft.network.play.client.C0CPacketInput;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
+import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S05PacketSpawnPosition;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
@@ -20,7 +17,7 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
-	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat"});
+	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat", "Test"});
 
 	private final CheckBoxValue keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?", this, false, new Supplier[]{() -> mode.is("Custom")}),
 			c0fConfirm = new CheckBoxValue("C0FConfirmTransaction", "Should the module cancel C0FConfirmTransaction?", this, false, new Supplier[]{() -> mode.is("Custom")}),
@@ -89,6 +86,9 @@ public class Disabler extends Module {
 					} else if(packet instanceof C0BPacketEntityAction) {
 						event.setCancelled(true);
 					}
+					break;
+				case "Test":
+					mc.thePlayer.sendQueue.addToSendQueue(new C19PacketResourcePackStatus());
 					break;
 			}
 		}

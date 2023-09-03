@@ -6,9 +6,7 @@ import net.minecraft.network.play.server.S08PacketPlayerPosLook;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
-import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.radbus.Listen;
 
@@ -16,14 +14,10 @@ import tech.atani.client.listener.radbus.Listen;
 public class Test extends Module {
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 
     @Listen
     public final void onRotationEvent(RotationEvent event) {

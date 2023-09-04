@@ -14,6 +14,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "Step", description = "Makes you walk up blocks.", category = Category.MOVEMENT)
 public class Step extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Intave", "NCP", "Motion", "Spartan", "WatchDog"});
+    private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the NCP mode use?", this, new String[]{"Normal", "Fast"});
     private final SliderValue<Integer> height = new SliderValue<Integer>("Height", "How high will the step go?", this, 2, 0, 10, 1, new Supplier[]{() -> mode.is("Vanilla")});
 
     // Intave
@@ -86,12 +87,15 @@ public class Step extends Module {
                     if(!hasStepped && this.isMoving() &&  Methods.mc.thePlayer.onGround && Methods.mc.thePlayer.isCollidedHorizontally) {
                         Methods.mc.thePlayer.jump();
                         hasStepped = true;
+                        if(mc.thePlayer.moveForward > 0 && ncpMode.is("Fast")) {
+                            MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() + 0.197);
+                        }
                     } else {
                         if (!Methods.mc.thePlayer.isCollidedHorizontally && hasStepped && this.isMoving()) {
                             hasStepped = false;
                             Methods.mc.thePlayer.motionY = 0;
                             if (Methods.mc.thePlayer.moveForward > 0) {
-                                MoveUtil.setMoveSpeed(MoveUtil.getBaseMoveSpeed());
+                                MoveUtil.setMoveSpeed(MoveUtil.getBaseMoveSpeed() + (ncpMode.is("Fast") ? 0.2 : 0));
                             }
                         }
                     }

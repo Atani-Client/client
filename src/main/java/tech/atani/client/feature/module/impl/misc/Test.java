@@ -21,7 +21,8 @@ public class Test extends Module {
 
     @Listen
     public final void onRotationEvent(RotationEvent event) {
-        event.setPitch(100);
+        event.setPitch(0);
+        event.setYaw(0);
     }
 
     @Listen
@@ -29,11 +30,7 @@ public class Test extends Module {
         Packet <?> packet = event.getPacket();
 
         if (packet instanceof C03PacketPlayer.C05PacketPlayerLook) {
-            event.setCancelled(true);
-        }
-
-        if (packet instanceof S08PacketPlayerPosLook) {
-            event.setCancelled(true);
+        //    event.setCancelled(true);
         }
     }
 }

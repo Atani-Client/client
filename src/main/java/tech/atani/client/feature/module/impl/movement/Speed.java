@@ -13,6 +13,7 @@ import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.processor.impl.BalanceProcessor;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
@@ -25,8 +26,9 @@ public class Speed extends Module {
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
-            ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop"}, new Supplier[]{() -> mode.is("NCP")}),
-            oldNcpMode = new StringBoxValue("Old NCP Mode", "Which mode will the old ncp mode use?", this, new String[]{"Timer", "Y-Port"}, new Supplier[]{() -> mode.is("Old NCP")}),
+            ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop", "Low"}, new Supplier[]{() -> mode.is("NCP")}),
+            lowNcpMode = new StringBoxValue("Lowhop Timer Mode", "Which timer mode will the ncp lowhop mode use?", this, new String[]{"Normal", "Balance"}, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Low")}),
+    oldNcpMode = new StringBoxValue("Old NCP Mode", "Which mode will the old ncp mode use?", this, new String[]{"Timer", "Y-Port"}, new Supplier[]{() -> mode.is("Old NCP")}),
             verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Hop", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")}),
             watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});
     private final SliderValue<Float> boost = new SliderValue<Float>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")}),
@@ -534,6 +536,48 @@ public class Speed extends Module {
                         ncpTicks++;
 
                     switch (ncpMode.getValue()) {
+                        case "Low":
+                            // By Exterminate
+                            //Method by Exterminate (Lowest lowhop ever, trust)
+                            if (!isMoving()) return;
+
+                            //Anti Retard
+                            mc.gameSettings.keyBindJump.pressed = false;
+
+                            //Timer balance
+                            if (lowNcpMode.getValue().equalsIgnoreCase("Balance")) {
+                                if (BalanceProcessor.getBalance() > 150 || mc.timer.timerSpeed == 1f) {
+                                    //TimerHandler.setTimer(0.3f, 10);
+                                    mc.timer.timerSpeed = 0.3F;
+                                } else if (BalanceProcessor.getBalance() < -400) {
+                                    //TimerHandler.setTimer(1.3f, 10);
+                                    mc.timer.timerSpeed = 1.3F;
+                                }
+                            }
+
+                            if (mc.thePlayer.onGround) {
+                                if (lowNcpMode.is("Normal")) {
+                                    //TimerHandler.setTimer(0.95f, 10);
+                                    mc.timer.timerSpeed = 0.95F;
+                                }
+                                mc.thePlayer.jump();
+                                if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+                                    if (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() == 0) {
+                                        MoveUtil.strafe(0.58f);
+                                    } else if (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() == 1) {
+                                        MoveUtil.strafe(0.67f);
+                                    }
+                                } else {
+                                    MoveUtil.strafe(0.485f);
+                                }
+                            } else if (mc.thePlayer.motionY < 0.16 && mc.thePlayer.motionY > 0.0) {
+                                mc.thePlayer.motionY = -0.1;
+                            } else if (mc.thePlayer.motionY < 0.0 && mc.thePlayer.motionY > -0.3 && lowNcpMode.is("Normal")) {
+                                //TimerHandler.setTimer(1.2f, 10);
+                                mc.timer.timerSpeed = 1.2f;
+                            }
+                            MoveUtil.strafe();
+                            break;
                         case "Strafe":
                             if(mc.thePlayer.onGround && this.isMoving()) {
                                 mc.thePlayer.jump();

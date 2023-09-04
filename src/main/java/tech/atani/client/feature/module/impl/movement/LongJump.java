@@ -33,6 +33,7 @@ public class LongJump extends Module {
     // Test
     private float testSpeed;
     private int testTicks;
+    private double strartY;
     private final TimeHelper testTimer = new TimeHelper();
 
     @Override
@@ -135,6 +136,7 @@ public class LongJump extends Module {
             break;
             case "Test":
                 if(Methods.mc.thePlayer.onGround) {
+                    strartY = mc.thePlayer.posY;
                     testTicks = 0;
                 } else {
                     testTicks++;
@@ -142,18 +144,11 @@ public class LongJump extends Module {
                 switch (testTicks) {
                     case 0:
                         Methods.mc.thePlayer.jump();
-                        testSpeed = 0.485F;
+                    //    testSpeed = 0.33F;
                         break;
                     case 1:
-                        testSpeed = (float) MoveUtil.getBaseMoveSpeed();
+                        mc.thePlayer.motionY += 0.2;
                         break;
-                    case 2:
-                        testSpeed = (float) ((MoveUtil.getBaseMoveSpeed() * 1.2 + Math.random() / 8) + Math.random() / 9);
-                        break;
-                }
-
-                if(testTicks > 4) {
-                testSpeed -= 0.01;
                 }
 
                 if(Methods.mc.thePlayer.moveForward > 0 && Methods.mc.thePlayer.moveStrafing == 0)
@@ -162,6 +157,20 @@ public class LongJump extends Module {
         }
     }
 
+
+    @Listen
+    public void onPacketEvent(PacketEvent event) {
+        if(mode.is("Test")) {
+            if(event.getPacket() instanceof C03PacketPlayer) {
+                double y = 0.42;
+                for (int i = 0; i < testTicks - 1; i++) {
+                    y = (y - 0.08) * 0.98F;
+                }
+
+                ((C03PacketPlayer) event.getPacket()).y = strartY + y;
+            }
+        }
+    }
     @Override
     public void onEnable() {
         vulcanClips = 0;

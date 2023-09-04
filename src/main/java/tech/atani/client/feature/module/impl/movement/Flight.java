@@ -22,7 +22,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "Blockdrop"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")}),
             grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")}),
             verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump"}, new Supplier[]{() -> mode.is("Verus")});
@@ -90,20 +90,6 @@ public class Flight extends Module {
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent motionEvent) {
         switch (mode.getValue()) {
-            case "Blockdrop":
-                mc.timer.timerSpeed = 0.3f;
-                mc.gameSettings.keyBindForward.pressed = false;
-                mc.thePlayer.onGround = true;
-                mc.thePlayer.motionY = 0.0f;
-                double x = -Math.sin(Math.toRadians(mc.thePlayer.rotationYaw)) * .28;
-                double z = Math.cos(Math.toRadians(mc.thePlayer.rotationYaw)) * .28;
-                sendPacketUnlogged(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + x, mc.thePlayer.posY, mc.thePlayer.posZ + z, false));
-                sendPacketUnlogged(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX + x, mc.thePlayer.posY + 30, mc.thePlayer.posZ + z, true));
-                mc.thePlayer.posX += x;
-                mc.thePlayer.posZ += z;
-                mc.thePlayer.motionX *= 1.02;
-                mc.thePlayer.motionZ *= 1.02;
-                break;
             case "Verus":
                 if (motionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     switch (verusMode.getValue()) {

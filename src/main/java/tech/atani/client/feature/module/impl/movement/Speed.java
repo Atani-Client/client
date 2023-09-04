@@ -349,6 +349,9 @@ public class Speed extends Module {
                                     }
                                     break;
                                 case "Low":
+                                    if(mc.gameSettings.keyBindJump.pressed)
+                                        return;
+
                                     if(!mc.thePlayer.onGround) {
                                         if(verusTicks == 1) {
                                             switch (verusCustomLowMode.getValue()) {

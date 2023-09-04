@@ -63,11 +63,14 @@ public class ScaffoldWalk extends Module {
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
     private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
 
+    private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
+
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper(), startingTimeHelper = new TimeHelper();
     private double[] lastPos = new double[3];
     private int lastItem = -1;
     private BlockPos blockPos;
     private boolean starting;
+    private int verusTicks;
 
     @Listen
     public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {
@@ -127,10 +130,28 @@ public class ScaffoldWalk extends Module {
             Blocks.double_wooden_slab, Blocks.wooden_slab, Blocks.heavy_weighted_pressure_plate,
             Blocks.light_weighted_pressure_plate, Blocks.stone_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_slab2,
             Blocks.double_stone_slab2, Blocks.tripwire, Blocks.tripwire_hook, Blocks.tallgrass, Blocks.dispenser,
-            Blocks.command_block, Blocks.web);
+            Blocks.command_block, Blocks.web, Blocks.soul_sand);
 
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
+        if(verusBoost.getValue()) {
+            if(!isMoving())
+                return;
+            
+            if(mc.thePlayer.onGround) {
+                verusTicks = 0;
+                mc.thePlayer.jump();
+            } else {
+                verusTicks++;
+
+                if(verusTicks > 2)
+                    return;
+
+                mc.thePlayer.motionY = 0;
+                MoveUtil.strafe(0.475);
+                mc.thePlayer.onGround = true;
+            }
+        }
         if (switchItems.getValue()) {
             if ((Methods.mc.thePlayer.getHeldItem() != null && !(Methods.mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)) || Methods.mc.thePlayer.getHeldItem() == null) {
                 for (int i = 0; i < 9; i++) {

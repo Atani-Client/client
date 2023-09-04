@@ -112,11 +112,11 @@ public class TileEntitySignRenderer extends TileEntitySpecialRenderer<TileEntity
                         if (j == te.lineBeingEdited)
                         {
                             s = "> " + s + " <";
-                            fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, i);
+                            fontrenderer.drawString(s, -fontrenderer.getStringWidthInt(s) / 2, j * 10 - te.signText.length * 5, i);
                         }
                         else
                         {
-                            fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, j * 10 - te.signText.length * 5, i);
+                            fontrenderer.drawString(s, -fontrenderer.getStringWidthInt(s) / 2, j * 10 - te.signText.length * 5, i);
                         }
                     }
                 }

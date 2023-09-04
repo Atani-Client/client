@@ -94,7 +94,7 @@ public class AtaniServerListEntryNormal implements AtaniGuiListExtended.IGuiList
         }
 
         String s2 = flag2 ? EnumChatFormatting.DARK_RED + this.field_148301_e.gameVersion : this.field_148301_e.populationInfo;
-        int j = FontStorage.getInstance().findFont("Roboto", 19).getStringWidth(s2);
+        int j = FontStorage.getInstance().findFont("Roboto", 19).getStringWidthInt(s2);
         FontStorage.getInstance().findFont("Roboto", 19).drawString(s2, x + listWidth - j - 15 - 2, y + 1, 8421504);
         int k = 0;
         String s = null;

@@ -108,7 +108,7 @@ public class GuiEditSign extends GuiScreen
             s = s.substring(0, s.length() - 1);
         }
 
-        if (ChatAllowedCharacters.isAllowedCharacter(typedChar) && this.fontRendererObj.getStringWidth(s + typedChar) <= 90)
+        if (ChatAllowedCharacters.isAllowedCharacter(typedChar) && this.fontRendererObj.getStringWidthInt(s + typedChar) <= 90)
         {
             s = s + typedChar;
         }

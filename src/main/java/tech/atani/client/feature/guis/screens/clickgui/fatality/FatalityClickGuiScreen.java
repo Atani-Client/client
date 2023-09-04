@@ -98,14 +98,14 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
         FontRenderer categoryFont = FontStorage.getInstance().findFont("Arial", 19);
         float categoryX = 0;
         for (Category category : Category.values()) {
-            categoryX += categoryFont.getStringWidth(category.getName().toUpperCase()) + 10;
+            categoryX += categoryFont.getStringWidthInt(category.getName().toUpperCase()) + 10;
         }
         categoryX -= 10;
         categoryX = posX + width / 2 - categoryX / 2;
         float startX = categoryX;
         for (Category category : Category.values()) {
             categoryFont.drawString(category.getName().toUpperCase(), categoryX, posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 10, category == selectedCategory ? -1 : new Color(170, 170, 170).getRGB());
-            categoryX += categoryFont.getStringWidth(category.getName().toUpperCase()) + 10;
+            categoryX += categoryFont.getStringWidthInt(category.getName().toUpperCase()) + 10;
         }
         GradientShader.drawGradientLR(posX, posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30, width, 2, 1, new Color(FATALITY_FIRST), new Color(FATALITY_SECOND));
         RenderUtil.drawRect(posX + 2 * (width / 5), posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2, 1.5f, height - (24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2), new Color(170, 170, 170, 100).getRGB());
@@ -221,19 +221,19 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
         FontRenderer categoryFont = FontStorage.getInstance().findFont("Arial", 19);
         float categoryX = 0;
         for (Category category : Category.values()) {
-            categoryX += categoryFont.getStringWidth(category.getName().toUpperCase()) + 10;
+            categoryX += categoryFont.getStringWidthInt(category.getName().toUpperCase()) + 10;
         }
         categoryX -= 10;
         categoryX = posX + width / 2 - categoryX / 2;
         float startX = categoryX;
         for (Category category : Category.values()) {
-            if (RenderUtil.isHovered(mouseX, mouseY, categoryX, posY + 23 + categoryFont.FONT_HEIGHT / 2 - 3 + 9, categoryFont.getStringWidth(category.getName().toUpperCase()), categoryFont.FONT_HEIGHT) && mouseButton == 0) {
+            if (RenderUtil.isHovered(mouseX, mouseY, categoryX, posY + 23 + categoryFont.FONT_HEIGHT / 2 - 3 + 9, categoryFont.getStringWidthInt(category.getName().toUpperCase()), categoryFont.FONT_HEIGHT) && mouseButton == 0) {
                 selectedCategory = category;
                 modScroll = 0;
                 valScroll = 0;
                 selectedModule = null;
             }
-            categoryX += categoryFont.getStringWidth(category.getName().toUpperCase()) + 10;
+            categoryX += categoryFont.getStringWidthInt(category.getName().toUpperCase()) + 10;
         }
         if (RenderUtil.isHovered(mouseX, mouseY, posX, posY + 24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 2F, 2 * (width / 5), height - (24 + categoryFont.FONT_HEIGHT / 2 - 3 + 30 + 1.5F))) {
             if(selectedCategory != null) {

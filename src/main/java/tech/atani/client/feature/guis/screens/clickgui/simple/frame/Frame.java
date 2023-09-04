@@ -1,9 +1,7 @@
 package tech.atani.client.feature.guis.screens.clickgui.simple.frame;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
-import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.guis.screens.clickgui.simple.component.Component;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.Module;
@@ -34,7 +32,7 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.simpl
         float moduleY = posY + height + scroll * moduleHeight;
         ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.category);
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
-        modules.sort(Comparator.comparingInt(o -> normal.getStringWidth(((Module)o).getName())).reversed());
+        modules.sort(Comparator.comparingInt(o -> normal.getStringWidthInt(((Module)o).getName())).reversed());
         for(Module module : modules) {
             this.subComponents.add(new ModuleComponent(module, posX, moduleY, width, moduleHeight, screen));
             moduleY += moduleHeight;

@@ -49,7 +49,7 @@ public class XaveModuleList extends ModuleListElement {
                 }
                 int color = moduleColorHashMap.get(module).getRGB();
                 String name = module.getName();
-                float rectWidth = (roboto18.getStringWidth(name) + 4);
+                float rectWidth = (roboto18.getStringWidthInt(name) + 4);
                 float moduleX = 2 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth) - 2;
                 RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(0, 0, 0, 180).getRGB());
                 roboto18.drawTotalCenteredStringWithShadow(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, color);

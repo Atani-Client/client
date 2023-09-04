@@ -4,9 +4,13 @@ import com.google.common.base.Supplier;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import org.lwjgl.opengl.GL11;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.listener.event.minecraft.render.Render3DEvent;
+import tech.atani.client.listener.event.minecraft.render.player.RendererEvent;
 import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.render.RenderUtil;
@@ -25,6 +29,11 @@ import java.util.Calendar;
 public class ESP extends Module {
 
     public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"2D"});
+    public StringBoxValue twoDMode = new StringBoxValue("2D Mode", "Which 2D ESP to use?", this, new String[]{"Normal"});
+    public CheckBoxValue background = new CheckBoxValue("Background", "Render background?", this, false, new Supplier[]{() -> mode.is("2D") && twoDMode.is("Normal")});
+    public CheckBoxValue border = new CheckBoxValue("Border", "Render border?", this, true, new Supplier[]{() -> mode.is("2D") && twoDMode.is("Normal")});
+    public SliderValue<Integer> backgroundOpacity = new SliderValue<>("Background Opacity", "How visible will be the background?", this, 110, 0, 255, 0, new Supplier[]{() -> mode.is("2D") && twoDMode.is("Normal")});
+    public SliderValue<Integer> width = new SliderValue<Integer>("Width", "How wide should the esp be?", this, 2, 1, 5, 0, new Supplier[]{() -> mode.is("Fake 2D")});
     public CheckBoxValue rangeLimited = new CheckBoxValue("Range Limited", "Limit to a certain range?", this, false);
     public SliderValue<Float> range = new SliderValue<>("Range", "What range will be the maximum?", this, 100f, 0f, 1000f, 0);
     public CheckBoxValue players = new CheckBoxValue("Players", "Attack Players?", this, true);
@@ -68,15 +77,16 @@ public class ESP extends Module {
                     float width = (float)(coords[2] - coords[0]);
                     float height = (float)(coords[3] - coords[1]);
 
-                    /*
                     // Back
-                    RenderUtil.drawRect(x, y, width, height, new Color(0, 0, 0, 110).getRGB());
-                     */
+                    if(this.background.getValue())
+                        RenderUtil.drawRect(x, y, width, height, new Color(0, 0, 0, this.backgroundOpacity.getValue()).getRGB());
 
                     // Border
                     RenderUtil.drawBorderedRect(x, y, x + width, y + height, length, 0, getColor(counter), true);
-                    RenderUtil.drawBorderedRect(x, y, x + width, y + height, length, 0, Color.black.getRGB(), false);
-                    RenderUtil.drawBorderedRect(x + length, y + length, (x - length) + width, (y - length) + height, length, 0, Color.black.getRGB(), true);
+                    if(this.border.getValue()) {
+                        RenderUtil.drawBorderedRect(x, y, x + width, y + height, length, 0, Color.black.getRGB(), false);
+                        RenderUtil.drawBorderedRect(x + length, y + length, (x - length) + width, (y - length) + height, length, 0, Color.black.getRGB(), true);
+                    }
                     GlStateManager.resetColor();
                 }
                 break;

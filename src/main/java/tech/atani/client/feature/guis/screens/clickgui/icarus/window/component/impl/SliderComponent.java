@@ -39,8 +39,8 @@ public class SliderComponent extends ValueComponent {
             sliderValue.setValue(newValue);
         }
         fontRenderer.drawString(sliderValue.getName(), getPosX() + 5, getPosY() + getFinalHeight() / 2 - fontRenderer.FONT_HEIGHT / 2 - 1, -1);
-        fontRenderer.drawString(sliderValue.getValue().floatValue() + "", getPosX() + getWidth() - 5 - fontRenderer.getStringWidth(sliderValue.getValue().floatValue() + ""), getPosY() + getFinalHeight() / 2 - fontRenderer.FONT_HEIGHT / 2 - 1, -1);
-        return fontRenderer.getStringWidth(sliderValue.getName()  + ": " + sliderValue.getValue().floatValue()) + 6;
+        fontRenderer.drawString(sliderValue.getValue().floatValue() + "", getPosX() + getWidth() - 5 - fontRenderer.getStringWidthInt(sliderValue.getValue().floatValue() + ""), getPosY() + getFinalHeight() / 2 - fontRenderer.FONT_HEIGHT / 2 - 1, -1);
+        return fontRenderer.getStringWidthInt(sliderValue.getName()  + ": " + sliderValue.getValue().floatValue()) + 6;
     }
 
     @Override

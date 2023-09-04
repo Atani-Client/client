@@ -39,7 +39,7 @@ public class SimpleModuleList extends ModuleListElement {
                 float moduleHeight = roboto17.FONT_HEIGHT + 8;
                 if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                     String name = module.getName();
-                    float rectWidth = roboto17.getStringWidth(name) + 10;
+                    float rectWidth = roboto17.getStringWidthInt(name) + 10;
                     float moduleX = 10 - (rectWidth + 10) + (float) (moduleHashMap.get(module).getOutput() * (rectWidth + 10));
                     RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, BACK_TRANS_180);
                     roboto17.drawTotalCenteredStringWithShadow(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, -1);

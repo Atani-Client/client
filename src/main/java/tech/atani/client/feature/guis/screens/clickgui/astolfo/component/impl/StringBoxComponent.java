@@ -20,7 +20,7 @@ public class StringBoxComponent extends ValueComponent {
     public void drawScreen(int mouseX, int mouseY) {
         FontRenderer normal = FontStorage.getInstance().findFont("SFUI Medium", 16);
         normal.drawString(value.getName(), getPosX() + 5 + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
-        normal.drawString(value.getValue().toString(), getPosX() + this.getBaseWidth() - 5 - normal.getStringWidth(value.getValue().toString()) + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2,-1);
+        normal.drawString(value.getValue().toString(), getPosX() + this.getBaseWidth() - 5 - normal.getStringWidthInt(value.getValue().toString()) + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2,-1);
         if(expanded) {
             float y = this.getPosY() + this.getBaseHeight();
             for(String string : stringBoxValue.getValues()) {

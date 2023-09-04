@@ -88,7 +88,7 @@ public final class GuiPasswordField extends Gui
                 }
             }
             if (var3 != var2) {
-                final int var13 = var7 + this.field_146211_a.getStringWidth(var4.substring(0, var3).replaceAll(".", "*"));
+                final int var13 = var7 + this.field_146211_a.getStringWidthInt(var4.substring(0, var3).replaceAll(".", "*"));
                 this.func_146188_c(var12, var8 - 1, var13 - 1, var8 + 1 + this.field_146211_a.FONT_HEIGHT);
             }
         }

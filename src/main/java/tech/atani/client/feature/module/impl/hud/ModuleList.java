@@ -80,7 +80,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
                 FontRenderer fontRenderer = moduleListElement.getFontRenderer();
                 String name1 = moduleListMode.is("Custom") ? ((CustomModuleList) moduleListElement).getModuleName(mod1, false) : mod1.getName();
                 String name2 = moduleListMode.is("Custom") ? ((CustomModuleList) moduleListElement).getModuleName(mod2, false) : mod2.getName();
-                return fontRenderer.getStringWidth(name2) - fontRenderer.getStringWidth(name1);
+                return fontRenderer.getStringWidthInt(name2) - fontRenderer.getStringWidthInt(name1);
             });
             LinkedHashMap<Module, DecelerateAnimation> sortedMap = new LinkedHashMap<>();
             for (Module module : sortedModules) {

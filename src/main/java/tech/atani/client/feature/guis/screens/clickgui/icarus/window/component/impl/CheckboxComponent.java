@@ -22,7 +22,7 @@ public class CheckboxComponent extends ValueComponent {
     public float draw(int mouseX, int mouseY) {
         RoundedShader.drawGradientRound(getPosX() + 6, getPosY() + 4, 11, getHeight() - 8, 2, checkBoxValue.isEnabled() ? new Color(ICARUS_FIRST) : new Color(30, 30, 30), checkBoxValue.isEnabled() ? new Color(ICARUS_FIRST) : new Color(30, 30, 30), checkBoxValue.isEnabled() ? new Color(ICARUS_SECOND) : new Color(30, 30, 30), checkBoxValue.isEnabled() ? new Color(ICARUS_SECOND) : new Color(30, 30, 30));
         fontRenderer.drawString(checkBoxValue.getName(), getPosX() + 25, getPosY() + getFinalHeight() / 2 - fontRenderer.FONT_HEIGHT / 2 + 1, -1);
-        return fontRenderer.getStringWidth(checkBoxValue.getName()) + 25 + 2;
+        return fontRenderer.getStringWidthInt(checkBoxValue.getName()) + 25 + 2;
     }
 
     @Override

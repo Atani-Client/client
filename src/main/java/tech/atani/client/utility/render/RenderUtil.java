@@ -480,6 +480,13 @@ public class RenderUtil implements Methods {
         color(color.getRed() / 255F, color.getGreen() / 255F, color.getBlue() / 255F, 0.5);
     }
 
+    public static void color(int color, float alpha) {
+        float r = (float) (color >> 16 & 255) / 255.0F;
+        float g = (float) (color >> 8 & 255) / 255.0F;
+        float b = (float) (color & 255) / 255.0F;
+        GlStateManager.color(r, g, b, alpha);
+    }
+
     public static void resetColor() {
         GlStateManager.color(1, 1, 1, 1);
     }

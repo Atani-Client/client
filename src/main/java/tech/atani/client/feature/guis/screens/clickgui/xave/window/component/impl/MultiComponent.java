@@ -3,7 +3,6 @@ package tech.atani.client.feature.guis.screens.clickgui.xave.window.component.im
 import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.value.impl.MultiStringBoxValue;
-import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.utility.render.RenderUtil;
 
 import java.awt.*;
@@ -30,7 +29,7 @@ public class MultiComponent extends ValueComponent {
                 posY += this.getHeight();
             }
         }
-        return fontRenderer.getStringWidth(multiStringBoxValue.getName()) + 6;
+        return fontRenderer.getStringWidthInt(multiStringBoxValue.getName()) + 6;
     }
 
     @Override

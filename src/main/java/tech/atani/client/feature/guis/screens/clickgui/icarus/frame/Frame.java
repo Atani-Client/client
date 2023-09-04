@@ -1,6 +1,5 @@
 package tech.atani.client.feature.guis.screens.clickgui.icarus.frame;
 
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.module.Module;
@@ -33,7 +32,7 @@ public class Frame extends Component {
         float moduleY = posY + height;
         ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.category);
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 16);
-        modules.sort(Comparator.comparingInt(o -> normal.getStringWidth(((Module)o).getName())).reversed());
+        modules.sort(Comparator.comparingInt(o -> normal.getStringWidthInt(((Module)o).getName())).reversed());
         for(Module module : modules) {
             this.subComponents.add(new ModuleComponent(module, posX + 2, moduleY, width - 4, moduleHeight));
             moduleY += moduleHeight;

@@ -110,7 +110,7 @@ public class GuiSpectator extends Gui implements ISpectatorMenuRecipient
 
             if (i > 3 && p_175266_5_.func_178662_A_())
             {
-                this.field_175268_g.fontRendererObj.drawStringWithShadow(s, (float)(p_175266_2_ + 19 - 2 - this.field_175268_g.fontRendererObj.getStringWidth(s)), p_175266_3_ + 6.0F + 3.0F, 16777215 + (i << 24));
+                this.field_175268_g.fontRendererObj.drawStringWithShadow(s, (float)(p_175266_2_ + 19 - 2 - this.field_175268_g.fontRendererObj.getStringWidthInt(s)), p_175266_3_ + 6.0F + 3.0F, 16777215 + (i << 24));
             }
         }
     }
@@ -126,7 +126,7 @@ public class GuiSpectator extends Gui implements ISpectatorMenuRecipient
 
             if (s != null)
             {
-                int j = (p_175263_1_.getScaledWidth() - this.field_175268_g.fontRendererObj.getStringWidth(s)) / 2;
+                int j = (p_175263_1_.getScaledWidth() - this.field_175268_g.fontRendererObj.getStringWidthInt(s)) / 2;
                 int k = p_175263_1_.getScaledHeight() - 35;
                 GlStateManager.pushMatrix();
                 GlStateManager.enableBlend();

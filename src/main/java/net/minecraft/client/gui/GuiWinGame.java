@@ -215,7 +215,7 @@ public class GuiWinGame extends GuiScreen
 
                 if (s.startsWith("[C]"))
                 {
-                    this.fontRendererObj.drawStringWithShadow(s.substring(3), (float)(j + (i - this.fontRendererObj.getStringWidth(s.substring(3))) / 2), (float)l, 16777215);
+                    this.fontRendererObj.drawStringWithShadow(s.substring(3), (float)(j + (i - this.fontRendererObj.getStringWidthInt(s.substring(3))) / 2), (float)l, 16777215);
                 }
                 else
                 {

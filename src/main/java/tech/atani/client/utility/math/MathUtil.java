@@ -14,6 +14,10 @@ public class MathUtil {
         return bd.doubleValue();
     }
 
+    public static double roundToHalf(double d) {
+        return Math.round(d * 2) / 2.0;
+    }
+
     public static Double interpolate(double oldValue, double newValue, double interpolationValue){
         return (oldValue + (newValue - oldValue) * interpolationValue);
     }

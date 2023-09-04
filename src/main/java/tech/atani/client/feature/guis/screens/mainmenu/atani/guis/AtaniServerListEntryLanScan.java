@@ -11,7 +11,7 @@ public class AtaniServerListEntryLanScan implements AtaniGuiListExtended.IGuiLis
     public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected)
     {
         int i = y + slotHeight / 2 - FontStorage.getInstance().findFont("Roboto", 19).FONT_HEIGHT / 2;
-        FontStorage.getInstance().findFont("Roboto", 19).drawString(I18n.format("lanServer.scanning", new Object[0]), this.mc.currentScreen.width / 2 - FontStorage.getInstance().findFont("Roboto", 19).getStringWidth(I18n.format("lanServer.scanning", new Object[0])) / 2, i, 16777215);
+        FontStorage.getInstance().findFont("Roboto", 19).drawString(I18n.format("lanServer.scanning", new Object[0]), this.mc.currentScreen.width / 2 - FontStorage.getInstance().findFont("Roboto", 19).getStringWidthInt(I18n.format("lanServer.scanning", new Object[0])) / 2, i, 16777215);
         String s;
 
         switch ((int)(Minecraft.getSystemTime() / 300L % 4L))
@@ -30,7 +30,7 @@ public class AtaniServerListEntryLanScan implements AtaniGuiListExtended.IGuiLis
                 s = "o o O";
         }
 
-        FontStorage.getInstance().findFont("Roboto", 19).drawString(s, this.mc.currentScreen.width / 2 - FontStorage.getInstance().findFont("Roboto", 19).getStringWidth(s) / 2, i + FontStorage.getInstance().findFont("Roboto", 19).FONT_HEIGHT, 8421504);
+        FontStorage.getInstance().findFont("Roboto", 19).drawString(s, this.mc.currentScreen.width / 2 - FontStorage.getInstance().findFont("Roboto", 19).getStringWidthInt(s) / 2, i + FontStorage.getInstance().findFont("Roboto", 19).FONT_HEIGHT, 8421504);
     }
 
     public void setSelected(int p_178011_1_, int p_178011_2_, int p_178011_3_)

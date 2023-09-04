@@ -22,7 +22,7 @@ public class OldAugustusWatermark extends ThemeObject {
         Date now = new Date();
         String time = dateFormat.format(now);
         String text = String.format("%s b%s" + ChatFormatting.GRAY + " (%s)", CLIENT_NAME, CLIENT_VERSION, time);
-        RenderUtil.drawRect(0, 0, 2 + mc.fontRendererObj.getStringWidth(text), 2 + mc.fontRendererObj.FONT_HEIGHT, new Color(0, 0, 0, 100).getRGB());
+        RenderUtil.drawRect(0, 0, 2 + mc.fontRendererObj.getStringWidthInt(text), 2 + mc.fontRendererObj.FONT_HEIGHT, new Color(0, 0, 0, 100).getRGB());
         mc.fontRendererObj.drawStringWithShadow(text, 1, 2, -1);
         leftY.set(2 + mc.fontRendererObj.FONT_HEIGHT);
     }

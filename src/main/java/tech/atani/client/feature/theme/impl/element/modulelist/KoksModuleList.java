@@ -50,7 +50,7 @@ public class KoksModuleList extends ModuleListElement {
                 final String displayName = module.getName();
                 final float height = (roboto18.FONT_HEIGHT + addY);
 
-                final int l = (int) ((float) (scaledResolution.getScaledWidth() - roboto18.getStringWidth(displayName) - 1 - posX) - size - depth);
+                final int l = (int) ((float) (scaledResolution.getScaledWidth() - roboto18.getStringWidthInt(displayName) - 1 - posX) - size - depth);
                 final int r = (int) (scaledResolution.getScaledWidth() - posX + size + depth);
                 final double distance = r - l;
 
@@ -70,8 +70,8 @@ public class KoksModuleList extends ModuleListElement {
                 modules.removeIf(module1 -> moduleHashMap.get(module1).finished(Direction.BACKWARDS));
                 if (i + 1 < modules.size()) {
                     final Module nextModule = modules.get(i + 1);
-                    final float difference = (int) (roboto18.getStringWidth(displayName) - roboto18.getStringWidth(nextModule.getName()));
-                    Gui.drawRect((int) (((float) (scaledResolution.getScaledWidth() - roboto18.getStringWidth(displayName) - 1 - posX) - size - depth)), (int) (y + height + 1.5F - posY), (int) ((scaledResolution.getScaledWidth() - roboto18.getStringWidth(displayName) - 1 - posX) + difference - size), (int) bottom, getRainbow(100 * ((moduleHashMap.size() - i) + 1), 6000, (float) 0.6f, 1).getRGB());
+                    final float difference = (int) (roboto18.getStringWidthInt(displayName) - roboto18.getStringWidthInt(nextModule.getName()));
+                    Gui.drawRect((int) (((float) (scaledResolution.getScaledWidth() - roboto18.getStringWidthInt(displayName) - 1 - posX) - size - depth)), (int) (y + height + 1.5F - posY), (int) ((scaledResolution.getScaledWidth() - roboto18.getStringWidthInt(displayName) - 1 - posX) + difference - size), (int) bottom, getRainbow(100 * ((moduleHashMap.size() - i) + 1), 6000, (float) 0.6f, 1).getRGB());
                 } else {
                     int lIndex = 1;
                     for (double left = l; left < r; left += distance / displayName.length()) {
@@ -82,12 +82,12 @@ public class KoksModuleList extends ModuleListElement {
 
                 Gui.drawRect((int) (scaledResolution.getScaledWidth() - posX + size), (int) (y - posY), (int) (scaledResolution.getScaledWidth() - posX + size + depth), (int) (y + height + 2.5F - posY), getRainbow(100 * (displayName.length() + (moduleHashMap.size() - i) + 2), 6000, (float) 0.6f, 1).getRGB());
 
-                Gui.drawRect((int) ((scaledResolution.getScaledWidth() - roboto18.getStringWidth(displayName) - 1 - posX) - size), (int) (y - posY - (i == 0 ? 0 : 1)), (int) (scaledResolution.getScaledWidth() - posX + size), (int) (y + (roboto18.FONT_HEIGHT + addY) + 2 - 1 - posY), Integer.MIN_VALUE);
-                Gui.drawRect((int) ((scaledResolution.getScaledWidth() - roboto18.getStringWidth(displayName) - 1 - posX) - size - depth), y - posY - 1, (int) ((scaledResolution.getScaledWidth() - roboto18.getStringWidth(displayName) - 1 - posX) - size), (int) (y + height + 2.5F - posY), getRainbow(100 * ((moduleHashMap.size() - i) + 1), 6000, (float) 0.6f, 1).getRGB());
+                Gui.drawRect((int) ((scaledResolution.getScaledWidth() - roboto18.getStringWidthInt(displayName) - 1 - posX) - size), (int) (y - posY - (i == 0 ? 0 : 1)), (int) (scaledResolution.getScaledWidth() - posX + size), (int) (y + (roboto18.FONT_HEIGHT + addY) + 2 - 1 - posY), Integer.MIN_VALUE);
+                Gui.drawRect((int) ((scaledResolution.getScaledWidth() - roboto18.getStringWidthInt(displayName) - 1 - posX) - size - depth), y - posY - 1, (int) ((scaledResolution.getScaledWidth() - roboto18.getStringWidthInt(displayName) - 1 - posX) - size), (int) (y + height + 2.5F - posY), getRainbow(100 * ((moduleHashMap.size() - i) + 1), 6000, (float) 0.6f, 1).getRGB());
 
                 for (int c = 0; c < displayName.length(); c++) {
                     final char character = displayName.charAt(c);
-                    roboto18.drawStringWithShadow(character + "", (float) (scaledResolution.getScaledWidth() - roboto18.getStringWidth(displayName) - 1 - posX) + roboto18.getStringWidth(displayName.substring(0, c)), y + 1.5f - posY + 1, getRainbow(100 * (c + (moduleHashMap.size() - i) + 1), 6000, (float) 0.6f, 1).getRGB());
+                    roboto18.drawStringWithShadow(character + "", (float) (scaledResolution.getScaledWidth() - roboto18.getStringWidthInt(displayName) - 1 - posX) + roboto18.getStringWidthInt(displayName.substring(0, c)), y + 1.5f - posY + 1, getRainbow(100 * (c + (moduleHashMap.size() - i) + 1), 6000, (float) 0.6f, 1).getRGB());
                 }
 
                 y += (roboto18.FONT_HEIGHT + addY) + 2;

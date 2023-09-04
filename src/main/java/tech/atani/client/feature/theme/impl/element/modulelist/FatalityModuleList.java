@@ -36,7 +36,7 @@ public class FatalityModuleList extends ModuleListElement {
         for (Module module : moduleHashMap.keySet()) {
             if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                 float moduleHeight = fontRenderer.FONT_HEIGHT;
-                float rectLength = (float) ((fontRenderer.getStringWidth(module.getName()) + 1) * moduleHashMap.get(module).getOutput());
+                float rectLength = (float) ((fontRenderer.getStringWidthInt(module.getName()) + 1) * moduleHashMap.get(module).getOutput());
                 fontRenderer.drawStringWithShadow(module.getName(), scaledResolution.getScaledWidth() - rectLength - 1, moduleY + moduleHeight / 2 - fontRenderer.FONT_HEIGHT / 2, ColorUtil.fadeBetween(FATALITY_FIRST, FATALITY_SECOND, counter * 150L));
                 moduleY += moduleHeight;
                 counter++;

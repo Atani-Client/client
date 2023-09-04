@@ -96,21 +96,21 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
         RenderUtil.drawRect(x + 30 + animationLeftRight, y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + animationUpDown, width - 60, 1, new Color(40, 40, 40).getRGB());
         float categoryX = 0;
         for (Category category : Category.values()) {
-            categoryX += fontRenderer.getStringWidth(category.getName().toUpperCase()) + 10;
+            categoryX += fontRenderer.getStringWidthInt(category.getName().toUpperCase()) + 10;
         }
         categoryX -= 10;
         categoryX = x + width / 2 - categoryX / 2 + animationLeftRight;
         float startX = categoryX;
         for (Category category : Category.values()) {
             fontRenderer.drawStringWithShadow(category.getName().toUpperCase(), categoryX, y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + 10 + animationUpDown, -1);
-            categoryX += fontRenderer.getStringWidth(category.getName().toUpperCase()) + 10;
+            categoryX += fontRenderer.getStringWidthInt(category.getName().toUpperCase()) + 10;
         }
         float endX = categoryX;
         float moduleY = y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + 10 + fontRenderer.FONT_HEIGHT + 10  + animationUpDown;
         float startY = moduleY;
         moduleY += moduleScroll;
         ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.selectedCategory);
-        modules.sort(Comparator.comparingInt(o -> fontRenderer.getStringWidth(((Module) o).getName())).reversed());
+        modules.sort(Comparator.comparingInt(o -> fontRenderer.getStringWidthInt(((Module) o).getName())).reversed());
         modules.removeIf(module -> module.shouldHide());
         int counter = 0;
         int dWheel = Mouse.getDWheel();
@@ -144,9 +144,9 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
                 fontRenderer.drawStringWithShadow(value.getName() + ": " + sliderValue.getValue().floatValue(), halfX, valueY, -1);
                 valueY += fontRenderer.FONT_HEIGHT + 2;
                 fontRenderer.drawStringWithShadow(sliderValue.getMinimum().floatValue() + "", halfX, valueY, -1);
-                fontRenderer.drawStringWithShadow(sliderValue.getMaximum().floatValue() + "", endX - fontRenderer.getStringWidth(sliderValue.getMaximum().floatValue() + ""), valueY, -1);
-                float sliderX = halfX + fontRenderer.getStringWidth(sliderValue.getMinimum().floatValue() + "") + 2;
-                float sliderWidth = (endX - fontRenderer.getStringWidth(sliderValue.getMaximum().floatValue() + "") - 2) - sliderX;
+                fontRenderer.drawStringWithShadow(sliderValue.getMaximum().floatValue() + "", endX - fontRenderer.getStringWidthInt(sliderValue.getMaximum().floatValue() + ""), valueY, -1);
+                float sliderX = halfX + fontRenderer.getStringWidthInt(sliderValue.getMinimum().floatValue() + "") + 2;
+                float sliderWidth = (endX - fontRenderer.getStringWidthInt(sliderValue.getMaximum().floatValue() + "") - 2) - sliderX;
                 float sliderY = valueY + fontRenderer.FONT_HEIGHT / 2 - 2;
                 float sliderHeight = 4;
                 RenderUtil.drawRect(sliderX, sliderY, sliderWidth, sliderHeight, new Color(50, 50, 50).getRGB());
@@ -166,7 +166,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
                 if (this.expandedValues.contains(value)) {
                     valueY += fontRenderer.FONT_HEIGHT + 2;
                     for (String string : stringBoxValue.getValues()) {
-                        fontRenderer.drawStringWithShadow(string, halfX + fontRenderer.getStringWidth(value.getName() + ": "), valueY, -1);
+                        fontRenderer.drawStringWithShadow(string, halfX + fontRenderer.getStringWidthInt(value.getName() + ": "), valueY, -1);
                         valueY += fontRenderer.FONT_HEIGHT + 2;
                     }
                     valueY -= fontRenderer.FONT_HEIGHT + 2;
@@ -177,7 +177,7 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
                 if (this.expandedValues.contains(value)) {
                     valueY += fontRenderer.FONT_HEIGHT + 2;
                     for (String string : multiStringBoxValue.getValues()) {
-                        fontRenderer.drawStringWithShadow((multiStringBoxValue.get(string) ? ChatFormatting.BOLD.toString() : "") + string, halfX + fontRenderer.getStringWidth(value.getName() + ": "), valueY, -1);
+                        fontRenderer.drawStringWithShadow((multiStringBoxValue.get(string) ? ChatFormatting.BOLD.toString() : "") + string, halfX + fontRenderer.getStringWidthInt(value.getName() + ": "), valueY, -1);
                         valueY += fontRenderer.FONT_HEIGHT + 2;
                     }
                     valueY -= fontRenderer.FONT_HEIGHT + 2;
@@ -208,30 +208,30 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto", 21);
         float categoryX = 0;
         for (Category category : Category.values()) {
-            categoryX += fontRenderer.getStringWidth(category.getName().toUpperCase()) + 10;
+            categoryX += fontRenderer.getStringWidthInt(category.getName().toUpperCase()) + 10;
         }
         categoryX -= 10;
         categoryX = x + width / 2 - categoryX / 2;
         float startX = categoryX;
         for (Category category : Category.values()) {
-            if (RenderUtil.isHovered(mouseX, mouseY, categoryX, y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + 10, fontRenderer.getStringWidth(category.getName().toUpperCase()), fontRenderer.FONT_HEIGHT) && mouseButton == 0) {
+            if (RenderUtil.isHovered(mouseX, mouseY, categoryX, y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + 10, fontRenderer.getStringWidthInt(category.getName().toUpperCase()), fontRenderer.FONT_HEIGHT) && mouseButton == 0) {
                 selectedCategory = category;
                 moduleScroll = 0;
                 valueScroll = 0;
                 selectedModule = null;
             }
-            categoryX += fontRenderer.getStringWidth(category.getName().toUpperCase()) + 10;
+            categoryX += fontRenderer.getStringWidthInt(category.getName().toUpperCase()) + 10;
         }
         float endX = categoryX;
         float moduleY = y + 23 + fontRenderer.FONT_HEIGHT / 2 - 3 + 10 + fontRenderer.FONT_HEIGHT + 10;
         float startY = moduleY;
         moduleY += moduleScroll;
         ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.selectedCategory);
-        modules.sort(Comparator.comparingInt(o -> fontRenderer.getStringWidth(((Module) o).getName())).reversed());
+        modules.sort(Comparator.comparingInt(o -> fontRenderer.getStringWidthInt(((Module) o).getName())).reversed());
         modules.removeIf(module -> module.shouldHide());
         int counter = 0;
         for (Module module : modules) {
-            if (RenderUtil.isHovered(mouseX, mouseY, startX, moduleY, fontRenderer.getStringWidth(module.getName()), fontRenderer.FONT_HEIGHT)) {
+            if (RenderUtil.isHovered(mouseX, mouseY, startX, moduleY, fontRenderer.getStringWidthInt(module.getName()), fontRenderer.FONT_HEIGHT)) {
                 if (mouseButton == 1) {
                     this.selectedModule = module;
                     valueScroll = 0;

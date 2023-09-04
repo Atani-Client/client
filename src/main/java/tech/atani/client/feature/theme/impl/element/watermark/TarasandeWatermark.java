@@ -1,17 +1,14 @@
 package tech.atani.client.feature.theme.impl.element.watermark;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.theme.ThemeObject;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.utility.render.shader.shaders.GradientShader;
 
 import java.awt.*;
 
@@ -26,7 +23,7 @@ public class TarasandeWatermark extends ThemeObject {
         RenderUtil.drawRect(x, y, panelWidth, panelHeight, new Color(0, 0, 0, 76).getRGB());
         RenderUtil.drawRect(x, y, panelWidth, titleBarHeight, color);
         fontRenderer.drawStringWithShadow("Watermark", x + 0.5f, y + 0.5f, -1);
-        double xScale = (panelWidth - 4) / (fontRenderer.getStringWidth(CLIENT_NAME_JAPANASE) + 1.0);
+        double xScale = (panelWidth - 4) / (fontRenderer.getStringWidthInt(CLIENT_NAME_JAPANASE) + 1.0);
         double yScale = (panelHeight - 4) / (fontRenderer.FONT_HEIGHT + 3.0);
 
         GlStateManager.pushMatrix();

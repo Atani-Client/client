@@ -41,7 +41,7 @@ public class RyuModuleList extends ModuleListElement {
                 float moduleHeight = roboto17.FONT_HEIGHT + 3;
                 if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                     String name = module.getName();
-                    float rectWidth = (roboto17.getStringWidth(name) + 4);
+                    float rectWidth = (roboto17.getStringWidthInt(name) + 4);
                     float moduleX = 2 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth);
                     RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(0, 0, 0, 80).getRGB());
                     moduleY += moduleHeight;
@@ -54,7 +54,7 @@ public class RyuModuleList extends ModuleListElement {
                 float moduleHeight = roboto17.FONT_HEIGHT + 3;
                 if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                     String name = module.getName();
-                    float rectWidth = (roboto17.getStringWidth(name) + 4);
+                    float rectWidth = (roboto17.getStringWidthInt(name) + 4);
                     float moduleX = 2 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth);
                     FontStorage.getInstance().findFont("Roboto", 17).drawTotalCenteredString(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, new Color(0, 0, 0).getRGB());
                     moduleY += moduleHeight;
@@ -66,7 +66,7 @@ public class RyuModuleList extends ModuleListElement {
             float moduleHeight = roboto17.FONT_HEIGHT + 3;
             if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                 String name = module.getName();
-                float rectWidth = (roboto17.getStringWidth(name) + 4);
+                float rectWidth = (roboto17.getStringWidthInt(name) + 4);
                 float moduleX = 2 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth);
                 roboto17.drawTotalCenteredString(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, -1);
                 moduleY += moduleHeight;

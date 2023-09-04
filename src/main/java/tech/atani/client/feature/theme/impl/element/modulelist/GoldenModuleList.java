@@ -44,7 +44,7 @@ public class GoldenModuleList extends ModuleListElement {
                 float moduleHeight = roboto17.FONT_HEIGHT + 4;
                 if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                     String name = module.getName();
-                    float rectWidth = roboto17.getStringWidth(name) + 5;
+                    float rectWidth = roboto17.getStringWidthInt(name) + 5;
                     float moduleX = 7 - (rectWidth + 7) + (float) (moduleHashMap.get(module).getOutput() * (rectWidth + 7));
                     RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(20, 20, 20).getRGB());
                     roboto17.drawTotalCenteredStringWithShadow(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, -1);

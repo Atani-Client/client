@@ -393,7 +393,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
                 i = -10;
             }
 
-            int j = fontrenderer.getStringWidth(str) / 2;
+            int j = fontrenderer.getStringWidthInt(str) / 2;
             GlStateManager.disableTexture2D();
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
             worldrenderer.pos((double)(-j - 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
@@ -402,10 +402,10 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
             worldrenderer.pos((double)(j + 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
             tessellator.draw();
             GlStateManager.enableTexture2D();
-            fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, 553648127);
+            fontrenderer.drawString(str, -fontrenderer.getStringWidthInt(str) / 2, i, 553648127);
             GlStateManager.enableDepth();
             GlStateManager.depthMask(true);
-            fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, -1);
+            fontrenderer.drawString(str, -fontrenderer.getStringWidthInt(str) / 2, i, -1);
             GlStateManager.enableLighting();
             GlStateManager.disableBlend();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

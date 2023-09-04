@@ -241,22 +241,22 @@ public class FontRenderer
 
     public int drawCenteredString(String string, float x, float y, int color) {
         string = replaceText(string);
-        return this.drawString(string, x - this.getStringWidth(string) / 2, y, color);
+        return this.drawString(string, x - this.getStringWidthInt(string) / 2, y, color);
     }
 
     public int drawTotalCenteredString(String string, float x, float y, int color) {
         string = replaceText(string);
-        return this.drawString(string, x - this.getStringWidth(string) / 2, y - this.FONT_HEIGHT / 2, color);
+        return this.drawString(string, x - this.getStringWidthInt(string) / 2, y - this.FONT_HEIGHT / 2, color);
     }
 
     public int drawCenteredStringWithShadow(String string, float x, float y, int color) {
         string = replaceText(string);
-        return this.drawString(string, x - this.getStringWidth(string) / 2, y, color, true);
+        return this.drawString(string, x - this.getStringWidthInt(string) / 2, y, color, true);
     }
 
     public int drawTotalCenteredStringWithShadow(String string, float x, float y, int color) {
         string = replaceText(string);
-        return this.drawString(string, x - this.getStringWidth(string) / 2, y - this.FONT_HEIGHT / 2, color, true);
+        return this.drawString(string, x - this.getStringWidthInt(string) / 2, y - this.FONT_HEIGHT / 2, color, true);
     }
 
     public int drawStringWithShadow(String string, float x, float y, int color) {
@@ -422,8 +422,8 @@ public class FontRenderer
 
     private int renderStringAligned(String string, int n2, int n3, int n4, int n5, boolean bl2) {
         if (this.bidiFlag) {
-            int n6 = this.getStringWidth(this.bidiReorder(string));
-            n2 = n2 + n4 - n6;
+            float n6 = this.getStringWidthInt(this.bidiReorder(string));
+            n2 = (int) (n2 + n4 - n6);
         }
         return this.renderString(string, n2, n3, n5, bl2);
     }
@@ -453,7 +453,12 @@ public class FontRenderer
         return (int)this.posX;
     }
 
-    public int getStringWidth(String string) {
+
+    public int getStringWidthInt(String s) {
+        return (int) this.getStringWidth(s);
+    }
+
+    public float getStringWidth(String string) {
         if (string == null) {
             return 0;
         }

@@ -37,7 +37,7 @@ public class IcarusModuleList extends ModuleListElement {
         for (Module module : moduleHashMap.keySet()) {
             if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                 float moduleHeight = fontRenderer.FONT_HEIGHT + 4;
-                float rectLength = (float) ((fontRenderer.getStringWidth(module.getName() + 3) * moduleHashMap.get(module).getOutput()) - gradientWidth);
+                float rectLength = (float) ((fontRenderer.getStringWidthInt(module.getName() + 3) * moduleHashMap.get(module).getOutput()) - gradientWidth);
                 RoundedShader.drawRound(scaledResolution.getScaledWidth() - rectLength, moduleY, rectLength + 20, moduleHeight, 2, new Color(21, 21, 21));
                 fontRenderer.drawString(module.getName(), scaledResolution.getScaledWidth() - rectLength + 1.5f, moduleY + moduleHeight / 2 - fontRenderer.FONT_HEIGHT / 2, -1);
                 // The 20 is there so the rect goes out of the screen and therefore the right part's not rounded

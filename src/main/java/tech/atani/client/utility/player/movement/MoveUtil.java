@@ -21,8 +21,8 @@ public class MoveUtil implements Methods {
 
     public static double[] getMotion(final double speed, final float strafe, final float forward, final float yaw) {
         final float friction = (float)speed;
-        final float f1 = MathHelper.sin(yaw * 3.1415927f / 180.0f);
-        final float f2 = MathHelper.cos(yaw * 3.1415927f / 180.0f);
+        final float f1 = MathHelper.sin(yaw * (float)Math.PI / 180.0f);
+        final float f2 = MathHelper.cos(yaw * (float)Math.PI / 180.0f);
         final double motionX = strafe * friction * f2 - forward * friction * f1;
         final double motionZ = forward * friction * f2 + strafe * friction * f1;
         return new double[] { motionX, motionZ };
@@ -93,7 +93,7 @@ public class MoveUtil implements Methods {
     public static void setMoveSpeed(final MovePlayerEvent event, final double speed) {
         double forward = mc.thePlayer.movementInput.moveForward;
         double strafe = mc.thePlayer.movementInput.moveStrafe;
-        float yaw = PlayerHandler.moveFix ? PlayerHandler.yaw : mc.thePlayer.rotationYaw;
+        float yaw = PlayerHandler.moveFix && PlayerHandler.currentMode == PlayerHandler.MoveFixMode.AGGRESSIVE ? PlayerHandler.yaw : mc.thePlayer.rotationYaw;
         if (forward == 0.0 && strafe == 0.0) {
             if(event == null) {
                 mc.thePlayer.motionX = 0;
@@ -116,12 +116,14 @@ public class MoveUtil implements Methods {
                     forward = -1.0;
                 }
             }
+            double X = forward * speed * -Math.sin(Math.toRadians(yaw)) + strafe * speed * Math.cos(Math.toRadians(yaw));
+            double Z = forward * speed * Math.cos(Math.toRadians(yaw)) - strafe * speed * -Math.sin(Math.toRadians(yaw));
             if(event == null) {
-                mc.thePlayer.motionX = (forward * speed * -Math.sin(Math.toRadians(yaw)) + strafe * speed * Math.cos(Math.toRadians(yaw)));
-                mc.thePlayer.motionZ = (forward * speed * Math.cos(Math.toRadians(yaw)) - strafe * speed * -Math.sin(Math.toRadians(yaw)));
+                mc.thePlayer.motionX = X;
+                mc.thePlayer.motionZ = Z;
             } else {
-                event.setX(forward * speed * -Math.sin(Math.toRadians(yaw)) + strafe * speed * Math.cos(Math.toRadians(yaw)));
-                event.setZ(forward * speed * Math.cos(Math.toRadians(yaw)) - strafe * speed * -Math.sin(Math.toRadians(yaw)));
+                event.setX(X);
+                event.setZ(Z);
             }
         }
     }

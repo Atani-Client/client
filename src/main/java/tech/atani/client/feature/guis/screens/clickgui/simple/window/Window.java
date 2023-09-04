@@ -7,8 +7,6 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.Module;
-import tech.atani.client.feature.module.impl.hud.ClickGui;
-import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.MultiStringBoxValue;
@@ -17,9 +15,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.feature.value.storage.ValueStorage;
 import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.utility.render.color.ColorUtil;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
-import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
 import java.io.IOException;
@@ -61,7 +57,7 @@ public class Window extends GuiScreen{
                 valueY += fontRenderer.FONT_HEIGHT + 8;
             } else if(value instanceof MultiStringBoxValue) {
                 MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue)value;
-                float length = fontRenderer.getStringWidth(multiStringBoxValue.getValue().size() + " Enabled");
+                float length = fontRenderer.getStringWidthInt(multiStringBoxValue.getValue().size() + " Enabled");
                 fontRenderer.drawStringWithShadow(value.getName(), valueX, valueY, -1);
                 if(this.expanded.contains(multiStringBoxValue)) {
                     RenderUtil.drawRect(valueX + width - 50 - length, valueY - 1, length + 10, 15 + multiStringBoxValue.getValues().length * 15, new Color(0, 0, 0, 50).getRGB());
@@ -78,15 +74,15 @@ public class Window extends GuiScreen{
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(multiStringBoxValue) ? multiStringBoxValue.getValues().length * 15 : 0);
             } else if(value instanceof StringBoxValue) {
                 StringBoxValue stringBoxValue = (StringBoxValue)value;
-                float length = fontRenderer.getStringWidth(stringBoxValue.getValue());
+                float length = fontRenderer.getStringWidthInt(stringBoxValue.getValue());
                 fontRenderer.drawStringWithShadow(value.getName(), valueX, valueY, -1);
                 if(this.expanded.contains(stringBoxValue)) {
                     String longest = "";
                     for(String string : stringBoxValue.getValues()) {
-                        if(fontRenderer.getStringWidth(string) > fontRenderer.getStringWidth(longest))
+                        if(fontRenderer.getStringWidthInt(string) > fontRenderer.getStringWidthInt(longest))
                             longest = string;
                     }
-                    float longestLength = fontRenderer.getStringWidth(longest);
+                    float longestLength = fontRenderer.getStringWidthInt(longest);
                     RenderUtil.drawRect(valueX + width - 50 - longestLength, valueY - 1, longestLength + 10, 15 + stringBoxValue.getValues().length * 15, new Color(0, 0, 0, 50).getRGB());
                     float stringsY = valueY - 1 + 15;
                     for(String string : stringBoxValue.getValues()) {
@@ -102,7 +98,7 @@ public class Window extends GuiScreen{
             } else if(value instanceof SliderValue) {
                 SliderValue sliderValue = (SliderValue) value;
                 fontRenderer.drawStringWithShadow(value.getName(), valueX, valueY, -1);
-                fontRenderer.drawStringWithShadow(sliderValue.getValue().floatValue() + "", valueX + width - fontRenderer.getStringWidth(sliderValue.getValue().floatValue() + "") - 40, valueY, -1);
+                fontRenderer.drawStringWithShadow(sliderValue.getValue().floatValue() + "", valueX + width - fontRenderer.getStringWidthInt(sliderValue.getValue().floatValue() + "") - 40, valueY, -1);
                 RenderUtil.drawRect(valueX + 3, valueY + fontRenderer.FONT_HEIGHT + 2, 160, 2.5f, new Color(0, 0, 0, 50).getRGB());
                 float sliderX = valueX + 3, sliderY = valueY + fontRenderer.FONT_HEIGHT + 2, sliderWidth = 160, sliderHeight = 2.5f;
                 float length = MathHelper
@@ -144,14 +140,14 @@ public class Window extends GuiScreen{
                 valueY += fontRenderer.FONT_HEIGHT + 8;
             } else if(value instanceof StringBoxValue) {
                 StringBoxValue stringBoxValue = (StringBoxValue)value;
-                float length = fontRenderer.getStringWidth(stringBoxValue.getValue());
+                float length = fontRenderer.getStringWidthInt(stringBoxValue.getValue());
                 if(this.expanded.contains(stringBoxValue)) {
                     String longest = "";
                     for(String string : stringBoxValue.getValues()) {
-                        if(fontRenderer.getStringWidth(string) > fontRenderer.getStringWidth(longest))
+                        if(fontRenderer.getStringWidthInt(string) > fontRenderer.getStringWidthInt(longest))
                             longest = string;
                     }
-                    float longestLength = fontRenderer.getStringWidth(longest);
+                    float longestLength = fontRenderer.getStringWidthInt(longest);
                     if(RenderUtil.isHovered(mouseX, mouseY, valueX + width - 50 - longestLength, valueY - 1, longestLength + 10, 15 + stringBoxValue.getValues().length * 15)) {
                         this.expanded.remove(stringBoxValue);
                     }
@@ -170,7 +166,7 @@ public class Window extends GuiScreen{
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(stringBoxValue) ? stringBoxValue.getValues().length * 15 : 0);
             } else if(value instanceof MultiStringBoxValue) {
                 MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue)value;
-                float length = fontRenderer.getStringWidth(multiStringBoxValue.getValue().size()  + " Enabled");
+                float length = fontRenderer.getStringWidthInt(multiStringBoxValue.getValue().size()  + " Enabled");
                 if(this.expanded.contains(multiStringBoxValue)) {
                     if(RenderUtil.isHovered(mouseX, mouseY, valueX + width - 50 - length, valueY - 1, length + 10, 15 + multiStringBoxValue.getValues().length * 15)) {
                         this.expanded.remove(multiStringBoxValue);

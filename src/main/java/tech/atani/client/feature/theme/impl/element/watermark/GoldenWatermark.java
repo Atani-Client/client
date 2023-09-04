@@ -22,7 +22,7 @@ public class GoldenWatermark extends ThemeObject {
         RenderableShaders.renderAndRun(() -> {
             String text = CLIENT_NAME + " v" + CLIENT_VERSION + " | " + mc.getDebugFPS() + " fps";
             FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
-            float length = roboto17.getStringWidth(text);
+            float length = roboto17.getStringWidthInt(text);
             float x = 5 + 2, y = 5, lineHeight = 2;
             GradientShader.drawGradientLR(x, y, length + 5, lineHeight, 1, new Color(GOLDEN_FIRST), new Color(GOLDEN_SECOND));
             RenderUtil.drawRect(x - 2, y, 2, roboto17.FONT_HEIGHT + 4, new Color(255, 202, 3).getRGB());

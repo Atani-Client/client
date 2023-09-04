@@ -22,7 +22,6 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tv.twitch.chat.Chat;
 
 public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
 {
@@ -94,7 +93,7 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
         }
 
         String s2 = flag2 ? EnumChatFormatting.DARK_RED + this.field_148301_e.gameVersion : this.field_148301_e.populationInfo;
-        int j = this.mc.fontRendererObj.getStringWidth(s2);
+        int j = this.mc.fontRendererObj.getStringWidthInt(s2);
         this.mc.fontRendererObj.drawString(s2, x + listWidth - j - 15 - 2, y + 1, 8421504);
         int k = 0;
         String s = null;

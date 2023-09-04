@@ -232,7 +232,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
                     GlStateManager.blendFunc(770, 771);
                     Tessellator tessellator = Tessellator.getInstance();
                     WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-                    int i = fontrenderer.getStringWidth(s) / 2;
+                    int i = fontrenderer.getStringWidthInt(s) / 2;
                     GlStateManager.disableTexture2D();
                     worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
                     worldrenderer.pos((double)(-i - 1), -1.0D, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
@@ -242,7 +242,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
                     tessellator.draw();
                     GlStateManager.enableTexture2D();
                     GlStateManager.depthMask(true);
-                    fontrenderer.drawString(s, -fontrenderer.getStringWidth(s) / 2, 0, 553648127);
+                    fontrenderer.drawString(s, -fontrenderer.getStringWidthInt(s) / 2, 0, 553648127);
                     GlStateManager.enableLighting();
                     GlStateManager.disableBlend();
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

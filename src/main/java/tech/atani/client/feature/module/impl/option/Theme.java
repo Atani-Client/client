@@ -19,19 +19,38 @@ public class Theme extends Module {
     private ModuleList moduleList;
     private TargetHUD targetHUD;
     private ClickGui clickGui;
+    private FontRenderer fontRenderer;
 
     public final StringBoxValue preset = new StringBoxValue("Preset", "Which preset to load?", this, new String[]{"None", "Atani Modern", "Atani Simple", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Tarasande"}, new ValueChangeListener[]{(stage, value, oldValue, newValue) -> {
         if(Modification.INSTANCE.isLoaded()) {
-            if(waterMark == null || moduleList == null || clickGui == null || targetHUD == null){
+            if(waterMark == null || moduleList == null || clickGui == null || targetHUD == null || fontRenderer == null){
                 waterMark = ModuleStorage.getInstance().getByClass(WaterMark.class);
                 moduleList = ModuleStorage.getInstance().getByClass(ModuleList.class);
                 clickGui = ModuleStorage.getInstance().getByClass(ClickGui.class);
                 targetHUD = ModuleStorage.getInstance().getByClass(TargetHUD.class);
+                fontRenderer = ModuleStorage.getInstance().getByClass(FontRenderer.class);
             }
             waterMark.watermarkMode.setValue((String) newValue);
             moduleList.moduleListMode.setValue((String) newValue);
             targetHUD.targethudMode.setValue((String) newValue);
             clickGui.mode.setValue((String) newValue);
+            switch ((String) newValue) {
+                case "Atani Golden":
+                case "Atani Simple":
+                case "Atani Modern":
+                case "Icarus":
+                    fontRenderer.mode.setValue("Modern");
+                    break;
+                case "Koks":
+                case "Xave":
+                case "Ryu":
+                case "Fatality":
+                case "Tarasande":
+                case "Atani CS:GO":
+                case "Augustus 2.6":
+                    fontRenderer.mode.setValue("Classic");
+                    break;
+            }
         }
     }});
 

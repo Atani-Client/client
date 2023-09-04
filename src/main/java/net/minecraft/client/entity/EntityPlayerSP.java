@@ -46,6 +46,8 @@ import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
 import tech.atani.client.feature.command.storage.CommandStorage;
+import tech.atani.client.feature.module.Module;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.player.movement.*;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.utility.player.PlayerHandler;
@@ -328,6 +330,13 @@ public class EntityPlayerSP extends AbstractClientPlayer
             final String[] args = message.split(" ");
             final String cmd = args[0].substring(1);
             CommandStorage.getInstance().getList().forEach(command -> {
+                for(Module module : ModuleStorage.getInstance().getList()) {
+                    if(module.getName().equalsIgnoreCase(cmd)) {
+                        // I love this solution
+                        sendChatMessage(".value " + message.substring(1));
+                        return;
+                    }
+                }
                 if (command.getName().equalsIgnoreCase(cmd) || Arrays.stream(command.getAliases()).anyMatch(s -> s.equalsIgnoreCase(cmd)))
                     if (!command.execute(Arrays.copyOfRange(args, 1, args.length))) {
                         addChatComponentMessage(new ChatComponentText("§cWrong Usage: §a" + "." + cmd + " §7- §dfor help"));
@@ -833,7 +842,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         final float strafe = this.movementInput.moveStrafe;
         this.movementInput.updatePlayerMoveState();
         new SilentMoveEvent().publishItself();
-        if (PlayerHandler.moveFixSilent) {
+        if (PlayerHandler.moveFix && PlayerHandler.currentMode == PlayerHandler.MoveFixMode.SILENT) {
             final float[] floats = this.mySilentStrafe(this.movementInput.moveStrafe, this.movementInput.moveForward, this.rotationYaw, true);
             final float diffForward = forward - floats[1];
             final float diffStrafe = strafe - floats[0];

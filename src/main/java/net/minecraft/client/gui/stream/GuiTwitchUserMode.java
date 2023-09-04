@@ -185,7 +185,7 @@ public class GuiTwitchUserMode extends GuiScreen
 
         for (IChatComponent ichatcomponent : this.field_152332_r)
         {
-            k = Math.max(k, this.fontRendererObj.getStringWidth(ichatcomponent.getFormattedText()));
+            k = Math.max(k, this.fontRendererObj.getStringWidthInt(ichatcomponent.getFormattedText()));
         }
 
         this.field_152334_t = this.width / 2 - k / 2;

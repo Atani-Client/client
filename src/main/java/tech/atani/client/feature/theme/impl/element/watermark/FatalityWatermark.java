@@ -20,7 +20,7 @@ public class FatalityWatermark extends ThemeObject {
     public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
         // TODO: implement usernames
         final String text = String.format("$$$ %s.vip $$$ | %s | %s", CLIENT_NAME.toLowerCase(), "idk", mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP);
-        final float width2 = (float) (FontStorage.getInstance().findFont("Roboto", 15).getStringWidth(text) + 8);
+        final float width2 = (float) (FontStorage.getInstance().findFont("Roboto", 15).getStringWidthInt(text) + 8);
         final int height2 = 20;
         final int posX2 = 2;
         final int posY1 = 2;

@@ -349,12 +349,12 @@ public class GuiStats extends GuiScreen implements IProgressMeter
             if (p_148209_1_ != null)
             {
                 String s = p_148209_1_.format(GuiStats.this.field_146546_t.readStat(p_148209_1_));
-                GuiStats.this.drawString(GuiStats.this.fontRendererObj, s, p_148209_2_ - GuiStats.this.fontRendererObj.getStringWidth(s), p_148209_3_ + 5, p_148209_4_ ? 16777215 : 9474192);
+                GuiStats.this.drawString(GuiStats.this.fontRendererObj, s, p_148209_2_ - GuiStats.this.fontRendererObj.getStringWidthInt(s), p_148209_3_ + 5, p_148209_4_ ? 16777215 : 9474192);
             }
             else
             {
                 String s1 = "-";
-                GuiStats.this.drawString(GuiStats.this.fontRendererObj, s1, p_148209_2_ - GuiStats.this.fontRendererObj.getStringWidth(s1), p_148209_3_ + 5, p_148209_4_ ? 16777215 : 9474192);
+                GuiStats.this.drawString(GuiStats.this.fontRendererObj, s1, p_148209_2_ - GuiStats.this.fontRendererObj.getStringWidthInt(s1), p_148209_3_ + 5, p_148209_4_ ? 16777215 : 9474192);
             }
         }
 
@@ -403,7 +403,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
                     {
                         int k = p_148142_1_ + 12;
                         int l = p_148142_2_ - 12;
-                        int i1 = GuiStats.this.fontRendererObj.getStringWidth(s);
+                        int i1 = GuiStats.this.fontRendererObj.getStringWidthInt(s);
                         GuiStats.this.drawGradientRect(k - 3, l - 3, k + i1 + 3, l + 8 + 3, -1073741824, -1073741824);
                         GuiStats.this.fontRendererObj.drawStringWithShadow(s, (float)k, (float)l, -1);
                     }
@@ -424,7 +424,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
                 {
                     int i = p_148213_2_ + 12;
                     int j = p_148213_3_ - 12;
-                    int k = GuiStats.this.fontRendererObj.getStringWidth(s1);
+                    int k = GuiStats.this.fontRendererObj.getStringWidthInt(s1);
                     GuiStats.this.drawGradientRect(i - 3, j - 3, i + k + 3, j + 8 + 3, -1073741824, -1073741824);
                     GuiStats.this.fontRendererObj.drawStringWithShadow(s1, (float)i, (float)j, -1);
                 }
@@ -620,7 +620,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
             StatBase statbase = (StatBase)StatList.generalStats.get(entryID);
             GuiStats.this.drawString(GuiStats.this.fontRendererObj, statbase.getStatName().getUnformattedText(), p_180791_2_ + 2, p_180791_3_ + 1, entryID % 2 == 0 ? 16777215 : 9474192);
             String s = statbase.format(GuiStats.this.field_146546_t.readStat(statbase));
-            GuiStats.this.drawString(GuiStats.this.fontRendererObj, s, p_180791_2_ + 2 + 213 - GuiStats.this.fontRendererObj.getStringWidth(s), p_180791_3_ + 1, entryID % 2 == 0 ? 16777215 : 9474192);
+            GuiStats.this.drawString(GuiStats.this.fontRendererObj, s, p_180791_2_ + 2 + 213 - GuiStats.this.fontRendererObj.getStringWidthInt(s), p_180791_3_ + 1, entryID % 2 == 0 ? 16777215 : 9474192);
         }
     }
 

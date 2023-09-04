@@ -36,7 +36,7 @@ public class GuiKeyBindingList extends GuiListExtended
                 this.listEntries[i++] = new GuiKeyBindingList.CategoryEntry(s1);
             }
 
-            int j = mcIn.fontRendererObj.getStringWidth(I18n.format(keybinding.getKeyDescription(), new Object[0]));
+            int j = mcIn.fontRendererObj.getStringWidthInt(I18n.format(keybinding.getKeyDescription(), new Object[0]));
 
             if (j > this.maxListLabelWidth)
             {
@@ -81,7 +81,7 @@ public class GuiKeyBindingList extends GuiListExtended
         public CategoryEntry(String p_i45028_2_)
         {
             this.labelText = I18n.format(p_i45028_2_, new Object[0]);
-            this.labelWidth = GuiKeyBindingList.this.mc.fontRendererObj.getStringWidth(this.labelText);
+            this.labelWidth = GuiKeyBindingList.this.mc.fontRendererObj.getStringWidthInt(this.labelText);
         }
 
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected)

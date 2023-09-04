@@ -32,7 +32,7 @@ public class Frame extends tech.atani.client.feature.guis.screens.clickgui.astol
         float moduleY = posY + height;
         ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.category);
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
-        modules.sort(Comparator.comparingInt(o -> normal.getStringWidth(((Module)o).getName())).reversed());
+        modules.sort(Comparator.comparingInt(o -> normal.getStringWidthInt(((Module)o).getName())).reversed());
         for(Module module : modules) {
             this.subComponents.add(new ModuleComponent(module, posX, moduleY, width, moduleHeight));
             moduleY += moduleHeight;

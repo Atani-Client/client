@@ -152,7 +152,7 @@ public class CustomModuleList extends ModuleListElement {
                         color = ColorUtil.blendGermanColours(counter * 150L);
                     }
                     String name = getModuleName(module, true);
-                    float rectWidth = (fontRenderer.getStringWidth(name) + this.rectWidth.getValue());
+                    float rectWidth = (fontRenderer.getStringWidthInt(name) + this.rectWidth.getValue());
                     float moduleX = this.arrayListPosition.getValue().equalsIgnoreCase("Left") ? (0 - rectWidth + (float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue()) : scaledResolution.getScaledWidth() - ((float) (moduleHashMap.get(module).getOutput() * rectWidth) + xOffset.getValue());
                     RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(brightness.getValue(), brightness.getValue(), brightness.getValue(), opacity.getValue()).getRGB());
 

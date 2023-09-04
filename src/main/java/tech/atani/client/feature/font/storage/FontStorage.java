@@ -4,8 +4,10 @@ import de.florianmichael.rclasses.storage.Storage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
-import tech.atani.client.feature.font.renderer.CustomFontRenderer;
+import tech.atani.client.feature.font.renderer.modern.ModernFontRenderer;
 import tech.atani.client.feature.font.FontEntry;
+import tech.atani.client.feature.font.renderer.old.ClassicFontRenderer;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 
 import java.awt.*;
 
@@ -80,7 +82,8 @@ public class FontStorage extends Storage<FontEntry> {
     }
 
     public FontRenderer findFont(String name, float size) {
-        return this.getList().stream().filter(fontEntry -> fontEntry.getName().equalsIgnoreCase(name) && fontEntry.getSize() == size).findFirst().orElse(null).getFontRenderer();
+        FontEntry foundFontEntry = this.getList().stream().filter(fontEntry -> fontEntry.getName().equalsIgnoreCase(name) && fontEntry.getSize() == size).findFirst().orElse(null);
+        return ModuleStorage.getInstance().getByClass(tech.atani.client.feature.module.impl.option.FontRenderer.class).mode.getValue().equalsIgnoreCase("Classic") ? foundFontEntry.getClassicFontRenderer() : foundFontEntry.getModernFontRenderer();
     }
 
     private FontEntry createFontEntry(String name, float size) {
@@ -88,7 +91,7 @@ public class FontStorage extends Storage<FontEntry> {
     }
 
     private FontEntry createFontEntry(String name, float size, boolean otf) {
-        return new FontEntry(name, size, new CustomFontRenderer(this.getFontFromFile(new ResourceLocation(String.format("atani/%s.%s", name, otf ? "otf" : "ttf")), size, Font.PLAIN), true));
+        return new FontEntry(name, size, new ClassicFontRenderer(this.getFontFromFile(new ResourceLocation(String.format("atani/%s.%s", name, otf ? "otf" : "ttf")), size, Font.PLAIN), true), new ModernFontRenderer(this.getFontFromFile(new ResourceLocation(String.format("atani/%s.%s", name, otf ? "otf" : "ttf")), size, Font.PLAIN)));
     }
 
     private Font getFontFromFile(ResourceLocation loc, float fontSize, int fontType) {

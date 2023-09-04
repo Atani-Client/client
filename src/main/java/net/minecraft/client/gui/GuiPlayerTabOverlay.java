@@ -20,7 +20,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.WorldSettings;
 import tech.atani.client.feature.font.storage.FontStorage;
-import tech.atani.client.feature.module.impl.hud.CustomScoreboard;
 import tech.atani.client.feature.module.impl.hud.CustomTabList;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
@@ -85,12 +84,12 @@ public class GuiPlayerTabOverlay extends Gui
 
             for (NetworkPlayerInfo networkplayerinfo : list)
             {
-                int k = this.mc.fontRendererObj.getStringWidth(this.getPlayerName(networkplayerinfo));
+                int k = this.mc.fontRendererObj.getStringWidthInt(this.getPlayerName(networkplayerinfo));
                 i = Math.max(i, k);
 
                 if (scoreObjectiveIn != null && scoreObjectiveIn.getRenderType() != IScoreObjectiveCriteria.EnumRenderType.HEARTS)
                 {
-                    k = this.mc.fontRendererObj.getStringWidth(" " + scoreboardIn.getValueFromObjective(networkplayerinfo.getGameProfile().getName(), scoreObjectiveIn).getScorePoints());
+                    k = this.mc.fontRendererObj.getStringWidthInt(" " + scoreboardIn.getValueFromObjective(networkplayerinfo.getGameProfile().getName(), scoreObjectiveIn).getScorePoints());
                     j = Math.max(j, k);
                 }
             }
@@ -137,7 +136,7 @@ public class GuiPlayerTabOverlay extends Gui
 
                 for (String s : list1)
                 {
-                    l1 = Math.max(l1, this.mc.fontRendererObj.getStringWidth(s));
+                    l1 = Math.max(l1, this.mc.fontRendererObj.getStringWidthInt(s));
                 }
             } else {
                 list1 = null;
@@ -149,7 +148,7 @@ public class GuiPlayerTabOverlay extends Gui
 
                 for (String s2 : list2)
                 {
-                    l1 = Math.max(l1, this.mc.fontRendererObj.getStringWidth(s2));
+                    l1 = Math.max(l1, this.mc.fontRendererObj.getStringWidthInt(s2));
                 }
             } else {
                 list2 = null;
@@ -170,10 +169,10 @@ public class GuiPlayerTabOverlay extends Gui
                 }
 
                 for (String s3 : list1) {
-                    int i2 = this.mc.fontRendererObj.getStringWidth(s3);
+                    int i2 = this.mc.fontRendererObj.getStringWidthInt(s3);
 
                     if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
-                        i2 = this.customFontRenderer.getStringWidth(s3);
+                        i2 = this.customFontRenderer.getStringWidthInt(s3);
                         this.customFontRenderer.drawStringWithShadow(s3, (float)(width / 2 - i2 / 2), (float)k1, -1);
                         k1 += this.customFontRenderer.FONT_HEIGHT;
                     } else {
@@ -297,11 +296,11 @@ public class GuiPlayerTabOverlay extends Gui
                     int j5;
 
                     if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
-                        j5 = this.customFontRenderer.getStringWidth(s4);
+                        j5 = this.customFontRenderer.getStringWidthInt(s4);
                         this.customFontRenderer.drawStringWithShadow(s4, (float)(width / 2 - j5 / 2), (float)k1, -1);
                         k1 += this.customFontRenderer.FONT_HEIGHT;
                     } else {
-                        j5 = this.mc.fontRendererObj.getStringWidth(s4);
+                        j5 = this.mc.fontRendererObj.getStringWidthInt(s4);
                         this.mc.fontRendererObj.drawStringWithShadow(s4, (float)(width / 2 - j5 / 2), (float)k1, -1);
                         k1 += this.mc.fontRendererObj.FONT_HEIGHT;
                     }
@@ -427,15 +426,15 @@ public class GuiPlayerTabOverlay extends Gui
                     int i1 = (int)((1.0F - f1) * 255.0F) << 16 | (int)(f1 * 255.0F) << 8;
                     String s = "" + (float)i / 2.0F;
 
-                    if (p_175247_5_ - this.mc.fontRendererObj.getStringWidth(s + "hp") >= p_175247_4_)
+                    if (p_175247_5_ - this.mc.fontRendererObj.getStringWidthInt(s + "hp") >= p_175247_4_)
                     {
                         s = s + "hp";
                     }
 
                     if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
-                        this.customFontRenderer.drawStringWithShadow(s, (float)((p_175247_5_ + p_175247_4_) / 2 - this.customFontRenderer.getStringWidth(s) / 2), (float)p_175247_2_, i1);
+                        this.customFontRenderer.drawStringWithShadow(s, (float)((p_175247_5_ + p_175247_4_) / 2 - this.customFontRenderer.getStringWidthInt(s) / 2), (float)p_175247_2_, i1);
                     } else {
-                        this.mc.fontRendererObj.drawStringWithShadow(s, (float)((p_175247_5_ + p_175247_4_) / 2 - this.mc.fontRendererObj.getStringWidth(s) / 2), (float)p_175247_2_, i1);
+                        this.mc.fontRendererObj.drawStringWithShadow(s, (float)((p_175247_5_ + p_175247_4_) / 2 - this.mc.fontRendererObj.getStringWidthInt(s) / 2), (float)p_175247_2_, i1);
                     }
                 }
             }
@@ -444,9 +443,9 @@ public class GuiPlayerTabOverlay extends Gui
         {
             String s1 = EnumChatFormatting.YELLOW + "" + i;
             if (ModuleStorage.getInstance().getByClass(CustomTabList.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomTabList.class).customFont.isEnabled()) {
-                this.customFontRenderer.drawStringWithShadow(s1, (float)(p_175247_5_ - this.customFontRenderer.getStringWidth(s1)), (float)p_175247_2_, 16777215);
+                this.customFontRenderer.drawStringWithShadow(s1, (float)(p_175247_5_ - this.customFontRenderer.getStringWidthInt(s1)), (float)p_175247_2_, 16777215);
             } else {
-                this.mc.fontRendererObj.drawStringWithShadow(s1, (float)(p_175247_5_ - this.mc.fontRendererObj.getStringWidth(s1)), (float)p_175247_2_, 16777215);
+                this.mc.fontRendererObj.drawStringWithShadow(s1, (float)(p_175247_5_ - this.mc.fontRendererObj.getStringWidthInt(s1)), (float)p_175247_2_, 16777215);
             }
         }
     }

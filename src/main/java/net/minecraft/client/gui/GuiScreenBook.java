@@ -434,12 +434,12 @@ public class GuiScreenBook extends GuiScreen
             }
 
             String s1 = I18n.format("book.editTitle", new Object[0]);
-            int k = this.fontRendererObj.getStringWidth(s1);
+            int k = this.fontRendererObj.getStringWidthInt(s1);
             this.fontRendererObj.drawString(s1, i + 36 + (116 - k) / 2, j + 16 + 16, 0);
-            int l = this.fontRendererObj.getStringWidth(s);
+            int l = this.fontRendererObj.getStringWidthInt(s);
             this.fontRendererObj.drawString(s, i + 36 + (116 - l) / 2, j + 48, 0);
             String s2 = I18n.format("book.byAuthor", new Object[] {this.editingPlayer.getCommandSenderName()});
-            int i1 = this.fontRendererObj.getStringWidth(s2);
+            int i1 = this.fontRendererObj.getStringWidthInt(s2);
             this.fontRendererObj.drawString(EnumChatFormatting.DARK_GRAY + s2, i + 36 + (116 - i1) / 2, j + 48 + 10, 0);
             String s3 = I18n.format("book.finalizeWarning", new Object[0]);
             this.fontRendererObj.drawSplitString(s3, i + 36, j + 80, 116, 0);
@@ -492,7 +492,7 @@ public class GuiScreenBook extends GuiScreen
                 this.field_175387_B = this.currPage;
             }
 
-            int j1 = this.fontRendererObj.getStringWidth(s4);
+            int j1 = this.fontRendererObj.getStringWidthInt(s4);
             this.fontRendererObj.drawString(s4, i - j1 + this.bookImageWidth - 44, j + 16, 0);
 
             if (this.field_175386_A == null)
@@ -613,7 +613,7 @@ public class GuiScreenBook extends GuiScreen
                         {
                             if (ichatcomponent1 instanceof ChatComponentText)
                             {
-                                i1 += this.mc.fontRendererObj.getStringWidth(((ChatComponentText)ichatcomponent1).getChatComponentText_TextValue());
+                                i1 += this.mc.fontRendererObj.getStringWidthInt(((ChatComponentText)ichatcomponent1).getChatComponentText_TextValue());
 
                                 if (i1 > i)
                                 {

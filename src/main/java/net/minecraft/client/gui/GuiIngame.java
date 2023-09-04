@@ -262,7 +262,7 @@ public class GuiIngame extends Gui
                     l = MathHelper.func_181758_c(f2 / 50.0F, 0.7F, 0.6F) & 16777215;
                 }
 
-                this.getFontRenderer().drawString(this.recordPlaying, -this.getFontRenderer().getStringWidth(this.recordPlaying) / 2, -4, l + (l1 << 24 & -16777216));
+                this.getFontRenderer().drawString(this.recordPlaying, -this.getFontRenderer().getStringWidthInt(this.recordPlaying) / 2, -4, l + (l1 << 24 & -16777216));
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
             }
@@ -298,11 +298,11 @@ public class GuiIngame extends Gui
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(4.0F, 4.0F, 4.0F);
                 int j2 = i2 << 24 & -16777216;
-                this.getFontRenderer().drawString(this.field_175201_x, (float)(-this.getFontRenderer().getStringWidth(this.field_175201_x) / 2), -10.0F, 16777215 | j2, true);
+                this.getFontRenderer().drawString(this.field_175201_x, (float)(-this.getFontRenderer().getStringWidthInt(this.field_175201_x) / 2), -10.0F, 16777215 | j2, true);
                 GlStateManager.popMatrix();
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(2.0F, 2.0F, 2.0F);
-                this.getFontRenderer().drawString(this.field_175200_y, (float)(-this.getFontRenderer().getStringWidth(this.field_175200_y) / 2), 5.0F, 16777215 | j2, true);
+                this.getFontRenderer().drawString(this.field_175200_y, (float)(-this.getFontRenderer().getStringWidthInt(this.field_175200_y) / 2), 5.0F, 16777215 | j2, true);
                 GlStateManager.popMatrix();
                 GlStateManager.disableBlend();
                 GlStateManager.popMatrix();
@@ -441,7 +441,7 @@ public class GuiIngame extends Gui
             }
 
             String s = "" + this.mc.thePlayer.experienceLevel;
-            int l1 = (p_175176_1_.getScaledWidth() - this.getFontRenderer().getStringWidth(s)) / 2;
+            int l1 = (p_175176_1_.getScaledWidth() - this.getFontRenderer().getStringWidthInt(s)) / 2;
             int i1 = p_175176_1_.getScaledHeight() - 31 - 4;
             int j1 = 0;
             this.getFontRenderer().drawString(s, l1 + 1, i1, 0);
@@ -466,7 +466,7 @@ public class GuiIngame extends Gui
                 s = EnumChatFormatting.ITALIC + s;
             }
 
-            int i = (p_181551_1_.getScaledWidth() - this.getFontRenderer().getStringWidth(s)) / 2;
+            int i = (p_181551_1_.getScaledWidth() - this.getFontRenderer().getStringWidthInt(s)) / 2;
             int j = p_181551_1_.getScaledHeight() - 59;
 
             if (!this.mc.playerController.shouldDrawHUD())
@@ -509,7 +509,7 @@ public class GuiIngame extends Gui
             s = I18n.format("demo.remainingTime", new Object[] {StringUtils.ticksToElapsedTime((int)(120500L - this.mc.theWorld.getTotalWorldTime()))});
         }
 
-        int i = this.getFontRenderer().getStringWidth(s);
+        int i = this.getFontRenderer().getStringWidthInt(s);
         this.getFontRenderer().drawStringWithShadow(s, (float)(p_175185_1_.getScaledWidth() - i - 10), 5.0F, 16777215);
         this.mc.mcProfiler.endSection();
     }
@@ -574,13 +574,13 @@ public class GuiIngame extends Gui
                 collection = list;
             }
 
-            int i = this.getFontRenderer().getStringWidth(p_180475_1_.getDisplayName());
+            int i = this.getFontRenderer().getStringWidthInt(p_180475_1_.getDisplayName());
 
             for (Score score : collection)
             {
                 ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
                 String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
-                i = Math.max(i, this.getFontRenderer().getStringWidth(s));
+                i = Math.max(i, this.getFontRenderer().getStringWidthInt(s));
             }
 
             int i1 = collection.size() * this.getFontRenderer().FONT_HEIGHT;
@@ -610,7 +610,7 @@ public class GuiIngame extends Gui
                 }
 
                 this.getFontRenderer().drawString(s1, l1, k, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
-                this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
+                this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidthInt(s2), k, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
 
                 if (j == collection.size())
                 {
@@ -627,7 +627,7 @@ public class GuiIngame extends Gui
                         drawRect(l1 - 2, k - 1, l, k, 1342177280);
                     }
 
-                    this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidth(s3) / 2, k - this.getFontRenderer().FONT_HEIGHT, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
+                    this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidthInt(s3) / 2, k - this.getFontRenderer().FONT_HEIGHT, new Color(ColorUtil.setAlpha(new Color(553648127), 1f).getRGB()).getRGB());
                 }
             }
         });
@@ -946,7 +946,7 @@ public class GuiIngame extends Gui
             }
 
             String s = BossStatus.bossName;
-            this.getFontRenderer().drawStringWithShadow(s, (float)(i / 2 - this.getFontRenderer().getStringWidth(s) / 2), (float)(i1 - 10), 16777215);
+            this.getFontRenderer().drawStringWithShadow(s, (float)(i / 2 - this.getFontRenderer().getStringWidthInt(s) / 2), (float)(i1 - 10), 16777215);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             this.mc.getTextureManager().bindTexture(icons);
         }

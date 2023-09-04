@@ -37,7 +37,7 @@ public class SliderComponent extends ValueComponent {
             sliderValue.setValue(newValue);
         }
         fontRenderer.drawCenteredStringWithShadow(sliderValue.getName() + ": " + sliderValue.getValue().floatValue(), getPosX() + getWidth() / 2, getPosY() + getFinalHeight() / 2 - fontRenderer.FONT_HEIGHT / 2, new Color(139, 141, 145, 255).getRGB());
-        return fontRenderer.getStringWidth(sliderValue.getName()  + ": " + sliderValue.getValue().floatValue()) + 6;
+        return fontRenderer.getStringWidthInt(sliderValue.getName()  + ": " + sliderValue.getValue().floatValue()) + 6;
     }
 
     @Override

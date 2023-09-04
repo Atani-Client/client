@@ -1,15 +1,12 @@
-package tech.atani.client.feature.font.renderer;
+package tech.atani.client.feature.font.renderer.old;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 import net.minecraft.src.Config;
 import net.optifine.CustomColors;
@@ -23,11 +20,9 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.utility.logging.LogUtil;
-import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.color.ColorUtil;
 
-public final class CustomFontRenderer
+public final class ClassicFontRenderer
 extends FontRenderer
 implements Methods {
     public static final int IMAGE_SIZE = 1524;
@@ -41,40 +36,14 @@ implements Methods {
     private final Font font;
     private DynamicTexture basicTexture;
 
-    public CustomFontRenderer(Font font, boolean bl2) {
-        super(CustomFontRenderer.mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.getTextureManager(), mc.isUnicode());
+    public ClassicFontRenderer(Font font, boolean bl2) {
+        super(ClassicFontRenderer.mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.getTextureManager(), mc.isUnicode());
         this.basicTexture = this.generateFontTexture(font, this.basicGlyphs, bl2);
         this.boldTexture = this.generateFontTexture(font.deriveFont(1), this.boldGlyphs, bl2);
         this.italicTexture = this.generateFontTexture(font.deriveFont(2), this.italicGlyphs, bl2);
         this.boldAndItalicTexture = this.generateFontTexture(font.deriveFont(3), this.boldAndItalicGlyphs, bl2);
         this.font = font;
         this.FONT_HEIGHT = this.getHeight();
-    }
-
-    public CustomFontRenderer(String string, float f2, int n2, boolean bl2) {
-        super(CustomFontRenderer.mc.gameSettings, new ResourceLocation("textures/font/ascii.png"), mc.getTextureManager(), mc.isUnicode());
-        Font font = this.getTrueTypeFont(string, f2, n2);
-        this.basicTexture = this.generateFontTexture(font, this.basicGlyphs, bl2);
-        this.boldTexture = this.generateFontTexture(font.deriveFont(1), this.boldGlyphs, bl2);
-        this.italicTexture = this.generateFontTexture(font.deriveFont(2), this.italicGlyphs, bl2);
-        this.boldAndItalicTexture = this.generateFontTexture(font.deriveFont(3), this.boldAndItalicGlyphs, bl2);
-        this.font = font;
-        this.FONT_HEIGHT = this.getHeight();
-    }
-
-    private Font getTrueTypeFont(String string, float f2, int n2) {
-        InputStream inputStream = RenderUtil.class.getResourceAsStream(String.format("fonts/%s.ttf", string));
-        Font font = null;
-        try {
-            font = Font.createFont(0, inputStream).deriveFont(n2, f2);
-        }
-        catch (FontFormatException fontFormatException) {
-            LogUtil.getInstance().sendMessage("Font format is broken!", "console", "Error");
-        }
-        catch (IOException iOException) {
-            LogUtil.getInstance().sendMessage("Couldn't find font!", "console", "Error");
-        }
-        return font;
     }
 
     private DynamicTexture generateFontTexture(Font font, Glyph[] arrglyph, boolean bl2) {
@@ -276,7 +245,7 @@ implements Methods {
     }
 
     @Override
-    public final int getStringWidth(String string) {
+    public float getStringWidth(String string) {
         if (string == null) {
             return 0;
         }

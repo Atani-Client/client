@@ -18,7 +18,7 @@ public class CheckBoxComponent extends ValueComponent {
     public void drawScreen(int mouseX, int mouseY) {
         FontRenderer normal = FontStorage.getInstance().findFont("SFUI Medium", 16);
         normal.drawString(value.getName(), getPosX() + 5 + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
-        normal.drawString("X", getPosX() + this.getBaseWidth() - 5 - normal.getStringWidth("X") + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, !((boolean)value.getValue()) ? new Color(200, 200, 200).getRGB() : -1);
+        normal.drawString("X", getPosX() + this.getBaseWidth() - 5 - normal.getStringWidthInt("X") + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, !((boolean)value.getValue()) ? new Color(200, 200, 200).getRGB() : -1);
     }
 
     @Override

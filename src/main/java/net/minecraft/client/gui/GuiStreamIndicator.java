@@ -29,7 +29,7 @@ public class GuiStreamIndicator
             if (i > 0)
             {
                 String s = "" + i;
-                int j = this.mc.fontRendererObj.getStringWidth(s);
+                int j = this.mc.fontRendererObj.getStringWidthInt(s);
                 int k = 20;
                 int l = p_152437_1_ - j - 1;
                 int i1 = p_152437_2_ + 20 - 1;

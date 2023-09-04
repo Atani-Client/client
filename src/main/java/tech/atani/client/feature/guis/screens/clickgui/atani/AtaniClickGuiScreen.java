@@ -133,7 +133,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Roboto", 21);
         fontRenderer.drawStringWithShadow(CLIENT_NAME + " Client", x + 10, y + 2 + 30 / 2 - fontRenderer.FONT_HEIGHT, -1);
         fontRenderer.drawStringWithShadow("v" + CLIENT_VERSION, x + 10, y + 2 + 30 / 2 + 2, -1);
-        fontRenderer.drawStringWithShadow(mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP, x + width - 10 - fontRenderer.getStringWidth(mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP), y + 2 + 30 / 2 - fontRenderer.FONT_HEIGHT, -1);
+        fontRenderer.drawStringWithShadow(mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP, x + width - 10 - fontRenderer.getStringWidthInt(mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP), y + 2 + 30 / 2 - fontRenderer.FONT_HEIGHT, -1);
         long milliseconds = SessionProcessor.getInstance().getTotalPlayTime();
         long days = TimeUnit.MILLISECONDS.toDays(milliseconds);
         long hours = TimeUnit.MILLISECONDS.toHours(milliseconds) - TimeUnit.DAYS.toHours(days);
@@ -147,7 +147,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
         } else {
             time = String.format("%02d:%02d", minutes, seconds);
         }
-        fontRenderer.drawStringWithShadow(time, x + width - 10 - fontRenderer.getStringWidth(time), y + 2 + 30 / 2 + 2, -1);
+        fontRenderer.drawStringWithShadow(time, x + width - 10 - fontRenderer.getStringWidthInt(time), y + 2 + 30 / 2 + 2, -1);
         GradientShader.drawGradientTB(x + 2, y + 2 + 30 + 2, width - 4, 20, 1, new Color(50, 50, 50), new Color(10, 10, 10));
         float spaceWidth = width - 4;
         float categoryWidth = spaceWidth / Category.values().length;
@@ -218,9 +218,9 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
                 // Rendering
                 float valY2 = modY + 10;
                 fontRendererSmaller.drawString("Enabled: ", modX + 10, valY2, textColor.getRGB());
-                GradientShader.drawGradientTB(modX + 10 + fontRendererSmaller.getStringWidth("Enabled: "), valY2 - 1.5f, 9, 9, 1, new Color(0, 48, 95).brighter().brighter(), new Color(0, 48, 95).brighter());
+                GradientShader.drawGradientTB(modX + 10 + fontRendererSmaller.getStringWidthInt("Enabled: "), valY2 - 1.5f, 9, 9, 1, new Color(0, 48, 95).brighter().brighter(), new Color(0, 48, 95).brighter());
                 if(!module.isEnabled()) {
-                    RenderUtil.drawRect(modX + 10 + fontRendererSmaller.getStringWidth("Enabled: ") + 1, valY2 - 1.5f + 1, 9 - 2, 9 - 2, -1);
+                    RenderUtil.drawRect(modX + 10 + fontRendererSmaller.getStringWidthInt("Enabled: ") + 1, valY2 - 1.5f + 1, 9 - 2, 9 - 2, -1);
                 }
                 valY2 += fontRendererSmall.FONT_HEIGHT + 2 ;
                 for(Value value : ValueStorage.getInstance().getValues(module)) {
@@ -228,9 +228,9 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
                         continue;
                     if(value instanceof CheckBoxValue) {
                         fontRendererSmaller.drawString(value.getName() + ": ", modX + 10, valY2, textColor.getRGB());
-                        GradientShader.drawGradientTB(modX + 10 + fontRendererSmaller.getStringWidth(value.getName() + ": "), valY2 - 1.5f, 9, 9, 1, new Color(0, 48, 95).brighter().brighter(), new Color(0, 48, 95).brighter());
+                        GradientShader.drawGradientTB(modX + 10 + fontRendererSmaller.getStringWidthInt(value.getName() + ": "), valY2 - 1.5f, 9, 9, 1, new Color(0, 48, 95).brighter().brighter(), new Color(0, 48, 95).brighter());
                         if(!((CheckBoxValue) value).getValue()) {
-                            RenderUtil.drawRect(modX + 10 + fontRendererSmaller.getStringWidth(value.getName() + ": ") + 1, valY2 - 1.5f + 1, 9 - 2, 9 - 2, -1);
+                            RenderUtil.drawRect(modX + 10 + fontRendererSmaller.getStringWidthInt(value.getName() + ": ") + 1, valY2 - 1.5f + 1, 9 - 2, 9 - 2, -1);
                         }
                         valY2 += fontRendererSmall.FONT_HEIGHT + 2;
                     } else if(value instanceof SliderValue) {

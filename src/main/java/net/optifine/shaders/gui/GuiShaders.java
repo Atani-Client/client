@@ -387,7 +387,7 @@ public class GuiShaders extends GuiScreen
 
         this.drawCenteredString(this.fontRendererObj, this.screenTitle + " ", this.width / 2, 15, 16777215);
         String s = "OpenGL: " + Shaders.glVersionString + ", " + Shaders.glVendorString + ", " + Shaders.glRendererString;
-        int i = this.fontRendererObj.getStringWidth(s);
+        int i = this.fontRendererObj.getStringWidthInt(s);
 
         if (i < this.width - 5)
         {

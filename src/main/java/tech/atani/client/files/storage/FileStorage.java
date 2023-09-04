@@ -4,15 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.florianmichael.rclasses.storage.Storage;
 import tech.atani.client.files.impl.SessionFile;
-import tech.atani.client.files.impl.ThemesFile;
+import tech.atani.client.files.impl.HUDFile;
 import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.files.IFile;
+import tech.atani.client.files.LocalFile;
 import tech.atani.client.files.impl.AccountsFile;
 import tech.atani.client.files.impl.ModulesFile;
 
 import java.io.File;
 
-public class FileStorage extends Storage<IFile> implements Methods {
+public class FileStorage extends Storage<LocalFile> implements Methods {
 
     private final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
 
@@ -26,24 +26,24 @@ public class FileStorage extends Storage<IFile> implements Methods {
         this.add(new ModulesFile());
         this.add(new AccountsFile());
         this.add(new SessionFile());
-        this.add(new ThemesFile());
+        this.add(new HUDFile());
         this.load();
     }
 
-    public void add(IFile item) {
+    public void add(LocalFile item) {
         item.setFile(root);
         super.add(item);
     }
 
-    public void saveFile(Class<? extends IFile> iFile) {
-        IFile file = getByClass(iFile);
+    public void saveFile(Class<? extends LocalFile> iFile) {
+        LocalFile file = getByClass(iFile);
         if (file != null) {
             file.save(GSON);
         }
     }
 
-    public void loadFile(Class<? extends IFile> iFile) {
-        IFile file = getByClass(iFile);
+    public void loadFile(Class<? extends LocalFile> iFile) {
+        LocalFile file = getByClass(iFile);
         if (file != null) {
             file.load(GSON);
         }

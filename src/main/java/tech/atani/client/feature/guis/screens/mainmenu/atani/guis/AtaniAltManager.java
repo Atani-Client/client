@@ -166,8 +166,8 @@ public class AtaniAltManager extends GuiScreen
                     pass = alt.getPassword().replaceAll(".", "*");
                 }
                 if(alt == selectedAlt) {
-                    float halfWidthName = FontStorage.getInstance().findFont("Roboto", 19).getStringWidth(name);
-                    float halfWidthPass = FontStorage.getInstance().findFont("Roboto", 19).getStringWidth(pass);
+                    float halfWidthName = FontStorage.getInstance().findFont("Roboto", 19).getStringWidthInt(name);
+                    float halfWidthPass = FontStorage.getInstance().findFont("Roboto", 19).getStringWidthInt(pass);
                     float halfWidth = (Math.max(halfWidthName, halfWidthPass) + 10) / 2;
                     RoundedShader.drawRound(this.width / 2 - halfWidth, (float)(y - this.offset - 4),  halfWidth * 2, 25, 10, new Color(0, 0, 0, 130));
                 }

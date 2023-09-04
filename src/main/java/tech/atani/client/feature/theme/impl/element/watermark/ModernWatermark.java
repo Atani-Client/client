@@ -33,7 +33,7 @@ public class ModernWatermark extends ThemeObject {
         Color firstColor = new Color(red.getValue(), green.getValue(), blue.getValue());
         int color = ColorUtil.fadeBetween(firstColor.getRGB(), firstColor.brighter().getRGB(), 1 * 150L);
         RenderableShaders.renderAndRun(() -> {
-            RoundedShader.drawRoundOutline(10 - outlineWidth, 10 - outlineWidth, fontRenderer.getStringWidth(text) + 8 + outlineWidth * 2,fontRenderer.FONT_HEIGHT + 4 + outlineWidth * 2, 5, outlineWidth, new Color(20, 20, 20), new Color(color));
+            RoundedShader.drawRoundOutline(10 - outlineWidth, 10 - outlineWidth, fontRenderer.getStringWidthInt(text) + 8 + outlineWidth * 2,fontRenderer.FONT_HEIGHT + 4 + outlineWidth * 2, 5, outlineWidth, new Color(20, 20, 20), new Color(color));
         });
         fontRenderer.drawString(text, 14f, 11.5f, -1);
         leftY.set(20 + fontRenderer.FONT_HEIGHT + 4 + outlineWidth * 2);

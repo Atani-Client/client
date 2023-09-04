@@ -3,7 +3,6 @@ package tech.atani.client.feature.guis.screens.clickgui.icarus.window.component.
 import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.value.impl.MultiStringBoxValue;
-import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.shaders.GradientShader;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
@@ -33,7 +32,7 @@ public class MultiComponent extends ValueComponent {
                 posY += this.getHeight();
             }
         }
-        return fontRenderer.getStringWidth(multiStringBoxValue.getName()) + 6;
+        return fontRenderer.getStringWidthInt(multiStringBoxValue.getName()) + 6;
     }
 
     @Override

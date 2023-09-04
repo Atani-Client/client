@@ -3,21 +3,18 @@ package tech.atani.client.files.impl;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import tech.atani.client.feature.account.Account;
-import tech.atani.client.feature.account.storage.AccountStorage;
 import tech.atani.client.feature.theme.ThemeObject;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ScreenType;
-import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
 import tech.atani.client.feature.theme.storage.ThemeStorage;
-import tech.atani.client.files.IFile;
+import tech.atani.client.files.LocalFile;
+import tech.atani.client.files.data.FileData;
 
 import java.io.File;
 import java.util.Map;
 
-public class ThemesFile implements IFile {
-
-    private File file;
+@FileData(fileName = "hud")
+public class HUDFile extends LocalFile {
 
     @Override
     public void save(Gson gson) {
@@ -48,7 +45,7 @@ public class ThemesFile implements IFile {
         themesObject.add("Elements", elementsObject);
         themesObject.add("Screens", screensObject);
 
-        object.add("Themes", themesObject);
+        object.add("HUD", themesObject);
 
         writeFile(gson.toJson(object), file);
     }
@@ -61,7 +58,7 @@ public class ThemesFile implements IFile {
         }
 
         JsonObject jsonObject = gson.fromJson(readFile(file), JsonObject.class);
-        JsonObject themesObject = jsonObject.getAsJsonObject("Themes");
+        JsonObject themesObject = jsonObject.getAsJsonObject("HUD");
 
         if (themesObject != null) {
             JsonObject elementsObject = themesObject.getAsJsonObject("Elements");
@@ -100,8 +97,4 @@ public class ThemesFile implements IFile {
         }
     }
 
-    @Override
-    public void setFile(File root) {
-        file = new File(root, "/themes.json");
-    }
 }

@@ -1,14 +1,12 @@
 package tech.atani.client.feature.guis.screens.clickgui.ryu.frame;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.clickgui.ryu.component.Component;
@@ -35,7 +33,7 @@ public class Frame extends Component implements ColorPalette {
         float moduleY = posY + height;
         ArrayList<Module> modules = ModuleStorage.getInstance().getModules(this.category);
         FontRenderer normal = FontStorage.getInstance().findFont("Roboto", 19);
-        modules.sort(Comparator.comparingInt(o -> normal.getStringWidth(((Module)o).getName())).reversed());
+        modules.sort(Comparator.comparingInt(o -> normal.getStringWidthInt(((Module)o).getName())).reversed());
         for(Module module : modules) {
             this.subComponents.add(new ModuleComponent(module, posX, moduleY, width, moduleHeight));
             moduleY += moduleHeight;
@@ -87,7 +85,7 @@ public class Frame extends Component implements ColorPalette {
         medium24.drawString(category.getName(), this.getPosX() + 7 + getAddX(), this.getPosY() + 6 + getAddY(), -1);
         ArrayList<Module> modules2 = ModuleStorage.getInstance().getModules(category);
         modules2.removeIf(module -> module.getCategory() == Category.SERVER && !module.correctServer());
-        FontStorage.getInstance().findFont("Roboto Medium", 17).drawString(ChatFormatting.GRAY.toString() + modules2.size() + "", this.getPosX() + 7 + medium24.getStringWidth(category.getName()) + 2 + getAddX(), this.getPosY() + 6 + getAddY(), -1);
+        FontStorage.getInstance().findFont("Roboto Medium", 17).drawString(ChatFormatting.GRAY.toString() + modules2.size() + "", this.getPosX() + 7 + medium24.getStringWidthInt(category.getName()) + 2 + getAddX(), this.getPosY() + 6 + getAddY(), -1);
         for(Component component : this.subComponents) {
             if(component instanceof ModuleComponent) {
                 if(((ModuleComponent)component).getModule().shouldHide())

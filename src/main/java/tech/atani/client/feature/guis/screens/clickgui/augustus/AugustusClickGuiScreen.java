@@ -121,9 +121,9 @@ public class AugustusClickGuiScreen extends GuiScreen {
         for(Category category : Category.values()) {
             normal.drawString(category.getName().toUpperCase(), categoryX, posY + 30, new Color(200, 200, 200).getRGB());
             if(category == selectedCategory) {
-                RenderUtil.drawRect(categoryX, posY + 30 + normal.FONT_HEIGHT, normal.getStringWidth(category.getName().toUpperCase()) - 0.5f, 1, new Color(200, 200, 200).getRGB());
+                RenderUtil.drawRect(categoryX, posY + 30 + normal.FONT_HEIGHT, normal.getStringWidthInt(category.getName().toUpperCase()) - 0.5f, 1, new Color(200, 200, 200).getRGB());
             }
-            categoryX += normal.getStringWidth(category.getName()) + 10;
+            categoryX += normal.getStringWidthInt(category.getName()) + 10;
         }
         int dWheel = Mouse.getDWheel();
         RenderUtil.startScissorBox();
@@ -157,13 +157,13 @@ public class AugustusClickGuiScreen extends GuiScreen {
                 if(value instanceof CheckBoxValue) {
                     CheckBoxValue checkBoxValue = (CheckBoxValue) value;
                     normal.drawString(value.getName() + ": ", posX + 120, moduleY, new Color(200, 200, 200).getRGB());
-                    normal.drawString(checkBoxValue.getValue() ? "true" : "false", posX + 120 + normal.getStringWidth(value.getName() + ": "), moduleY, checkBoxValue.getValue() ? new Color(0, 180, 0).getRGB() : new Color(180, 0, 0).getRGB());
+                    normal.drawString(checkBoxValue.getValue() ? "true" : "false", posX + 120 + normal.getStringWidthInt(value.getName() + ": "), moduleY, checkBoxValue.getValue() ? new Color(0, 180, 0).getRGB() : new Color(180, 0, 0).getRGB());
                     moduleY += normal.FONT_HEIGHT + 2;
                 } else if(value instanceof SliderValue) {
                     SliderValue sliderValue = (SliderValue)value;
                     normal.drawString(value.getName() + ": ", posX + 120, moduleY, new Color(200, 200, 200).getRGB());
-                    RenderUtil.drawBorder(posX + 120 + normal.getStringWidth(value.getName() + ": "), moduleY - 2, (posX + 120 + normal.getStringWidth(value.getName() + ": ")) + 120, (moduleY - 2) + 10, 1, new Color(34, 34, 34).getRGB(), true);
-                    float sliderX = posX + 120 + normal.getStringWidth(value.getName() + ": ") + 1, sliderY = moduleY - 2 + 1, sliderWidth = 120 - 2, sliderHeight = 10 - 2;
+                    RenderUtil.drawBorder(posX + 120 + normal.getStringWidthInt(value.getName() + ": "), moduleY - 2, (posX + 120 + normal.getStringWidthInt(value.getName() + ": ")) + 120, (moduleY - 2) + 10, 1, new Color(34, 34, 34).getRGB(), true);
+                    float sliderX = posX + 120 + normal.getStringWidthInt(value.getName() + ": ") + 1, sliderY = moduleY - 2 + 1, sliderWidth = 120 - 2, sliderHeight = 10 - 2;
                     float length = MathHelper
                             .floor_double(((sliderValue.getValue()).floatValue() - sliderValue.getMinimum().floatValue())
                                     / (sliderValue.getMaximum().floatValue() - sliderValue.getMinimum().floatValue()) * sliderWidth);
@@ -179,34 +179,34 @@ public class AugustusClickGuiScreen extends GuiScreen {
                 } else if(value instanceof StringBoxValue) {
                     StringBoxValue stringBoxValue = ((StringBoxValue)value);
                     normal.drawString(value.getName() + ": ", posX + 120, moduleY, new Color(200, 200, 200).getRGB());
-                    float modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                    float modeX = posX + 120 + normal.getStringWidthInt(value.getName() + ": ");
                     for(String string : stringBoxValue.getValues()) {
                         if(modeX >= (posX + width - 50)) {
-                            modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                            modeX = posX + 120 + normal.getStringWidthInt(value.getName() + ": ");
                             moduleY += normal.FONT_HEIGHT + 2;
                         }
                         normal.drawString(string, modeX, moduleY, value.getValue().equals(string) ? new Color(clickGui.red.getValue(), clickGui.green.getValue(), clickGui.blue.getValue()).getRGB() : new Color(200, 200, 200).getRGB());
-                        modeX += normal.getStringWidth(string);
+                        modeX += normal.getStringWidthInt(string);
                         if(!stringBoxValue.getValues()[stringBoxValue.getValues().length - 1].equals(string)) {
                             normal.drawString(", ", modeX, moduleY, new Color(200, 200, 200).getRGB());
-                            modeX += normal.getStringWidth(", ");
+                            modeX += normal.getStringWidthInt(", ");
                         }
                     }
                     moduleY += normal.FONT_HEIGHT + 2;
                 } else if (value instanceof MultiStringBoxValue) {
                     MultiStringBoxValue multiStringBoxValue = ((MultiStringBoxValue) value);
                     normal.drawString(value.getName() + ": ", posX + 120, moduleY, new Color(200, 200, 200).getRGB());
-                    float modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                    float modeX = posX + 120 + normal.getStringWidthInt(value.getName() + ": ");
                     for (String string : multiStringBoxValue.getValues()) {
                         if (modeX >= (posX + width - 50)) {
-                            modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                            modeX = posX + 120 + normal.getStringWidthInt(value.getName() + ": ");
                             moduleY += normal.FONT_HEIGHT + 2;
                         }
                         normal.drawString(string, modeX, moduleY, multiStringBoxValue.get(string) ? new Color(clickGui.red.getValue(), clickGui.green.getValue(), clickGui.blue.getValue()).getRGB() : new Color(200, 200, 200).getRGB());
-                        modeX += normal.getStringWidth(string);
+                        modeX += normal.getStringWidthInt(string);
                         if (!multiStringBoxValue.getValues()[multiStringBoxValue.getValues().length - 1].equals(string)) {
                             normal.drawString(", ", modeX, moduleY, new Color(200, 200, 200).getRGB());
-                            modeX += normal.getStringWidth(", ");
+                            modeX += normal.getStringWidthInt(", ");
                         }
                     }
                     moduleY += normal.FONT_HEIGHT + 2;
@@ -256,20 +256,20 @@ public class AugustusClickGuiScreen extends GuiScreen {
             expandingRight = true;
         }
         for(Category category : Category.values()) {
-            if (RenderUtil.isHovered(mouseX, mouseY, categoryX, posY + 30, normal.getStringWidth(category.getName().toUpperCase()) - 0.5f, 1 + normal.FONT_HEIGHT)) {
+            if (RenderUtil.isHovered(mouseX, mouseY, categoryX, posY + 30, normal.getStringWidthInt(category.getName().toUpperCase()) - 0.5f, 1 + normal.FONT_HEIGHT)) {
                 selectedCategory = category;
                 selectedModule = null;
                 valueScroll = 0f;
                 moduleScroll = 0f;
             }
-            categoryX += normal.getStringWidth(category.getName()) + 10;
+            categoryX += normal.getStringWidthInt(category.getName()) + 10;
         }
         if(selectedCategory != null) {
             float moduleY = posY + 25 + moduleScroll;
             for(Module module : ModuleStorage.getInstance().getModules(selectedCategory)) {
                 if(module.shouldHide())
                     continue;
-                if (RenderUtil.isHovered(mouseX, mouseY, posX + 10, moduleY - 4, normal.getStringWidth(module.getName()) - 0.5f, normal.FONT_HEIGHT + 4)) {
+                if (RenderUtil.isHovered(mouseX, mouseY, posX + 10, moduleY - 4, normal.getStringWidthInt(module.getName()) - 0.5f, normal.FONT_HEIGHT + 4)) {
                     switch (mouseButton) {
                         case 0:
                             module.toggle();
@@ -293,43 +293,43 @@ public class AugustusClickGuiScreen extends GuiScreen {
                     continue;
                 if(value instanceof CheckBoxValue) {
                     CheckBoxValue checkBoxValue = (CheckBoxValue) value;
-                    if(RenderUtil.isHovered(mouseX, mouseY, posX + 120, moduleY - 2, normal.getStringWidth(checkBoxValue.getName() + ": " + (checkBoxValue.getValue() ? "true" : "false")), 10))
+                    if(RenderUtil.isHovered(mouseX, mouseY, posX + 120, moduleY - 2, normal.getStringWidthInt(checkBoxValue.getName() + ": " + (checkBoxValue.getValue() ? "true" : "false")), 10))
                         checkBoxValue.setValue(!checkBoxValue.getValue());
                     moduleY += normal.FONT_HEIGHT + 2;
                 } else if(value instanceof SliderValue) {
                     moduleY += normal.FONT_HEIGHT + 2;
                 } else if(value instanceof StringBoxValue) {
                     StringBoxValue stringBoxValue = ((StringBoxValue)value);
-                    float modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                    float modeX = posX + 120 + normal.getStringWidthInt(value.getName() + ": ");
                     for(String string : stringBoxValue.getValues()) {
                         if(modeX >= (posX + width - 50)) {
-                            modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                            modeX = posX + 120 + normal.getStringWidthInt(value.getName() + ": ");
                             moduleY += normal.FONT_HEIGHT + 2;
                         }
-                        if(RenderUtil.isHovered(mouseX, mouseY, modeX, moduleY - 2, normal.getStringWidth(string), 10))
+                        if(RenderUtil.isHovered(mouseX, mouseY, modeX, moduleY - 2, normal.getStringWidthInt(string), 10))
                             stringBoxValue.setValue(string);
-                        modeX += normal.getStringWidth(string);
+                        modeX += normal.getStringWidthInt(string);
                         if(!stringBoxValue.getValues()[stringBoxValue.getValues().length - 1].equals(string)) {
                             normal.drawString(", ", modeX, moduleY, new Color(200, 200, 200).getRGB());
-                            modeX += normal.getStringWidth(", ");
+                            modeX += normal.getStringWidthInt(", ");
                         }
                     }
                     moduleY += normal.FONT_HEIGHT + 2;
                 } else if(value instanceof MultiStringBoxValue) {
                     MultiStringBoxValue multiStringBoxValue = ((MultiStringBoxValue)value);
-                    float modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                    float modeX = posX + 120 + normal.getStringWidthInt(value.getName() + ": ");
                     String toToggle = null;
                     for(String string : multiStringBoxValue.getValues()) {
                         if(modeX >= (posX + width - 50)) {
-                            modeX = posX + 120 + normal.getStringWidth(value.getName() + ": ");
+                            modeX = posX + 120 + normal.getStringWidthInt(value.getName() + ": ");
                             moduleY += normal.FONT_HEIGHT + 2;
                         }
-                        if(RenderUtil.isHovered(mouseX, mouseY, modeX, moduleY - 2, normal.getStringWidth(string), 10))
+                        if(RenderUtil.isHovered(mouseX, mouseY, modeX, moduleY - 2, normal.getStringWidthInt(string), 10))
                             toToggle = string;
-                        modeX += normal.getStringWidth(string);
+                        modeX += normal.getStringWidthInt(string);
                         if(!multiStringBoxValue.getValues()[multiStringBoxValue.getValues().length - 1].equals(string)) {
                             normal.drawString(", ", modeX, moduleY, new Color(200, 200, 200).getRGB());
-                            modeX += normal.getStringWidth(", ");
+                            modeX += normal.getStringWidthInt(", ");
                         }
                     }
                     if(toToggle != null)

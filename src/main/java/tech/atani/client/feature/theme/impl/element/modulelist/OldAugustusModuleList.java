@@ -36,7 +36,7 @@ public class OldAugustusModuleList extends ModuleListElement {
         for (Module module : moduleHashMap.keySet()) {
             if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                 float moduleHeight = fontRenderer.FONT_HEIGHT + 2;
-                float rectLength = (float) ((fontRenderer.getStringWidth(module.getName()) + 1) * moduleHashMap.get(module).getOutput());
+                float rectLength = (float) ((fontRenderer.getStringWidthInt(module.getName()) + 1) * moduleHashMap.get(module).getOutput());
                 RenderUtil.drawRect(scaledResolution.getScaledWidth() - rectLength, moduleY, rectLength, moduleHeight, new Color(0, 0, 0, 100).getRGB());
                 fontRenderer.drawStringWithShadow(module.getName(), scaledResolution.getScaledWidth() - rectLength + 0.5f, moduleY + moduleHeight / 2 - fontRenderer.FONT_HEIGHT / 2, new Color(0, 0, 255).getRGB());
                 // The 20 is there so the rect goes out of the screen and therefore the right part's not rounded

@@ -6,8 +6,10 @@ import de.florianmichael.rclasses.math.MathUtils;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.listener.event.minecraft.render.Render2DEvent;
 import tech.atani.client.listener.radbus.Listen;
@@ -17,6 +19,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.module.impl.combat.KillAura;
 import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.utility.math.interpolation.InterpolationUtil;
 import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.MathUtil;
@@ -36,22 +39,39 @@ import java.awt.*;
 public class TargetHUD extends Module implements ColorPalette {
 
     public final StringBoxValue targethudMode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Fatality", "Icarus", "Atani CS:GO", "Koks", "Astolfo"});
+    public final CheckBoxValue followTargetHUD = new CheckBoxValue("Follow Target HUD", "Follow the player in 3d space?", this, false);
     private final SliderValue<Integer> red = new SliderValue<>("Red", "What red will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
     private final SliderValue<Integer> green = new SliderValue<>("Green", "What green will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
     private final SliderValue<Integer> blue = new SliderValue<>("Blue", "What blue will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
 
     private SimpleAnimation koksHealthAnim = new SimpleAnimation(1, 0.5f);
 
+    private final Frustum frustum = new Frustum();
+
     @Listen
     public void onRender2D(Render2DEvent render2DEvent) {
-        if(ModuleStorage.getInstance().getByClass(KillAura.class).isEnabled() && KillAura.curEntity != null && FightUtil.getRange(KillAura.curEntity) <= ModuleStorage.getInstance().getByClass(KillAura.class).attackRange.getValue().floatValue() && KillAura.curEntity instanceof EntityPlayer) {
+        if(ModuleStorage.getInstance().getByClass(KillAura.class).isEnabled() && KillAura.curEntity != null && KillAura.curEntity instanceof EntityPlayer) {
             EntityLivingBase target = KillAura.curEntity;
 
             if(target == null)
                 return;
 
-            float x = render2DEvent.getScaledResolution().getScaledWidth() / 2 + 10;
-            float y = render2DEvent.getScaledResolution().getScaledHeight() / 2 + 5;
+            float calcX = 0;
+            float calcY = 0;
+
+            if(this.followTargetHUD.getValue()) {
+                frustum.setPosition(Methods.mc.getRenderManager().renderPosX, Methods.mc.getRenderManager().renderPosY, Methods.mc.getRenderManager().renderPosZ);
+                if (!frustum.isBoundingBoxInFrustum(target.getEntityBoundingBox())) return;
+                final double[] coords = new double[4];
+                InterpolationUtil.convertBox(coords, target);
+                calcX = (float) (coords[0] + (coords[2] - coords[0]) * 1.1f);
+                calcY = (float) (coords[1]);
+            } else {
+                calcX = render2DEvent.getScaledResolution().getScaledWidth() / 2 + 10;
+                calcY = render2DEvent.getScaledResolution().getScaledHeight() / 2 + 5;
+            }
+
+            final float x = calcX, y = calcY;
 
             FontRenderer small = FontStorage.getInstance().findFont("Roboto", 17);
             FontRenderer mcRenderer = Methods.mc.fontRendererObj;
@@ -138,7 +158,7 @@ public class TargetHUD extends Module implements ColorPalette {
                 }
                 case "Augustus 2.6": {
                     String text = target.getCommandSenderName() + " | " + Math.round(target.getHealth());
-                    float length = mc.fontRendererObj.getStringWidth(text);
+                    float length = mc.fontRendererObj.getStringWidthInt(text);
                     float textX = x + 4, textY = y + 4.5f;
                     float rectWidth = 8 + length, rectHeight = mc.fontRendererObj.FONT_HEIGHT + 8;
                     RenderUtil.drawRect(x, y, rectWidth, rectHeight, new Color(0, 0, 0, 100).getRGB());
@@ -159,7 +179,7 @@ public class TargetHUD extends Module implements ColorPalette {
                 case "Xave": {
                     FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
                     String text = target.getCommandSenderName() + " | " + Math.round(target.getHealth());
-                    float length = roboto17.getStringWidth(text);
+                    float length = roboto17.getStringWidthInt(text);
                     float textX = x + 4, textY = y + 4.5f;
                     float rectWidth = 8 + length, rectHeight = roboto17.FONT_HEIGHT + 8;
                     RenderUtil.drawRect(x, y, rectWidth, rectHeight, new Color(0, 0, 0, 100).getRGB());
@@ -170,7 +190,7 @@ public class TargetHUD extends Module implements ColorPalette {
                     RenderableShaders.renderAndRun(() -> {
                         String text = target.getCommandSenderName() + " | " + Math.round(target.getHealth());
                         FontRenderer roboto17 = FontStorage.getInstance().findFont("Roboto", 17);
-                        float length = roboto17.getStringWidth(text);
+                        float length = roboto17.getStringWidthInt(text);
                         float textX = x + 4, textY = y + 4.5f;
                         float rectWidth = 8 + length, rectHeight = roboto17.FONT_HEIGHT + 8;
                         RenderUtil.drawRect(x, y, rectWidth, rectHeight, BACK_TRANS_180);

@@ -131,7 +131,7 @@ public class GuiCreateFlatWorld extends GuiScreen
         this.drawCenteredString(this.fontRendererObj, this.flatWorldTitle, this.width / 2, 8, 16777215);
         int i = this.width / 2 - 92 - 16;
         this.drawString(this.fontRendererObj, this.field_146394_i, i, 32, 16777215);
-        this.drawString(this.fontRendererObj, this.field_146391_r, i + 2 + 213 - this.fontRendererObj.getStringWidth(this.field_146391_r), 32, 16777215);
+        this.drawString(this.fontRendererObj, this.field_146391_r, i + 2 + 213 - this.fontRendererObj.getStringWidthInt(this.field_146391_r), 32, 16777215);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -249,7 +249,7 @@ public class GuiCreateFlatWorld extends GuiScreen
                 s1 = I18n.format("createWorld.customize.flat.layer", new Object[] {Integer.valueOf(flatlayerinfo.getLayerCount())});
             }
 
-            GuiCreateFlatWorld.this.fontRendererObj.drawString(s1, p_180791_2_ + 2 + 213 - GuiCreateFlatWorld.this.fontRendererObj.getStringWidth(s1), p_180791_3_ + 3, 16777215);
+            GuiCreateFlatWorld.this.fontRendererObj.drawString(s1, p_180791_2_ + 2 + 213 - GuiCreateFlatWorld.this.fontRendererObj.getStringWidthInt(s1), p_180791_3_ + 3, 16777215);
         }
 
         protected int getScrollBarX()

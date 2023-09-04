@@ -6,6 +6,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.feature.value.impl.bool.BooleanParser;
@@ -48,7 +49,13 @@ public class ValueCom extends Command {
             			} else if (value instanceof StringBoxValue) {
 							StringBoxValue stringBoxValue = (StringBoxValue) value;
 							stringBoxValue.setValue(args[2]);
+							sendMessage("Value set to §e§l" + args[2].toUpperCase());
+						} else if (value instanceof MultiStringBoxValue) {
+							MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
+							multiStringBoxValue.toggle(args[2]);
+							sendMessage(args[2].toUpperCase() + " in Value set to §e§l" + multiStringBoxValue.getValue().contains(args[2]));
 						}
+						break;
             		}
             	}
         		if(!found) {

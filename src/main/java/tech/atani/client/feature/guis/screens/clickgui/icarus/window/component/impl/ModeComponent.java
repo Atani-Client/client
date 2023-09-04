@@ -32,7 +32,7 @@ public class ModeComponent extends ValueComponent {
                 posY += this.getHeight();
             }
         }
-        return fontRenderer.getStringWidth(stringBoxValue.getName()) + 6;
+        return fontRenderer.getStringWidthInt(stringBoxValue.getName()) + 6;
     }
 
     @Override

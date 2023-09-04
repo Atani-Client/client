@@ -5,14 +5,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import tech.atani.client.feature.account.Account;
 import tech.atani.client.feature.account.storage.AccountStorage;
-import tech.atani.client.files.IFile;
+import tech.atani.client.files.LocalFile;
+import tech.atani.client.files.data.FileData;
 
 import java.io.File;
 import java.util.Map;
 
-public class AccountsFile implements IFile {
-
-    private File file;
+@FileData(fileName = "accounts")
+public class AccountsFile extends LocalFile {
 
     @Override
     public void save(Gson gson) {
@@ -44,8 +44,4 @@ public class AccountsFile implements IFile {
         }
     }
 
-    @Override
-    public void setFile(File root) {
-        file = new File(root, "/accounts.json");
-    }
 }

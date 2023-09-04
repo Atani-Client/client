@@ -6,12 +6,14 @@ public class FontEntry {
 
     private final String name;
     private final float size;
-    private final FontRenderer fontRenderer;
+    private final FontRenderer classicFontRenderer;
+    private final FontRenderer modernFontRenderer;
 
-    public FontEntry(String name, float size, FontRenderer fontRenderer) {
+    public FontEntry(String name, float size, FontRenderer classicFontRenderer, FontRenderer modernFontRenderer) {
         this.name = name;
         this.size = size;
-        this.fontRenderer = fontRenderer;
+        this.classicFontRenderer = classicFontRenderer;
+        this.modernFontRenderer = modernFontRenderer;
     }
 
     public String getName() {
@@ -22,7 +24,11 @@ public class FontEntry {
         return size;
     }
 
-    public FontRenderer getFontRenderer() {
-        return fontRenderer;
+    public FontRenderer getClassicFontRenderer() {
+        return classicFontRenderer;
+    }
+
+    public FontRenderer getModernFontRenderer() {
+        return modernFontRenderer;
     }
 }

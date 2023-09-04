@@ -2,7 +2,6 @@ package tech.atani.client.feature.theme.impl.element.modulelist;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
-import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
@@ -11,9 +10,7 @@ import tech.atani.client.utility.math.atomic.AtomicFloat;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.animation.advanced.Direction;
 import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
-import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 
-import java.awt.*;
 import java.util.LinkedHashMap;
 
 @ThemeObjectInfo(name = "Tarasande", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)
@@ -42,7 +39,7 @@ public class TarasandeModuleList extends ModuleListElement {
             float moduleHeight = fontRenderer.FONT_HEIGHT + 1;
             if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                 String name = module.getName();
-                float rectWidth = fontRenderer.getStringWidth(name) + 5;
+                float rectWidth = fontRenderer.getStringWidthInt(name) + 5;
                 float moduleX = (float) (scaledResolution.getScaledWidth() + 1 - (rectWidth * moduleHashMap.get(module).getOutput()));
                 fontRenderer.drawTotalCenteredStringWithShadow(name, moduleX + rectWidth / 2, moduleY + moduleHeight / 2 + 0.5f, color);
                 moduleY += moduleHeight;

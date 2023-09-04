@@ -55,7 +55,7 @@ public class ModernModuleList extends ModuleListElement {
                     String name = module.getName();
                     Color firstColor = new Color(red.getValue(), green.getValue(), blue.getValue());
                     int color = ColorUtil.fadeBetween(firstColor.getRGB(), firstColor.brighter().getRGB(), counter * 150L);
-                    float rectWidth = (fontRenderer.getStringWidth(name) + 3);
+                    float rectWidth = (fontRenderer.getStringWidthInt(name) + 3);
                     float rectLength = (float) (rectWidth * moduleHashMap.get(module).getOutput());
                     float moduleX = scaledResolution.getScaledWidth() - rectLength + 0.5f;
                     RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, color);
@@ -69,7 +69,7 @@ public class ModernModuleList extends ModuleListElement {
             float moduleHeight = fontRenderer.FONT_HEIGHT + 2;
             if (!moduleHashMap.get(module).finished(Direction.BACKWARDS)) {
                 String name = module.getName();
-                float rectWidth = (fontRenderer.getStringWidth(name) + 3);
+                float rectWidth = (fontRenderer.getStringWidthInt(name) + 3);
                 float rectLength = (float) (rectWidth * moduleHashMap.get(module).getOutput());
                 float moduleX = scaledResolution.getScaledWidth() - rectLength + 0.5f;
                 RenderUtil.drawRect(moduleX, moduleY, rectWidth, moduleHeight, new Color(20, 20, 20).getRGB());

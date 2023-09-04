@@ -40,7 +40,7 @@ public class GuiUtilRenderComponents
 
             String s4 = func_178909_a(ichatcomponent1.getChatStyle().getFormattingCode() + s, p_178908_4_);
             String s5 = s4.endsWith("\n") ? s4.substring(0, s4.length() - 1) : s4;
-            int i1 = p_178908_2_.getStringWidth(s5);
+            int i1 = p_178908_2_.getStringWidthInt(s5);
             ChatComponentText chatcomponenttext1 = new ChatComponentText(s5);
             chatcomponenttext1.setChatStyle(ichatcomponent1.getChatStyle().createShallowCopy());
 
@@ -53,7 +53,7 @@ public class GuiUtilRenderComponents
                 {
                     int l = s2.lastIndexOf(" ");
 
-                    if (l >= 0 && p_178908_2_.getStringWidth(s4.substring(0, l)) > 0)
+                    if (l >= 0 && p_178908_2_.getStringWidthInt(s4.substring(0, l)) > 0)
                     {
                         s2 = s4.substring(0, l);
 
@@ -75,7 +75,7 @@ public class GuiUtilRenderComponents
                     list1.add(j + 1, chatcomponenttext2);
                 }
 
-                i1 = p_178908_2_.getStringWidth(s2);
+                i1 = p_178908_2_.getStringWidthInt(s2);
                 chatcomponenttext1 = new ChatComponentText(s2);
                 chatcomponenttext1.setChatStyle(ichatcomponent1.getChatStyle().createShallowCopy());
                 flag = true;

@@ -92,7 +92,7 @@ public class GuiNewChat extends Gui
                                                 drawRect(0, (-i1 * 9) - 9, l + 4, -i1 * 9, l1 / 2 << 24);
                                                 break;
                                             case "Adaptive":
-                                                int strWidth = font ? customFontRenderer.getStringWidth(s) : mc.fontRendererObj.getStringWidth(s);
+                                                int strWidth = font ? customFontRenderer.getStringWidthInt(s) : mc.fontRendererObj.getStringWidthInt(s);
                                                 drawRect(0, (-i1 * 9) - 9, strWidth + 1, -i1 * 9, l1 / 2 << 24);
                                                 break;
                                         }
@@ -291,7 +291,7 @@ public class GuiNewChat extends Gui
 
                             for (IChatComponent ichatcomponent : chatline.getChatComponent()) {
                                 if (ichatcomponent instanceof ChatComponentText) {
-                                    j1 += this.customFontRenderer.getStringWidth(GuiUtilRenderComponents.func_178909_a(((ChatComponentText) ichatcomponent).getChatComponentText_TextValue(), false));
+                                    j1 += this.customFontRenderer.getStringWidthInt(GuiUtilRenderComponents.func_178909_a(((ChatComponentText) ichatcomponent).getChatComponentText_TextValue(), false));
 
                                     if (j1 > j) {
                                         return ichatcomponent;
@@ -311,7 +311,7 @@ public class GuiNewChat extends Gui
 
                             for (IChatComponent ichatcomponent : chatline.getChatComponent()) {
                                 if (ichatcomponent instanceof ChatComponentText) {
-                                    j1 += this.mc.fontRendererObj.getStringWidth(GuiUtilRenderComponents.func_178909_a(((ChatComponentText) ichatcomponent).getChatComponentText_TextValue(), false));
+                                    j1 += this.mc.fontRendererObj.getStringWidthInt(GuiUtilRenderComponents.func_178909_a(((ChatComponentText) ichatcomponent).getChatComponentText_TextValue(), false));
 
                                     if (j1 > j) {
                                         return ichatcomponent;

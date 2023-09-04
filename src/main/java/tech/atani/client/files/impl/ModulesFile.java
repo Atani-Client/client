@@ -4,13 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.files.IFile;
+import tech.atani.client.files.LocalFile;
+import tech.atani.client.files.data.FileData;
 
 import java.io.File;
 
-public class ModulesFile implements IFile {
-
-    private File file;
+@FileData(fileName = "modules")
+public class ModulesFile extends LocalFile {
 
     @Override
     public void save(Gson gson) {
@@ -43,8 +43,4 @@ public class ModulesFile implements IFile {
         }
     }
 
-    @Override
-    public void setFile(File root) {
-        file = new File(root, "/modules.json");
-    }
 }

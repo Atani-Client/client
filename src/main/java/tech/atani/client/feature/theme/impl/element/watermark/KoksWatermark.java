@@ -26,11 +26,11 @@ public class KoksWatermark extends ThemeObject {
         RenderUtil.startScissorBox();
         RenderUtil.drawScissorBox(8, 10, 100, 16f);
         raleway35.drawStringWithShadow(String.valueOf(CLIENT_NAME.charAt(0)), 10, 10, getRainbow(0, 3000, 0.6f, 1).getRGB());
-        raleway30.drawStringWithShadow(CLIENT_NAME.substring(1) + "sense", 10 + raleway35.getStringWidth(String.valueOf(CLIENT_NAME.charAt(0))), 12, -1);
+        raleway30.drawStringWithShadow(CLIENT_NAME.substring(1) + "sense", 10 + raleway35.getStringWidthInt(String.valueOf(CLIENT_NAME.charAt(0))), 12, -1);
         RenderUtil.endScissorBox();
 
         for (int i = 0; i < version.length(); i++) {
-            roboto18.drawStringWithShadow(String.valueOf(version.charAt(i)), 10 + raleway35.getStringWidth(String.valueOf(CLIENT_NAME.charAt(0))) + raleway30.getStringWidth(CLIENT_NAME.substring(1) + "sense") + roboto18.getStringWidth(version.substring(0, i)) - roboto18.getStringWidth(version), 8, getRainbow(100 * (i + 1), 3000, 0.6f, 1).getRGB());
+            roboto18.drawStringWithShadow(String.valueOf(version.charAt(i)), 10 + raleway35.getStringWidthInt(String.valueOf(CLIENT_NAME.charAt(0))) + raleway30.getStringWidthInt(CLIENT_NAME.substring(1) + "sense") + roboto18.getStringWidthInt(version.substring(0, i)) - roboto18.getStringWidthInt(version), 8, getRainbow(100 * (i + 1), 3000, 0.6f, 1).getRGB());
         }
 
         final double motionX = getPlayer().posX - getPlayer().prevPosX;
@@ -44,10 +44,10 @@ public class KoksWatermark extends ThemeObject {
 
         for (int i = 0; i < bps.length(); i++) {
             final char character = bps.charAt(i);
-            roboto18.drawStringWithShadow(character + "", 11 + roboto18.getStringWidth(bps.substring(0, i)), 28, getRainbow(100 * (i + 1), 3000, 0.6f, 1).getRGB());
+            roboto18.drawStringWithShadow(character + "", 11 + roboto18.getStringWidthInt(bps.substring(0, i)), 28, getRainbow(100 * (i + 1), 3000, 0.6f, 1).getRGB());
         }
 
-        roboto18.drawStringWithShadow(speed + "", 11 + roboto18.getStringWidth(bps), 28, new Color(-1).getRGB());
+        roboto18.drawStringWithShadow(speed + "", 11 + roboto18.getStringWidthInt(bps), 28, new Color(-1).getRGB());
 
         leftY.set(50);
     }

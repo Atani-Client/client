@@ -372,7 +372,7 @@ public class PasswordField extends Gui
                 }
             }
             if (var3 != var2) {
-                final int var12 = var7 + this.fontRenderer.getStringWidth(var4.substring(0, var3));
+                final int var12 = var7 + this.fontRenderer.getStringWidthInt(var4.substring(0, var3));
                 this.drawCursorVertical(var11, var8 - 1, var12 - 1, var8 + 1 + this.fontRenderer.FONT_HEIGHT);
             }
         }

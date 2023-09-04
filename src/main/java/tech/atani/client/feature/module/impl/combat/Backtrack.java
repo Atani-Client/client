@@ -359,8 +359,10 @@ public class Backtrack extends Module {
 
     @Listen
     public void onRender3D(Render3DEvent event) {
-        if (!freezingNeeded) {
-            return;
+        if(this.mode.is("Packet")) {
+            if (!freezingNeeded) {
+                return;
+            }
         }
 
         GL11.glPushMatrix();
@@ -368,11 +370,11 @@ public class Backtrack extends Module {
 
         try {
             if(this.mode.is("Packet")) {
-                renderFrozenEntity(this.entity, event);
-            } else if(this.mode.is("Packet (Old)")) {
                 for (Entity entity : targets) {
                     renderFrozenEntity(entity, event);
                 }
+            } else if(this.mode.is("Packet (Old)")) {
+                renderFrozenEntity(this.entity, event);
             }
         } catch (ConcurrentModificationException e) {
 

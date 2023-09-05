@@ -28,7 +28,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @ModuleData(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Cancel", "Intave", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block", "Fake Lag", "MineMenClub"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block", "Fake Lag", "MineMenClub"});
     public SliderValue<Integer> horizontal = new SliderValue<Integer>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
@@ -161,14 +161,6 @@ public class Velocity extends Module {
                             packetEvent.setCancelled(true);
                             mmcCounter = 0;
                         }
-                    }
-                }
-                break;
-            case "Cancel":
-                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
-                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
-                    if (packet.getEntityID() == mc.thePlayer.getEntityId()) {
-                        packetEvent.setCancelled(true);
                     }
                 }
                 break;

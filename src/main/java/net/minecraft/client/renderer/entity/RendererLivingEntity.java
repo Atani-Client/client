@@ -3,6 +3,8 @@ package net.minecraft.client.renderer.entity;
 import com.google.common.collect.Lists;
 import java.nio.FloatBuffer;
 import java.util.List;
+
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -31,6 +33,8 @@ import net.optifine.shaders.Shaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
+import tech.atani.client.feature.module.impl.render.NameTags;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.utility.player.PlayerHandler;
 
 public abstract class RendererLivingEntity<T extends EntityLivingBase> extends Render<T>
@@ -646,14 +650,14 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
             {
                 double d0 = entity.getDistanceSqToEntity(this.renderManager.livingPlayer);
                 float f = entity.isSneaking() ? NAME_TAG_RANGE_SNEAK : NAME_TAG_RANGE;
-
-                if (d0 < (double)(f * f))
+                boolean b = entity instanceof EntityPlayer && ModuleStorage.getInstance().getByClass(NameTags.class).isEnabled();
+                if (d0 < f * f || b)
                 {
                     String s = entity.getDisplayName().getFormattedText();
                     float f1 = 0.02666667F;
                     GlStateManager.alphaFunc(516, 0.1F);
 
-                    if (entity.isSneaking())
+                    if (entity.isSneaking() && !ModuleStorage.getInstance().getByClass(NameTags.class).isEnabled())
                     {
                         FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
                         GlStateManager.pushMatrix();

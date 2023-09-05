@@ -15,15 +15,13 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.src.Config;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumWorldBlockLayer;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.optifine.entity.model.IEntityRenderer;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
+import tech.atani.client.feature.module.impl.render.NameTags;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 
 public abstract class Render<T extends Entity> implements IEntityRenderer
 {
@@ -83,7 +81,15 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
 
     protected void renderOffsetLivingLabel(T entityIn, double x, double y, double z, String str, float p_177069_9_, double p_177069_10_)
     {
-        this.renderLivingLabel(entityIn, str, x, y, z, 64);
+        if (ModuleStorage.getInstance().getByClass(NameTags.class).isEnabled() && entityIn instanceof EntityPlayer) {
+            switch (ModuleStorage.getInstance().getByClass(NameTags.class).nameTagMode.getValue()) {
+                case "Vanilla":
+                    this.renderVanillaLivingLabel(entityIn, str, x, y, z, 64, ((EntityPlayer) entityIn).getHealth());
+                    break;
+            }
+        } else {
+            this.renderLivingLabel(entityIn, str, x, y, z, 64);
+        }
     }
 
     /**
@@ -359,6 +365,70 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
     public FontRenderer getFontRendererFromRenderManager()
     {
         return this.renderManager.getFontRenderer();
+    }
+
+    protected void renderVanillaLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance, float health) {
+        double playerDistanceSq = this.renderManager.livingPlayer.getDistanceSqToEntity(entityIn);
+
+        if (playerDistanceSq <= maxDistance * maxDistance) {
+            FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
+
+            float distanceScale;
+            if (playerDistanceSq <= 25.0) {
+                // Entity is 5 blocks away or closer, keep size 1.2
+                distanceScale = 1.2f;
+            } else {
+                // Entity is further away, scale based on distance
+                float minScale = 1.2f;
+                float maxScale = 3.0f;
+                float scaleRange = maxScale - minScale;
+                float scaledDistance = (float) Math.sqrt(playerDistanceSq) - 5.0f;
+                distanceScale = minScale + (scaledDistance / maxDistance) * scaleRange;
+            }
+
+            float f = distanceScale;
+            float f2 = 0.016666668f * f;
+
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) x + 0.0f, (float) y + entityIn.height + 0.5f, (float) z);
+
+            fontrenderer.FONT_HEIGHT = (int) (fontrenderer.FONT_HEIGHT * f2);
+
+            GL11.glNormal3f(0.0f, 1.0f, 0.0f);
+            GlStateManager.rotate(-this.renderManager.playerViewY, 0.0f, 1.0f, 0.0f);
+            GlStateManager.rotate(this.renderManager.playerViewX, 1.0f, 0.0f, 0.0f);
+            GlStateManager.scale(-f2, -f2, f2);
+            GlStateManager.disableLighting();
+            GlStateManager.depthMask(false);
+            GlStateManager.disableDepth();
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+            Tessellator tessellator = Tessellator.getInstance();
+            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+            byte b0 = 0;
+            if (str.equals("deadmau5")) {
+                b0 = -10;
+            }
+            String name = str + EnumChatFormatting.GREEN + " ❤" + Math.round(health / 2.0f * 10) / 10;
+            final int i = fontrenderer.getStringWidthInt(name) / 2;
+            GlStateManager.disableTexture2D();
+            worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+            worldrenderer.pos(-i - 1, -1 + b0, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+            worldrenderer.pos(-i - 1, 8 + b0, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+            worldrenderer.pos(i + 1, 8 + b0, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+            worldrenderer.pos(i + 1, -1 + b0, 0.0).color(0.0f, 0.0f, 0.0f, 0.25f).endVertex();
+            tessellator.draw();
+            GlStateManager.enableTexture2D();
+            fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2.0f, b0, -1, false);
+            GlStateManager.enableDepth();
+            GlStateManager.depthMask(true);
+            fontrenderer.drawString(name, -fontrenderer.getStringWidth(name) / 2.0f, b0, -1, false);
+            GlStateManager.enableLighting();
+            GlStateManager.disableBlend();
+            GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
+            fontrenderer.FONT_HEIGHT = 9;
+            GlStateManager.popMatrix();
+        }
     }
 
     /**

@@ -22,7 +22,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
@@ -84,6 +84,17 @@ public class Speed extends Module {
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         switch (mode.getValue()) {
+            case "AAC3":
+                mc.timer.timerSpeed = 1.75f;
+                if (mc.thePlayer.onGround) {
+                    mc.thePlayer.jump();
+                }
+
+                if(mc.thePlayer.isAirBorne) {
+                    MoveUtil.setMoveSpeed(0.4f);
+                    mc.timer.timerSpeed = 1f;
+                }
+                break;
             case "Custom":
                 mc.timer.timerSpeed = timer.getValue();
                 if (mc.thePlayer.onGround) {

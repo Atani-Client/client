@@ -6,6 +6,7 @@ import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.impl.element.modulelist.CustomModuleList;
 import tech.atani.client.feature.theme.impl.element.modulelist.ModuleListElement;
 import tech.atani.client.feature.theme.storage.ThemeStorage;
+import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.listener.event.client.DisableModuleEvent;
 import tech.atani.client.listener.event.client.EnableModuleEvent;
 import tech.atani.client.listener.event.minecraft.render.Render2DEvent;
@@ -25,6 +26,7 @@ import tech.atani.client.feature.value.interfaces.ValueChangeListener;
 
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ModuleData(name = "ModuleList", description = "Shows a list of enabled modules", category = Category.HUD)
 public class ModuleList extends Module implements ColorPalette, IClientOverlayComponent {
@@ -45,7 +47,7 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
             }
         }
     }});
-    private CheckBoxValue hideRenderModules = new CheckBoxValue("Hide Render Modules", "Should the module list hide visual modules?", this, false);
+    private MultiStringBoxValue ignoredCategories = new MultiStringBoxValue("Hide Categories", "Which categories should the module list hide?", this, new String[] {"Hud", "Chat", "Options", "Render"}, new String[] {"Hud", "Chat", "Options", "Render", "Movement", "Combat", "Player", "Others"});
 
 
     private LinkedHashMap<Module, DecelerateAnimation> moduleHashMap = new LinkedHashMap<>();
@@ -54,14 +56,12 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
     public void draw(Render2DEvent render2DEvent, AtomicFloat leftY, AtomicFloat rightY) {
         ModuleListElement moduleListElement = ThemeStorage.getInstance().getThemeObject(moduleListMode.getValue(), ElementType.MODULE_LIST);
         if(this.isEnabled() && moduleListElement != null) {
-
             List<Module> modulesToShow = new ArrayList<>();
+
             for (Module module : ModuleStorage.getInstance().getList()) {
-                if (!hideRenderModules.getValue() || (module.getCategory() != Category.RENDER && module.getCategory() != Category.HUD)) {
+                Category moduleCategory = module.getCategory();
+                if (!isIgnoredCategory(moduleCategory)) {
                     modulesToShow.add(module);
-                }
-                if (module.getCategory() == Category.HUD || module.getCategory() == Category.OPTIONS) {
-                    modulesToShow.remove(module);
                 }
             }
 
@@ -138,6 +138,10 @@ public class ModuleList extends Module implements ColorPalette, IClientOverlayCo
 
     }
 
+    private boolean isIgnoredCategory(Category moduleCategory) {
+        String ignoredCategory = ignoredCategories.getValueAsString().toUpperCase();
+        return ignoredCategory.contains(moduleCategory.name());
+    }
 
     @Override
     public void onEnable() {}

@@ -14,7 +14,6 @@ import tech.atani.client.listener.handling.EventHandling;
 import tech.atani.client.files.storage.FileStorage;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.processor.storage.ProcessorStorage;
-import tech.atani.client.protection.checks.manager.ProtectionManager;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.java.ArrayUtils;
 import tech.atani.client.utility.internet.NetUtils;
@@ -39,7 +38,6 @@ public enum Modification implements ClientInformationAccess {
         Display.setTitle(CLIENT_NAME + " v" + CLIENT_VERSION + " | Made by " + authors);
 
         EventHandling.setInstance(new EventHandling());
-        ProtectionManager.setInstance(new ProtectionManager());
         FontStorage.setInstance(new FontStorage());
         ProcessorStorage.setInstance(new ProcessorStorage());
         ValueStorage.setInstance(new ValueStorage());
@@ -51,7 +49,6 @@ public enum Modification implements ClientInformationAccess {
         FileStorage.setInstance(new FileStorage());
         CheckStorage.setInstance(new CheckStorage());
 
-        ProtectionManager.getInstance().init();
         FontStorage.getInstance().init();
         ProcessorStorage.getInstance().init();
         ValueStorage.getInstance().init();

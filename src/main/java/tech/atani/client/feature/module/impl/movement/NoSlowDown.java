@@ -23,7 +23,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
 public class NoSlowDown extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP", "Matrix", "Hypixel"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP", "Matrix", "Hypixel", "MineMenClub"});
 
     private final MultiStringBoxValue items = new MultiStringBoxValue("Items", "Should the module disable slowdown with these items?", this, new String[] {"Sword"}, new String[] {"Sword", "Food", "Bow"});
     private final SliderValue<Float> swordForward = new SliderValue<Float>("Sword Forward", "How high should the sword forward multiplier be?", this, 1f, 0f, 1f, 2, new Supplier[]{() -> items.get("Sword")}),
@@ -49,19 +49,19 @@ public class NoSlowDown extends Module {
         }
 
         if (items.get("Sword") && currentItem.getItem() instanceof ItemSword) {
-            event.setSprint(true);
+            event.setSprint(!mode.is("MineMenClub"));
             event.setForward(swordForward.getValue());
             event.setStrafe(swordStrafe.getValue());
         }
 
         if (items.get("Food") && currentItem.getItem() instanceof ItemFood) {
-            event.setSprint(true);
+            event.setSprint(!mode.is("MineMenClub"));
             event.setForward(foodForward.getValue());
             event.setStrafe(foodStrafe.getValue());
         }
 
         if (items.get("Bow") && currentItem.getItem() instanceof ItemBow) {
-            event.setSprint(true);
+            event.setSprint(!mode.is("MineMenClub"));
             event.setForward(bowForward.getValue());
             event.setStrafe(bowStrafe.getValue());
         }

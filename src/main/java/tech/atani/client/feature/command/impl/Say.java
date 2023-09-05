@@ -4,7 +4,7 @@ import net.minecraft.network.play.client.C01PacketChatMessage;
 import tech.atani.client.feature.command.Command;
 import tech.atani.client.feature.command.data.CommandInfo;
 
-@CommandInfo(name = "say", description = "Say stuff")
+@CommandInfo(name = "say", description = "say stuff")
 public class Say extends Command {
     @Override
     public boolean execute(String[] args) {

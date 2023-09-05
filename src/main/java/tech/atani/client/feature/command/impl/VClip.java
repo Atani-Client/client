@@ -3,7 +3,7 @@ package tech.atani.client.feature.command.impl;
 import tech.atani.client.feature.command.Command;
 import tech.atani.client.feature.command.data.CommandInfo;
 
-@CommandInfo(name = "vclip", description = "You can clip through walls")
+@CommandInfo(name = "vclip", description = "clip vertically")
 public class VClip extends Command {
     @Override
     public boolean execute(String[] args) {

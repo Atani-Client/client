@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
-@CommandInfo(name = "ip", description = "Show the current server ip")
+@CommandInfo(name = "ip", description = "get the server ip")
 public class Ip extends Command {
     @Override
     public boolean execute(String[] args) {

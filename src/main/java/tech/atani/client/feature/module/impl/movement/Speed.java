@@ -592,10 +592,21 @@ public class Speed extends Module {
                             MoveUtil.strafe();
                             break;
                         case "Strafe":
-                            if(mc.thePlayer.onGround && this.isMoving()) {
-                                mc.thePlayer.jump();
-
-                                MoveUtil.strafe(0.4f);
+                            if(this.isMoving()) {
+                                mc.gameSettings.keyBindJump.pressed = false;
+                                if(mc.thePlayer.onGround) {
+                                    mc.thePlayer.jump();
+                                    if(mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+                                        if (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() == 0) {
+                                            MoveUtil.strafe(0.5893f);
+                                        } else if (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() == 1) {
+                                            MoveUtil.strafe(0.6893f);
+                                        }
+                                    } else {
+                                        MoveUtil.strafe(0.485f);
+                                    }
+                                }
+                                MoveUtil.strafe();
                             }
                             break;
                         case "Custom":

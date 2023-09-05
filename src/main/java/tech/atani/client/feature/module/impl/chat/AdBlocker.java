@@ -26,7 +26,7 @@ public class AdBlocker extends Module {
     };
 
     private static final String[] NORMAL = new String[] {
-            "sub", "subscribe", "follow me", "youtu.be", "youtube.com", "twitch.tv"
+            "sub", "subscribe", "follow me", "youtu.be", "youtube.com", "twitch.tv", "store.blockdrop.org", "HelpBot -> me"
     };
 
     @Listen
@@ -62,13 +62,9 @@ public class AdBlocker extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 
 }

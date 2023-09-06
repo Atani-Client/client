@@ -96,7 +96,7 @@ public class HWIDManager {
                 if (response.toString().equals("cope")) {
                     return false;
                 } else if (!response.toString().equals(s.toString())) {
-                    AntiSkidUtils.terminate("We detected you attempting to intercept the HWID system if you think this is an error please contact the admins.", 3, true);
+                    AntiSkidUtils.terminate("We detected illegal tampering, if you think this is an error please contact the admins.", 3, true);
                     return false;
                 } else return response.toString().equals(s.toString());
             } else {

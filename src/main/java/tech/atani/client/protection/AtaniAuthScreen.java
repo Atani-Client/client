@@ -145,7 +145,7 @@ public class AtaniAuthScreen extends GuiScreen {
             Integer.valueOf(username.getText());
         }
         catch (NumberFormatException e) {
-            status = "§c" + username.getText() + " is not a number dumbass.";
+            status = "§c" + username.getText() + " is not a number.";
             return;
         }
 
@@ -156,10 +156,10 @@ public class AtaniAuthScreen extends GuiScreen {
             uc.setRequestMethod("GET");
             int responseCode = uc.getResponseCode();
             if (responseCode != HttpURLConnection.HTTP_OK) {
-                status = "§cConnection Failed, could not connect to the Menace Servers.";
+                status = "§cConnection Failed, could not connect to the backend.";
             }
         } catch (IOException e) {
-            status = "§cConnection Failed, could not connect to the Menace Servers.";
+            status = "§cConnection Failed, could not connect to the backend.";
             e.printStackTrace();
             return;
         }
@@ -167,7 +167,7 @@ public class AtaniAuthScreen extends GuiScreen {
 
         if (!HWIDManager.isWhitelisted()) {
             try {
-                AntiSkidUtils.terminate("Your HWID is not whitelisted please contact the admins to get it reset", 4, true);
+                AntiSkidUtils.terminate("Your HWID is not whitelisted, please contact the admins to get it reset.", 0, true);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

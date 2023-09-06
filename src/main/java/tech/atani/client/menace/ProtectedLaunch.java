@@ -1,4 +1,4 @@
-package tech.atani.client.protection;
+package tech.atani.client.menace;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -14,11 +14,9 @@ import net.minecraft.client.audio.MusicTicker;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiIngame;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMemoryErrorScreen;
 import net.minecraft.client.gui.achievement.GuiAchievement;
 import net.minecraft.client.main.GameConfiguration;
-import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.RenderItem;

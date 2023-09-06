@@ -1,9 +1,6 @@
 package tech.atani.client.loader;
 
 import de.florianmichael.viamcp.ViaMCP;
-import net.arikia.dev.drpc.DiscordEventHandlers;
-import net.arikia.dev.drpc.DiscordRPC;
-import net.arikia.dev.drpc.DiscordRichPresence;
 import org.lwjgl.opengl.Display;
 import tech.atani.client.feature.anticheat.check.CheckStorage;
 import tech.atani.client.feature.module.storage.ModuleStorage;
@@ -15,7 +12,6 @@ import tech.atani.client.listener.handling.EventHandling;
 import tech.atani.client.files.storage.FileStorage;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.processor.storage.ProcessorStorage;
-import tech.atani.client.protection.AtaniUser;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.java.ArrayUtils;
 import tech.atani.client.utility.internet.NetUtils;

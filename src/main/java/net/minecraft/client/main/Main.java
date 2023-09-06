@@ -1,6 +1,6 @@
 package net.minecraft.client.main;
 
-import tech.atani.client.protection.ProtectedLaunch;
+import tech.atani.client.menace.ProtectedLaunch;
 
 public class Main
 {

@@ -1,4 +1,4 @@
-package tech.atani.client.protection;
+package tech.atani.client.menace;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -6,14 +6,10 @@ import net.minecraft.client.gui.*;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.elements.background.ShaderBackground;
 import tech.atani.client.loader.Modification;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.utility.render.shader.ShaderProgram;
-import tech.atani.client.utility.render.shader.enums.ShaderType;
 
 import java.awt.*;
 import java.io.IOException;

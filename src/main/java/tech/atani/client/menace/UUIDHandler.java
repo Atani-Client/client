@@ -1,4 +1,4 @@
-package tech.atani.client.protection;
+package tech.atani.client.menace;
 
 import java.util.UUID;
 import java.util.regex.Matcher;

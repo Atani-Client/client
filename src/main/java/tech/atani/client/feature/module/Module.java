@@ -1,15 +1,11 @@
 package tech.atani.client.feature.module;
 
-import com.google.common.base.Supplier;
 import com.google.gson.JsonObject;
-import org.lwjgl.Sys;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.listener.event.client.DisableModuleEvent;
-import tech.atani.client.listener.event.client.EnableModuleEvent;
-import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
+import tech.atani.client.listener.event.client.module.DisableModuleEvent;
+import tech.atani.client.listener.event.client.module.EnableModuleEvent;
 import tech.atani.client.listener.handling.EventHandling;
-import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.storage.ValueStorage;

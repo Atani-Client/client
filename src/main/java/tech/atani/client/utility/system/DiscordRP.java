@@ -3,8 +3,7 @@ package tech.atani.client.utility.system;
 import net.arikia.dev.drpc.DiscordEventHandlers;
 import net.arikia.dev.drpc.DiscordRPC;
 import net.arikia.dev.drpc.DiscordRichPresence;
-import tech.atani.client.loader.Modification;
-import tech.atani.client.protection.AtaniUser;
+import tech.atani.client.menace.MenaceUser;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
 
 public class DiscordRP implements ClientInformationAccess {
@@ -44,8 +43,8 @@ public class DiscordRP implements ClientInformationAccess {
     public void update(String line) {
         DiscordRichPresence.Builder b = new DiscordRichPresence.Builder(line);
         b.setBigImage("icon", CLIENT_NAME + " - " + CLIENT_VERSION);
-        if (AtaniUser.getInstance() != null) {
-            b.setDetails(AtaniUser.getInstance().getUsername() + " [" + AtaniUser.getInstance().getUID() + "]");
+        if (MenaceUser.getInstance() != null) {
+            b.setDetails(MenaceUser.getInstance().getUsername() + " [" + MenaceUser.getInstance().getUID() + "]");
         }
         b.setStartTimestamps(created);
 

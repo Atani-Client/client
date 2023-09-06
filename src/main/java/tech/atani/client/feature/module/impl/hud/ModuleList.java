@@ -7,8 +7,8 @@ import tech.atani.client.feature.theme.impl.element.modulelist.CustomModuleList;
 import tech.atani.client.feature.theme.impl.element.modulelist.ModuleListElement;
 import tech.atani.client.feature.theme.storage.ThemeStorage;
 import tech.atani.client.feature.value.impl.MultiStringBoxValue;
-import tech.atani.client.listener.event.client.DisableModuleEvent;
-import tech.atani.client.listener.event.client.EnableModuleEvent;
+import tech.atani.client.listener.event.client.module.DisableModuleEvent;
+import tech.atani.client.listener.event.client.module.EnableModuleEvent;
 import tech.atani.client.listener.event.minecraft.render.Render2DEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
@@ -20,13 +20,11 @@ import tech.atani.client.utility.math.atomic.AtomicFloat;
 import tech.atani.client.utility.render.animation.advanced.Direction;
 import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 import tech.atani.client.feature.value.Value;
-import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.feature.value.interfaces.ValueChangeListener;
 
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @ModuleData(name = "ModuleList", description = "Shows a list of enabled modules", category = Category.HUD)
 public class ModuleList extends Module implements ColorPalette, IClientOverlayComponent {

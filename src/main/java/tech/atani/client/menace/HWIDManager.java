@@ -1,4 +1,4 @@
-package tech.atani.client.protection;
+package tech.atani.client.menace;
 
 import tech.atani.client.loader.Modification;
 
@@ -220,8 +220,8 @@ public class HWIDManager {
         return sendDiscordRequest(discordID);
     }
 
-    public static AtaniUser getUser() {
-        return new AtaniUser(getUsername(), getDiscord(), getHWID(), getUID());
+    public static MenaceUser getUser() {
+        return new MenaceUser(getUsername(), getDiscord(), getHWID(), getUID());
     }
 
 }

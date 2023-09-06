@@ -1,15 +1,15 @@
-package tech.atani.client.protection;
+package tech.atani.client.menace;
 
-public class AtaniUser {
+public class MenaceUser {
 
-    private static AtaniUser instance;
+    private static MenaceUser instance;
     private final String username;
     private final String hwid;
     private final int uid;
 
     private final String discord;
 
-    public AtaniUser(String username, String discord, String hwid, int uid) {
+    public MenaceUser(String username, String discord, String hwid, int uid) {
         this.username = username;
         this.discord = discord;
         this.hwid = hwid;
@@ -31,7 +31,7 @@ public class AtaniUser {
 
     public String getDiscord() {return discord;}
 
-    public static AtaniUser getInstance() {
+    public static MenaceUser getInstance() {
         return instance;
     }
 

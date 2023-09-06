@@ -37,7 +37,30 @@ public class HWIDManager {
             ++i;
         }
 
-        return s.toString();
+        String hwid = s.toString();
+
+        //Hash the HWID with the uuid as salt using SHA-512
+
+        String pwd = hwid + UUIDHandler.getUUID();
+
+        byte[] decodedSalt = pwd.getBytes(StandardCharsets.UTF_8);
+
+        MessageDigest md = null;
+        try {
+            md = MessageDigest.getInstance("SHA-512");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        assert md != null;
+        byte[] hashed = md.digest(decodedSalt);
+
+        StringBuilder s2 = new StringBuilder();
+        for (byte b : hashed) {
+            s2.append(String.format("%02x", b));
+        }
+
+        return s2.toString();
     }
 
     public static boolean isWhitelisted() {

@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.Tessellator;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
+import tech.atani.client.utility.discord.DiscordRP;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
@@ -118,6 +119,8 @@ public class AtaniAltManager extends GuiScreen
     
     @Override
     public void drawScreen(final int par1, final int par2, final float par3) {
+        DiscordRP.update("Alt Menu", "Selecting an alt");
+
         if (Mouse.hasWheel()) {
             final int wheel = Mouse.getDWheel();
             if (wheel < 0) {

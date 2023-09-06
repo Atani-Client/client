@@ -9,6 +9,9 @@ import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.elements.background.ShaderBackground;
 import tech.atani.client.loader.Modification;
+import tech.atani.client.menace.protection.MenaceLauncherAPI;
+import tech.atani.client.menace.protection.utils.api.APIUtil;
+import tech.atani.client.menace.protection.utils.ProtectionUtil;
 import tech.atani.client.utility.render.RenderUtil;
 
 import java.awt.*;
@@ -93,7 +96,7 @@ public class AtaniAuthScreen extends GuiScreen {
 
     @Override
     public void initGui() {
-        UUIDHandler.validate();
+        UUIDHandler.getInstance().validate();
         this.username = new GuiTextField(-1, this.mc.fontRendererObj, width / 2 - 100, height / 4 + 24 + 80, 200, 20);
         this.username.setFocused(true);
         this.initTime = System.currentTimeMillis();
@@ -130,54 +133,26 @@ public class AtaniAuthScreen extends GuiScreen {
         this.mc.getSoundHandler().playSound(PositionedSoundRecord.create(new ResourceLocation("gui.button.press"), 1.0F));
         status = "§eLogging in...";
 
-        AntiVM.run();
-
-        if (username.getText() == null) {
-            status = "§cPlease type in your UID.";
-            return;
-        }
-
-        try {
-            Integer.valueOf(username.getText());
-        }
-        catch (NumberFormatException e) {
-            status = "§c" + username.getText() + " is not a number.";
-            return;
-        }
-
-        try {
-            URL url = new URL(Modification.APIURL);
-            HttpURLConnection uc = (HttpURLConnection ) url.openConnection();
-            uc.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
-            uc.setRequestMethod("GET");
-            int responseCode = uc.getResponseCode();
-            if (responseCode != HttpURLConnection.HTTP_OK) {
+        switch (MenaceLauncherAPI.attemptLogin(username.getText())) {
+            case 5:
+                status = "§cPlease type in your UID.";
+                break;
+            case 4:
+                status = "§c" + username.getText() + " is not a number.";
+                break;
+            case 3:
                 status = "§cConnection Failed, could not connect to the backend.";
-            }
-        } catch (IOException e) {
-            status = "§cConnection Failed, could not connect to the backend.";
-            e.printStackTrace();
-            return;
+                break;
+            case 2:
+                status = "§cHWID not whitelisted.";
+                break;
+            case 1:
+                status = "§cInvalid UID.";
+                break;
+            case 0:
+                Minecraft.getMinecraft().displayGuiScreen(previousScreen);
+                break;
         }
-
-
-        if (!HWIDManager.isWhitelisted()) {
-            try {
-                AntiSkidUtils.terminate("Your HWID is not whitelisted, please contact the admins to get it reset.", 0, true);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-            status = "§cHWID not whitelisted.";
-            return;
-        }
-
-        if (HWIDManager.getUID() != Integer.parseInt(username.getText())) {
-            status = "§cInvalid UID.";
-            return;
-        }
-
-        HWIDManager.getUser();
-        Minecraft.getMinecraft().displayGuiScreen(previousScreen);
     }
 
     @Override

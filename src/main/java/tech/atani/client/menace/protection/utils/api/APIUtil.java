@@ -1,6 +1,8 @@
-package tech.atani.client.menace;
+package tech.atani.client.menace.protection.utils.api;
 
 import tech.atani.client.loader.Modification;
+import tech.atani.client.menace.UUIDHandler;
+import tech.atani.client.menace.protection.utils.ProtectionUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -10,7 +12,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class HWIDManager {
+public class APIUtil {
 
     public static String getHWID() {
         StringBuilder s = new StringBuilder();
@@ -41,7 +43,7 @@ public class HWIDManager {
 
         //Hash the HWID with the uuid as salt using SHA-512
 
-        String pwd = hwid + UUIDHandler.getUUID();
+        String pwd = hwid + UUIDHandler.getInstance().getUUID();
 
         byte[] decodedSalt = pwd.getBytes(StandardCharsets.UTF_8);
 
@@ -96,7 +98,7 @@ public class HWIDManager {
                 if (response.toString().equals("cope")) {
                     return false;
                 } else if (!response.toString().equals(s.toString())) {
-                    AntiSkidUtils.terminate("We detected illegal tampering, if you think this is an error please contact the admins.", 3, true);
+                    ProtectionUtil.terminate("We detected illegal tampering, if you think this is an error please contact the admins.", 3, true);
                     return false;
                 } else return response.toString().equals(s.toString());
             } else {
@@ -218,10 +220,6 @@ public class HWIDManager {
         }
 
         return sendDiscordRequest(discordID);
-    }
-
-    public static MenaceUser getUser() {
-        return new MenaceUser(getUsername(), getDiscord(), getHWID(), getUID());
     }
 
 }

@@ -18,6 +18,7 @@ import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
+import tech.atani.client.utility.discord.DiscordRP;
 
 public class AtaniMultiPlayerMenu extends GuiScreen implements GuiYesNoCallback
 {
@@ -54,6 +55,8 @@ public class AtaniMultiPlayerMenu extends GuiScreen implements GuiYesNoCallback
      */
     public void initGui()
     {
+        DiscordRP.update("Server Menu", "Selecting a server");
+
         Keyboard.enableRepeatEvents(true);
         this.buttonList.clear();
 

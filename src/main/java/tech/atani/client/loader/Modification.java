@@ -1,6 +1,7 @@
 package tech.atani.client.loader;
 
 import de.florianmichael.viamcp.ViaMCP;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import tech.atani.client.feature.anticheat.check.CheckStorage;
 import tech.atani.client.feature.module.storage.ModuleStorage;
@@ -16,7 +17,7 @@ import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.java.ArrayUtils;
 import tech.atani.client.utility.internet.NetUtils;
 import tech.atani.client.feature.value.storage.ValueStorage;
-import tech.atani.client.utility.system.DiscordRP;
+import tech.atani.client.utility.discord.DiscordRP;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ import java.util.Map;
 
 public enum Modification implements ClientInformationAccess {
     INSTANCE;
+
+    public static long initTime = System.currentTimeMillis();
 
     private boolean loaded = false;
 
@@ -65,7 +68,8 @@ public enum Modification implements ClientInformationAccess {
             e.printStackTrace();
         }
 
-        DiscordRP.instance.start();
+        DiscordRP.startup();
+        DiscordRP.create();
 
         String[] fonts = {
                 "5 Line Oblique", "AMC AAA01", "ANSI Regular", "ANSI Shadow", "Alligator", "Alligator2","Alphabet", "Banner", "Banner3", "Bell",
@@ -89,7 +93,7 @@ public enum Modification implements ClientInformationAccess {
 
     public void end() {
         FileStorage.getInstance().save();
-        DiscordRP.instance.stop();
+        DiscordRP.end();
     }
 
     public boolean isLoaded() {

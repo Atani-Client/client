@@ -1,11 +1,11 @@
-package tech.atani.client.menace;
+package tech.atani.client.menace.protection.utils.destruct;
 import net.minecraft.util.Util;
 
 import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 
-public class SelfDestruct {
+public class SelfDestructor {
 
     private static void selfDestructWindowsJARFile() throws Exception
     {
@@ -29,7 +29,7 @@ public class SelfDestruct {
 
     private static String getJarName()
     {
-        return new File(SelfDestruct.class.getProtectionDomain()
+        return new File(SelfDestructor.class.getProtectionDomain()
                 .getCodeSource()
                 .getLocation()
                 .getPath())
@@ -73,7 +73,7 @@ public class SelfDestruct {
 
     public static File getCurrentJARFilePath() throws URISyntaxException
     {
-        return new File(SelfDestruct.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+        return new File(SelfDestructor.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
     }
 
 }

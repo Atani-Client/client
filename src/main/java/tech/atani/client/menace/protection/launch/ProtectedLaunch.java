@@ -1,4 +1,4 @@
-package tech.atani.client.menace;
+package tech.atani.client.menace.protection.launch;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -41,6 +41,8 @@ import org.lwjgl.opengl.OpenGLException;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 import tech.atani.client.loader.Injector;
 import tech.atani.client.feature.performance.memory.TextureFix;
+import tech.atani.client.menace.AtaniAuthScreen;
+import tech.atani.client.menace.UUIDHandler;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -90,7 +92,7 @@ public class ProtectedLaunch {
         final List<String> list = optionset.valuesOf(optionspec20);
 
         if (optionset.valueOf(ataniUUID) != null) {
-            UUIDHandler.parseUUID(optionset.valueOf(ataniUUID));
+            UUIDHandler.setInstance(new UUIDHandler(optionset.valueOf(ataniUUID)));
         } else {
             throw new RuntimeException("Atani UUID is null, please re-download the client.");
         }
@@ -368,7 +370,6 @@ public class ProtectedLaunch {
             textureFix.runFix();
         }
 
-        //AUTH TODO: Move this somewhere?
         mc.displayGuiScreen(new AtaniAuthScreen(new AtaniMainMenu()));
 
         mc.renderEngine.deleteTexture(mc.mojangLogo);

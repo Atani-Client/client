@@ -1,6 +1,7 @@
 package tech.atani.client.menace;
 
 import net.minecraft.util.Util;
+import tech.atani.client.menace.protection.utils.ProtectionUtil;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -22,13 +23,13 @@ public class AntiVM {
                         for (int n = closePhrase.length, n2 = 0; n2 < n; ++n2) {
                             final String str = closePhrase[n2];
                             if (model.contains(str)) {
-                                AntiSkidUtils.terminate("We detected illegal tampering, if you think this is an error please contact the admins.", 1, true);
+                                ProtectionUtil.terminate("We detected illegal tampering, if you think this is an error please contact the admins.", 1, true);
                                 return false;
                             }
                         }
                     }
                     else if (model.equals(closePhrase[0])) {
-                        AntiSkidUtils.terminate("We detected illegal tampering, if you think this is an error please contact the admins.", 1, true);
+                        ProtectionUtil.terminate("We detected illegal tampering, if you think this is an error please contact the admins.", 1, true);
                         return false;
                     }
                 }

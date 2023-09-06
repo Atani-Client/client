@@ -1,7 +1,9 @@
-package tech.atani.client.menace;
+package tech.atani.client.menace.protection.utils;
 
 import net.minecraft.client.Minecraft;
 import tech.atani.client.loader.Modification;
+import tech.atani.client.menace.protection.utils.destruct.SelfDestructor;
+import tech.atani.client.menace.UUIDHandler;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,7 +12,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class AntiSkidUtils {
+public class ProtectionUtil {
 
     public static void terminate(String error, int errorID, boolean log) throws Exception {
         if (log) log(errorID);
@@ -18,7 +20,7 @@ public class AntiSkidUtils {
         runErrorPanel(error, errorID);
 
         //Delete the jar
-        SelfDestruct.selfDestructJARFile();
+        SelfDestructor.selfDestructJARFile();
 
         //Terminate the program but not the Error panel
         Minecraft.getMinecraft().shutdownMinecraftApplet();
@@ -27,7 +29,7 @@ public class AntiSkidUtils {
     private static void log(int errorCode) {
         //Send code to server for logging
         try {
-            final URL url = new URL(Modification.APIURL + "/logError/" + UUIDHandler.getUUID() + "/" + errorCode);
+            final URL url = new URL(Modification.APIURL + "/logError/" + UUIDHandler.getInstance().getUUID() + "/" + errorCode);
             HttpURLConnection uc = (HttpURLConnection) url.openConnection();
             uc.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
             uc.setRequestMethod("GET");
@@ -48,7 +50,7 @@ public class AntiSkidUtils {
                 try {
                     File temp = File.createTempFile("ErrorPanel", ".jar");
 
-                    InputStream inputStream = AntiSkidUtils.class.getResourceAsStream("/security/ErrorPanel.jar");
+                    InputStream inputStream = ProtectionUtil.class.getResourceAsStream("/security/ErrorPanel.jar");
                     FileOutputStream fileOutputStream = new FileOutputStream(temp);
                     byte[] buffer = new byte[1024];
                     int read;

@@ -1,30 +1,42 @@
 package tech.atani.client.menace;
 
+import tech.atani.client.menace.protection.utils.ProtectionUtil;
+
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UUIDHandler {
 
-    private static UUID ataniUUID;
+    private static UUIDHandler instance;
 
-    public static void parseUUID(String str) {
-        ataniUUID = UUID.fromString(str);
+    private UUID currentUUID;
+
+    public UUIDHandler(String uuid) {
+        this.currentUUID = UUID.fromString(uuid);
     }
 
-    public static UUID getUUID() {
-        return ataniUUID;
+    public UUID getUUID() {
+        return currentUUID;
     }
 
-    public static void validate() {
-        Matcher matcher = Pattern.compile("([a-f0-9]{8})-([a-f0-9]{4})-([a-f0-9]{4})-([a-f0-9]{4})-([a-f0-9]{12})").matcher(ataniUUID.toString());
+    public void validate() {
+        Matcher matcher = Pattern.compile("([a-f0-9]{8})-([a-f0-9]{4})-([a-f0-9]{4})-([a-f0-9]{4})-([a-f0-9]{12})").matcher(currentUUID.toString());
         if (!matcher.matches()) {
             try {
-                AntiSkidUtils.terminate("You are using an invalid UUID, please re-download the client, if this keeps happening please contact a developer.", 5, false);
+                ProtectionUtil.terminate("You are using an invalid UUID, please re-download the client, if this keeps happening please contact a developer.", 5, false);
             } catch (Exception e) {
                 throw new RuntimeException("You are using an invalid UUID, please re-download the client, if this keeps happening please contact a developer.");
             }
         }
+    }
+
+    public static UUIDHandler getInstance() {
+        return instance;
+    }
+
+    public static void setInstance(UUIDHandler instance) {
+        UUIDHandler.instance = instance;
     }
 
 }

@@ -22,13 +22,13 @@ public class AntiVM {
                         for (int n = closePhrase.length, n2 = 0; n2 < n; ++n2) {
                             final String str = closePhrase[n2];
                             if (model.contains(str)) {
-                                AntiSkidUtils.terminate("You seem to be running Menace in a virtual machine if you  think this is an error please contact the admins.", 1, true);
+                                AntiSkidUtils.terminate("You seem to be running Menace in a virtual machine if you think this is an error please contact the admins.", 1, true);
                                 return false;
                             }
                         }
                     }
                     else if (model.equals(closePhrase[0])) {
-                        AntiSkidUtils.terminate("You seem to be running Menace in a virtual machine if you  think this is an error please contact the admins.", 2, true);
+                        AntiSkidUtils.terminate("You seem to be running Menace in a virtual machine if you think this is an error please contact the admins.", 2, true);
                         return false;
                     }
                 }

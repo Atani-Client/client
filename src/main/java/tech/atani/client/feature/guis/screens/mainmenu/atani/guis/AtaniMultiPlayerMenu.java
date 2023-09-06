@@ -19,6 +19,7 @@ import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
 import tech.atani.client.utility.discord.DiscordRP;
+import de.florianmichael.viamcp.ViaMCP;
 
 public class AtaniMultiPlayerMenu extends GuiScreen implements GuiYesNoCallback
 {
@@ -106,6 +107,8 @@ public class AtaniMultiPlayerMenu extends GuiScreen implements GuiYesNoCallback
         this.buttonList.add(new AtaniButton(3, this.width / 2 + 4 + 50, this.height - 52 - 20, 100, 20, I18n.format("selectServer.add", new Object[0])));
         this.buttonList.add(new AtaniButton(8, this.width / 2 + 4, this.height - 28 - 20, 70, 20, I18n.format("selectServer.refresh", new Object[0])));
         this.buttonList.add(new AtaniButton(0, this.width / 2 + 4 + 76, this.height - 28 - 20, 75, 20, I18n.format("gui.cancel", new Object[0])));
+        //TODO: Make an actually good looking slider
+        this.buttonList.add(ViaMCP.INSTANCE.getAsyncVersionSlider());
         this.selectServer(this.serverListSelector.func_148193_k());
     }
 

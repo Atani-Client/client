@@ -13,6 +13,7 @@ import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
+import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.crash.CrashReport;
@@ -51,6 +52,7 @@ import tech.atani.client.listener.event.minecraft.player.movement.SafeWalkEvent;
 import tech.atani.client.feature.module.impl.render.AntiBlind;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.performance.FastUUID;
+import tech.atani.client.listener.event.minecraft.player.movement.StepEvent;
 
 public abstract class Entity implements ICommandSender
 {
@@ -718,12 +720,17 @@ public abstract class Entity implements ICommandSender
 
             if (this.stepHeight > 0.0F && flag1 && (d3 != x || d5 != z))
             {
+                StepEvent stepEvent = null;
+                if (this == Minecraft.getMinecraft().thePlayer) {
+                    stepEvent = new StepEvent(StepEvent.StepState.PRE, this.stepHeight).publishItself();
+                }
+
                 double d11 = x;
                 double d7 = y;
                 double d8 = z;
                 AxisAlignedBB axisalignedbb3 = this.getEntityBoundingBox();
                 this.setEntityBoundingBox(axisalignedbb);
-                y = (double)this.stepHeight;
+                y = stepEvent != null ? stepEvent.getStepHeight() : this.stepHeight;
                 List<AxisAlignedBB> list = this.worldObj.getCollidingBoundingBoxes(this, this.getEntityBoundingBox().addCoord(d3, y, d5));
                 AxisAlignedBB axisalignedbb4 = this.getEntityBoundingBox();
                 AxisAlignedBB axisalignedbb5 = axisalignedbb4.addCoord(d3, 0.0D, d5);
@@ -807,6 +814,10 @@ public abstract class Entity implements ICommandSender
                     y = d7;
                     z = d8;
                     this.setEntityBoundingBox(axisalignedbb3);
+                } else {
+                    if (this == Minecraft.getMinecraft().thePlayer && stepEvent != null) {
+                        StepEvent postStep = new StepEvent(StepEvent.StepState.POST, (float) (stepEvent.getStepHeight() + y)).publishItself();
+                    }
                 }
             }
 

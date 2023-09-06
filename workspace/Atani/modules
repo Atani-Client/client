@@ -1,0 +1,854 @@
+{
+  "Modules": {
+    "mc.hypixel.net AntiBan": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "Reach": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Attack Range": "3.0",
+        "Fix Server-Side Misplace": "true"
+      }
+    },
+    "TriggerBot": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "CPS": "12.0"
+      }
+    },
+    "NoSlowDown": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Vanilla",
+        "Items": "Sword",
+        "Sword Forward": "1.0",
+        "Sword Strafe": "1.0",
+        "Food Forward": "1.0",
+        "Food Strafe": "1.0",
+        "Bow Forward": "1.0",
+        "Bow Strafe": "1.0"
+      }
+    },
+    "mc.survival-games.cz AntiBan": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "mc.hypixel.net QuickMath": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "NoAchievements": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "ClientCape": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Cape": "Menace 😔"
+      }
+    },
+    "FastPlace": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "InventoryMove": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "No Open Packet": "false",
+        "Carry": "false"
+      }
+    },
+    "NoFall": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Edit",
+        "Vulcan Mode": "Instant Motion",
+        "Modulo": "true"
+      }
+    },
+    "ClickGui": {
+      "Enabled": false,
+      "Key": 54,
+      "Values": {
+        "Mode": "Atani Simple",
+        "Opening Animation": "true",
+        "Dropdown Animation Mode": "Scale-In",
+        "Non-Dropdown Animation Mode": "Left to Right",
+        "Red": "255.0",
+        "Green": "197.0",
+        "Blue": "188.0"
+      }
+    },
+    "MCF": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "FastBreak": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Speed": "4.0"
+      }
+    },
+    "FastLadder": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Speed": "1.0"
+      }
+    },
+    "Crasher": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Swing"
+      }
+    },
+    "TickBase": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Max Balance": "100.0",
+        "Delay": "300.0",
+        "Range": "3.0"
+      }
+    },
+    "AutoTool": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "CustomScoreboard": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Background": "Normal",
+        "Custom Font": "true",
+        "Blur": "false",
+        "Bloom": "false"
+      }
+    },
+    "NameTags": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Vanilla"
+      }
+    },
+    "AntiTabComplete": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "AntiFireball": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Swing Mode": "Normal",
+        "Rotate": "true",
+        "Ray Trace": "true",
+        "Stop Move": "false",
+        "Radius": "3.0"
+      }
+    },
+    "mc.qplay.cz AutoPig": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Health": "3.0",
+        "Delay": "500.0"
+      }
+    },
+    "AutoLogin": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Login": "true",
+        "Register": "true",
+        "Notify": "true"
+      }
+    },
+    "NoJumpDelay": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "ClientOverlay": {
+      "Enabled": true,
+      "Key": 0
+    },
+    "Timer": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Time Speed": "1.0"
+      }
+    },
+    "NoClickDelay": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "AutoArmor": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Open Inventory": "true",
+        "Minimum Start Delay": "250.0",
+        "Maximum Start Delay": "300.0",
+        "Minimum Throw Delay": "250.0",
+        "Maximum Throw Delay": "300.0"
+      }
+    },
+    "mc.hypixel.net AutoGG": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Delay": "1000.0"
+      }
+    },
+    "Spider": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Jump",
+        "Jump Only": "false"
+      }
+    },
+    "Aspect": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Aspect": "1.0",
+        "Hands": "true"
+      }
+    },
+    "PingSpoof": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Minimum Delay": "1500.0",
+        "Maximum Delay": "2000.0"
+      }
+    },
+    "Ambience": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Time": "17201.0",
+        "Weather": "Clear"
+      }
+    },
+    "WaterMark": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Watermark Mode": "Atani Simple"
+      }
+    },
+    "NoWeb": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Vanilla"
+      }
+    },
+    "Parkour": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Jump Delay": "30.0"
+      }
+    },
+    "CustomChat": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Background": "Normal",
+        "Unlimited Chat": "false",
+        "Custom Font": "false",
+        "Blur": "false",
+        "Bloom": "false"
+      }
+    },
+    "AntiBlind": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "AttackParticles": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Critical": "0.0",
+        "Critical Magic": "0.0"
+      }
+    },
+    "Velocity": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Mode": "Simple",
+        "Horizontal %": "0.0",
+        "Vertical %": "0.0",
+        "Reduce": "0.6000000238418579"
+      }
+    },
+    "ParticleMultiplier": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Multiplier": "1.0"
+      }
+    },
+    "KeepKB": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Sprint Reset",
+        "KillAura Only": "true",
+        "Minimum Delay": "50.0",
+        "Maximum Delay": "60.0"
+      }
+    },
+    "TargetStrafe": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Size": "2.5",
+        "Jump Only": "false",
+        "Controllable": "true",
+        "Void Check": "true",
+        "Collide Check": "true"
+      }
+    },
+    "AntiVoid": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Flag",
+        "Void Check": "true"
+      }
+    },
+    "Blink": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Incoming": "false",
+        "Pulse": "false",
+        "Pulse Delay": "150.0"
+      }
+    },
+    "HitAnimations": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Swing Speed": "1.2000000476837158",
+        "Smooth Swing": "false"
+      }
+    },
+    "CorrectMovement": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Strict"
+      }
+    },
+    "ChinaHat": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Width": "0.699999988079071",
+        "Height": "0.4000000059604645",
+        "Color": "true",
+        "Color Mode": "Static",
+        "Red": "255.0",
+        "Green": "255.0",
+        "Blue": "255.0",
+        "Second Red": "255.0",
+        "Second Green": "255.0",
+        "Second Blue": "255.0",
+        "Dark Factor": "0.49000000953674316"
+      }
+    },
+    "Extinguish": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "CustomTabList": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Background": "Normal",
+        "Custom Font": "false",
+        "Blur": "false",
+        "Bloom": "false"
+      }
+    },
+    "KillInsult": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Languge": "English"
+      }
+    },
+    "ChestStealer": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Minimum Start Delay": "250.0",
+        "Maximum Start Delay": "300.0",
+        "Minimum Grab Delay": "250.0",
+        "Maximum Grab Delay": "300.0",
+        "Intelligent": "true",
+        "Stack items": "false",
+        "Random Pick": "true",
+        "Auto Close": "true"
+      }
+    },
+    "AutoGL": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "ParticleTimer": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Time Speed": "0.20000000298023224"
+      }
+    },
+    "AutoRespawn": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Instant": "true"
+      }
+    },
+    "ESP": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Mode": "2D",
+        "2D Mode": "Corners",
+        "Background": "false",
+        "Border": "true",
+        "Background Opacity": "110.0",
+        "Width": "2.0",
+        "Range Limited": "false",
+        "Health": "true",
+        "Range": "100.0",
+        "Players": "true",
+        "Animals": "true",
+        "Monsters": "true",
+        "Invisibles": "true",
+        "Color": "true",
+        "Color Mode": "Static",
+        "Red": "255.0",
+        "Green": "255.0",
+        "Blue": "255.0",
+        "Second Red": "255.0",
+        "Second Green": "255.0",
+        "Second Blue": "255.0",
+        "Dark Factor": "0.49000000953674316"
+      }
+    },
+    "AntiAntiSwear": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Languages": "English",
+        "Mode": "Parentheses"
+      }
+    },
+    "Test": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "AntiBot": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Watchdog"
+      }
+    },
+    "Backtrack": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Packet",
+        "Packets": "Select",
+        "Delay": "450.0",
+        "Maximum Range": "6.0",
+        "Only When Out of Reach": "true",
+        "Min Range": "2.9000000953674316",
+        "Max Start Range": "3.200000047683716",
+        "Max Active Range": "5.0",
+        "Min Delay": "100.0",
+        "Max Delay": "200.0",
+        "Max Hurt Time": "6.0",
+        "Sync HT with Ping": "true",
+        "Min Release Range": "3.200000047683716",
+        "Only KillAura": "true",
+        "Release on Velocity": "true",
+        "Release on Flag": "true",
+        "Players": "true",
+        "Animals": "true",
+        "Monsters": "true",
+        "Invisibles": "true"
+      }
+    },
+    "ViewModel": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "X Position": "0.5600000023841858",
+        "Y Position": "0.5199999809265137",
+        "Item Scale": "0.4000000059604645"
+      }
+    },
+    "AdBlocker": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "PostProcessing": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Bloom": "true",
+        "Radius": "10.0",
+        "Blur": "true"
+      }
+    },
+    "Eagle": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Sneak Delay": "30.0"
+      }
+    },
+    "Criticals": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Packet"
+      }
+    },
+    "mc.hypixel.net AutoBounty": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Minimum Bounty": "500.0"
+      }
+    },
+    "ModuleList": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Module List Mode": "Atani Modern",
+        "Hide Categories": "Hud,Chat,Options,Render",
+        "Red": "255.0",
+        "Green": "255.0",
+        "Blue": "255.0"
+      }
+    },
+    "FontRenderer": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Mode": "Modern"
+      }
+    },
+    "Disabler": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Custom",
+        "C00KeepAlive": "false",
+        "C0FConfirmTransaction": "false",
+        "S2BChangeGameState": "false",
+        "S07Respawn": "false",
+        "C0BEntityAction": "false",
+        "S05SpawnPosition": "false",
+        "C0CInput": "false"
+      }
+    },
+    "BlockAnimations": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Style": "Atani",
+        "Block Hit": "true",
+        "Fake": "false",
+        "KillAura Only": "true"
+      }
+    },
+    "Teams": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Vanilla": "false",
+        "Armor Color": "false",
+        "Tab Color": "true"
+      }
+    },
+    "ScaffoldWalk": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Rotations": "Reverse Advanced",
+        "Minimum Yaw": "40.0",
+        "Maximum Yaw": "40.0",
+        "Minimum Pitch": "40.0",
+        "Maximum Pitch": "40.0",
+        "Swing Client-Side": "true",
+        "Minimum Start Yaw": "4.0",
+        "Maximum Start Yaw": "5.0",
+        "Minimum Start Pitch": "4.0",
+        "Maximum Start Pitch": "5.0",
+        "Sprint": "false",
+        "Switch Items": "true",
+        "Reverse Movement": "false",
+        "Add Strafe": "false",
+        "Delay": "0.0",
+        "Sneak": "false",
+        "SafeWalk": "false",
+        "Sneak Mode": "Edge",
+        "Unsneak delay": "0.0",
+        "Verus Speed Boost": "false"
+      }
+    },
+    "eu.loyisa.cn AutoHeal": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Min Health": "5.0",
+        "Delay": "500.0"
+      }
+    },
+    "Speed": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "BHop",
+        "Spartan Mode": "Normal",
+        "Vulcan Mode": "Normal",
+        "Incognito Mode": "Normal",
+        "NCP Mode": "Custom",
+        "Lowhop Timer Mode": "Normal",
+        "Old NCP Mode": "Timer",
+        "Verus Mode": "Normal",
+        "WatchDog Mode": "Normal",
+        "Boost": "1.2000000476837158",
+        "Jump Height": "0.4099999964237213",
+        "Verus Ground Speed": "0.5299999713897705",
+        "Verus Air Speed": "0.33000001311302185",
+        "Verus Speed Boost": "3.0",
+        "Verus Custom Mode": "Normal",
+        "Verus Float Ticks": "5.0",
+        "Custom Low Mode": "Normal",
+        "Low Mode": "Normal",
+        "NCP Jump Motion": "0.41",
+        "NCP Ground Speed": "0.485",
+        "onGround Speed Boost": "3.0",
+        "NCP onGround Timer": "2.0",
+        "NCP In Air Timer": "1.0",
+        "NCP Motion Modification": "true",
+        "NCP Motion Lowered": "0.1",
+        "Motion Y": "0.42",
+        "Air Speed": "1.0",
+        "Friction": "0.42",
+        "Ground Speed": "1.0",
+        "Timer": "1.0",
+        "Strafe": "false",
+        "Sprint": "true",
+        "Stop": "false",
+        "Y-Port": "false",
+        "Minus Motion Y": "0.42"
+      }
+    },
+    "AntiDumbMessages": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "InventoryManager": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Open Inventory": "true",
+        "Minimum Start Delay": "250.0",
+        "Maximum Start Delay": "300.0",
+        "Minimum Throw Delay": "250.0",
+        "Maximum Throw Delay": "300.0",
+        "Prefer Swords": "true",
+        "Keep Tools": "true",
+        "Weapon Slot": "1.0",
+        "Bow Slot": "2.0",
+        "Pickaxe Slot": "0.0",
+        "Axe Slot": "0.0",
+        "Shovel Slot": "0.0"
+      }
+    },
+    "FullBright": {
+      "Enabled": true,
+      "Key": 0
+    },
+    "Step": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Vanilla",
+        "NCP Mode": "Normal",
+        "Height": "2.0"
+      }
+    },
+    "Flight": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Vanilla",
+        "Vulcan Mode": "Normal",
+        "Grim Mode": "Explosion",
+        "Verus Mode": "Damage",
+        "Time": "10.0",
+        "Timer": "0.20000000298023224",
+        "Speed": "1.399999976158142"
+      }
+    },
+    "NoRotate": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "FakePlayer": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "HackerDetector": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "LightningDetector": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "SafeWalk": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "mc.hypixel.net AutoReconnect": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "KillAura": {
+      "Enabled": false,
+      "Key": 19,
+      "Values": {
+        "Search Range": "4.0",
+        "Target Mode": "Single",
+        "Priority": "Health",
+        "Switch Delay": "300.0",
+        "Players": "true",
+        "Animals": "true",
+        "Monsters": "true",
+        "Invisibles": "true",
+        "Walls": "true",
+        "FOV": "90.0",
+        "Attack Range": "3.0",
+        "Fix Misplace": "true",
+        "Delay Clicks": "true",
+        "Wait for": "CPS",
+        "CPS": "12.0",
+        "Randomize CPS": "true",
+        "Lock-view": "false",
+        "Snap Yaw": "false",
+        "Snap Pitch": "false",
+        "Aim Vector": "Perfect",
+        "Height Divisor": "2.0",
+        "Necessary Rotations": "false",
+        "Necessary Mode": "Both",
+        "Skip If Near": "true",
+        "Near Distance": "0.5",
+        "Minimum Yaw": "40.0",
+        "Maximum Yaw": "40.0",
+        "Minimum Pitch": "40.0",
+        "Maximum Pitch": "40.0",
+        "Mouse Fix": "true",
+        "Heuristics": "true",
+        "Min Random Yaw": "0.0",
+        "Max Random Yaw": "0.0",
+        "Min Random Pitch": "0.0",
+        "Max Random Pitch": "0.0",
+        "Prediction": "false"
+      }
+    },
+    "Jesus": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Solid"
+      }
+    },
+    "Plugins": {
+      "Enabled": false,
+      "Key": 0
+    },
+    "ClientSpoofer": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "Lunar"
+      }
+    },
+    "LongJump": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Mode": "NCP",
+        "Height": "4.0"
+      }
+    },
+    "Sprint": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Legit": "true",
+        "All Directions": "false"
+      }
+    },
+    "Regen": {
+      "Enabled": false,
+      "Key": 0,
+      "Values": {
+        "Health": "15.0",
+        "Packets": "10.0"
+      }
+    },
+    "TargetHUD": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Mode": "Menace",
+        "Follow Target HUD": "false",
+        "Red": "255.0",
+        "Green": "255.0",
+        "Blue": "255.0"
+      }
+    },
+    "Theme": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Preset": "None"
+      }
+    },
+    "Security": {
+      "Enabled": true,
+      "Key": 0,
+      "Values": {
+        "Anti Resource Pack Exploit": "true",
+        "Anti Crash Exploits": "true"
+      }
+    }
+  }
+}

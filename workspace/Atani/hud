@@ -1,0 +1,75 @@
+{
+  "HUD": {
+    "Elements": {
+      "Not": {},
+      "Watermark": {
+        "Augustus 2.6": {},
+        "Koks": {},
+        "Tarasande": {},
+        "Atani Simple": {},
+        "Fatality": {},
+        "Xave": {},
+        "Atani Modern": {
+          "Values": {
+            "Red": "255.0",
+            "Green": "255.0",
+            "Blue": "255.0"
+          }
+        },
+        "Atani Golden": {},
+        "Ryu": {},
+        "Icarus": {}
+      },
+      "Module List": {
+        "Tarasande": {},
+        "Fatality": {},
+        "Atani Modern": {
+          "Values": {
+            "Red": "255.0",
+            "Green": "255.0",
+            "Blue": "255.0"
+          }
+        },
+        "Xave": {},
+        "Atani Golden": {},
+        "Koks": {},
+        "Ryu": {},
+        "Augustus 2.6": {},
+        "Atani Simple": {},
+        "Custom": {
+          "Values": {
+            "Module List Position": "Left",
+            "Custom Color Mode": "Static",
+            "Red": "255.0",
+            "Green": "255.0",
+            "Blue": "255.0",
+            "Second Red": "255.0",
+            "Second Green": "255.0",
+            "Second Blue": "255.0",
+            "Dark Factor": "0.49000000953674316",
+            "Rect Width": "2.0",
+            "Rect Height": "1.0",
+            "Render Shaders": "true",
+            "Render Blur": "true",
+            "Render Bloom": "true",
+            "Suffix": "true",
+            "Suffix Mode": "nm sfx",
+            "Suffix Color": "Gray",
+            "Font": "Minecraft",
+            "Font Size": "19.0",
+            "Background Brightness": "0.0",
+            "Background Opacity": "180.0",
+            "X Offset": "0.0",
+            "Y Offset": "0.0",
+            "Font Shadow": "true"
+          }
+        },
+        "Icarus": {}
+      },
+      "Target HUD": {},
+      "Click GUI": {},
+      "Main Menu": {}
+    },
+    "Screens": {}
+  }
+}

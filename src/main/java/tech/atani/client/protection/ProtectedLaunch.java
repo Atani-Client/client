@@ -40,6 +40,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.OpenGLException;
+import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 import tech.atani.client.loader.Injector;
 import tech.atani.client.feature.performance.memory.TextureFix;
 
@@ -85,9 +86,17 @@ public class ProtectedLaunch {
         final OptionSpec<String> optionspec17 = optionparser.accepts("profileProperties").withRequiredArg().defaultsTo("{}", new String[0]);
         final OptionSpec<String> optionspec18 = optionparser.accepts("assetIndex").withRequiredArg();
         final OptionSpec<String> optionspec19 = optionparser.accepts("userType").withRequiredArg().defaultsTo("legacy", new String[0]);
+        final OptionSpec<String> ataniUUID = optionparser.accepts("ataniUUID").withRequiredArg();
         final OptionSpec<String> optionspec20 = optionparser.nonOptions();
         final OptionSet optionset = optionparser.parse(args);
         final List<String> list = optionset.valuesOf(optionspec20);
+
+        if (optionset.valueOf(ataniUUID) != null) {
+            UUIDHandler.parseUUID(optionset.valueOf(ataniUUID));
+        } else {
+            throw new RuntimeException("Atani UUID is null, please re-download the client.");
+        }
+
         if (!list.isEmpty()) {
             System.out.println("Completely ignored arguments: " + list);
         }
@@ -361,14 +370,8 @@ public class ProtectedLaunch {
             textureFix.runFix();
         }
 
-        if (mc.serverName != null)
-        {
-            mc.displayGuiScreen(new GuiConnecting(new GuiMainMenu(), mc, mc.serverName, mc.serverPort));
-        }
-        else
-        {
-            mc.displayGuiScreen(new GuiMainMenu());
-        }
+        //AUTH TODO: Move this somewhere?
+        mc.displayGuiScreen(new AtaniAuthScreen(new AtaniMainMenu()));
 
         mc.renderEngine.deleteTexture(mc.mojangLogo);
         mc.mojangLogo = null;

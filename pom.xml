@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>net.marcloud.mcp.189</groupId>
-    <artifactId>MCP</artifactId>
-    <version>1.8.9</version>
-    <description>MCP for 1.8.9</description>
+    <groupId>tech.atani</groupId>
+    <artifactId>Atani</artifactId>
+    <version>1.0.0</version>
+    <description>Atani Client</description>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -59,6 +59,11 @@
         <repository>
             <id>litarvan</id>
             <url>https://litarvan.github.io/maven</url>
+        </repository>
+
+        <repository>
+            <id>viaversion-repo</id>
+            <url>https://repo.viaversion.com</url>
         </repository>
     </repositories>
 
@@ -278,6 +283,31 @@
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-graphics</artifactId>
             <version>18</version>
+        </dependency>
+
+        <!-- ViaMCP -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.viaversion</groupId>
+            <artifactId>viaversion</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.viaversion</groupId>
+            <artifactId>viabackwards</artifactId>
+            <version>LATEST</version>
+        </dependency>
+
+        <dependency>
+            <groupId>de.gerrygames.viarewind</groupId>
+            <artifactId>viarewind-core</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

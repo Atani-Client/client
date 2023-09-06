@@ -366,6 +366,57 @@ public class RenderUtil implements Methods {
         GL11.glColor3f(255, 255, 255);
     }
 
+    public static void drawRoundedRect(float startX, float startY, float endX, float endY, float radius, int color) {
+        float alpha = (color >> 24 & 0xFF) / 255.0F;
+        float red = (color >> 16 & 0xFF) / 255.0F;
+        float green = (color >> 8 & 0xFF) / 255.0F;
+        float blue = (color & 0xFF) / 255.0F;
+
+        float z = 0;
+        if (startX > endX) {
+            z = startX;
+            startX = endX;
+            endX = z;
+        }
+
+        if (startY > endY) {
+            z = startY;
+            startY = endY;
+            endY = z;
+        }
+
+        double x1 = startX + radius;
+        double y1 = startY + radius;
+        double x2 = endX - radius;
+        double y2 = endY - radius;
+
+        GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
+        GlStateManager.disableTexture2D();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_LINE_SMOOTH);
+        GL11.glLineWidth(1);
+
+        GlStateManager.color(red, green, blue, alpha);
+        GlStateManager.glBegin(GL11.GL_POLYGON);
+
+        double degree = Math.PI / 180;
+        for (double i = 0; i <= 90; i += 1)
+            GL11.glVertex2d(x2 + Math.sin(i * degree) * radius, y2 + Math.cos(i * degree) * radius);
+        for (double i = 90; i <= 180; i += 1)
+            GL11.glVertex2d(x2 + Math.sin(i * degree) * radius, y1 + Math.cos(i * degree) * radius);
+        for (double i = 180; i <= 270; i += 1)
+            GL11.glVertex2d(x1 + Math.sin(i * degree) * radius, y1 + Math.cos(i * degree) * radius);
+        for (double i = 270; i <= 360; i += 1)
+            GL11.glVertex2d(x1 + Math.sin(i * degree) * radius, y2 + Math.cos(i * degree) * radius);
+        GlStateManager.glEnd();
+
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+        GL11.glDisable(GL11.GL_LINE_SMOOTH);
+        GlStateManager.popMatrix();
+    }
+
     public static boolean isHovered(float mouseX, float mouseY, float x, float y, float width, float height) {
         return mouseX >= x && mouseY >= y && mouseX < x + width && mouseY < y + height;
     }

@@ -28,7 +28,7 @@ public class QuickMathSolver extends Module {
         if (event.getPacket() instanceof S02PacketChat) {
             String unformatted = EnumChatFormatting.getTextWithoutFormattingCodes(((S02PacketChat) event.getPacket()).getChatComponent().getUnformattedText()), text = unformatted.replace(" ", "");
 
-            if (mode.getValue().equals("Hypixel") || mode.getValue().equals("Quickmaths")) {
+            if (mode.is("Hypixel") || mode.is("Quickmaths")) {
                 if (unformatted.contains("QUICK MATHS! Solve: ") || unformatted.contains("[QM] QuickMaths: ")) {
                     String[] array = ((S02PacketChat) event.getPacket()).getChatComponent().getUnformattedText().split(mode.is("Hypixel") ? "Solve: " : "QuickMaths: ");
                     ScriptEngineManager mgr = new ScriptEngineManager();

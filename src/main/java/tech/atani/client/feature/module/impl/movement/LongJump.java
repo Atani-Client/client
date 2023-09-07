@@ -19,7 +19,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "LongJump", description = "Jumps long", category = Category.MOVEMENT)
 public class LongJump extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"NCP", "Test", "Vulcan", "Intave"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"NCP", "Vulcan", "Intave"});
     private final SliderValue<Float> vulcanHeight = new SliderValue<Float>("Height", "High high will the player jump?", this, 4F, 0.4F, 10F, 0, new Supplier[]{() -> mode.is("Vulcan")});
 
     // NCP
@@ -29,12 +29,7 @@ public class LongJump extends Module {
     // Vulcan
     private int vulcanClips = 0;
     private boolean vulcanJumped;
-
-    // Test
-    private float testSpeed;
-    private int testTicks;
-    private double strartY;
-    private final TimeHelper testTimer = new TimeHelper();
+    private final TimeHelper vulcanTimer = new TimeHelper();
 
     @Override
     public String getSuffix() {
@@ -59,6 +54,9 @@ public class LongJump extends Module {
 
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+
         if(packetEvent.getType() == PacketEvent.Type.INCOMING) {
             switch(mode.getValue()) {
             case "Vulcan":
@@ -126,7 +124,7 @@ public class LongJump extends Module {
                 } else {
                     vulcanJumped = true;
 
-                    if(testTimer.hasReached(145, true)) {
+                    if(vulcanTimer.hasReached(145, true)) {
                         Methods.mc.thePlayer.motionY = -0.1476D;
                     } else {
                         Methods.mc.thePlayer.motionY = -0.0975D;
@@ -134,43 +132,9 @@ public class LongJump extends Module {
                 }
             }
             break;
-            case "Test":
-                if(Methods.mc.thePlayer.onGround) {
-                    strartY = mc.thePlayer.posY;
-                    testTicks = 0;
-                } else {
-                    testTicks++;
-                }
-                switch (testTicks) {
-                    case 0:
-                        Methods.mc.thePlayer.jump();
-                    //    testSpeed = 0.33F;
-                        break;
-                    case 1:
-                        mc.thePlayer.motionY += 0.2;
-                        break;
-                }
-
-                if(Methods.mc.thePlayer.moveForward > 0 && Methods.mc.thePlayer.moveStrafing == 0)
-                    MoveUtil.strafe(testSpeed);
-                break;
         }
     }
 
-
-    @Listen
-    public void onPacketEvent(PacketEvent event) {
-        if(mode.is("Test")) {
-            if(event.getPacket() instanceof C03PacketPlayer) {
-                double y = 0.42;
-                for (int i = 0; i < testTicks - 1; i++) {
-                    y = (y - 0.08) * 0.98F;
-                }
-
-                ((C03PacketPlayer) event.getPacket()).y = strartY + y;
-            }
-        }
-    }
     @Override
     public void onEnable() {
         vulcanClips = 0;
@@ -181,7 +145,7 @@ public class LongJump extends Module {
     public void onDisable() {
         vulcanClips = 0;
         vulcanJumped = false;
-        Methods.mc.timer.timerSpeed = 1;
-        Methods.mc.gameSettings.keyBindJump.pressed = false;
+        mc.timer.timerSpeed = 1;
+        mc.gameSettings.keyBindJump.pressed = false;
     }
 }

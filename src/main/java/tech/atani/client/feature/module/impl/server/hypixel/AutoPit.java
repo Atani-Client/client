@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.server.hypixel;
 
+import com.google.common.base.Supplier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.client.C01PacketChatMessage;
@@ -27,7 +28,7 @@ public class AutoPit extends Module {
     private final CheckBoxValue quickMath = new CheckBoxValue("Quick Math Solver", "Should the module solve quick math games?", this, true);
     private final CheckBoxValue autoBounty = new CheckBoxValue("Auto Bounty", "Should the module highlight players with high bounties?", this, true);
 
-    private final SliderValue<Integer> minBounty = new SliderValue<>("Minimum Bounty", "What should be the minimum bounty?", this, 500, 50, 5000, 0);
+    private final SliderValue<Integer> minBounty = new SliderValue<>("Minimum Bounty", "What should be the minimum bounty?", this, 500, 50, 5000, 0, new Supplier[]{autoBounty::isEnabled});
 
     private final List<Entity> entities = new CopyOnWriteArrayList<>();
 

@@ -17,7 +17,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "WaterMark", description = "Shows a watermark", category = Category.HUD)
 public class WaterMark extends Module implements ColorPalette, IClientOverlayComponent {
 
-    public StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Tarasande"}, new ValueChangeListener[]{new ValueChangeListener() {
+    public StringBoxValue watermarkMode = new StringBoxValue("Watermark Mode", "Which watermark will be displayed?", this, new String[]{"None", "Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Tarasande", "OHareWare"}, new ValueChangeListener[]{new ValueChangeListener() {
         @Override
         public void onChange(Stage stage, Value value, Object oldValue, Object newValue) {
             try {

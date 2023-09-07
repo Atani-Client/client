@@ -95,11 +95,9 @@ public class ProtectedLaunch {
         if (optionset.valueOf(ataniUUID) != null) {
             UUIDHandler.setInstance(new UUIDHandler(optionset.valueOf(ataniUUID)));
         } else {
-            throw new RuntimeException("Atani UUID is null, please re-download the client.");
+            throw new RuntimeException();
         }
-
-        int lmao = Keyboard.KEY_F6;
-
+        
         if (!list.isEmpty()) {
             System.out.println("Completely ignored arguments: " + list);
         }

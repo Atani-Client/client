@@ -10,7 +10,7 @@ public class UUIDHandler {
 
     private static UUIDHandler instance;
 
-    private UUID currentUUID;
+    private final UUID currentUUID;
 
     public UUIDHandler(String uuid) {
         this.currentUUID = UUID.fromString(uuid);

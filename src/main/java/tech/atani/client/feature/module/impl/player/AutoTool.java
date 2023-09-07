@@ -8,12 +8,16 @@ import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.utility.interfaces.Methods;
 
 @ModuleData(name = "AutoTool", description = "Switches to best tools", category = Category.PLAYER)
 public class AutoTool extends Module {
 
     @Listen
     public void onMotionEvent(UpdateMotionEvent event) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+        
         if(event.getType() == UpdateMotionEvent.Type.MID) {
             if (!mc.gameSettings.keyBindAttack.isKeyDown())
                 return;

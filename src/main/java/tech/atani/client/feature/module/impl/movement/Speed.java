@@ -13,6 +13,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.processor.impl.BalanceProcessor;
+import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
@@ -866,7 +867,10 @@ public class Speed extends Module {
     }
 
     @Listen
-    public final void onPacket(PacketEvent packetEvent) {
+    public final void onPacketEvent(PacketEvent packetEvent) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+
         switch (mode.getValue()) {
             case "Vulcan":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {

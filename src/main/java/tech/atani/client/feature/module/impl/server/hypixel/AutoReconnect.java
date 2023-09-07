@@ -8,12 +8,16 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
+import tech.atani.client.utility.interfaces.Methods;
 
 @ModuleData(name = "AutoReconnect", identifier = "mc.hypixel.net AutoReconnect", description = "Automatically reconnects to games.", category = Category.SERVER, supportedIPs = {"mc.hypixel.net"})
 public class AutoReconnect extends Module {
 
     @Listen
-    public void onPacketEvent(PacketEvent event) {
+    public void onPacket(PacketEvent event) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+
         if(event.getPacket() instanceof S02PacketChat) {
             String unformatted = EnumChatFormatting.getTextWithoutFormattingCodes(((S02PacketChat)event.getPacket()).getChatComponent().getUnformattedText()), text = unformatted.replace(" ", "");
             if(unformatted.contains("Flying or related")) {

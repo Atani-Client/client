@@ -11,6 +11,7 @@ import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
@@ -27,6 +28,9 @@ public class Spider extends Module {
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+
         if(canClimbWall() && mode.getValue().equals("Vulcan")) {
             if(packetEvent.getPacket() instanceof C03PacketPlayer) {
                 C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
@@ -51,6 +55,9 @@ public class Spider extends Module {
 
     @Listen
     public void onCollisionBoxes(CollisionBoxesEvent collisionBoxesEvent) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+
         if(canClimbWall()) {
             switch(mode.getValue()) {
             case "Collision":

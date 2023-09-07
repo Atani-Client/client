@@ -18,6 +18,7 @@ import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
 
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
@@ -125,9 +126,8 @@ public class NoSlowDown extends Module {
 
     @Listen
     public void onTickEvent(RunTickEvent event) {
-        if(mc.thePlayer == null || mc.theWorld == null) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
-        }
 
         switch (mode.getValue()) {
             case "Grim":

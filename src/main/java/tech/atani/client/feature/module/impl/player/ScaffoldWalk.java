@@ -83,6 +83,7 @@ public class ScaffoldWalk extends Module {
     public final void onTick(RunTickEvent runTickEvent) {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
+
         if(Methods.mc.thePlayer.motionX == 0.0 && Methods.mc.thePlayer.motionZ == 0.0 && Methods.mc.thePlayer.onGround) {
             starting = true;
             startingTimeHelper.reset();

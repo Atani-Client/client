@@ -25,39 +25,24 @@ public class QuickMathSolver extends Module {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
 
-        if(event.getPacket() instanceof S02PacketChat) {
-            String unformatted = EnumChatFormatting.getTextWithoutFormattingCodes(((S02PacketChat)event.getPacket()).getChatComponent().getUnformattedText()), text = unformatted.replace(" ", "");
+        if (event.getPacket() instanceof S02PacketChat) {
+            String unformatted = EnumChatFormatting.getTextWithoutFormattingCodes(((S02PacketChat) event.getPacket()).getChatComponent().getUnformattedText()), text = unformatted.replace(" ", "");
 
-            switch (mode.getValue()) {
-                case "Hypixel":
-                    if(unformatted.contains("QUICK MATHS! Solve: ")) {
-                        String[] array = ((S02PacketChat) event.getPacket()).getChatComponent().getUnformattedText().split("Solve: ");
-                        ScriptEngineManager mgr = new ScriptEngineManager();
-                        ScriptEngine engine = mgr.getEngineByName("JavaScript");
+            if (mode.getValue().equals("Hypixel") || mode.getValue().equals("Quickmaths")) {
+                if (unformatted.contains("QUICK MATHS! Solve: ") || unformatted.contains("[QM] QuickMaths: ")) {
+                    String[] array = ((S02PacketChat) event.getPacket()).getChatComponent().getUnformattedText().split(mode.is("Hypixel") ? "Solve: " : "QuickMaths: ");
+                    ScriptEngineManager mgr = new ScriptEngineManager();
+                    ScriptEngine engine = mgr.getEngineByName("JavaScript");
 
-                        try {
-                            sendPacketUnlogged(new C01PacketChatMessage(engine.eval(array[1].replace("x", "*")).toString()));
-                        } catch (ScriptException he) {
-                            he.printStackTrace();
-                        }
+                    try {
+                        sendPacketUnlogged(new C01PacketChatMessage(engine.eval(array[1].replace("x", "*")).toString()));
+                    } catch (ScriptException he) {
+                        he.printStackTrace();
                     }
-                    break;
-                case "Quickmaths":
-                    if(unformatted.contains("[QM] QuickMaths: ")) {
-                        String[] array = ((S02PacketChat) event.getPacket()).getChatComponent().getUnformattedText().split("QuickMaths: ");
-                        ScriptEngineManager mgr = new ScriptEngineManager();
-                        ScriptEngine engine = mgr.getEngineByName("JavaScript");
-
-                        try {
-                            sendPacketUnlogged(new C01PacketChatMessage(engine.eval(array[1].replace("x", "*")).toString()));
-                        } catch (ScriptException he) {
-                            he.printStackTrace();
-                        }
-                    }
-                    break;
+                }
             }
-
         }
+
     }
 
     @Override

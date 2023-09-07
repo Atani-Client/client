@@ -36,6 +36,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.OpenGLException;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
@@ -96,6 +97,8 @@ public class ProtectedLaunch {
         } else {
             throw new RuntimeException("Atani UUID is null, please re-download the client.");
         }
+
+        int lmao = Keyboard.KEY_F6;
 
         if (!list.isEmpty()) {
             System.out.println("Completely ignored arguments: " + list);

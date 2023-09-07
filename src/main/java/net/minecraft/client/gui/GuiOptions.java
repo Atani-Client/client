@@ -221,10 +221,6 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
                 {
                     this.mc.displayGuiScreen(new GuiStreamOptions(this, this.game_settings_1));
                 }
-                else
-                {
-                    GuiStreamUnavailable.func_152321_a(this);
-                }
             }
         }
     }

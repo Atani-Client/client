@@ -6,6 +6,7 @@ import net.minecraft.util.EnumChatFormatting;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;
@@ -17,6 +18,8 @@ import javax.script.ScriptException;
 @ModuleData(name = "QuickMathSolver", description = "Automatically solves quick maths", category = Category.CHAT)
 public class QuickMathSolver extends Module {
 
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Hypixel", "Quickmaths"});
+
     @Listen
     public void onPacket(PacketEvent event) {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
@@ -24,17 +27,36 @@ public class QuickMathSolver extends Module {
 
         if(event.getPacket() instanceof S02PacketChat) {
             String unformatted = EnumChatFormatting.getTextWithoutFormattingCodes(((S02PacketChat)event.getPacket()).getChatComponent().getUnformattedText()), text = unformatted.replace(" ", "");
-            if(unformatted.contains("QUICK MATHS! Solve: ")) {
-                String[] array = ((S02PacketChat) event.getPacket()).getChatComponent().getUnformattedText().split("Solve: ");
-                ScriptEngineManager mgr = new ScriptEngineManager();
-                ScriptEngine engine = mgr.getEngineByName("JavaScript");
 
-                try {
-                    sendPacketUnlogged(new C01PacketChatMessage(engine.eval(array[1].replace("x", "*")).toString()));
-                } catch (ScriptException he) {
-                    he.printStackTrace();
-                }
+            switch (mode.getValue()) {
+                case "Hypixel":
+                    if(unformatted.contains("QUICK MATHS! Solve: ")) {
+                        String[] array = ((S02PacketChat) event.getPacket()).getChatComponent().getUnformattedText().split("Solve: ");
+                        ScriptEngineManager mgr = new ScriptEngineManager();
+                        ScriptEngine engine = mgr.getEngineByName("JavaScript");
+
+                        try {
+                            sendPacketUnlogged(new C01PacketChatMessage(engine.eval(array[1].replace("x", "*")).toString()));
+                        } catch (ScriptException he) {
+                            he.printStackTrace();
+                        }
+                    }
+                    break;
+                case "Quickmaths":
+                    if(unformatted.contains("[QM] QuickMaths: ")) {
+                        String[] array = ((S02PacketChat) event.getPacket()).getChatComponent().getUnformattedText().split("QuickMaths: ");
+                        ScriptEngineManager mgr = new ScriptEngineManager();
+                        ScriptEngine engine = mgr.getEngineByName("JavaScript");
+
+                        try {
+                            sendPacketUnlogged(new C01PacketChatMessage(engine.eval(array[1].replace("x", "*")).toString()));
+                        } catch (ScriptException he) {
+                            he.printStackTrace();
+                        }
+                    }
+                    break;
             }
+
         }
     }
 

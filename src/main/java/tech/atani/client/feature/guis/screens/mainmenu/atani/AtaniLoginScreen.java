@@ -7,24 +7,21 @@ import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.elements.background.ShaderBackground;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniAltManager;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniMultiPlayerMenu;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniSinglePlayerMenu;
 import tech.atani.client.feature.module.impl.hud.PostProcessing;
 import tech.atani.client.utility.discord.DiscordRP;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.utility.render.animation.advanced.Direction;
-import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 
 public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
 {
     private String input = "";
+    private String uuid = "0000";
     public static ShaderBackground shaderBackground;
 
     public AtaniLoginScreen() {
@@ -34,18 +31,11 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
         }
     }
 
-    /**
-     * Returns true if this GUI should pause the game when it is displayed in single-player
-     */
     public boolean doesGuiPauseGame()
     {
         return false;
     }
 
-    /**
-     * Fired when a key is typed (except F11 which toggles full screen). This is the equivalent of
-     * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
-     */
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
         int mouseX = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int mouseY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
@@ -63,10 +53,6 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
         }
     }
 
-    /**
-     * Adds the buttons (and other controls) to the screen in question. Called when the GUI is displayed and when the
-     * window resizes, the buttonList is cleared beforehand.
-     */
     public void initGui() {
         DiscordRP.update("Login Screen...", String.format("Running " + CLIENT_VERSION));
 
@@ -82,20 +68,16 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
         this.mc.func_181537_a(false);
     }
 
-    /**
-     * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
-     */
     protected void actionPerformed(GuiButton button) throws IOException {
        switch (button.id) {
            case 0:
-
+                if(Objects.equals(input, uuid)) {
+                    mc.displayGuiScreen(new AtaniMainMenu());
+                }
                break;
        }
     }
 
-    /**
-     * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
-     */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         FontRenderer frBig = FontStorage.getInstance().findFont("Roboto Medium", 16);
         FontRenderer frSmall = FontStorage.getInstance().findFont("Roboto", 16);
@@ -113,9 +95,6 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
-    /**
-     * Called when the mouse is clicked. Args : mouseX, mouseY, clickedButton
-     */
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }

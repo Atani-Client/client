@@ -36,14 +36,11 @@ import net.minecraft.util.*;
 import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.OpenGLException;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
-import tech.atani.client.loader.Injector;
 import tech.atani.client.feature.performance.memory.TextureFix;
-import tech.atani.client.menace.AtaniAuthScreen;
-import tech.atani.client.menace.UUIDHandler;
+import tech.atani.client.loader.Injector;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -87,17 +84,10 @@ public class ProtectedLaunch {
         final OptionSpec<String> optionspec17 = optionparser.accepts("profileProperties").withRequiredArg().defaultsTo("{}", new String[0]);
         final OptionSpec<String> optionspec18 = optionparser.accepts("assetIndex").withRequiredArg();
         final OptionSpec<String> optionspec19 = optionparser.accepts("userType").withRequiredArg().defaultsTo("legacy", new String[0]);
-        final OptionSpec<String> ataniUUID = optionparser.accepts("ataniUUID").withRequiredArg();
         final OptionSpec<String> optionspec20 = optionparser.nonOptions();
         final OptionSet optionset = optionparser.parse(args);
         final List<String> list = optionset.valuesOf(optionspec20);
 
-        if (optionset.valueOf(ataniUUID) != null) {
-            UUIDHandler.setInstance(new UUIDHandler(optionset.valueOf(ataniUUID)));
-        } else {
-            throw new RuntimeException();
-        }
-        
         if (!list.isEmpty()) {
             System.out.println("Completely ignored arguments: " + list);
         }
@@ -371,7 +361,7 @@ public class ProtectedLaunch {
             textureFix.runFix();
         }
 
-        mc.displayGuiScreen(new AtaniAuthScreen(new AtaniMainMenu()));
+        mc.displayGuiScreen(new AtaniMainMenu());
 
         mc.renderEngine.deleteTexture(mc.mojangLogo);
         mc.mojangLogo = null;

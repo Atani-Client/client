@@ -4,6 +4,7 @@ import com.google.common.base.Supplier;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.nbt.NBTUtil;
+import org.lwjgl.opencl.CL;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.impl.hud.WaterMark;
 import tech.atani.client.feature.theme.ThemeObject;
@@ -17,15 +18,15 @@ import tech.atani.client.utility.math.atomic.AtomicFloat;
 public class IcarusWatermark extends DraggableElement {
 
     public IcarusWatermark() {
-        super(0, 8, 0, 0, null, WaterMark.class);
+        super(8, 0, 0, 0, null, WaterMark.class);
     }
 
     @Override
     public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Pangram Bold", 80);
         this.getHeight().setValue((float) (fontRenderer.FONT_HEIGHT + 8));
-        this.getWidth().setValue(CLIENT_NAME);
-        fontRenderer.drawStringWithShadow(CLIENT_NAME, 8, 0, -1);
+        this.getWidth().setValue(fontRenderer.getStringWidth(CLIENT_NAME));
+        fontRenderer.drawStringWithShadow(CLIENT_NAME, this.getPosX().getValue(), this.getPosY().getValue(), -1);
         if(this.getLocked().getValue())
             leftY.set(fontRenderer.FONT_HEIGHT + 8);
     }

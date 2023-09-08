@@ -67,6 +67,9 @@ public class Velocity extends Module {
 
     @Listen
     public void onUpdateMotionEvent(UpdateMotionEvent event) {
+        if (mc.theWorld == null || mc.thePlayer == null)
+            return;
+
         switch (mode.getValue()) {
             case "MineMenClub":
                 mmcCounter++;

@@ -18,6 +18,9 @@ import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.impl.hud.CustomChat;
 import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.feature.theme.ThemeObject;
+import tech.atani.client.feature.theme.impl.element.DraggableElement;
+import tech.atani.client.feature.theme.storage.ThemeStorage;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 
 public class GuiChat extends GuiScreen
@@ -320,6 +323,12 @@ public class GuiChat extends GuiScreen
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
+        for(ThemeObject themeObject : ThemeStorage.getInstance().getList()) {
+            if(themeObject instanceof DraggableElement) {
+                DraggableElement draggableElement = (DraggableElement) themeObject;
+                draggableElement.onDrag(mouseX, mouseY);
+            }
+        }
         RenderableShaders.renderAndRun(ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).bloom.isEnabled(), ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).blur.isEnabled(), () -> {
             boolean font = ModuleStorage.getInstance().getByClass(CustomChat.class).isEnabled() && ModuleStorage.getInstance().getByClass(CustomChat.class).customFont.isEnabled();
 

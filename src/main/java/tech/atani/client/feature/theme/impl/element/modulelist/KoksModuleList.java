@@ -9,6 +9,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
+import tech.atani.client.feature.theme.impl.element.ModuleListElement;
 import tech.atani.client.utility.java.MapUtil;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
 import tech.atani.client.utility.render.animation.advanced.Direction;

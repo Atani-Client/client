@@ -6,6 +6,7 @@ import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.impl.hud.ModuleList;
 import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.feature.theme.impl.element.ModuleListElement;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.storage.ValueStorage;

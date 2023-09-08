@@ -8,7 +8,7 @@ import tech.atani.client.feature.value.Value;
 
 public class SliderValue<T extends Number> extends Value<T> {
 
-    private final T minimum, maximum;
+    private T minimum, maximum;
     private final int decimalPlaces;
 
     public SliderValue(String label, String description, Object owner, T value, T minimum, T maximum, int decimalPlaces) {
@@ -44,6 +44,14 @@ public class SliderValue<T extends Number> extends Value<T> {
     }
     public T getMaximum() {
     	return this.maximum;
+    }
+
+    public void setMinimum(T minimum) {
+        this.minimum = minimum;
+    }
+
+    public void setMaximum(T maximum) {
+        this.maximum = maximum;
     }
 
     @Override

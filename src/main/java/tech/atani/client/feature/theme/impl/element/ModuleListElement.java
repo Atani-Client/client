@@ -1,4 +1,4 @@
-package tech.atani.client.feature.theme.impl.element.modulelist;
+package tech.atani.client.feature.theme.impl.element;
 
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;

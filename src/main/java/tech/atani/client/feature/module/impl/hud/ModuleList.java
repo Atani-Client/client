@@ -4,7 +4,7 @@ import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.impl.element.modulelist.CustomModuleList;
-import tech.atani.client.feature.theme.impl.element.modulelist.ModuleListElement;
+import tech.atani.client.feature.theme.impl.element.ModuleListElement;
 import tech.atani.client.feature.theme.storage.ThemeStorage;
 import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.listener.event.client.module.DisableModuleEvent;

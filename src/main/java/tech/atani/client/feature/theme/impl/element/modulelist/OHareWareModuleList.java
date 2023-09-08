@@ -9,6 +9,7 @@ import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
+import tech.atani.client.feature.theme.impl.element.ModuleListElement;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.storage.ValueStorage;
@@ -16,8 +17,6 @@ import tech.atani.client.utility.math.atomic.AtomicFloat;
 import tech.atani.client.utility.render.animation.advanced.Direction;
 import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 import tech.atani.client.utility.render.color.ColorUtil;
-import tech.atani.client.utility.render.shader.shaders.GradientShader;
-import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
 import java.util.LinkedHashMap;

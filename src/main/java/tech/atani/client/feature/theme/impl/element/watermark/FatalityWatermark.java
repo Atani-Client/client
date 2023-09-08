@@ -7,7 +7,6 @@ import tech.atani.client.feature.theme.ThemeObject;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
-import tech.atani.client.menace.protection.MenaceLauncherAPI;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.shaders.GradientShader;
@@ -19,7 +18,7 @@ public class FatalityWatermark extends ThemeObject {
 
     @Override
     public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY, Object[] params) {
-        final String text = String.format("$$$ %s.vip $$$ | %s | %s", CLIENT_NAME.toLowerCase(), MenaceLauncherAPI.username, mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP);
+        final String text = String.format("$$$ %s.vip $$$ | %s | %s", CLIENT_NAME.toLowerCase(), "Temp", mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP);
         final float width2 = (float) (FontStorage.getInstance().findFont("Roboto", 15).getStringWidthInt(text) + 8);
         final int height2 = 20;
         final int posX2 = 2;

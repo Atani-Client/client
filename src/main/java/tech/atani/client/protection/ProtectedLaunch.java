@@ -1,4 +1,4 @@
-package tech.atani.client.menace.protection.launch;
+package tech.atani.client.protection;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -6,16 +6,15 @@ import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniAltManager;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniMultiPlayerMenu;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniSinglePlayerMenu;
-import tech.atani.client.menace.protection.MenaceLauncherAPI;
-import tech.atani.client.menace.protection.utils.api.APIUtil;
 import tech.atani.client.utility.discord.DiscordRP;
+import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.feature.guis.elements.background.ShaderBackground;
 
 import java.awt.*;
 import java.io.IOException;
 
-public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback
+public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
 {
 
     public static ShaderBackground shaderBackground;
@@ -47,7 +46,7 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback
      * window resizes, the buttonList is cleared beforehand.
      */
     public void initGui() {
-        DiscordRP.update("In Main Menu", String.format("Logged in as %s (%s)", MenaceLauncherAPI.username, MenaceLauncherAPI.uid));
+        DiscordRP.update("In Main Menu", String.format("Running " + CLIENT_VERSION));
 
         this.buttonList.clear();
 

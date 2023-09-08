@@ -39,7 +39,7 @@ import java.text.DecimalFormat;
 @ModuleData(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)
 public class TargetHUD extends Module implements ColorPalette {
 
-    public final StringBoxValue targethudMode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Fatality", "Icarus", "Atani CS:GO", "Koks", "Astolfo", "Menace"});
+    public final StringBoxValue targethudMode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Fatality", "Icarus", "Atani CS:GO", "Koks", "Astolfo"});
     public final CheckBoxValue followTargetHUD = new CheckBoxValue("Follow Target HUD", "Follow the player in 3d space?", this, false);
     private final SliderValue<Integer> red = new SliderValue<>("Red", "What red will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
     private final SliderValue<Integer> green = new SliderValue<>("Green", "What green will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
@@ -260,17 +260,6 @@ public class TargetHUD extends Module implements ColorPalette {
                     RenderUtil.drawRect(x + 30, y + 46, target.getHealth() / target.getMaxHealth() * 120, 8, new Color(ColorUtil.blendRainbowColours(counter * 150L)).getRGB());
                     RenderUtil.drawRect(x + 30 + target.getHealth() / target.getMaxHealth() * 120 - 3, y + 46, 3, 8, new Color (-1979711488, true).getRGB());
                     counter++;
-                    break;
-                case "Menace":
-                    FontRenderer font = FontStorage.getInstance().findFont("SF Regular", 18);
-                    int q = (int) (font.getStringWidthInt(decimalFormat.format(target.getHealth())) + mc.fontRendererObj.getStringWidth("\u2764"));
-                    int strWidth = Math.max(font.getStringWidthInt(target.getDisplayName().getUnformattedText()), q);
-                    RenderUtil.drawRoundedRect(x, y, x + strWidth + 45, y + 40, 5, Color.BLACK.getRGB());
-                    RenderUtil.drawSkinHead(target, x + 5, y + 5, 30);
-                    font.drawString(target.getDisplayName().getUnformattedText() + "§r", x + 40, y + 5, -1);
-                    font.drawString(decimalFormat.format(target.getHealth()), x + 40, y + 20, -1);
-                    int w = font.getStringWidthInt(decimalFormat.format(target.getHealth()));
-                    mc.fontRendererObj.drawString("\u2764", x + 43 + w, y + 20, Color.RED.getRGB());
                     break;
             }
         }

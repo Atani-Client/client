@@ -28,6 +28,7 @@ public class FontStorage extends Storage<FontEntry> {
                 this.createFontEntry("Roboto", 21),
                 this.createFontEntry("Roboto", 24),
                 this.createFontEntry("Roboto", 31),
+                this.createFontEntry("Roboto Medium", 12),
                 this.createFontEntry("Roboto Medium", 15),
                 this.createFontEntry("Roboto Medium", 16),
                 this.createFontEntry("Roboto Medium", 17),

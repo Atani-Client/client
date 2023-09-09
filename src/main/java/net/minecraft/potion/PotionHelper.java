@@ -5,7 +5,9 @@ import com.google.common.collect.Maps;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.src.Config;
 import net.minecraft.util.IntegerCache;
+import net.optifine.CustomColors;
 
 public class PotionHelper
 {
@@ -26,45 +28,28 @@ public class PotionHelper
     private static final Map<Integer, String> potionRequirements = Maps.<Integer, String>newHashMap();
     private static final Map<Integer, String> potionAmplifiers = Maps.<Integer, String>newHashMap();
     private static final Map<Integer, Integer> DATAVALUE_COLORS = Maps.<Integer, Integer>newHashMap();
-
-    /** An array of possible potion prefix names, as translation IDs. */
     private static final String[] potionPrefixes = new String[] {"potion.prefix.mundane", "potion.prefix.uninteresting", "potion.prefix.bland", "potion.prefix.clear", "potion.prefix.milky", "potion.prefix.diffuse", "potion.prefix.artless", "potion.prefix.thin", "potion.prefix.awkward", "potion.prefix.flat", "potion.prefix.bulky", "potion.prefix.bungling", "potion.prefix.buttered", "potion.prefix.smooth", "potion.prefix.suave", "potion.prefix.debonair", "potion.prefix.thick", "potion.prefix.elegant", "potion.prefix.fancy", "potion.prefix.charming", "potion.prefix.dashing", "potion.prefix.refined", "potion.prefix.cordial", "potion.prefix.sparkling", "potion.prefix.potent", "potion.prefix.foul", "potion.prefix.odorless", "potion.prefix.rank", "potion.prefix.harsh", "potion.prefix.acrid", "potion.prefix.gross", "potion.prefix.stinky"};
 
-    /**
-     * Checks if the bit at 1 << j is on in i.
-     */
     public static boolean checkFlag(int p_77914_0_, int p_77914_1_)
     {
         return (p_77914_0_ & 1 << p_77914_1_) != 0;
     }
 
-    /**
-     * Returns 1 if the flag is set, 0 if it is not set.
-     */
     private static int isFlagSet(int p_77910_0_, int p_77910_1_)
     {
         return checkFlag(p_77910_0_, p_77910_1_) ? 1 : 0;
     }
 
-    /**
-     * Returns 0 if the flag is set, 1 if it is not set.
-     */
     private static int isFlagUnset(int p_77916_0_, int p_77916_1_)
     {
         return checkFlag(p_77916_0_, p_77916_1_) ? 0 : 1;
     }
 
-    /**
-     * Given a potion data value, get its prefix index number.
-     */
     public static int getPotionPrefixIndex(int dataValue)
     {
         return getPotionPrefixIndexFlags(dataValue, 5, 4, 3, 2, 1);
     }
 
-    /**
-     * Given a {@link Collection}<{@link PotionEffect}> will return an Integer color.
-     */
     public static int calcPotionLiquidColor(Collection<PotionEffect> p_77911_0_)
     {
         int i = 3694022;
@@ -81,6 +66,11 @@ public class PotionHelper
                 if (potioneffect.getIsShowParticles())
                 {
                     int j = Potion.potionTypes[potioneffect.getPotionID()].getLiquidColor();
+
+                    if (Config.isCustomColors())
+                    {
+                        j = CustomColors.getPotionColor(potioneffect.getPotionID(), j);
+                    }
 
                     for (int k = 0; k <= potioneffect.getAmplifier(); ++k)
                     {
@@ -106,13 +96,10 @@ public class PotionHelper
         }
         else
         {
-            return i;
+            return Config.isCustomColors() ? CustomColors.getPotionColor(0, i) : i;
         }
     }
 
-    /**
-     * Check whether a {@link Collection}<{@link PotionEffect}> are all ambient.
-     */
     public static boolean getAreAmbient(Collection<PotionEffect> potionEffects)
     {
         for (PotionEffect potioneffect : potionEffects)
@@ -126,9 +113,6 @@ public class PotionHelper
         return true;
     }
 
-    /**
-     * Given a potion data value, get the associated liquid color (optionally bypassing the cache)
-     */
     public static int getLiquidColor(int dataValue, boolean bypassCache)
     {
         Integer integer = IntegerCache.getInteger(dataValue);
@@ -152,9 +136,6 @@ public class PotionHelper
         }
     }
 
-    /**
-     * Given a potion data value, get its prefix as a translation ID.
-     */
     public static String getPotionPrefix(int dataValue)
     {
         int i = getPotionPrefixIndex(dataValue);
@@ -202,9 +183,6 @@ public class PotionHelper
         return i;
     }
 
-    /**
-     * Returns the number of 1 bits in the given integer.
-     */
     private static int countSetFlags(int p_77907_0_)
     {
         int i;
@@ -449,9 +427,6 @@ public class PotionHelper
         return list;
     }
 
-    /**
-     * Manipulates the specified bit of the potion damage value according to the rules passed from applyIngredient.
-     */
     private static int brewBitOperations(int p_77906_0_, int p_77906_1_, boolean p_77906_2_, boolean p_77906_3_, boolean p_77906_4_)
     {
         if (p_77906_4_)
@@ -484,9 +459,6 @@ public class PotionHelper
         return p_77906_0_;
     }
 
-    /**
-     * Returns the new potion damage value after the specified ingredient info is applied to the specified potion.
-     */
     public static int applyIngredient(int p_77913_0_, String p_77913_1_)
     {
         int i = 0;

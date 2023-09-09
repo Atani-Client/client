@@ -9,17 +9,16 @@ import java.util.List;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.src.Config;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.optifine.shaders.ShadersTex;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class LayeredColorMaskTexture extends AbstractTexture
 {
-    /** Access to the Logger, for all your logging needs. */
     private static final Logger LOG = LogManager.getLogger();
-
-    /** The location of the texture. */
     private final ResourceLocation textureLocation;
     private final List<String> field_174949_h;
     private final List<EnumDyeColor> field_174950_i;
@@ -89,6 +88,13 @@ public class LayeredColorMaskTexture extends AbstractTexture
             return;
         }
 
-        TextureUtil.uploadTextureImage(this.getGlTextureId(), bufferedimage);
+        if (Config.isShaders())
+        {
+            ShadersTex.loadSimpleTexture(this.getGlTextureId(), bufferedimage, false, false, resourceManager, this.textureLocation, this.getMultiTexID());
+        }
+        else
+        {
+            TextureUtil.uploadTextureImage(this.getGlTextureId(), bufferedimage);
+        }
     }
 }

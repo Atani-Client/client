@@ -3,7 +3,9 @@ package net.minecraft.client.model;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.src.Config;
 import net.minecraft.util.Vec3;
+import net.optifine.shaders.SVertexFormat;
 
 public class TexturedQuad
 {
@@ -40,10 +42,6 @@ public class TexturedQuad
         this.vertexPositions = apositiontexturevertex;
     }
 
-    /**
-     * Draw this primitve. This is typically called only once as the generated drawing instructions are saved by the
-     * renderer and reused later.
-     */
     public void draw(WorldRenderer renderer, float scale)
     {
         Vec3 vec3 = this.vertexPositions[1].vector3D.subtractReverse(this.vertexPositions[0].vector3D);
@@ -60,7 +58,14 @@ public class TexturedQuad
             f2 = -f2;
         }
 
-        renderer.begin(7, DefaultVertexFormats.OLDMODEL_POSITION_TEX_NORMAL);
+        if (Config.isShaders())
+        {
+            renderer.begin(7, SVertexFormat.defVertexFormatTextured);
+        }
+        else
+        {
+            renderer.begin(7, DefaultVertexFormats.OLDMODEL_POSITION_TEX_NORMAL);
+        }
 
         for (int i = 0; i < 4; ++i)
         {

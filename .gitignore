@@ -1,4 +1,5 @@
 .idea/
+.gradle/
 .settings/
 
 *.iml
@@ -7,6 +8,7 @@
 *.project
 
 target/
+build/
 test_run/
 work/crash-reports
 work/resourcepacks

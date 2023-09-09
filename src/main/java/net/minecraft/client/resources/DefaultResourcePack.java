@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.ResourceLocation;
+import net.optifine.reflect.ReflectorForge;
 
 public class DefaultResourcePack implements IResourcePack
 {
@@ -55,7 +56,9 @@ public class DefaultResourcePack implements IResourcePack
 
     private InputStream getResourceStream(ResourceLocation location)
     {
-        return DefaultResourcePack.class.getResourceAsStream("/assets/" + location.getResourceDomain() + "/" + location.getResourcePath());
+        String s = "/assets/" + location.getResourceDomain() + "/" + location.getResourcePath();
+        InputStream inputstream = ReflectorForge.getOptiFineResourceStream(s);
+        return inputstream != null ? inputstream : DefaultResourcePack.class.getResourceAsStream(s);
     }
 
     public boolean resourceExists(ResourceLocation location)
@@ -77,11 +80,11 @@ public class DefaultResourcePack implements IResourcePack
         }
         catch (RuntimeException var4)
         {
-            return (T)null;
+            return (T)((IMetadataSection)null);
         }
         catch (FileNotFoundException var5)
         {
-            return (T)null;
+            return (T)((IMetadataSection)null);
         }
     }
 

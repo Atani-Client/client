@@ -101,4 +101,20 @@ public abstract class DraggableElement extends ThemeObject {
     public CheckBoxValue getLocked() {
         return locked;
     }
+
+    public float getStartX() {
+        return startX;
+    }
+
+    public float getStartY() {
+        return startY;
+    }
+
+    public void setStartX(float startX) {
+        this.startX = startX;
+    }
+
+    public void setStartY(float startY) {
+        this.startY = startY;
+    }
 }

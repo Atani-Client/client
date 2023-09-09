@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.0-RC'
+}
+
+group 'tech.atani'
+version '1.8.9-1.20.x'
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url 'https://litarvan.github.io/maven'
+    }
+}
+
+configurations {
+    implementation.extendsFrom lib
+    api.extendsFrom lib
+}
+
+dependencies {
+    implementation fileTree('lib')
+}
+
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16

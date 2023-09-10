@@ -61,8 +61,6 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
         buttonY += 30;
         this.buttonList.add(new AtaniButton(2, buttonX, buttonY, "Alts"));
         buttonY += 30;
-        this.buttonList.add(new AtaniButton(69, buttonX, buttonY, "Login"));
-        buttonY += 30;
         this.buttonList.add(new AtaniButton(3, buttonX, buttonY, 95, 20, "Options"));
         this.buttonList.add(new AtaniButton(4, buttonX + 105, buttonY, 95, 20, "Quit"));
 
@@ -88,9 +86,6 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
                break;
            case 4:
                mc.shutdown();
-               break;
-           case 69:
-               mc.displayGuiScreen(new AtaniLoginScreen());
                break;
        }
     }

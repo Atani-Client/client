@@ -1,7 +1,7 @@
 package tech.atani.client.utility.system;
 
-
 public final class OSUtil {
+
     public static OS getPlatform() {
         final String s = System.getProperty("os.name").toLowerCase();
 

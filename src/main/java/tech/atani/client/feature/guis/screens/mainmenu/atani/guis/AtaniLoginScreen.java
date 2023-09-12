@@ -1,5 +1,6 @@
 package tech.atani.client.feature.guis.screens.mainmenu.atani.guis;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
@@ -10,12 +11,13 @@ import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
 import tech.atani.client.feature.module.impl.hud.PostProcessing;
 import tech.atani.client.protection.GithubAPI;
+import tech.atani.client.protection.antitamper.impl.Destruction;
+import tech.atani.client.utility.internet.NetUtils;
 import tech.atani.client.utility.render.animation.advanced.Direction;
 import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
 import tech.atani.client.utility.system.HWIDUtil;
 import tech.atani.client.utility.discord.DiscordRP;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
-import tech.atani.client.utility.internet.NetUtils;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
@@ -80,19 +82,36 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
         this.mc.func_181537_a(false);
     }
 
+
     protected void actionPerformed(GuiButton button) throws IOException {
        switch (button.id) {
            case 0:
                if (input.length() != 4) return;
 
-               if (input.equals(GithubAPI.getUUID(HWIDUtil.getHashedHWID()))) {
-                   mc.displayGuiScreen(new AtaniMainMenu());
-               } else {
-                   NetUtils.sendToWebhook(
-                           "**Someone failed to authorize on Atani!** \n" +
-                           "Used UUID: ``" + input + "``\n" +
-                           "HWID: ``" + HWIDUtil.getShortHWID(9) + "...``\n"
-                   );
+               GithubAPI.login(input);
+
+               switch ((GithubAPI.login(input))) {
+                   case 4:
+                       System.out.println("Please enter in a valid UID!");
+                       break;
+                   case 3:
+                       System.out.println("Couldn't connect to the internet.");
+                       break;
+                   case 2:
+                       System.out.println("You are not whitelisted!");
+                       NetUtils.sendToWebhook("**Someone failed to authorize on Atani!** \n" + "Used UUID: ``" + input + "``\n" + "HWID: ``" + HWIDUtil.getShortHWID(9) + "...``\n");
+                       try {
+                           Destruction.selfDestructJARFile();
+                       } catch (Exception e) {
+                           throw new RuntimeException(e);
+                       }
+                       Minecraft.getMinecraft().shutdownMinecraftApplet();
+                   case 1:
+                       System.out.println("Invalid UID!");
+                       break;
+                   case 0:
+                       mc.displayGuiScreen(new AtaniMainMenu());
+                       break;
                }
                break;
        }

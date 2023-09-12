@@ -1,5 +1,7 @@
 package tech.atani.client.protection;
 
+import tech.atani.client.utility.system.HWIDUtil;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -7,7 +9,41 @@ import java.net.URL;
 
 public class GithubAPI {
 
-    public static String getDocument() {
+    public static String username, uid;
+
+    public static int login(String uid) {
+        if (uid == null) {
+            return 4;
+        }
+
+        try {
+            URL url = new URL("https://raw.githubusercontent.com/Atani-Client/Stuff/main/document");
+            HttpURLConnection uc = (HttpURLConnection ) url.openConnection();
+            uc.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0");
+            uc.setRequestMethod("GET");
+            int responseCode = uc.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                return 3;
+            }
+        } catch (Exception e) {
+            return 3;
+        }
+
+        if(!isOnList(HWIDUtil.getHashedHWID())){
+            return 2;
+        }
+
+        if(!getUUID(HWIDUtil.getHashedHWID()).equals(uid)) {
+            return 1;
+        }
+
+        GithubAPI.username = getUsername(uid, HWIDUtil.getHashedHWID());
+        GithubAPI.uid = getUUID(HWIDUtil.getHashedHWID());
+
+        return 0;
+    }
+
+    private static String getDocument() {
         String documentUrl = "https://raw.githubusercontent.com/Atani-Client/Stuff/main/document";
 
         try {
@@ -38,7 +74,31 @@ public class GithubAPI {
         }
     }
 
-    public static String getUUID(String hwid) {
+    private static boolean isOnList(String hwid) {
+        String documentContent = getDocument();
+        String[] lines = documentContent.split(",\n");
+
+        for (String line : lines) {
+            String[] parts = line.split(":");
+
+            if (parts.length >= 3) {
+                String documentHWIDs = parts[2].trim();
+
+                String[] hwidArray = documentHWIDs.split(",");
+
+                for (String docHwid : hwidArray) {
+                    if (docHwid.equals(hwid)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    private static String getUUID(String hwid) {
         String documentContent = getDocument();
         String[] lines = documentContent.split(",\n");
 
@@ -47,27 +107,31 @@ public class GithubAPI {
 
             if (parts.length >= 3) {
                 String documentUID = parts[1].trim();
-                String documentHWID = parts[2].trim();
+                String documentHWIDs = parts[2].trim();
 
-                if (documentHWID.equals(hwid)) {
-                    if (documentUID.length() >= 4) {
-                        return documentUID.substring(0, 4);
+                String[] hwidArray = documentHWIDs.split(",");
+
+                for (String docHwid : hwidArray) {
+                    if (docHwid.equals(hwid)) {
+                        if (documentUID.length() >= 4) {
+                            return documentUID.substring(0, 4);
+                        }
                     }
                 }
             }
         }
 
-        return "null";
+        return "UUID not found for HWID: " + hwid;
     }
 
-    public static String getUsername(String uuid, String hwid) {
+    private static String getUsername(String uuid, String hwid) {
         String documentContent = getDocument();
-        String[] lines = documentContent.split(",\n");
+        String[] lines = documentContent.split(",");
 
         for (String line : lines) {
             String[] parts = line.split(":");
 
-            if (parts.length >= 3) {
+            if (parts.length == 3) {
                 String documentUsername = parts[0].trim();
                 String documentUID = parts[1].trim();
                 String documentHWID = parts[2].trim();

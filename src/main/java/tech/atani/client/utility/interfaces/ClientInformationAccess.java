@@ -5,5 +5,4 @@ public interface ClientInformationAccess {
     String[] AUTHORS = new String[] {"MarkGG", "Geuxy", "Kellohylly", "Liticane", "Exterminate", "mistakedev"};
     String PREFIX = "§c" + CLIENT_NAME + " §7>> ";
     boolean DEVELOPMENT_SWITCH = true, BETA_SWITCH = true;
-    String APIURL = "https://api.menaceclient.me/";
 }

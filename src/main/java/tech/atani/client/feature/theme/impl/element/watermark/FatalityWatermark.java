@@ -1,17 +1,14 @@
 package tech.atani.client.feature.theme.impl.element.watermark;
 
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.impl.hud.WaterMark;
-import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.feature.theme.ThemeObject;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
 import tech.atani.client.feature.theme.impl.element.DraggableElement;
-import tech.atani.client.feature.value.storage.ValueStorage;
+import tech.atani.client.protection.GithubAPI;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.shaders.GradientShader;
@@ -27,7 +24,7 @@ public class FatalityWatermark extends DraggableElement {
 
     @Override
     public void onDraw(ScaledResolution scaledResolution, float partialTicks, AtomicFloat leftY, AtomicFloat rightY) {
-        final String text = String.format("$$$ %s.vip $$$ | %s | %s", CLIENT_NAME.toLowerCase(), "Temp", mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP);
+        final String text = String.format("$$$ %s.vip $$$ | %s | %s", CLIENT_NAME.toLowerCase(), GithubAPI.username, mc.isSingleplayer() ? "SinglePlayer" : mc.getCurrentServerData().serverIP);
         final float width2 = (float) (FontStorage.getInstance().findFont("Roboto", 15).getStringWidthInt(text) + 8);
         final int height2 = 20;
         final float posX2 = this.getPosX().getValue();

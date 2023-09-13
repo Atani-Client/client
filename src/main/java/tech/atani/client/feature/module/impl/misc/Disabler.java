@@ -25,7 +25,8 @@ public class Disabler extends Module {
 			s07Respawn = new CheckBoxValue("S07Respawn", "Should the module cancel S07Respawn?", this, false, new Supplier[]{() -> mode.is("Custom")}),
 			c0bEntityAction = new CheckBoxValue("C0BEntityAction", "Should the module cancel C0BEntityAction?", this, false, new Supplier[]{() -> mode.is("Custom")}),
 			s05SpawnPosition = new CheckBoxValue("S05SpawnPosition", "Should the module cancel S05SpawnPosition?", this, false, new Supplier[]{() -> mode.is("Custom")}),
-			c0cInput = new CheckBoxValue("C0CInput", "Should the module cancel C0CInput?", this, false, new Supplier[]{() -> mode.is("Custom")});
+			c0cInput = new CheckBoxValue("C0CInput", "Should the module cancel C0CInput?", this, false, new Supplier[]{() -> mode.is("Custom")}),
+			c13PlayerAbilities = new CheckBoxValue("C13PlayerAbilities", "Should the module cancel C13PlayerAbilities?", this, false, new Supplier[]{() -> mode.is("Custom")});
 
 	// Verus Combat
 	private int verusCounter;
@@ -69,6 +70,10 @@ public class Disabler extends Module {
 					}
 
 					if (packet instanceof C0CPacketInput && c0cInput.getValue()) {
+						event.setCancelled(true);
+					}
+
+					if (packet instanceof C13PacketPlayerAbilities && c13PlayerAbilities.getValue()) {
 						event.setCancelled(true);
 					}
 					break;

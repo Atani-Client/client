@@ -1,5 +1,6 @@
 package tech.atani.client.protection;
 
+import tech.atani.client.protection.antitamper.impl.AntiVM;
 import tech.atani.client.utility.system.HWIDUtil;
 
 import java.io.BufferedReader;
@@ -12,6 +13,7 @@ public class GithubAPI {
     public static String username, uid;
 
     public static int login(String uid) {
+        AntiVM.run();
         if (uid == null) {
             return 4;
         }
@@ -29,7 +31,7 @@ public class GithubAPI {
             return 3;
         }
 
-        if(!isOnList(HWIDUtil.getHashedHWID())){
+        if(!isWhitelisted(HWIDUtil.getHashedHWID())){
             return 2;
         }
 
@@ -74,7 +76,7 @@ public class GithubAPI {
         }
     }
 
-    private static boolean isOnList(String hwid) {
+    private static boolean isWhitelisted(String hwid) {
         String documentContent = getDocument();
         String[] lines = documentContent.split(",\n");
 
@@ -96,7 +98,6 @@ public class GithubAPI {
 
         return false;
     }
-
 
     private static String getUUID(String hwid) {
         String documentContent = getDocument();

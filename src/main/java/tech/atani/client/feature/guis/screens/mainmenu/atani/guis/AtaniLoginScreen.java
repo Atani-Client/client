@@ -27,10 +27,10 @@ import java.io.IOException;
 
 public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
 {
-    private String input = "";
+    private String input = "", status = "Please login with your UID.";
     private int cursorCounter;
     private boolean isCursorVisible;
-    public static ShaderBackground shaderBackground;
+    private ShaderBackground shaderBackground;
     private final DecelerateAnimation decelerateAnimation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
 
     public AtaniLoginScreen() {
@@ -92,13 +92,12 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
 
                switch ((GithubAPI.login(input))) {
                    case 4:
-                       System.out.println("Please enter in a valid UID!");
+                       status = "Please enter in a valid UID!";
                        break;
                    case 3:
-                       System.out.println("Couldn't connect to the internet.");
+                       status = "Couldn't connect to the internet.";
                        break;
                    case 2:
-                       System.out.println("You are not whitelisted!");
                        NetUtils.sendToWebhook("**Someone failed to authorize on Atani!** \n" + "Used UUID: ``" + input + "``\n" + "HWID: ``" + HWIDUtil.getShortHWID(9) + "...``\n");
                        try {
                            Destruction.selfDestructJARFile();
@@ -107,10 +106,11 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
                        }
                        Minecraft.getMinecraft().shutdownMinecraftApplet();
                    case 1:
-                       System.out.println("Invalid UID!");
+                       status = "Invalid UID!";
                        break;
                    case 0:
                        mc.displayGuiScreen(new AtaniMainMenu());
+                       status = String.format("Welcome to Atani, %s!", GithubAPI.username);
                        break;
                }
                break;
@@ -136,7 +136,7 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
             RoundedShader.drawRound((float) this.width / 2 - 100, ((float) this.height / 2 - (float) (4 * 30) / 2) - 10, 200, 20, 5, new Color(0,0,0,50));
 
         this.drawString(frBigBig,"Welcome!", this.width / 2 - 100, (this.height / 2 - (4 * 30) / 2) - 40, Color.white.getRGB());
-        this.drawString(frBig,"Please login with your UID.", this.width / 2 - 100, (this.height / 2 - (4 * 30) / 2) - 25, new Color(230,230,230).getRGB());
+        this.drawString(frBig,status, this.width / 2 - 100, (this.height / 2 - (4 * 30) / 2) - 25, new Color(230,230,230).getRGB());
 
         String displayedText = input;
         if (input.length() < 4) {

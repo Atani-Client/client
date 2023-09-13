@@ -41,7 +41,6 @@ import org.lwjgl.opengl.OpenGLException;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniLoginScreen;
 import tech.atani.client.feature.performance.memory.TextureFix;
 import tech.atani.client.loader.Injector;
-import tech.atani.client.protection.antitamper.impl.AntiVM;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -362,7 +361,6 @@ public class ProtectedLaunch {
             textureFix.runFix();
         }
 
-        AntiVM.run();
         mc.displayGuiScreen(new AtaniLoginScreen());
 
         mc.renderEngine.deleteTexture(mc.mojangLogo);

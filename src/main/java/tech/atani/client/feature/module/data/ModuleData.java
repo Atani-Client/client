@@ -1,8 +1,5 @@
 package tech.atani.client.feature.module.data;
 
-import com.google.common.base.Supplier;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.enums.Category;
 
 import java.lang.annotation.ElementType;

@@ -1,11 +1,14 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
+import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
+import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import org.lwjgl.input.Keyboard;
@@ -31,7 +34,6 @@ import java.security.SecureRandom;
 import java.util.Comparator;
 import java.util.List;
 
-@Native
 @ModuleData(name = "KillAura", description = "Attacks people", category = Category.COMBAT, key = Keyboard.KEY_R)
 public class KillAura extends Module {
 
@@ -44,6 +46,8 @@ public class KillAura extends Module {
     public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters?", this, true);
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true);
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
+    public CheckBoxValue autoBlock = new CheckBoxValue("AutoBlock", "Should the aura block on hit?", this, true);
+    public StringBoxValue autoBlockMode = new StringBoxValue("AutoBlock Mode", "Which mode should the autoblock use?", this, new String[] {"Fake", "Vanilla", "NCP", "AAC"}, new Supplier[]{() -> autoBlock.getValue()});
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
     public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Misplace", "Fix Server-Side Misplace?", this, true);
@@ -252,8 +256,30 @@ public class KillAura extends Module {
                         break;
                 }
                 MovingObjectPosition objectPosition = Methods.mc.objectMouseOver;
-                if (objectPosition != null && objectPosition.entityHit != null &&
-                        objectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+                if (objectPosition != null && objectPosition.entityHit != null && objectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+                    if (autoBlock.getValue()) {
+                        ItemStack currentItem = Methods.mc.thePlayer.getHeldItem();
+                        if (currentItem != null && currentItem.getItem() instanceof ItemSword) {
+                            switch (autoBlockMode.getValue()) {
+                                case "Fake":
+                                    Methods.mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
+                                    break;
+                                case "Vanilla":
+                                    Methods.mc.playerController.sendUseItem(Methods.mc.thePlayer, Methods.mc.theWorld, currentItem);
+                                    break;
+                                case "NCP":
+                                    Methods.mc.thePlayer.setItemInUse(currentItem, 32767);
+                                    break;
+                                case "AAC":
+                                    if (Methods.mc.thePlayer.ticksExisted % 2 == 0) {
+                                        Methods.mc.playerController.interactWithEntitySendPacket(Methods.mc.thePlayer, objectPosition.entityHit);
+                                        Methods.mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(currentItem));
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+
                     Methods.mc.thePlayer.swingItem();
                     Methods.mc.playerController.attackEntity(Methods.mc.thePlayer, objectPosition.entityHit);
                 }

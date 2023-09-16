@@ -16,7 +16,6 @@ import net.optifine.gui.TooltipProviderEnumShaderOptions;
 import net.optifine.shaders.Shaders;
 import net.optifine.shaders.ShadersTex;
 import net.optifine.shaders.config.EnumShaderOption;
-import org.lwjgl.Sys;
 
 public class GuiShaders extends GuiScreenOF
 {

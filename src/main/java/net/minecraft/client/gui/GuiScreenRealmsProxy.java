@@ -25,7 +25,6 @@ public class GuiScreenRealmsProxy extends GuiScreen
 
     public void initGui()
     {
-        this.field_154330_a.init();
         super.initGui();
     }
 

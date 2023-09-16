@@ -3,7 +3,7 @@ package net.minecraft.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.realms.RealmsClickableScrolledSelectionList;
 import net.minecraft.realms.Tezzelator;
-import org.lwjgl.input.Mouse;
+import org.lwjglx.input.Mouse;
 
 public class GuiClickableScrolledSelectionListProxy extends GuiSlot
 {

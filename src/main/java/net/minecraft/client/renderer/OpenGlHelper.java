@@ -14,7 +14,7 @@ import org.lwjgl.opengl.ARBMultitexture;
 import org.lwjgl.opengl.ARBShaderObjects;
 import org.lwjgl.opengl.ARBVertexBufferObject;
 import org.lwjgl.opengl.ARBVertexShader;
-import org.lwjgl.opengl.ContextCapabilities;
+import org.lwjglx.opengl.ContextCapabilities;
 import org.lwjgl.opengl.EXTBlendFuncSeparate;
 import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.GL31;
-import org.lwjgl.opengl.GLContext;
+import org.lwjglx.opengl.GLContext;
 import oshi.SystemInfo;
 import oshi.hardware.Processor;
 
@@ -387,11 +387,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glShaderSourceARB(shaderIn, string);
+            ARBShaderObjects.glShaderSourceARB(shaderIn, string.toString());
         }
         else
         {
-            GL20.glShaderSource(shaderIn, string);
+            GL20.glShaderSource(shaderIn, string.toString());
         }
     }
 
@@ -472,11 +472,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniform1ARB(location, values);
+            ARBShaderObjects.glUniform1ivARB(location, values);
         }
         else
         {
-            GL20.glUniform1(location, values);
+            GL20.glUniform1iv(location, values);
         }
     }
 
@@ -496,11 +496,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniform1ARB(location, values);
+            ARBShaderObjects.glUniform1fvARB(location, values);
         }
         else
         {
-            GL20.glUniform1(location, values);
+            GL20.glUniform1fv(location, values);
         }
     }
 
@@ -508,11 +508,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniform2ARB(location, values);
+            ARBShaderObjects.glUniform2ivARB(location, values);
         }
         else
         {
-            GL20.glUniform2(location, values);
+            GL20.glUniform2iv(location, values);
         }
     }
 
@@ -520,11 +520,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniform2ARB(location, values);
+            ARBShaderObjects.glUniform2fvARB(location, values);
         }
         else
         {
-            GL20.glUniform2(location, values);
+            GL20.glUniform2fv(location, values);
         }
     }
 
@@ -532,11 +532,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniform3ARB(location, values);
+            ARBShaderObjects.glUniform3ivARB(location, values);
         }
         else
         {
-            GL20.glUniform3(location, values);
+            GL20.glUniform3iv(location, values);
         }
     }
 
@@ -544,11 +544,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniform3ARB(location, values);
+            ARBShaderObjects.glUniform3fvARB(location, values);
         }
         else
         {
-            GL20.glUniform3(location, values);
+            GL20.glUniform3fv(location, values);
         }
     }
 
@@ -556,11 +556,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniform4ARB(location, values);
+            ARBShaderObjects.glUniform4ivARB(location, values);
         }
         else
         {
-            GL20.glUniform4(location, values);
+            GL20.glUniform4iv(location, values);
         }
     }
 
@@ -568,11 +568,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniform4ARB(location, values);
+            ARBShaderObjects.glUniform4fvARB(location, values);
         }
         else
         {
-            GL20.glUniform4(location, values);
+            GL20.glUniform4fv(location, values);
         }
     }
 
@@ -580,11 +580,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniformMatrix2ARB(location, transpose, matrices);
+            ARBShaderObjects.glUniformMatrix2fvARB(location, transpose, matrices);
         }
         else
         {
-            GL20.glUniformMatrix2(location, transpose, matrices);
+            GL20.glUniformMatrix2fv(location, transpose, matrices);
         }
     }
 
@@ -592,11 +592,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniformMatrix3ARB(location, transpose, matrices);
+            ARBShaderObjects.glUniformMatrix3fvARB(location, transpose, matrices);
         }
         else
         {
-            GL20.glUniformMatrix3(location, transpose, matrices);
+            GL20.glUniformMatrix3fv(location, transpose, matrices);
         }
     }
 
@@ -604,11 +604,11 @@ public class OpenGlHelper
     {
         if (arbShaders)
         {
-            ARBShaderObjects.glUniformMatrix4ARB(location, transpose, matrices);
+            ARBShaderObjects.glUniformMatrix4fvARB(location, transpose, matrices);
         }
         else
         {
-            GL20.glUniformMatrix4(location, transpose, matrices);
+            GL20.glUniformMatrix4fv(location, transpose, matrices);
         }
     }
 

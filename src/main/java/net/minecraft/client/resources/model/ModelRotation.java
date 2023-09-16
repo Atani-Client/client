@@ -10,8 +10,8 @@ import net.minecraftforge.client.model.IModelState;
 import net.minecraftforge.client.model.ITransformation;
 import net.minecraftforge.client.model.TRSRTransformation;
 import net.optifine.reflect.Reflector;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
+import org.lwjglx.util.vector.Matrix4f;
+import org.lwjglx.util.vector.Vector3f;
 
 public enum ModelRotation implements IModelState, ITransformation
 {

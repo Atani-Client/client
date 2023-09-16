@@ -2,7 +2,7 @@ package net.optifine.shaders;
 
 import java.nio.ByteBuffer;
 import net.minecraft.client.renderer.GlStateManager;
-import org.lwjgl.BufferUtils;
+import org.lwjglx.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 public class HFNoiseTexture implements ICustomTexture

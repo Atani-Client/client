@@ -30,7 +30,7 @@ import net.optifine.TextureAnimations;
 import net.optifine.reflect.Reflector;
 import net.optifine.util.MemoryMonitor;
 import net.optifine.util.NativeMemory;
-import org.lwjgl.opengl.Display;
+import org.lwjglx.opengl.Display;
 import org.lwjgl.opengl.GL11;
 
 public class GuiOverlayDebug extends Gui

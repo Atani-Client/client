@@ -19,7 +19,7 @@ import net.minecraft.util.Util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GLContext;
+import org.lwjglx.opengl.GLContext;
 import tv.twitch.ErrorCode;
 
 public class GuiStreamUnavailable extends GuiScreen

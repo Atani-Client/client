@@ -171,19 +171,19 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.lwjgl.LWJGLException;
-import org.lwjgl.Sys;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.ContextCapabilities;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+import org.lwjglx.LWJGLException;
+import org.lwjglx.Sys;
+import org.lwjglx.input.Keyboard;
+import org.lwjglx.input.Mouse;
+import org.lwjglx.opengl.ContextCapabilities;
+import org.lwjglx.opengl.Display;
+import org.lwjglx.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GLContext;
-import org.lwjgl.opengl.OpenGLException;
-import org.lwjgl.opengl.PixelFormat;
-import org.lwjgl.util.glu.GLU;
+import org.lwjglx.opengl.GLContext;
+import org.lwjglx.opengl.OpenGLException;
+import org.lwjglx.opengl.PixelFormat;
+import org.lwjglx.util.glu.GLU;
 
 public class Minecraft implements IThreadListener, IPlayerUsage
 {
@@ -542,7 +542,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     private void createDisplay() throws LWJGLException
     {
         Display.setResizable(true);
-        Display.setTitle("Minecraft 1.8.9");
+        Display.setTitle("Minecraft 1.8.9 - (LWJGL " + Sys.getVersion() + ")");
 
         try
         {

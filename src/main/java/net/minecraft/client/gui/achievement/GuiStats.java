@@ -26,7 +26,7 @@ import net.minecraft.stats.StatCrafting;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.input.Mouse;
+import org.lwjglx.input.Mouse;
 
 public class GuiStats extends GuiScreen implements IProgressMeter
 {

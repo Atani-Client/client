@@ -12,7 +12,7 @@ import net.minecraft.client.util.JsonException;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.lwjgl.BufferUtils;
+import org.lwjglx.BufferUtils;
 
 public class ShaderLoader
 {

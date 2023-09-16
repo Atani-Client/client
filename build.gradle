@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'application'
-    id 'org.jetbrains.kotlin.jvm' version '1.9.0-RC'
 }
 
 group 'tech.atani'

@@ -4,7 +4,6 @@ import net.minecraft.client.gui.FontRenderer;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.MultiStringBoxValue;
-import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.utility.render.RenderUtil;
 
 import java.awt.*;

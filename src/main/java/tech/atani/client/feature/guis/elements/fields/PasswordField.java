@@ -62,8 +62,7 @@ public class PasswordField extends Gui
     }
     
     public String getText() {
-        final String newtext = this.text.replaceAll(" ", "");
-        return newtext;
+        return this.text.replaceAll(" ", "");
     }
     
     public String getSelectedtext() {
@@ -80,19 +79,19 @@ public class PasswordField extends Gui
         final int var6 = this.maxStringLength - this.text.length() - (var4 - this.selectionEnd);
         final boolean var7 = false;
         if (this.text.length() > 0) {
-            var2 = String.valueOf(String.valueOf(var2)) + this.text.substring(0, var4);
+            var2 = var2 + this.text.substring(0, var4);
         }
         int var8;
         if (var6 < var3.length()) {
-            var2 = String.valueOf(String.valueOf(var2)) + var3.substring(0, var6);
+            var2 = var2 + var3.substring(0, var6);
             var8 = var6;
         }
         else {
-            var2 = String.valueOf(String.valueOf(var2)) + var3;
+            var2 = var2 + var3;
             var8 = var3.length();
         }
         if (this.text.length() > 0 && var5 < this.text.length()) {
-            var2 = String.valueOf(String.valueOf(var2)) + this.text.substring(var5);
+            var2 = var2 + this.text.substring(var5);
         }
         this.text = var2.replaceAll(" ", "");
         this.cursorPos(var4 - this.selectionEnd + var8);
@@ -123,7 +122,7 @@ public class PasswordField extends Gui
                     var5 = this.text.substring(0, var3);
                 }
                 if (var4 < this.text.length()) {
-                    var5 = String.valueOf(String.valueOf(var5)) + this.text.substring(var4);
+                    var5 = var5 + this.text.substring(var4);
                 }
                 this.text = var5;
                 if (var2) {

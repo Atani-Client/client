@@ -1,7 +1,6 @@
 package tech.atani.client.files;
 
 import com.google.gson.Gson;
-import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.files.data.FileData;
 
 import java.io.*;

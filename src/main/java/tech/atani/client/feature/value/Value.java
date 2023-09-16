@@ -97,16 +97,15 @@ public abstract class Value<T> {
     }
 
     public void setValue(T value) {
-        Object curValue = value;
         if(this.valueChangeListeners != null) {
             for(ValueChangeListener valueChangeListener : this.valueChangeListeners) {
-                valueChangeListener.onChange(ValueChangeListener.Stage.PRE, this, curValue, value);
+                valueChangeListener.onChange(ValueChangeListener.Stage.PRE, this, value, value);
             }
         }
         this.value = value;
         if(this.valueChangeListeners != null) {
             for(ValueChangeListener valueChangeListener : this.valueChangeListeners) {
-                valueChangeListener.onChange(ValueChangeListener.Stage.POST, this, curValue, value);
+                valueChangeListener.onChange(ValueChangeListener.Stage.POST, this, value, value);
             }
         }
     }

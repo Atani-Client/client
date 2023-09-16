@@ -7,15 +7,9 @@ import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ScreenType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
-import tech.atani.client.listener.event.minecraft.input.KeyInputEvent;
 import tech.atani.client.listener.handling.EventHandling;
-import tech.atani.client.listener.radbus.Listen;
-import tech.atani.client.feature.module.Module;
-import tech.atani.client.feature.module.data.ModuleData;
-import tech.atani.client.feature.module.data.enums.Category;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

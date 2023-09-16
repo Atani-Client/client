@@ -33,9 +33,7 @@ public class StringUtil {
 
         String pattern = "[^\\p{InBasicLatin}]";
 
-        String cleanedInput = Pattern.compile(pattern).matcher(normalized).replaceAll("");
-
-        return cleanedInput;
+        return Pattern.compile(pattern).matcher(normalized).replaceAll("");
     }
 
 }

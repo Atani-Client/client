@@ -12,8 +12,6 @@ import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.storage.ValueStorage;
 import tech.atani.client.utility.math.atomic.AtomicFloat;
 
-import java.util.LinkedHashMap;
-
 public abstract class DraggableElement extends ThemeObject {
 
     private SliderValue<Float> x, y, width, height;

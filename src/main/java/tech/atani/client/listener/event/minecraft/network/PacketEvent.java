@@ -29,6 +29,6 @@ public class PacketEvent extends Event {
     }
 
     public enum Type {
-        INCOMING, OUTGOING;
+        INCOMING, OUTGOING
     }
 }

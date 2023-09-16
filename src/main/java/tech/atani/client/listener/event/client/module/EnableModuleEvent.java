@@ -8,7 +8,7 @@ public class EnableModuleEvent extends Event {
     final EnableModuleEvent.Type type;
 
     public enum Type {
-        PRE, POST;
+        PRE, POST
     }
 
     public EnableModuleEvent(Module module, Type type) {

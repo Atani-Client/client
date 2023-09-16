@@ -9,7 +9,6 @@ import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
-import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.SilentMoveEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
@@ -21,7 +20,6 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
-import tech.atani.client.utility.player.movement.MoveUtil;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;

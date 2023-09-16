@@ -20,6 +20,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 
 import java.util.Arrays;
 import java.util.List;
+
 @Native
 @ModuleData(name = "InventoryManager", description = "Cleans and sorts your inventory", category = Category.PLAYER)
 public class InventoryManager extends Module {
@@ -114,7 +115,7 @@ public class InventoryManager extends Module {
                 }
             }
         }
-    };
+    }
 
     @Override
     public void onEnable() {
@@ -138,17 +139,14 @@ public class InventoryManager extends Module {
                 return true;
             if (is.getItem() instanceof ItemPickaxe && is != bestPick() && (preferSwords.getValue() || is != bestWeapon()))
                 return true;
-            if (is.getItem() instanceof ItemSpade && is != bestShovel())
-                return true;
+            return is.getItem() instanceof ItemSpade && is != bestShovel();
         } else {
             if (is.getItem() instanceof ItemAxe && (preferSwords.getValue() || is != bestWeapon()))
                 return true;
             if (is.getItem() instanceof ItemPickaxe && (preferSwords.getValue() || is != bestWeapon()))
                 return true;
-            if (is.getItem() instanceof ItemSpade)
-                return true;
+            return is.getItem() instanceof ItemSpade;
         }
-        return false;
     }
 
     public ItemStack bestWeapon() {
@@ -340,7 +338,7 @@ public class InventoryManager extends Module {
                     break;
                 default:
                     break;
-            };
+            }
         } else if (is instanceof ItemAxe) {
             switch (((ItemAxe) is).getToolMaterialName()) {
                 case "GOLD":
@@ -358,7 +356,7 @@ public class InventoryManager extends Module {
                     break;
                 default:
                     break;
-            };
+            }
         } else if (is instanceof ItemSpade) {
             switch (((ItemSpade) is).getToolMaterialName()) {
                 case "GOLD":
@@ -376,7 +374,7 @@ public class InventoryManager extends Module {
                     break;
                 default:
                     break;
-            };
+            }
         }
 
         return rating;

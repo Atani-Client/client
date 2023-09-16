@@ -1,15 +1,11 @@
 package tech.atani.client.feature.theme.impl.element.watermark;
 
-import com.google.common.base.Supplier;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.impl.hud.WaterMark;
-import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.theme.impl.element.DraggableElement;
 import tech.atani.client.feature.value.impl.SliderValue;
-import tech.atani.client.feature.value.storage.ValueStorage;
-import tech.atani.client.feature.theme.ThemeObject;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;
@@ -37,7 +33,7 @@ public class ModernWatermark extends DraggableElement {
         FontRenderer fontRenderer = FontStorage.getInstance().findFont("Greycliff Medium", 21);
         float outlineWidth = 1;
         Color firstColor = new Color(red.getValue(), green.getValue(), blue.getValue());
-        int color = ColorUtil.fadeBetween(firstColor.getRGB(), firstColor.brighter().getRGB(), 1 * 150L);
+        int color = ColorUtil.fadeBetween(firstColor.getRGB(), firstColor.brighter().getRGB(), 150L);
         this.getWidth().setValue(fontRenderer.getStringWidthInt(text) + 8 + outlineWidth * 2);
         this.getHeight().setValue(fontRenderer.FONT_HEIGHT + 4 + outlineWidth * 2);
         RenderableShaders.renderAndRun(() -> {

@@ -12,7 +12,6 @@ import tech.atani.client.utility.discord.DiscordRP;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.feature.guis.elements.background.ShaderBackground;
-import tech.atani.client.utility.system.HWIDUtil;
 
 import java.awt.*;
 import java.io.IOException;

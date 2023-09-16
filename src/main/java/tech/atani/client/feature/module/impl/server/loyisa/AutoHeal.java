@@ -12,9 +12,9 @@ import tech.atani.client.utility.math.time.TimeHelper;
 public class AutoHeal extends Module {
 
     public SliderValue<Integer> minHealth = new SliderValue<>("Min Health", "What will the minimum health before healing?", this, 5, 0, 20, 0);
-    public SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between heals?", this, 500l, 0l, 10000l, 0);
+    public SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between heals?", this, 500L, 0L, 10000L, 0);
 
-    private TimeHelper timeHelper = new TimeHelper();
+    private final TimeHelper timeHelper = new TimeHelper();
 
     @Listen
     public void onUpdate(UpdateEvent updateEvent) {

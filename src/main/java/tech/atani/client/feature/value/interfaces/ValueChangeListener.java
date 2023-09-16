@@ -6,6 +6,6 @@ public interface ValueChangeListener {
     void onChange(Stage stage, Value value, Object oldValue, Object newValue);
 
     enum Stage {
-        PRE, POST;
+        PRE, POST
     }
 }

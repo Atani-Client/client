@@ -75,13 +75,11 @@ public class ColorUtil {
     public static Color generateRandomTonedColor(int baseHue, int minValue, int maxValue, int alpha) {
         Random random = new Random();
 
-        int hue = baseHue; // Keep the hue constant for the same tone
-
         // Generate random saturation and value within the given range
         float saturation = random.nextFloat();
         float value = minValue + random.nextInt(maxValue - minValue + 1) / 255.0f;
 
-        return Color.getHSBColor(hue / 360.0f, saturation, value).darker();
+        return Color.getHSBColor(baseHue / 360.0f, saturation, value).darker();
     }
 
     public static int darken(final int color, final float factor) {

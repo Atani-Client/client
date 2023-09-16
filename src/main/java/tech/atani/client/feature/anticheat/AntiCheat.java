@@ -1,14 +1,11 @@
 package tech.atani.client.feature.anticheat;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
 import tech.atani.client.feature.anticheat.data.PlayerData;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 public class AntiCheat {
 

@@ -248,8 +248,7 @@ public class AtaniSinglePlayerMenu extends GuiScreen implements GuiYesNoCallback
         String s1 = "\'" + p_152129_1_ + "\' " + I18n.format("selectWorld.deleteWarning", new Object[0]);
         String s2 = I18n.format("selectWorld.deleteButton", new Object[0]);
         String s3 = I18n.format("gui.cancel", new Object[0]);
-        GuiYesNo guiyesno = new GuiYesNo(p_152129_0_, s, s1, s2, s3, p_152129_2_);
-        return guiyesno;
+        return new GuiYesNo(p_152129_0_, s, s1, s2, s3, p_152129_2_);
     }
 
     class List extends AtaniSlotGui

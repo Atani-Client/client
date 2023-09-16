@@ -26,8 +26,8 @@ public class TextureFix
             for (final TextureAtlasSprite textureAtlasSprite : this.getData(textureMapBlocks).values()) {
                 if (!textureAtlasSprite.hasAnimationMetadata()) {
                     ++n2;
-                    n += textureAtlasSprite.getIconWidth() * textureAtlasSprite.getIconHeight() * 4;
-                    textureAtlasSprite.setFramesTextureData((List)new FixList(textureAtlasSprite));
+                    n += (long) textureAtlasSprite.getIconWidth() * textureAtlasSprite.getIconHeight() * 4;
+                    textureAtlasSprite.setFramesTextureData(new FixList(textureAtlasSprite));
                 }
             }
             final long n3 = n * (1 + Minecraft.getMinecraft().gameSettings.mipmapLevels);

@@ -5,7 +5,6 @@ import net.minecraft.util.BlockPos;
 import tech.atani.client.feature.anticheat.check.Check;
 import tech.atani.client.feature.anticheat.data.PlayerData;
 import tech.atani.client.utility.world.block.BlockUtil;
-import tech.atani.client.utility.world.entities.EntitiesUtil;
 
 @Check.Info(name = "GroundSpoof")
 public class GroundCheck extends Check {

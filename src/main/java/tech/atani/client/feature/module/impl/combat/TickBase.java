@@ -15,12 +15,12 @@ import tech.atani.client.feature.value.impl.SliderValue;
 public class TickBase extends Module {
 
 	public final SliderValue<Long> maxBalance = new SliderValue<>("Max Balance", "What will be the maximum balance?", this, 100L, 0L, 5000L, 0);
-	public final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between shifting?", this, 300l, 0l, 1000l, 0);
+	public final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between shifting?", this, 300L, 0L, 1000L, 0);
 	public final SliderValue<Float> range = new SliderValue<>("Range", "At what range will the module operate?", this, 3f, 0.1f,7f, 1);
 
 	private KillAura killAura;
 	private long shifted, previousTime;
-	private TimeHelper timeHelper = new TimeHelper();
+	private final TimeHelper timeHelper = new TimeHelper();
 
 	@Listen
 	public void onTime(TimerManipulationEvent timerManipulationEvent) {
@@ -38,7 +38,7 @@ public class TickBase extends Module {
 
 		previousTime = timerManipulationEvent.getTime();
 		timerManipulationEvent.setTime(timerManipulationEvent.getTime() - shifted);
-	};
+	}
 
 	private boolean shouldCharge() {
 		return killAura.isEnabled() && KillAura.curEntity != null && this.shifted < maxBalance.getValue();

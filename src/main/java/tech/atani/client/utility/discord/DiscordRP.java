@@ -8,8 +8,6 @@ import tech.atani.client.utility.interfaces.Methods;
 
 public class DiscordRP implements Methods {
 
-
-
     public static void startup() {
         DiscordEventHandlers handlers = new DiscordEventHandlers.Builder().setReadyEventHandler((user) -> {
             System.out.println("Welcome " + user.username + "!");

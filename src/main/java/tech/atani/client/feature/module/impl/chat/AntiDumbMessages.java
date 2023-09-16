@@ -3,7 +3,6 @@ package tech.atani.client.feature.module.impl.chat;
 import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StringUtils;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;

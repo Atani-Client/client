@@ -61,8 +61,7 @@ public class Window {
             boolean found = false;
             for(ValueComponent component : this.components) {
                 if(component instanceof ValueComponent) {
-                    ValueComponent valueComponent = (ValueComponent) component;
-                    if(valueComponent.getValue() == value)
+                    if(component.getValue() == value)
                         found = true;
                 }
             }
@@ -73,10 +72,9 @@ public class Window {
         }
         for(ValueComponent component : this.components) {
             if (component instanceof ValueComponent) {
-                ValueComponent valueComponent = (ValueComponent) component;
                 boolean found = false;
                 for(Value value : ValueStorage.getInstance().getValues(module)) {
-                    if(valueComponent.getValue() == value)
+                    if(component.getValue() == value)
                         found = true;
                 }
                 if(!found) {

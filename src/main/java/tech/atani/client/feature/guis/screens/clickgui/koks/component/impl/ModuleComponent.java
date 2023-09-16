@@ -2,17 +2,11 @@ package tech.atani.client.feature.guis.screens.clickgui.koks.component.impl;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.clickgui.koks.component.Component;
 import tech.atani.client.feature.guis.screens.clickgui.koks.window.Window;
 import tech.atani.client.feature.module.Module;
-import tech.atani.client.feature.value.Value;
-import tech.atani.client.feature.value.impl.CheckBoxValue;
-import tech.atani.client.feature.value.impl.MultiStringBoxValue;
-import tech.atani.client.feature.value.impl.SliderValue;
-import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.feature.value.storage.ValueStorage;
 import tech.atani.client.utility.render.RenderUtil;
 

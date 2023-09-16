@@ -108,7 +108,7 @@ public final class GuiPasswordField extends Gui
                     var5 = this.field_146216_j.substring(0, var3);
                 }
                 if (var4 < this.field_146216_j.length()) {
-                    var5 = String.valueOf(var5) + this.field_146216_j.substring(var4);
+                    var5 = var5 + this.field_146216_j.substring(var4);
                 }
                 this.field_146216_j = var5;
                 if (var2) {
@@ -210,19 +210,19 @@ public final class GuiPasswordField extends Gui
         final int var5 = (this.field_146224_r < this.field_146223_s) ? this.field_146223_s : this.field_146224_r;
         final int var6 = this.field_146217_k - this.field_146216_j.length() - (var4 - this.field_146223_s);
         if (this.field_146216_j.length() > 0) {
-            var2 = String.valueOf(var2) + this.field_146216_j.substring(0, var4);
+            var2 = var2 + this.field_146216_j.substring(0, var4);
         }
         int var7;
         if (var6 < var3.length()) {
-            var2 = String.valueOf(var2) + var3.substring(0, var6);
+            var2 = var2 + var3.substring(0, var6);
             var7 = var6;
         }
         else {
-            var2 = String.valueOf(var2) + var3;
+            var2 = var2 + var3;
             var7 = var3.length();
         }
         if (this.field_146216_j.length() > 0 && var5 < this.field_146216_j.length()) {
-            var2 = String.valueOf(var2) + this.field_146216_j.substring(var5);
+            var2 = var2 + this.field_146216_j.substring(var5);
         }
         this.field_146216_j = var2;
         this.func_146182_d(var4 - this.field_146223_s + var7);

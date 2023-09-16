@@ -2,7 +2,6 @@ package tech.atani.client.utility.player.combat;
 
 import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntityMob;
@@ -12,10 +11,7 @@ import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.Vec3;
-import tech.atani.client.feature.module.impl.option.Teams;
-import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.utility.player.PlayerUtil;
 import tech.atani.client.utility.player.rotation.RotationUtil;
 import tech.atani.client.feature.combat.CombatManager;
 

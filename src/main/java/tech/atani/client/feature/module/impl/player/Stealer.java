@@ -97,7 +97,7 @@ public class Stealer extends Module {
             if (isEmpty && autoClose.getValue())
                 getPlayer().closeScreen();
         }
-    };
+    }
 
     private void addIntelligentSlotsToSteal() {
         float bestSwordDamage = -1, bestBowDamage = -1, bestPickAxeStrength = -1, bestAxeStrength = -1;

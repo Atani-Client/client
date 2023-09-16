@@ -11,14 +11,9 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
-import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
-import tech.atani.client.listener.radbus.Listen;
-import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.player.PlayerUtil;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 @Native
 @ModuleData(name = "Teams", description = "Friendly fire will not be tolerated", category = Category.OPTIONS)
 public class Teams extends Module implements IgnoreList {

@@ -23,7 +23,6 @@ import tech.atani.client.feature.value.Value;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.feature.value.interfaces.ValueChangeListener;
 
-import java.util.List;
 import java.util.*;
 
 @ModuleData(name = "ModuleList", description = "Shows a list of enabled modules", category = Category.HUD)

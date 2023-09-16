@@ -19,14 +19,14 @@ public class HackerDetector extends Module {
         if(mc.thePlayer != null) {
             AntiCheat.INSTANCE.handlePlayers();
         }
-    };
+    }
 
     @Listen
     public void onPacket(PacketEvent packetEvent) {
         if(mc.thePlayer != null) {
             AntiCheat.INSTANCE.getPlayers().values().stream().filter(d -> d.getTicksExisted() > 80).forEach(d -> d.handle(packetEvent.getPacket()));
         }
-    };
+    }
 
     @Override
     public void onEnable() {

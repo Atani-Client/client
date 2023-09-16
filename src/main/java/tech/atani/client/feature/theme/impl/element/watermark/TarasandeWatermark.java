@@ -1,11 +1,9 @@
 package tech.atani.client.feature.theme.impl.element.watermark;
 
-import com.google.common.base.Supplier;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import tech.atani.client.feature.module.impl.hud.WaterMark;
-import tech.atani.client.feature.theme.ThemeObject;
 import tech.atani.client.feature.theme.data.ThemeObjectInfo;
 import tech.atani.client.feature.theme.data.enums.ElementType;
 import tech.atani.client.feature.theme.data.enums.ThemeObjectType;

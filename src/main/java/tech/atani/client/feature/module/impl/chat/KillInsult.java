@@ -9,7 +9,6 @@ import tech.atani.client.listener.event.game.KilledPlayerEvent;
 import tech.atani.client.listener.radbus.Listen;
 
 import java.security.SecureRandom;
-import java.util.Random;
 @Native
 @ModuleData(name = "KillInsult", description = "Insults player after you killed them", category = Category.COMBAT)
 public class KillInsult extends Module {

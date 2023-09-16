@@ -7,7 +7,7 @@ public class UpdateMotionEvent extends Event {
     boolean isCurrentView;
 
     public enum Type {
-        PRE, MID, POST;
+        PRE, MID, POST
     }
 
     public UpdateMotionEvent(Type type, boolean isCurrentView) {

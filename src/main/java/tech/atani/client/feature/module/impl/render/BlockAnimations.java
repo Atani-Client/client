@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.render;
 
-import com.google.common.base.Supplier;
 import net.minecraft.item.ItemSword;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;

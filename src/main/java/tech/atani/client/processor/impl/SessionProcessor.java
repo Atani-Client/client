@@ -4,13 +4,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StringUtils;
 import tech.atani.client.listener.event.game.*;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.event.minecraft.world.WorldLoadEvent;
 import tech.atani.client.listener.radbus.Listen;
-import tech.atani.client.loader.Modification;
 import tech.atani.client.processor.Processor;
 import tech.atani.client.processor.data.ProcessorInfo;
 import tech.atani.client.utility.interfaces.Methods;
@@ -118,7 +116,7 @@ public class SessionProcessor extends Processor {
     }
 
     public enum SaveMode {
-        ON_KICK, ON_CLOSE, NEVER;
+        ON_KICK, ON_CLOSE, NEVER
     }
 
     public int getKills() {

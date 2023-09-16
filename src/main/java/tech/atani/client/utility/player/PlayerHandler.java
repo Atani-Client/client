@@ -7,7 +7,7 @@ public class PlayerHandler {
     public static MoveFixMode currentMode;
 
     public enum MoveFixMode {
-        STRICT, SILENT, AGGRESSIVE;
+        STRICT, SILENT, AGGRESSIVE
     }
 
 }

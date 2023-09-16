@@ -4,8 +4,6 @@ import cn.muyang.nativeobfuscator.Native;
 import com.sun.javafx.geom.Vec2f;
 import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.utility.math.MathUtil;
-import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;

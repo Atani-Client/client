@@ -98,9 +98,7 @@ public class AutoArmor extends Module {
             return false;
         if (getPlayer().inventoryContainer.getInventory().contains(bestLeggings()) && getPlayer().inventoryContainer.getSlot(7).getStack() != bestLeggings())
             return false;
-        if (getPlayer().inventoryContainer.getInventory().contains(bestBoots()) && getPlayer().inventoryContainer.getSlot(8).getStack() != bestBoots())
-            return false;
-        return true;
+        return !getPlayer().inventoryContainer.getInventory().contains(bestBoots()) || getPlayer().inventoryContainer.getSlot(8).getStack() == bestBoots();
     }
 
     public boolean isTrashArmor(ItemStack itemStack) {
@@ -110,9 +108,7 @@ public class AutoArmor extends Module {
             return true;
         if (itemStack.getItem() instanceof ItemArmor && legging.contains(itemStack.getItem()) && itemStack != bestLeggings() && bestLeggings() != null)
             return true;
-        if (itemStack.getItem() instanceof ItemArmor && boot.contains(itemStack.getItem()) && itemStack != bestBoots() && bestBoots() != null)
-            return true;
-        return false;
+        return itemStack.getItem() instanceof ItemArmor && boot.contains(itemStack.getItem()) && itemStack != bestBoots() && bestBoots() != null;
     }
 
     public ItemStack bestHelmet() {

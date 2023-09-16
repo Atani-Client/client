@@ -6,12 +6,13 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
+import cn.muyang.nativeobfuscator.Native;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.utility.interfaces.Methods;
-
+@Native
 public class FramebufferQuads implements Methods {
 
     public static void drawQuad(final double x, final double y, final double width, final double height) {

@@ -1,5 +1,6 @@
 package tech.atani.client.files.impl;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import tech.atani.client.files.LocalFile;
@@ -8,7 +9,7 @@ import tech.atani.client.processor.storage.ProcessorStorage;
 import tech.atani.client.processor.impl.SessionProcessor;
 
 import java.io.File;
-
+@Native
 @FileData(fileName = "session")
 public class SessionFile extends LocalFile {
 

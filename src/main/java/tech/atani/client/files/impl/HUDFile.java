@@ -1,5 +1,6 @@
 package tech.atani.client.files.impl;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,7 +13,7 @@ import tech.atani.client.files.data.FileData;
 
 import java.io.File;
 import java.util.Map;
-
+@Native
 @FileData(fileName = "hud")
 public class HUDFile extends LocalFile {
 

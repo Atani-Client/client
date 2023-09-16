@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.render;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -30,7 +31,7 @@ import tech.atani.client.utility.math.interpolation.InterpolationUtil;
 
 import java.awt.*;
 import java.util.Calendar;
-
+@Native
 @ModuleData(name = "ESP", description = "Render little things around players", category = Category.RENDER)
 public class ESP extends Module {
 

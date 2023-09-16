@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.player;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.enchantment.Enchantment;
@@ -24,7 +25,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+@Native
 @ModuleData(category = Category.PLAYER, description = "Automatically takes items in chests", name = "ChestStealer")
 public class Stealer extends Module {
     private final SliderValue<Long> minStartDelay = new SliderValue<Long>("Minimum Start Delay", "What will be the minimum delay for starting to operate?", this, 250L, 0L, 1000L, 0),

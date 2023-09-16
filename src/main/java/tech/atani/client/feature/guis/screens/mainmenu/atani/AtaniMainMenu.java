@@ -1,5 +1,6 @@
 package tech.atani.client.feature.guis.screens.mainmenu.atani;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
@@ -16,6 +17,7 @@ import tech.atani.client.utility.system.HWIDUtil;
 import java.awt.*;
 import java.io.IOException;
 
+@Native
 public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
 {
 

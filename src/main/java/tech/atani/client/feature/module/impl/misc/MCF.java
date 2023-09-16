@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.misc;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -16,7 +17,7 @@ import tech.atani.client.utility.interfaces.Methods;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Native
 @ModuleData(name = "MCF", description = "Friend other players with a mouse click", category = Category.MISCELLANEOUS)
 public class MCF extends Module implements IgnoreList {
     private final List<Entity> friends = new ArrayList<>();

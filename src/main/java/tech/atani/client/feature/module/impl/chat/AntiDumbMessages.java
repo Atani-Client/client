@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.chat;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StringUtils;
@@ -8,7 +9,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
-
+@Native
 @ModuleData(name = "AntiDumbMessages", description = "Doesn't show dumb spam like \"gg\", \"gl\", etc.", category = Category.CHAT)
 public class AntiDumbMessages extends Module {
 

@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.option;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +19,7 @@ import tech.atani.client.utility.player.PlayerUtil;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-
+@Native
 @ModuleData(name = "Teams", description = "Friendly fire will not be tolerated", category = Category.OPTIONS)
 public class Teams extends Module implements IgnoreList {
 

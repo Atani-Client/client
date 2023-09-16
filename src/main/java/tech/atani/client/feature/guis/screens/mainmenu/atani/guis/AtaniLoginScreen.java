@@ -1,5 +1,6 @@
 package tech.atani.client.feature.guis.screens.mainmenu.atani.guis;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
@@ -25,6 +26,7 @@ import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 import java.awt.*;
 import java.io.IOException;
 
+@Native
 public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
 {
     private String input = "", status = "Please login with your UID.";

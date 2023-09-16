@@ -1,5 +1,6 @@
 package tech.atani.client.protection.antitamper.impl;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.util.Util;
 import sun.security.krb5.internal.crypto.Des;
 import tech.atani.client.protection.antitamper.AntiTamper;
@@ -9,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-
+@Native
 public class AntiVM extends AntiTamper {
 
     public AntiVM() {

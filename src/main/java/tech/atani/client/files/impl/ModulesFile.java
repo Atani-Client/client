@@ -1,5 +1,6 @@
 package tech.atani.client.files.impl;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import tech.atani.client.feature.module.Module;
@@ -8,7 +9,7 @@ import tech.atani.client.files.LocalFile;
 import tech.atani.client.files.data.FileData;
 
 import java.io.File;
-
+@Native
 @FileData(fileName = "modules")
 public class ModulesFile extends LocalFile {
 

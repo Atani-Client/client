@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.combat;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
@@ -24,7 +25,7 @@ import tech.atani.client.utility.player.movement.MoveUtil;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
+@Native
 @ModuleData(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 

@@ -1,5 +1,6 @@
 package tech.atani.client.protection;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.authlib.properties.PropertyMap;
@@ -52,7 +53,7 @@ import java.net.Proxy;
 import java.util.List;
 import java.util.UUID;
 
-// mc whole class will be obfuscated natively
+@Native
 public class ProtectedLaunch {
 
     private static String[] args;

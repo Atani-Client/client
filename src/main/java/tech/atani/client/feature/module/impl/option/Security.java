@@ -1,12 +1,11 @@
 package tech.atani.client.feature.module.impl.option;
 
-import net.minecraft.network.play.client.C03PacketPlayer;
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 import net.minecraft.network.play.server.S27PacketExplosion;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.network.play.server.S2DPacketOpenWindow;
 import net.minecraft.network.play.server.S48PacketResourcePackSend;
-import tech.atani.client.listener.event.Event;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
@@ -20,6 +19,7 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
+@Native
 @ModuleData(name = "Security", description = "Patches common exploits", category = Category.OPTIONS, frozenState = true, enabled = true)
 public class Security extends Module {
 

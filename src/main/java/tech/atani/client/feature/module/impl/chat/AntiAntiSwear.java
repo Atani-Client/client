@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.chat;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
@@ -12,7 +13,7 @@ import tech.atani.client.utility.java.StringUtil;
 import tech.atani.client.utility.math.random.RandomUtil;
 
 import java.security.SecureRandom;
-
+@Native
 @ModuleData(name = "AntiAntiSwear", description = "Prevents detection of naughty words", category = Category.CHAT)
 public class AntiAntiSwear extends Module {
 

@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.combat;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
@@ -8,7 +9,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.player.combat.AttackEntityEvent;
-
+@Native
 @ModuleData(name = "Criticals", description = "Always gets you critical hits", category = Category.COMBAT)
 public class Criticals extends Module {
 

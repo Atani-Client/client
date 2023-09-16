@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.movement;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C0DPacketCloseWindow;
@@ -14,7 +15,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
-
+@Native
 @ModuleData(name = "InventoryMove", description = "Move inside your inventory.", category = Category.MOVEMENT)
 public class InventoryMove extends Module {
     private final CheckBoxValue openPacket = new CheckBoxValue("No Open Packet", "Should the module send open packets?", this, false),

@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.chat;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.EnumChatFormatting;
@@ -14,7 +15,7 @@ import tech.atani.client.utility.interfaces.Methods;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
+@Native
 @ModuleData(name = "QuickMathSolver", description = "Automatically solves quick maths", category = Category.CHAT)
 public class QuickMathSolver extends Module {
 

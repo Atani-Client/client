@@ -1,5 +1,6 @@
 package tech.atani.client.utility.player.raytrace;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Predicates;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,7 +11,7 @@ import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.player.PlayerHandler;
 
 import java.util.List;
-
+@Native
 public class RaytraceUtil implements Methods {
 
 	public static boolean getOver(final EnumFacing enumFacing, final BlockPos pos, final boolean strict, float reach) {

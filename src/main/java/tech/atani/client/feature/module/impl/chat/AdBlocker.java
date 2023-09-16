@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.chat;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.EnumChatFormatting;
@@ -10,11 +11,10 @@ import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 
 import java.util.regex.Pattern;
-
+@Native
 @ModuleData(name = "AdBlocker", description = "Doesn't show spam and advertisement", category = Category.CHAT)
 public class AdBlocker extends Module {
 
-    // Skidded from hytils reborn :(
     private String chatCommonAdvertisements = "(?!.+: )(/?(((party join|join party)|p join|(guild join)|(join guild)|g join) \\w{1,16})|/?(party me|visit me|duel me|my ah|my smp)|(twitch.tv)|(youtube.com|youtu.be)|(/(visit|ah) \\w{1,16}|(visit /\\w{1,16})|(/gift)|(gilde)|(lowballing|lowbaling|lowvaling|lowvaluing|lowballer)))";
     private String chatRankBegging = "(?!.+: )([^\\[](vip|mvp|mpv|vpi)|(please|pls|plz|rank ?up|rank ?upgrade)|(buy|upgrade|gift|give) (rank|me)|(gifting|gifters)|( beg |begging|beggers))";
     private String chatCleanerBedwarsPartyAdvertisement = "(?!.+: )(([1-8]/[1-8]|[1-8]v[1-8]|[2-8]s)|(any|rbw|ranked))";

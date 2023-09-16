@@ -1,18 +1,14 @@
 package tech.atani.client.utility.player;
 
-import net.minecraft.client.network.NetworkPlayerInfo;
-import net.minecraft.entity.Entity;
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.*;
-import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.utility.math.VecUtil;
-import tech.atani.client.utility.player.rotation.RotationUtil;
 
+@Native
 public class PlayerUtil implements Methods {
 
     public static boolean canBuildForward() {

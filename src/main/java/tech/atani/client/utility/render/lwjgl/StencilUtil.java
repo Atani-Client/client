@@ -1,5 +1,6 @@
 package tech.atani.client.utility.render.lwjgl;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.EXTFramebufferObject;
@@ -7,7 +8,7 @@ import org.lwjgl.opengl.EXTPackedDepthStencil;
 import tech.atani.client.utility.interfaces.Methods;
 
 import static org.lwjgl.opengl.GL11.*;
-
+@Native
 public class StencilUtil implements Methods {
 
     private static void setupFramebuffer(Framebuffer fbo) {

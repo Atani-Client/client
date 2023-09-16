@@ -1,12 +1,13 @@
 package tech.atani.client.utility.render.shader.container;
 
+import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.render.shader.annotation.Info;
 import tech.atani.client.utility.render.shader.data.ShaderRenderType;
 import tech.atani.client.utility.render.shader.render.Type;
 
 import java.util.List;
-
+@Native
 public abstract class ShaderContainer extends ShaderReload implements Methods {
 
     public String vert, frag;

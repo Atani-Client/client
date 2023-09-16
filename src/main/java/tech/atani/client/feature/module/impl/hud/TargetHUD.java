@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.hud;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import de.florianmichael.rclasses.math.MathUtils;
@@ -34,7 +35,7 @@ import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
 import java.text.DecimalFormat;
-
+@Native
 @SuppressWarnings("UnnecessaryUnicodeEscape")
 @ModuleData(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)
 public class TargetHUD extends Module implements ColorPalette {

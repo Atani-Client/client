@@ -1,5 +1,7 @@
 package tech.atani.client.utility.internet;
 
+import cn.muyang.nativeobfuscator.Native;
+
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+@Native
 public class NetUtils {
 
     public static String sendPostRequest(String apiUrl, HashMap<String, String> parameters) throws IOException {

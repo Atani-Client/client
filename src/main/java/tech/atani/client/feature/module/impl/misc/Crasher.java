@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.misc;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -17,7 +18,7 @@ import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import net.minecraft.nbt.*;
 import java.util.Random;
-
+@Native
 @ModuleData(name = "Crasher", description = "Tries to crash a server", category = Category.MISCELLANEOUS)
 public class Crasher extends Module {
     public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Swing", "Sign", "Paralyze", "Chunk Load", "NaN Position", "Multiverse", "Fawe", "Mare", "Exploit Fixer (Old)"});

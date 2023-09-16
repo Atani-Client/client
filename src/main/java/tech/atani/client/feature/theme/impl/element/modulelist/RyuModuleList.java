@@ -1,5 +1,6 @@
 package tech.atani.client.feature.theme.impl.element.modulelist;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.feature.font.storage.FontStorage;
@@ -16,7 +17,7 @@ import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 
 import java.awt.*;
 import java.util.LinkedHashMap;
-
+@Native
 @ThemeObjectInfo(name = "Ryu", themeObjectType = ThemeObjectType.ELEMENT, elementType = ElementType.MODULE_LIST)
 public class RyuModuleList extends ModuleListElement {
 

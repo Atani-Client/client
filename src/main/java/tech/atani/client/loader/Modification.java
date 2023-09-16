@@ -1,5 +1,6 @@
 package tech.atani.client.loader;
 
+import cn.muyang.nativeobfuscator.Native;
 import de.florianmichael.viamcp.ViaMCP;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
@@ -22,7 +23,7 @@ import tech.atani.client.utility.discord.DiscordRP;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+@Native
 public enum Modification implements ClientInformationAccess {
     INSTANCE;
 
@@ -82,7 +83,6 @@ public enum Modification implements ClientInformationAccess {
         try {
             System.out.println(NetUtils.sendPostRequest("https://texttoascii.com/api/figlet", (HashMap<String, String>) parameters));
         } catch (IOException e) {
-            // throw new RuntimeException(e);
             // Don't stop the client please, I can't launch it.
         }
 

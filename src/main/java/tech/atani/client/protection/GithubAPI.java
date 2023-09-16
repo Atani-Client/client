@@ -1,5 +1,6 @@
 package tech.atani.client.protection;
 
+import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.protection.antitamper.impl.AntiVM;
 import tech.atani.client.utility.system.HWIDUtil;
 
@@ -8,6 +9,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@Native
 public class GithubAPI {
 
     public static String username, uid;

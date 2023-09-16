@@ -21,6 +21,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
+
 @Native
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
 public class NoSlowDown extends Module {

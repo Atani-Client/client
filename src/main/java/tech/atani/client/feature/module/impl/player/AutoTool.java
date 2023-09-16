@@ -10,6 +10,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
+
 @Native
 @ModuleData(name = "AutoTool", description = "Switches to best tools", category = Category.PLAYER)
 public class AutoTool extends Module {

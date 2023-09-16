@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.chat;
 
-import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
@@ -9,7 +8,7 @@ import tech.atani.client.listener.event.game.KilledPlayerEvent;
 import tech.atani.client.listener.radbus.Listen;
 
 import java.security.SecureRandom;
-@Native
+
 @ModuleData(name = "KillInsult", description = "Insults player after you killed them", category = Category.COMBAT)
 public class KillInsult extends Module {
 

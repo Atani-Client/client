@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.render;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
@@ -19,7 +18,7 @@ import org.lwjgl.util.glu.Disk;
 
 import java.awt.*;
 import java.util.Calendar;
-@Native
+
 @ModuleData(name = "ChinaHat", description = "Gives you a hat from China.", category = Category.RENDER)
 public class ChinaHat extends Module {
 

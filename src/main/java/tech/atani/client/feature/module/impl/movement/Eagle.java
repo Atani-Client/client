@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.movement;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.block.BlockAir;
 import net.minecraft.util.BlockPos;
 import org.lwjgl.input.Keyboard;
@@ -12,7 +11,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.feature.value.impl.SliderValue;
-@Native
+
 @ModuleData(name = "Eagle", description = "Makes you shift on block edges.", category = Category.MOVEMENT)
 public class Eagle extends Module {
     private final SliderValue<Integer> delay = new SliderValue<Integer>("Sneak Delay", "How big will the delay be to sneak?", this, 30, 0, 300, 0);

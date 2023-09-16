@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.misc;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import tech.atani.client.feature.anticheat.AntiCheat;
 import tech.atani.client.feature.anticheat.data.PlayerData;
@@ -10,7 +9,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;
-@Native
+
 @ModuleData(category = Category.MISCELLANEOUS, description = "Detects other cheaters", name = "HackerDetector")
 public class HackerDetector extends Module {
 

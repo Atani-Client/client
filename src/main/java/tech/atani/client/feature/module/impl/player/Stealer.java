@@ -25,6 +25,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 @Native
 @ModuleData(category = Category.PLAYER, description = "Automatically takes items in chests", name = "ChestStealer")
 public class Stealer extends Module {

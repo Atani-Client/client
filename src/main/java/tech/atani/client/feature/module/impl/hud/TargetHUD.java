@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.hud;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import de.florianmichael.rclasses.math.MathUtils;
@@ -34,9 +33,7 @@ import tech.atani.client.utility.render.shader.shaders.GradientShader;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
-import java.text.DecimalFormat;
-@Native
-@SuppressWarnings("UnnecessaryUnicodeEscape")
+
 @ModuleData(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)
 public class TargetHUD extends Module implements ColorPalette {
 
@@ -49,7 +46,6 @@ public class TargetHUD extends Module implements ColorPalette {
     private SimpleAnimation koksHealthAnim = new SimpleAnimation(1, 0.5f);
 
     private final Frustum frustum = new Frustum();
-    DecimalFormat decimalFormat = new DecimalFormat("0.0");
 
     @Listen
     public void onRender2D(Render2DEvent render2DEvent) {

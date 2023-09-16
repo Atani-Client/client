@@ -39,6 +39,7 @@ import tech.atani.client.utility.world.entities.EntitiesUtil;
 
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
+
 @Native
 @ModuleData(name = "Backtrack", description = "Delay packets to get higher reach", category = Category.COMBAT)
 public class Backtrack extends Module {

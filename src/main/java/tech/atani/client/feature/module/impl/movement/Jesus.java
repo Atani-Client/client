@@ -12,6 +12,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.StringBoxValue;
+
 @Native
 @ModuleData(name = "Jesus", description = "Walk on water like jesus", category = Category.MOVEMENT)
 public class Jesus extends Module {

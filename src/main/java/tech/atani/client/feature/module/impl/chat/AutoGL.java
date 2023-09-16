@@ -1,12 +1,11 @@
 package tech.atani.client.feature.module.impl.chat;
 
-import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.listener.event.game.GameStartEvent;
 import tech.atani.client.listener.radbus.Listen;
-@Native
+
 @ModuleData(name = "AutoGL", description = "Automatically sends good luck messages", category = Category.CHAT)
 public class AutoGL extends Module {
 
@@ -16,13 +15,9 @@ public class AutoGL extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 
 }

@@ -14,6 +14,7 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 
 import java.util.ArrayDeque;
+
 @Native
 @ModuleData(name = "Blink", description = "Blocks your packets for a time being", category = Category.MISCELLANEOUS, alwaysRegistered = true)
 public class Blink extends Module {

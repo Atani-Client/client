@@ -14,6 +14,7 @@ import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.utility.player.rotation.RotationUtil;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
+
 @Native
 @ModuleData(name = "TargetStrafe", description = "Strafe around entities", category = Category.MOVEMENT)
 public class TargetStrafe extends Module {

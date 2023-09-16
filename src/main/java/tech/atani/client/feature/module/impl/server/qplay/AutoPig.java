@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.server.qplay;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C09PacketHeldItemChange;
@@ -12,7 +11,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.time.TimeHelper;
-@Native
+
 @ModuleData(name = "AutoPig", identifier = "mc.qplay.cz AutoPig", description = "Automatically uses golden pigs", category = Category.SERVER, supportedIPs = {"mc.qplay.cz"})
 public class AutoPig extends Module {
 

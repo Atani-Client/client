@@ -10,6 +10,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import com.google.common.base.Supplier;
+
 @Native
 @ModuleData(name = "NoFall", description = "Reduces fall damage", category = Category.PLAYER)
 public class NoFall extends Module {

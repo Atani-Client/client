@@ -17,6 +17,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
+
 @Native
 @ModuleData(name = "LongJump", description = "Jumps long", category = Category.MOVEMENT)
 public class LongJump extends Module {

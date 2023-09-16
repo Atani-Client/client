@@ -30,6 +30,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Comparator;
 import java.util.List;
+
 @Native
 @ModuleData(name = "KillAura", description = "Attacks people", category = Category.COMBAT, key = Keyboard.KEY_R)
 public class KillAura extends Module {

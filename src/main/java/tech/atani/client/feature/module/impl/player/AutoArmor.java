@@ -20,6 +20,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 
 import java.util.Arrays;
 import java.util.List;
+
 @Native
 @ModuleData(category = Category.PLAYER, description = "Automatically equips best armor", name = "AutoArmor")
 public class AutoArmor extends Module {

@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.misc;
 
-import cn.muyang.nativeobfuscator.Native;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
@@ -13,7 +12,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.StringBoxValue;
-@Native
+
 @ModuleData(name = "ClientSpoofer", description = "Spoof your client brand", category = Category.MISCELLANEOUS)
 public class ClientSpoofer extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "What client should we spoof as?", this, new String[] {"Lunar", "Forge"});

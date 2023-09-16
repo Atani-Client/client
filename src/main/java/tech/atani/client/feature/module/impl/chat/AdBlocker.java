@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.chat;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.server.S02PacketChat;
 import net.minecraft.util.EnumChatFormatting;
@@ -11,7 +10,7 @@ import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 
 import java.util.regex.Pattern;
-@Native
+
 @ModuleData(name = "AdBlocker", description = "Doesn't show spam and advertisement", category = Category.CHAT)
 public class AdBlocker extends Module {
 

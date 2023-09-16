@@ -29,6 +29,7 @@ import tech.atani.client.utility.math.interpolation.InterpolationUtil;
 
 import java.awt.*;
 import java.util.Calendar;
+
 @Native
 @ModuleData(name = "ESP", description = "Render little things around players", category = Category.RENDER)
 public class ESP extends Module {

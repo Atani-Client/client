@@ -10,6 +10,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.feature.value.impl.SliderValue;
+
 @Native
 @ModuleData(name = "TickBase", description = "Tick Base Manipulation", category = Category.COMBAT)
 public class TickBase extends Module {

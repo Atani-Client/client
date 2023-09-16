@@ -55,12 +55,8 @@ public class Theme extends Module {
     }});
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 }

@@ -16,6 +16,7 @@ import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
+
 @Native
 @ModuleData(name = "Spider", description = "Climb up walls", category = Category.MOVEMENT)
 public class Spider extends Module {
@@ -32,7 +33,7 @@ public class Spider extends Module {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
 
-        if(canClimbWall() && mode.getValue().equals("Vulcan")) {
+        if(canClimbWall() && mode.is("Vulcan")) {
             if(packetEvent.getPacket() instanceof C03PacketPlayer) {
                 C03PacketPlayer packet = (C03PacketPlayer) packetEvent.getPacket();
 

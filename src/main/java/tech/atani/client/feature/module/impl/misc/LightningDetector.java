@@ -1,13 +1,12 @@
 package tech.atani.client.feature.module.impl.misc;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.play.server.S2CPacketSpawnGlobalEntity;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-@Native
+
 @ModuleData(name = "LightningDetector", description = "Detects lightning and sends coordinates", category = Category.MISCELLANEOUS)
 public class LightningDetector extends Module {
 

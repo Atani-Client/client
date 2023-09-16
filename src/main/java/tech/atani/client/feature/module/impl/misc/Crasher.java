@@ -18,6 +18,7 @@ import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import net.minecraft.nbt.*;
 import java.util.Random;
+
 @Native
 @ModuleData(name = "Crasher", description = "Tries to crash a server", category = Category.MISCELLANEOUS)
 public class Crasher extends Module {
@@ -112,12 +113,8 @@ public class Crasher extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 }

@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -15,7 +14,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
-@Native
+
 @ModuleData(name = "Extinguish", description = "Automatically extinguishes fire under you", category = Category.COMBAT)
 public class Extinguish extends Module {
 

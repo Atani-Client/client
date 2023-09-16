@@ -15,6 +15,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
+
 @Native
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {

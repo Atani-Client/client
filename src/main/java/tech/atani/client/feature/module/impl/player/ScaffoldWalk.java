@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+
 @Native
 @ModuleData(name = "ScaffoldWalk", description = "Bridging automatically", category = Category.PLAYER)
 public class ScaffoldWalk extends Module {

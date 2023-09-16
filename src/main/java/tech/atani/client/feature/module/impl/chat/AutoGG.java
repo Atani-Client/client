@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.chat;
 
-import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
@@ -8,7 +7,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.listener.event.game.GameEndEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.time.TimeHelper;
-@Native
+
 @ModuleData(name = "AutoGG", identifier = "AutoGG", description = "Automatically types gg", category = Category.CHAT)
 public class AutoGG extends Module {
 

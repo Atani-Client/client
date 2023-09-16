@@ -13,6 +13,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.random.RandomUtil;
+
 @Native
 @ModuleData(name = "PingSpoof", description = "Spoofs your ping", category = Category.MISCELLANEOUS)
 public class PingSpoof extends Module {
@@ -41,12 +42,8 @@ public class PingSpoof extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 }

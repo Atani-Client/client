@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.entity.projectile.EntityFireball;
 import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C0APacketAnimation;
@@ -18,7 +17,7 @@ import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.rotation.RotationUtil;
-@Native
+
 @ModuleData(name = "AntiFireball", description = "Automatically deflects fireballs", category = Category.COMBAT)
 public class AntiFireball extends Module {
 
@@ -75,12 +74,8 @@ public class AntiFireball extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 }

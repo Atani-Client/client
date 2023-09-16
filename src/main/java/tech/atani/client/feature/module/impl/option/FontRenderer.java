@@ -11,12 +11,8 @@ public class FontRenderer extends Module {
     public final StringBoxValue mode = new StringBoxValue("Mode", "What font renderer will the client use?", this, new String[] {"Modern", "Classic"});
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 }

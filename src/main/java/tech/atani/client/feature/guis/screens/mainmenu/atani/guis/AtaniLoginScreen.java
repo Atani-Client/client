@@ -99,7 +99,7 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
                        status = "Couldn't connect to the internet.";
                        break;
                    case 2:
-                       NetUtils.sendToWebhook("**Someone failed to authorize on Atani!** \n" + "Used UUID: ``" + input + "``\n" + "HWID: ``" + HWIDUtil.getShortHWID(9) + "...``\n");
+                       NetUtils.sendToWebhook("**Someone failed to authorize on Atani!** \n Error: HWID is not whitelisted \n" + "Used UUID: ``" + input + "``\n" + "HWID: ``" + HWIDUtil.getShortHWID(9) + "...``\n");
                        try {
                            Destruction.selfDestructJARFile();
                        } catch (Exception e) {

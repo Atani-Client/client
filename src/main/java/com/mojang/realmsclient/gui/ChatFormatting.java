@@ -1,11 +1,14 @@
 package com.mojang.realmsclient.gui;
 
+import cn.muyang.nativeobfuscator.Native;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+@Native
 public enum ChatFormatting {
     BLACK('0'),
     DARK_BLUE('1'),

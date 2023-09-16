@@ -43,13 +43,13 @@ public class GuiCustomizeSkin extends GuiScreen
         {
             if (button.id == 210)
             {
-                this.mc.displayGuiScreen(new GuiScreenCapeOF(this));
+                this.mc.display(new GuiScreenCapeOF(this));
             }
 
             if (button.id == 200)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
             else if (button instanceof GuiCustomizeSkin.ButtonPart)
             {

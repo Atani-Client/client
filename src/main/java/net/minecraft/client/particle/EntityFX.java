@@ -83,11 +83,11 @@ public class EntityFX extends Entity
     {
         if (this.particleAlpha == 1.0F && alpha < 1.0F)
         {
-            Minecraft.getMinecraft().effectRenderer.moveToAlphaLayer(this);
+            Minecraft.getInstance().effectRenderer.moveToAlphaLayer(this);
         }
         else if (this.particleAlpha < 1.0F && alpha == 1.0F)
         {
-            Minecraft.getMinecraft().effectRenderer.moveToNoAlphaLayer(this);
+            Minecraft.getInstance().effectRenderer.moveToNoAlphaLayer(this);
         }
 
         this.particleAlpha = alpha;

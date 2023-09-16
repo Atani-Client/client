@@ -132,11 +132,11 @@ class GuiSlotShaders extends GuiSlot
                                     GuiSlotShaders.this.selectIndex(index);
                                 }
 
-                                GuiSlotShaders.this.mc.displayGuiScreen(GuiSlotShaders.this.shadersGui);
+                                GuiSlotShaders.this.mc.display(GuiSlotShaders.this.shadersGui);
                             }
                         };
                         GuiYesNo guiyesno = new GuiYesNo(guiyesnocallback, s4, s5, 0);
-                        this.mc.displayGuiScreen(guiyesno);
+                        this.mc.display(guiyesno);
                         return false;
                     }
                 }

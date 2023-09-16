@@ -128,7 +128,7 @@ public class BakedQuad implements IVertexProducer
 
         float f6 = (f + f2) / 2.0F;
         float f7 = (f1 + f3) / 2.0F;
-        TextureAtlasSprite textureatlassprite = Minecraft.getMinecraft().getTextureMapBlocks().getIconByUV((double)f6, (double)f7);
+        TextureAtlasSprite textureatlassprite = Minecraft.getInstance().getTextureMapBlocks().getIconByUV((double)f6, (double)f7);
         return textureatlassprite;
     }
 

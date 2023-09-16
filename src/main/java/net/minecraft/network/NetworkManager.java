@@ -48,6 +48,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.MarkerManager;
+import tech.atani.Client;
+import tech.atani.event.impl.other.PacketEvent;
 
 public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 {
@@ -137,6 +139,12 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
 
     protected void channelRead0(ChannelHandlerContext p_channelRead0_1_, Packet p_channelRead0_2_) throws Exception
     {
+        PacketEvent event = new PacketEvent(p_channelRead0_2_, PacketEvent.Type.RECEIVED);
+        Client.INSTANCE.getEventBus().handle(event);
+
+        if (event.isCancelled())
+            return;
+
         if (this.channel.isOpen())
         {
             try
@@ -145,7 +153,7 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet>
             }
             catch (ThreadQuickExitException var4)
             {
-                ;
+
             }
         }
     }

@@ -37,7 +37,7 @@ public class FieldLocatorActionKeyF3 implements IFieldLocator
 
     private Field getFieldRenderChunksMany()
     {
-        Minecraft minecraft = Minecraft.getMinecraft();
+        Minecraft minecraft = Minecraft.getInstance();
         boolean flag = minecraft.renderChunksMany;
         Field[] afield = Minecraft.class.getDeclaredFields();
         minecraft.renderChunksMany = true;

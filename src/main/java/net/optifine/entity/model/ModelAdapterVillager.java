@@ -40,7 +40,7 @@ public class ModelAdapterVillager extends ModelAdapter
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         RenderVillager rendervillager = new RenderVillager(rendermanager);
         rendervillager.mainModel = modelBase;
         rendervillager.shadowSize = shadowSize;

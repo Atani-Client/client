@@ -96,7 +96,7 @@ public class ModelAdapterGuardian extends ModelAdapter
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         RenderGuardian renderguardian = new RenderGuardian(rendermanager);
         renderguardian.mainModel = modelBase;
         renderguardian.shadowSize = shadowSize;

@@ -8,7 +8,7 @@ import java.util.Date;
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
@@ -53,7 +53,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
         catch (AnvilConverterException anvilconverterexception)
         {
             logger.error((String)"Couldn\'t load level list", (Throwable)anvilconverterexception);
-            this.mc.displayGuiScreen(new GuiErrorScreen("Unable to load worlds", anvilconverterexception.getMessage()));
+            this.mc.display(new GuiErrorScreen("Unable to load worlds", anvilconverterexception.getMessage()));
             return;
         }
 
@@ -125,7 +125,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
                 {
                     this.confirmingDelete = true;
                     GuiYesNo guiyesno = makeDeleteWorldYesNo(this, s, this.selectedIndex);
-                    this.mc.displayGuiScreen(guiyesno);
+                    this.mc.display(guiyesno);
                 }
             }
             else if (button.id == 1)
@@ -134,15 +134,15 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
             }
             else if (button.id == 3)
             {
-                this.mc.displayGuiScreen(new GuiCreateWorld(this));
+                this.mc.display(new GuiCreateWorld(this));
             }
             else if (button.id == 6)
             {
-                this.mc.displayGuiScreen(new GuiRenameWorld(this, this.func_146621_a(this.selectedIndex)));
+                this.mc.display(new GuiRenameWorld(this, this.func_146621_a(this.selectedIndex)));
             }
             else if (button.id == 0)
             {
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
             else if (button.id == 7)
             {
@@ -151,7 +151,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
                 WorldInfo worldinfo = isavehandler.loadWorldInfo();
                 isavehandler.flush();
                 guicreateworld.recreateFromExistingWorld(worldinfo);
-                this.mc.displayGuiScreen(guicreateworld);
+                this.mc.display(guicreateworld);
             }
             else
             {
@@ -162,7 +162,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
 
     public void func_146615_e(int p_146615_1_)
     {
-        this.mc.displayGuiScreen((GuiScreen)null);
+        this.mc.display((GuiScreen)null);
 
         if (!this.field_146634_i)
         {
@@ -210,7 +210,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
                 }
             }
 
-            this.mc.displayGuiScreen(this);
+            this.mc.display(this);
         }
     }
 
@@ -298,7 +298,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
 
                 if (saveformatcomparator.isHardcoreModeEnabled())
                 {
-                    s2 = EnumChatFormatting.DARK_RED + I18n.format("gameMode.hardcore", new Object[0]) + EnumChatFormatting.RESET;
+                    s2 = Formatting.DARK_RED + I18n.format("gameMode.hardcore", new Object[0]) + Formatting.RESET;
                 }
 
                 if (saveformatcomparator.getCheatsEnabled())

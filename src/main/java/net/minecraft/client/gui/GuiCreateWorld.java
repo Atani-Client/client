@@ -170,11 +170,11 @@ public class GuiCreateWorld extends GuiScreen
         {
             if (button.id == 1)
             {
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
             else if (button.id == 0)
             {
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.display((GuiScreen)null);
 
                 if (this.alreadyGenerated)
                 {
@@ -311,11 +311,11 @@ public class GuiCreateWorld extends GuiScreen
             {
                 if (WorldType.worldTypes[this.selectedIndex] == WorldType.FLAT)
                 {
-                    this.mc.displayGuiScreen(new GuiCreateFlatWorld(this, this.chunkProviderSettingsJson));
+                    this.mc.display(new GuiCreateFlatWorld(this, this.chunkProviderSettingsJson));
                 }
                 else
                 {
-                    this.mc.displayGuiScreen(new GuiCustomizeWorldScreen(this, this.chunkProviderSettingsJson));
+                    this.mc.display(new GuiCustomizeWorldScreen(this, this.chunkProviderSettingsJson));
                 }
             }
         }

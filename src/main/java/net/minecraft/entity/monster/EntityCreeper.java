@@ -214,7 +214,7 @@ public class EntityCreeper extends EntityMob
         if (itemstack != null && itemstack.getItem() == Items.flint_and_steel)
         {
             this.worldObj.playSoundEffect(this.posX + 0.5D, this.posY + 0.5D, this.posZ + 0.5D, "fire.ignite", 1.0F, this.rand.nextFloat() * 0.4F + 0.8F);
-            player.swingItem();
+            player.swing();
 
             if (!this.worldObj.isRemote)
             {

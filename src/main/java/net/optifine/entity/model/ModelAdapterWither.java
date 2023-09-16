@@ -84,7 +84,7 @@ public class ModelAdapterWither extends ModelAdapter
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         RenderWither renderwither = new RenderWither(rendermanager);
         renderwither.mainModel = modelBase;
         renderwither.shadowSize = shadowSize;

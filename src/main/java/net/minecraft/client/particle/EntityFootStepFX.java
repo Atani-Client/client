@@ -76,7 +76,7 @@ public class EntityFootStepFX extends EntityFX
     {
         public EntityFX getEntityFX(int particleID, World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, int... p_178902_15_)
         {
-            return new EntityFootStepFX(Minecraft.getMinecraft().getTextureManager(), worldIn, xCoordIn, yCoordIn, zCoordIn);
+            return new EntityFootStepFX(Minecraft.getInstance().getTextureManager(), worldIn, xCoordIn, yCoordIn, zCoordIn);
         }
     }
 }

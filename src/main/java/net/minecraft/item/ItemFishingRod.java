@@ -31,7 +31,7 @@ public class ItemFishingRod extends Item
         {
             int i = playerIn.fishEntity.handleHookRetraction();
             itemStackIn.damageItem(i, playerIn);
-            playerIn.swingItem();
+            playerIn.swing();
         }
         else
         {
@@ -42,7 +42,7 @@ public class ItemFishingRod extends Item
                 worldIn.spawnEntityInWorld(new EntityFishHook(worldIn, playerIn));
             }
 
-            playerIn.swingItem();
+            playerIn.swing();
             playerIn.triggerAchievement(StatList.objectUseStats[Item.getIdFromItem(this)]);
         }
 

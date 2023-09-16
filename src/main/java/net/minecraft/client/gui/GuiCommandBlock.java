@@ -64,7 +64,7 @@ public class GuiCommandBlock extends GuiScreen
             if (button.id == 1)
             {
                 this.localCommandBlock.setTrackOutput(this.field_175389_t);
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.display((GuiScreen)null);
             }
             else if (button.id == 0)
             {
@@ -73,14 +73,14 @@ public class GuiCommandBlock extends GuiScreen
                 this.localCommandBlock.func_145757_a(packetbuffer);
                 packetbuffer.writeString(this.commandTextField.getText());
                 packetbuffer.writeBoolean(this.localCommandBlock.shouldTrackOutput());
-                this.mc.getNetHandler().addToSendQueue(new C17PacketCustomPayload("MC|AdvCdm", packetbuffer));
+                this.mc.getNetHandler().send(new C17PacketCustomPayload("MC|AdvCdm", packetbuffer));
 
                 if (!this.localCommandBlock.shouldTrackOutput())
                 {
                     this.localCommandBlock.setLastOutput((IChatComponent)null);
                 }
 
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.display((GuiScreen)null);
             }
             else if (button.id == 4)
             {

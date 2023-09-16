@@ -22,7 +22,7 @@ import net.minecraft.entity.player.EnumPlayerModelParts;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.src.Config;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.MathHelper;
 import net.optifine.EmissiveTextures;
 import net.optifine.entity.model.CustomEntityModels;
@@ -31,6 +31,9 @@ import net.optifine.shaders.Shaders;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.opengl.GL11;
+import tech.atani.Client;
+import tech.atani.event.impl.render.RenderModelEvent;
+import tech.atani.event.impl.render.RendererLivingEntityEvent;
 
 public abstract class RendererLivingEntity<T extends EntityLivingBase> extends Render<T>
 {
@@ -100,6 +103,9 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
 
     public void doRender(T entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
+        RendererLivingEntityEvent event = new RendererLivingEntityEvent(entity, this, partialTicks, x, y, z, RendererLivingEntityEvent.Type.PRE);
+        Client.INSTANCE.getEventBus().handle(event);
+        if (event.isCancelled()) return;
         if (!Reflector.RenderLivingEvent_Pre_Constructor.exists() || !Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Pre_Constructor, new Object[] {entity, this, Double.valueOf(x), Double.valueOf(y), Double.valueOf(z)}))
         {
             if (animateModelLiving)
@@ -277,6 +283,9 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                 Reflector.postForgeBusEvent(Reflector.RenderLivingEvent_Post_Constructor, new Object[] {entity, this, Double.valueOf(x), Double.valueOf(y), Double.valueOf(z)});
             }
         }
+
+        event.setType(RendererLivingEntityEvent.Type.POST);
+        Client.INSTANCE.getEventBus().handle(event);
     }
 
     protected boolean setScoreTeamColor(T entityLivingBaseIn)
@@ -324,7 +333,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     protected void renderModel(T entitylivingbaseIn, float p_77036_2_, float p_77036_3_, float p_77036_4_, float p_77036_5_, float p_77036_6_, float scaleFactor)
     {
         boolean flag = !entitylivingbaseIn.isInvisible();
-        boolean flag1 = !flag && !entitylivingbaseIn.isInvisibleToPlayer(Minecraft.getMinecraft().thePlayer);
+        boolean flag1 = !flag && !entitylivingbaseIn.isInvisibleToPlayer(Minecraft.getInstance().player);
 
         if (flag || flag1)
         {
@@ -343,7 +352,15 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                 GlStateManager.alphaFunc(516, 0.003921569F);
             }
 
-            this.mainModel.render(entitylivingbaseIn, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, scaleFactor);
+
+            RenderModelEvent renderModelEvent = new RenderModelEvent(entitylivingbaseIn,
+                    () -> this.mainModel.render(entitylivingbaseIn, p_77036_2_, p_77036_3_, p_77036_4_, p_77036_5_, p_77036_6_, scaleFactor),
+                    () -> this.renderLayers(entitylivingbaseIn, p_77036_2_, p_77036_3_, renderPartialTicks, p_77036_4_, p_77036_5_, p_77036_6_, scaleFactor));
+
+            GL11.glEnable(GL11.GL_ALPHA_TEST);
+
+            renderModelEvent.drawModel();
+            Client.INSTANCE.getEventBus().handle(renderModelEvent);
 
             if (flag1)
             {
@@ -520,7 +537,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
         }
         else
         {
-            String s = EnumChatFormatting.getTextWithoutFormattingCodes(bat.getName());
+            String s = Formatting.getTextWithoutFormattingCodes(bat.getName());
 
             if (s != null && (s.equals("Dinnerbone") || s.equals("Grumm")) && (!(bat instanceof EntityPlayer) || ((EntityPlayer)bat).isWearing(EnumPlayerModelParts.CAPE)))
             {
@@ -662,7 +679,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
 
     protected boolean canRenderName(T entity)
     {
-        EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
+        EntityPlayerSP entityplayersp = Minecraft.getInstance().player;
 
         if (entity instanceof EntityPlayer && entity != entityplayersp)
         {

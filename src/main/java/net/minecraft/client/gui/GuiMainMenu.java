@@ -24,7 +24,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.realms.RealmsBridge;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.demo.DemoWorldServer;
@@ -58,7 +58,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     private static final ResourceLocation splashTexts = new ResourceLocation("texts/splashes.txt");
     private static final ResourceLocation minecraftTitleTextures = new ResourceLocation("textures/gui/title/minecraft.png");
     private static final ResourceLocation[] titlePanoramaPaths = new ResourceLocation[] {new ResourceLocation("textures/gui/title/background/panorama_0.png"), new ResourceLocation("textures/gui/title/background/panorama_1.png"), new ResourceLocation("textures/gui/title/background/panorama_2.png"), new ResourceLocation("textures/gui/title/background/panorama_3.png"), new ResourceLocation("textures/gui/title/background/panorama_4.png"), new ResourceLocation("textures/gui/title/background/panorama_5.png")};
-    public static final String field_96138_a = "Please click " + EnumChatFormatting.UNDERLINE + "here" + EnumChatFormatting.RESET + " for more information.";
+    public static final String field_96138_a = "Please click " + Formatting.UNDERLINE + "here" + Formatting.RESET + " for more information.";
     private int field_92024_r;
     private int field_92023_s;
     private int field_92022_t;
@@ -82,7 +82,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         try
         {
             List<String> list = Lists.<String>newArrayList();
-            bufferedreader = new BufferedReader(new InputStreamReader(Minecraft.getMinecraft().getResourceManager().getResource(splashTexts).getInputStream(), Charsets.UTF_8));
+            bufferedreader = new BufferedReader(new InputStreamReader(Minecraft.getInstance().getResourceManager().getResource(splashTexts).getInputStream(), Charsets.UTF_8));
             String s;
 
             while ((s = bufferedreader.readLine()) != null)
@@ -140,7 +140,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 
     private boolean func_183501_a()
     {
-        return Minecraft.getMinecraft().settings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && this.field_183503_M != null;
+        return Minecraft.getInstance().settings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && this.field_183503_M != null;
     }
 
     public void updateScreen()
@@ -211,7 +211,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 
         this.mc.setConnectedToRealms(false);
 
-        if (Minecraft.getMinecraft().settings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && !this.field_183502_L)
+        if (Minecraft.getInstance().settings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && !this.field_183502_L)
         {
             RealmsBridge realmsbridge = new RealmsBridge();
             this.field_183503_M = realmsbridge.getNotificationScreen(this);
@@ -258,22 +258,22 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     {
         if (button.id == 0)
         {
-            this.mc.displayGuiScreen(new GuiOptions(this, this.mc.settings));
+            this.mc.display(new GuiOptions(this, this.mc.settings));
         }
 
         if (button.id == 5)
         {
-            this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.settings, this.mc.getLanguageManager()));
+            this.mc.display(new GuiLanguage(this, this.mc.settings, this.mc.getLanguageManager()));
         }
 
         if (button.id == 1)
         {
-            this.mc.displayGuiScreen(new GuiSelectWorld(this));
+            this.mc.display(new GuiSelectWorld(this));
         }
 
         if (button.id == 2)
         {
-            this.mc.displayGuiScreen(new GuiMultiplayer(this));
+            this.mc.display(new GuiMultiplayer(this));
         }
 
         if (button.id == 14 && this.realmsButton.visible)
@@ -288,7 +288,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 
         if (button.id == 6 && Reflector.GuiModList_Constructor.exists())
         {
-            this.mc.displayGuiScreen((GuiScreen)Reflector.newInstance(Reflector.GuiModList_Constructor, new Object[] {this}));
+            this.mc.display((GuiScreen)Reflector.newInstance(Reflector.GuiModList_Constructor, new Object[] {this}));
         }
 
         if (button.id == 11)
@@ -304,7 +304,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             if (worldinfo != null)
             {
                 GuiYesNo guiyesno = GuiSelectWorld.makeDeleteWorldYesNo(this, worldinfo.getWorldName(), 12);
-                this.mc.displayGuiScreen(guiyesno);
+                this.mc.display(guiyesno);
             }
         }
     }
@@ -322,7 +322,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             ISaveFormat isaveformat = this.mc.getSaveLoader();
             isaveformat.flushCache();
             isaveformat.deleteWorldDirectory("Demo_World");
-            this.mc.displayGuiScreen(this);
+            this.mc.display(this);
         }
         else if (id == 13)
         {
@@ -340,7 +340,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
                 }
             }
 
-            this.mc.displayGuiScreen(this);
+            this.mc.display(this);
         }
     }
 
@@ -633,13 +633,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         {
             this.modUpdateNotification.drawScreen(mouseX, mouseY, partialTicks);
         }
-
-        ImImpl.render(io -> {
-            ImGui.begin("Sexy imgui window atani clarnet");
-            ImGui.text("Made by the best femboy!");
-            ImGui.end();
-            ImGui.showDemoWindow();
-        });
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
@@ -652,7 +645,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
             {
                 GuiConfirmOpenLink guiconfirmopenlink = new GuiConfirmOpenLink(this, this.openGLWarningLink, 13, true);
                 guiconfirmopenlink.disableSecurityWarning();
-                this.mc.displayGuiScreen(guiconfirmopenlink);
+                this.mc.display(guiconfirmopenlink);
             }
         }
 

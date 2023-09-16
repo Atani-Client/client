@@ -183,7 +183,7 @@ public class GuiScreenResourcePacks extends GuiScreen
                     this.mc.refreshResources();
                 }
 
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
         }
     }

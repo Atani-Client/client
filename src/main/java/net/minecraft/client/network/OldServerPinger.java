@@ -36,7 +36,7 @@ import net.minecraft.network.status.client.C01PacketPing;
 import net.minecraft.network.status.server.S00PacketServerInfo;
 import net.minecraft.network.status.server.S01PacketPong;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.MathHelper;
 import org.apache.commons.lang3.ArrayUtils;
@@ -95,7 +95,7 @@ public class OldServerPinger
 
                     if (serverstatusresponse.getPlayerCountData() != null)
                     {
-                        server.populationInfo = EnumChatFormatting.GRAY + "" + serverstatusresponse.getPlayerCountData().getOnlinePlayerCount() + "" + EnumChatFormatting.DARK_GRAY + "/" + EnumChatFormatting.GRAY + serverstatusresponse.getPlayerCountData().getMaxPlayers();
+                        server.populationInfo = Formatting.GRAY + "" + serverstatusresponse.getPlayerCountData().getOnlinePlayerCount() + "" + Formatting.DARK_GRAY + "/" + Formatting.GRAY + serverstatusresponse.getPlayerCountData().getMaxPlayers();
 
                         if (ArrayUtils.isNotEmpty(serverstatusresponse.getPlayerCountData().getPlayers()))
                         {
@@ -126,7 +126,7 @@ public class OldServerPinger
                     }
                     else
                     {
-                        server.populationInfo = EnumChatFormatting.DARK_GRAY + "???";
+                        server.populationInfo = Formatting.DARK_GRAY + "???";
                     }
 
                     if (serverstatusresponse.getFavicon() != null)
@@ -164,7 +164,7 @@ public class OldServerPinger
                 if (!this.field_147403_d)
                 {
                     OldServerPinger.logger.error("Can\'t ping " + server.serverIP + ": " + reason.getUnformattedText());
-                    server.serverMOTD = EnumChatFormatting.DARK_RED + "Can\'t connect to server.";
+                    server.serverMOTD = Formatting.DARK_RED + "Can\'t connect to server.";
                     server.populationInfo = "";
                     OldServerPinger.this.tryCompatibilityPing(server);
                 }
@@ -255,7 +255,7 @@ public class OldServerPinger
                                     server.version = -1;
                                     server.gameVersion = s1;
                                     server.serverMOTD = s2;
-                                    server.populationInfo = EnumChatFormatting.GRAY + "" + j + "" + EnumChatFormatting.DARK_GRAY + "/" + EnumChatFormatting.GRAY + k;
+                                    server.populationInfo = Formatting.GRAY + "" + j + "" + Formatting.DARK_GRAY + "/" + Formatting.GRAY + k;
                                 }
                             }
 

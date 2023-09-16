@@ -15,7 +15,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ContainerEnchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnchantmentNameParts;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IWorldNameable;
@@ -71,9 +71,9 @@ public class GuiEnchantment extends GuiContainer
             int l = mouseX - (i + 60);
             int i1 = mouseY - (j + 14 + 19 * k);
 
-            if (l >= 0 && i1 >= 0 && l < 108 && i1 < 19 && this.container.enchantItem(this.mc.thePlayer, k))
+            if (l >= 0 && i1 >= 0 && l < 108 && i1 < 19 && this.container.enchantItem(this.mc.player, k))
             {
-                this.mc.playerController.sendEnchantPacket(this.container.windowId, k);
+                this.mc.controller.sendEnchantPacket(this.container.windowId, k);
             }
         }
     }
@@ -168,7 +168,7 @@ public class GuiEnchantment extends GuiContainer
                 FontRenderer fontrenderer = this.mc.standardGalacticFontRenderer;
                 int i2 = 6839882;
 
-                if ((k < l + 1 || this.mc.thePlayer.experienceLevel < l1) && !this.mc.thePlayer.capabilities.isCreativeMode)
+                if ((k < l + 1 || this.mc.player.experienceLevel < l1) && !this.mc.player.capabilities.isCreativeMode)
                 {
                     this.drawTexturedModalRect(i1, j + 14 + 19 * l, 0, 185, 108, 19);
                     this.drawTexturedModalRect(i1 + 1, j + 15 + 19 * l, 16 * l, 239, 16, 16);
@@ -204,7 +204,7 @@ public class GuiEnchantment extends GuiContainer
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         super.drawScreen(mouseX, mouseY, partialTicks);
-        boolean flag = this.mc.thePlayer.capabilities.isCreativeMode;
+        boolean flag = this.mc.player.capabilities.isCreativeMode;
         int i = this.container.getLapisAmount();
 
         for (int j = 0; j < 3; ++j)
@@ -220,7 +220,7 @@ public class GuiEnchantment extends GuiContainer
                 if (l >= 0 && Enchantment.getEnchantmentById(l & 255) != null)
                 {
                     String s = Enchantment.getEnchantmentById(l & 255).getTranslatedName((l & 65280) >> 8);
-                    list.add(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.ITALIC.toString() + I18n.format("container.enchant.clue", new Object[] {s}));
+                    list.add(Formatting.WHITE.toString() + Formatting.ITALIC.toString() + I18n.format("container.enchant.clue", new Object[] {s}));
                 }
 
                 if (!flag)
@@ -230,9 +230,9 @@ public class GuiEnchantment extends GuiContainer
                         list.add("");
                     }
 
-                    if (this.mc.thePlayer.experienceLevel < k)
+                    if (this.mc.player.experienceLevel < k)
                     {
-                        list.add(EnumChatFormatting.RED.toString() + "Level Requirement: " + this.container.enchantLevels[j]);
+                        list.add(Formatting.RED.toString() + "Level Requirement: " + this.container.enchantLevels[j]);
                     }
                     else
                     {
@@ -249,11 +249,11 @@ public class GuiEnchantment extends GuiContainer
 
                         if (i >= i1)
                         {
-                            list.add(EnumChatFormatting.GRAY.toString() + "" + s1);
+                            list.add(Formatting.GRAY.toString() + "" + s1);
                         }
                         else
                         {
-                            list.add(EnumChatFormatting.RED.toString() + "" + s1);
+                            list.add(Formatting.RED.toString() + "" + s1);
                         }
 
                         if (i1 == 1)
@@ -265,7 +265,7 @@ public class GuiEnchantment extends GuiContainer
                             s1 = I18n.format("container.enchant.level.many", new Object[] {Integer.valueOf(i1)});
                         }
 
-                        list.add(EnumChatFormatting.GRAY.toString() + "" + s1);
+                        list.add(Formatting.GRAY.toString() + "" + s1);
                     }
                 }
 

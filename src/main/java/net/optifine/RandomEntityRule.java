@@ -375,7 +375,7 @@ public class RandomEntityRule
 
             if (this.moonPhases != null)
             {
-                World world = Config.getMinecraft().theWorld;
+                World world = Config.getMinecraft().world;
 
                 if (world != null)
                 {
@@ -390,7 +390,7 @@ public class RandomEntityRule
 
             if (this.dayTimes != null)
             {
-                World world1 = Config.getMinecraft().theWorld;
+                World world1 = Config.getMinecraft().world;
 
                 if (world1 != null)
                 {
@@ -405,7 +405,7 @@ public class RandomEntityRule
 
             if (this.weatherList != null)
             {
-                World world2 = Config.getMinecraft().theWorld;
+                World world2 = Config.getMinecraft().world;
 
                 if (world2 != null)
                 {

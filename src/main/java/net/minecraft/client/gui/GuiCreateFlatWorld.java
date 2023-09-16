@@ -74,16 +74,16 @@ public class GuiCreateFlatWorld extends GuiScreen
 
         if (button.id == 1)
         {
-            this.mc.displayGuiScreen(this.createWorldGui);
+            this.mc.display(this.createWorldGui);
         }
         else if (button.id == 0)
         {
             this.createWorldGui.chunkProviderSettingsJson = this.func_146384_e();
-            this.mc.displayGuiScreen(this.createWorldGui);
+            this.mc.display(this.createWorldGui);
         }
         else if (button.id == 5)
         {
-            this.mc.displayGuiScreen(new GuiFlatPresets(this));
+            this.mc.display(new GuiFlatPresets(this));
         }
         else if (button.id == 4 && this.func_146382_i())
         {

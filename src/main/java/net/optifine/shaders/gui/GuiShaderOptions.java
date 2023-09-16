@@ -144,7 +144,7 @@ public class GuiShaderOptions extends GuiScreenOF
                 {
                     String s = shaderoption.getName();
                     GuiShaderOptions guishaderoptions = new GuiShaderOptions(this, this.settings, s);
-                    this.mc.displayGuiScreen(guishaderoptions);
+                    this.mc.display(guishaderoptions);
                     return;
                 }
 
@@ -184,7 +184,7 @@ public class GuiShaderOptions extends GuiScreenOF
                     Shaders.uninit();
                 }
 
-                this.mc.displayGuiScreen(this.prevScreen);
+                this.mc.display(this.prevScreen);
             }
         }
     }

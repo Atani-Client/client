@@ -46,7 +46,7 @@ public class WorldClient extends World
     private ChunkProviderClient clientChunkProvider;
     private final Set<Entity> entityList = Sets.<Entity>newHashSet();
     private final Set<Entity> entitySpawnQueue = Sets.<Entity>newHashSet();
-    private final Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getInstance();
     private final Set<ChunkCoordIntPair> previousActiveChunkSet = Sets.<ChunkCoordIntPair>newHashSet();
     private boolean playerUpdate = false;
 
@@ -63,10 +63,10 @@ public class WorldClient extends World
         this.calculateInitialWeather();
         Reflector.postForgeBusEvent(Reflector.WorldEvent_Load_Constructor, new Object[] {this});
 
-        if (this.mc.playerController != null && this.mc.playerController.getClass() == PlayerControllerMP.class)
+        if (this.mc.controller != null && this.mc.controller.getClass() == PlayerControllerMP.class)
         {
-            this.mc.playerController = new PlayerControllerOF(this.mc, netHandler);
-            CustomGuis.setPlayerControllerOF((PlayerControllerOF)this.mc.playerController);
+            this.mc.controller = new PlayerControllerOF(this.mc, netHandler);
+            CustomGuis.setPlayerControllerOF((PlayerControllerOF)this.mc.controller);
         }
     }
 
@@ -234,7 +234,7 @@ public class WorldClient extends World
 
     public Entity getEntityByID(int id)
     {
-        return (Entity)(id == this.mc.thePlayer.getEntityId() ? this.mc.thePlayer : super.getEntityByID(id));
+        return (Entity)(id == this.mc.player.getEntityId() ? this.mc.player : super.getEntityByID(id));
     }
 
     public Entity removeEntityFromWorld(int entityID)
@@ -277,8 +277,8 @@ public class WorldClient extends World
     {
         int i = 16;
         Random random = new Random();
-        ItemStack itemstack = this.mc.thePlayer.getHeldItem();
-        boolean flag = this.mc.playerController.getCurrentGameType() == WorldSettings.GameType.CREATIVE && itemstack != null && Block.getBlockFromItem(itemstack.getItem()) == Blocks.barrier;
+        ItemStack itemstack = this.mc.player.getHeldItem();
+        boolean flag = this.mc.controller.getCurrentGameType() == WorldSettings.GameType.CREATIVE && itemstack != null && Block.getBlockFromItem(itemstack.getItem()) == Blocks.barrier;
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
         for (int j = 0; j < 1000; ++j)
@@ -372,7 +372,7 @@ public class WorldClient extends World
         {
             public String call() throws Exception
             {
-                return WorldClient.this.mc.thePlayer.getClientBrand();
+                return WorldClient.this.mc.player.getClientBrand();
             }
         });
         crashreportcategory.addCrashSectionCallable("Server type", new Callable<String>()
@@ -453,9 +453,9 @@ public class WorldClient extends World
 
     private boolean isPlayerActing()
     {
-        if (this.mc.playerController instanceof PlayerControllerOF)
+        if (this.mc.controller instanceof PlayerControllerOF)
         {
-            PlayerControllerOF playercontrollerof = (PlayerControllerOF)this.mc.playerController;
+            PlayerControllerOF playercontrollerof = (PlayerControllerOF)this.mc.controller;
             return playercontrollerof.isActing();
         }
         else

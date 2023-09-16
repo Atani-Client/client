@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiSlot;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.stream.IngestServerTester;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import tv.twitch.broadcast.IngestServer;
 
 public class GuiIngestServers extends GuiScreen
@@ -55,7 +55,7 @@ public class GuiIngestServers extends GuiScreen
         {
             if (button.id == 1)
             {
-                this.mc.displayGuiScreen(this.field_152309_a);
+                this.mc.display(this.field_152309_a);
             }
             else
             {
@@ -113,35 +113,35 @@ public class GuiIngestServers extends GuiScreen
             {
                 if (ingestserver == ingestservertester.func_153040_c())
                 {
-                    s = EnumChatFormatting.GREEN + s;
+                    s = Formatting.GREEN + s;
                     s1 = (int)(ingestservertester.func_153030_h() * 100.0F) + "%";
                 }
                 else if (entryID < ingestservertester.func_153028_p())
                 {
                     if (ingestserver.bitrateKbps == 0.0F)
                     {
-                        s1 = EnumChatFormatting.RED + "Down!";
+                        s1 = Formatting.RED + "Down!";
                     }
                 }
                 else
                 {
-                    s1 = EnumChatFormatting.OBFUSCATED + "1234" + EnumChatFormatting.RESET + " kbps";
+                    s1 = Formatting.OBFUSCATED + "1234" + Formatting.RESET + " kbps";
                 }
             }
             else if (ingestserver.bitrateKbps == 0.0F)
             {
-                s1 = EnumChatFormatting.RED + "Down!";
+                s1 = Formatting.RED + "Down!";
             }
 
             p_180791_2_ = p_180791_2_ - 15;
 
             if (this.isSelected(entryID))
             {
-                s2 = EnumChatFormatting.BLUE + "(Preferred)";
+                s2 = Formatting.BLUE + "(Preferred)";
             }
             else if (ingestserver.defaultServer)
             {
-                s2 = EnumChatFormatting.GREEN + "(Default)";
+                s2 = Formatting.GREEN + "(Default)";
             }
 
             GuiIngestServers.this.drawString(GuiIngestServers.this.fontRendererObj, ingestserver.serverName, p_180791_2_ + 2, p_180791_3_ + 5, 16777215);

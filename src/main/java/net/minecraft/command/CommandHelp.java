@@ -10,7 +10,7 @@ import net.minecraft.event.ClickEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.MathHelper;
 
 public class CommandHelp extends CommandBase
@@ -66,7 +66,7 @@ public class CommandHelp extends CommandBase
 
         int l = Math.min((k + 1) * 7, list.size());
         ChatComponentTranslation chatcomponenttranslation1 = new ChatComponentTranslation("commands.help.header", new Object[] {Integer.valueOf(k + 1), Integer.valueOf(j + 1)});
-        chatcomponenttranslation1.getChatStyle().setColor(EnumChatFormatting.DARK_GREEN);
+        chatcomponenttranslation1.getChatStyle().setColor(Formatting.DARK_GREEN);
         sender.addChatMessage(chatcomponenttranslation1);
 
         for (int i1 = k * 7; i1 < l; ++i1)
@@ -80,7 +80,7 @@ public class CommandHelp extends CommandBase
         if (k == 0 && sender instanceof EntityPlayer)
         {
             ChatComponentTranslation chatcomponenttranslation2 = new ChatComponentTranslation("commands.help.footer", new Object[0]);
-            chatcomponenttranslation2.getChatStyle().setColor(EnumChatFormatting.GREEN);
+            chatcomponenttranslation2.getChatStyle().setColor(Formatting.GREEN);
             sender.addChatMessage(chatcomponenttranslation2);
         }
     }

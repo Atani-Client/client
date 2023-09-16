@@ -74,7 +74,7 @@ public class GuiChat extends GuiScreen
 
         if (keyCode == 1)
         {
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.display((GuiScreen)null);
         }
         else if (keyCode != 28 && keyCode != 156)
         {
@@ -108,7 +108,7 @@ public class GuiChat extends GuiScreen
                 this.sendChatMessage(s);
             }
 
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.display((GuiScreen)null);
         }
     }
 
@@ -226,7 +226,7 @@ public class GuiChat extends GuiScreen
                 blockpos = this.mc.objectMouseOver.getBlockPos();
             }
 
-            this.mc.thePlayer.sendQueue.addToSendQueue(new C14PacketTabComplete(p_146405_1_, blockpos));
+            this.mc.player.connection.send(new C14PacketTabComplete(p_146405_1_, blockpos));
             this.waitingOnAutocomplete = true;
         }
     }

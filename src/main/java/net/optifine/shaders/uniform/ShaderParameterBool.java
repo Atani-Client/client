@@ -31,7 +31,7 @@ public enum ShaderParameterBool implements IExpressionBool
     private ShaderParameterBool(String name)
     {
         this.name = name;
-        this.renderManager = Minecraft.getMinecraft().getRenderManager();
+        this.renderManager = Minecraft.getInstance().getRenderManager();
     }
 
     public String getName()
@@ -46,7 +46,7 @@ public enum ShaderParameterBool implements IExpressionBool
 
     public boolean eval()
     {
-        Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity entity = Minecraft.getInstance().getRenderViewEntity();
 
         if (entity instanceof EntityLivingBase)
         {

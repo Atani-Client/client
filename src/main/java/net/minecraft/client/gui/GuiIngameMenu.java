@@ -39,19 +39,19 @@ public class GuiIngameMenu extends GuiScreen
         switch (button.id)
         {
             case 0:
-                this.mc.displayGuiScreen(new GuiOptions(this, this.mc.settings));
+                this.mc.display(new GuiOptions(this, this.mc.settings));
                 break;
 
             case 1:
                 boolean flag = this.mc.isIntegratedServerRunning();
                 boolean flag1 = this.mc.isConnectedToRealms();
                 button.enabled = false;
-                this.mc.theWorld.sendQuittingDisconnectingPacket();
+                this.mc.world.sendQuittingDisconnectingPacket();
                 this.mc.loadWorld((WorldClient)null);
 
                 if (flag)
                 {
-                    this.mc.displayGuiScreen(new GuiMainMenu());
+                    this.mc.display(new GuiMainMenu());
                 }
                 else if (flag1)
                 {
@@ -60,7 +60,7 @@ public class GuiIngameMenu extends GuiScreen
                 }
                 else
                 {
-                    this.mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
+                    this.mc.display(new GuiMultiplayer(new GuiMainMenu()));
                 }
 
             case 2:
@@ -69,20 +69,20 @@ public class GuiIngameMenu extends GuiScreen
                 break;
 
             case 4:
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.display((GuiScreen)null);
                 this.mc.setIngameFocus();
                 break;
 
             case 5:
-                this.mc.displayGuiScreen(new GuiAchievements(this, this.mc.thePlayer.getStatFileWriter()));
+                this.mc.display(new GuiAchievements(this, this.mc.player.getStatFileWriter()));
                 break;
 
             case 6:
-                this.mc.displayGuiScreen(new GuiStats(this, this.mc.thePlayer.getStatFileWriter()));
+                this.mc.display(new GuiStats(this, this.mc.player.getStatFileWriter()));
                 break;
 
             case 7:
-                this.mc.displayGuiScreen(new GuiShareToLan(this));
+                this.mc.display(new GuiShareToLan(this));
         }
     }
 

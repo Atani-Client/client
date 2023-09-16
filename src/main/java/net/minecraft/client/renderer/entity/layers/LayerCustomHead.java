@@ -36,7 +36,7 @@ public class LayerCustomHead implements LayerRenderer<EntityLivingBase>
         if (itemstack != null && itemstack.getItem() != null)
         {
             Item item = itemstack.getItem();
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             GlStateManager.pushMatrix();
 
             if (entitylivingbaseIn.isSneaking())

@@ -393,7 +393,7 @@ public class CustomSkyLayer
 
     private float getPositionBrightnessRaw(World world)
     {
-        Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity entity = Minecraft.getInstance().getRenderViewEntity();
 
         if (entity == null)
         {

@@ -63,7 +63,7 @@ public class ModelAdapterEndermite extends ModelAdapter
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         RenderEndermite renderendermite = new RenderEndermite(rendermanager);
         renderendermite.mainModel = modelBase;
         renderendermite.shadowSize = shadowSize;

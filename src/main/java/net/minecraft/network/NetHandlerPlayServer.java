@@ -84,7 +84,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ITickable;
@@ -575,7 +575,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
         else
         {
             ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("build.tooHigh", new Object[] {Integer.valueOf(this.serverController.getBuildLimit())});
-            chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.RED);
+            chatcomponenttranslation.getChatStyle().setColor(Formatting.RED);
             this.playerEntity.playerNetServerHandler.sendPacket(new S02PacketChat(chatcomponenttranslation));
             flag = true;
         }
@@ -676,7 +676,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
         logger.info(this.playerEntity.getName() + " lost connection: " + reason);
         this.serverController.refreshStatusNextTick();
         ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("multiplayer.player.left", new Object[] {this.playerEntity.getDisplayName()});
-        chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.YELLOW);
+        chatcomponenttranslation.getChatStyle().setColor(Formatting.YELLOW);
         this.serverController.getConfigurationManager().sendChatMsg(chatcomponenttranslation);
         this.playerEntity.mountEntityAndWakeUp();
         this.serverController.getConfigurationManager().playerLoggedOut(this.playerEntity);
@@ -747,7 +747,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
         if (this.playerEntity.getChatVisibility() == EntityPlayer.EnumChatVisibility.HIDDEN)
         {
             ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("chat.cannotSend", new Object[0]);
-            chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.RED);
+            chatcomponenttranslation.getChatStyle().setColor(Formatting.RED);
             this.sendPacket(new S02PacketChat(chatcomponenttranslation));
         }
         else
@@ -793,7 +793,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
     {
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.playerEntity.getServerForPlayer());
         this.playerEntity.markPlayerActive();
-        this.playerEntity.swingItem();
+        this.playerEntity.swing();
     }
 
     public void processEntityAction(C0BPacketEntityAction packetIn)
@@ -1100,7 +1100,7 @@ public class NetHandlerPlayServer implements INetHandlerPlayServer, ITickable
 
             for (int i = 0; i < aichatcomponent.length; ++i)
             {
-                tileentitysign.signText[i] = new ChatComponentText(EnumChatFormatting.getTextWithoutFormattingCodes(aichatcomponent[i].getUnformattedText()));
+                tileentitysign.signText[i] = new ChatComponentText(Formatting.getTextWithoutFormattingCodes(aichatcomponent[i].getUnformattedText()));
             }
 
             tileentitysign.markDirty();

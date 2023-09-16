@@ -57,7 +57,7 @@ public class GuiDetailSettingsOF extends GuiScreen
             if (guibutton.id == 200)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(this.prevScreen);
+                this.mc.display(this.prevScreen);
             }
         }
     }

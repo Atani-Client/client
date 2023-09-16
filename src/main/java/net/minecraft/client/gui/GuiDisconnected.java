@@ -36,7 +36,7 @@ public class GuiDisconnected extends GuiScreen
     {
         if (button.id == 0)
         {
-            this.mc.displayGuiScreen(this.parentScreen);
+            this.mc.display(this.parentScreen);
         }
     }
 

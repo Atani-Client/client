@@ -26,7 +26,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
@@ -533,10 +533,10 @@ public final class ItemStack
 
         if (this.hasDisplayName())
         {
-            s = EnumChatFormatting.ITALIC + s;
+            s = Formatting.ITALIC + s;
         }
 
-        s = s + EnumChatFormatting.RESET;
+        s = s + Formatting.RESET;
 
         if (advanced)
         {
@@ -610,7 +610,7 @@ public final class ItemStack
                     }
                     else
                     {
-                        list.add(EnumChatFormatting.ITALIC + StatCollector.translateToLocal("item.dyed"));
+                        list.add(Formatting.ITALIC + StatCollector.translateToLocal("item.dyed"));
                     }
                 }
 
@@ -622,7 +622,7 @@ public final class ItemStack
                     {
                         for (int j1 = 0; j1 < nbttaglist1.tagCount(); ++j1)
                         {
-                            list.add(EnumChatFormatting.DARK_PURPLE + "" + EnumChatFormatting.ITALIC + nbttaglist1.getStringTagAt(j1));
+                            list.add(Formatting.DARK_PURPLE + "" + Formatting.ITALIC + nbttaglist1.getStringTagAt(j1));
                         }
                     }
                 }
@@ -658,19 +658,19 @@ public final class ItemStack
 
                 if (d0 > 0.0D)
                 {
-                    list.add(EnumChatFormatting.BLUE + StatCollector.translateToLocalFormatted("attribute.modifier.plus." + attributemodifier.getOperation(), new Object[] {DECIMALFORMAT.format(d1), StatCollector.translateToLocal("attribute.name." + (String)entry.getKey())}));
+                    list.add(Formatting.BLUE + StatCollector.translateToLocalFormatted("attribute.modifier.plus." + attributemodifier.getOperation(), new Object[] {DECIMALFORMAT.format(d1), StatCollector.translateToLocal("attribute.name." + (String)entry.getKey())}));
                 }
                 else if (d0 < 0.0D)
                 {
                     d1 = d1 * -1.0D;
-                    list.add(EnumChatFormatting.RED + StatCollector.translateToLocalFormatted("attribute.modifier.take." + attributemodifier.getOperation(), new Object[] {DECIMALFORMAT.format(d1), StatCollector.translateToLocal("attribute.name." + (String)entry.getKey())}));
+                    list.add(Formatting.RED + StatCollector.translateToLocalFormatted("attribute.modifier.take." + attributemodifier.getOperation(), new Object[] {DECIMALFORMAT.format(d1), StatCollector.translateToLocal("attribute.name." + (String)entry.getKey())}));
                 }
             }
         }
 
         if (this.hasTagCompound() && this.getTagCompound().getBoolean("Unbreakable") && (i1 & 4) == 0)
         {
-            list.add(EnumChatFormatting.BLUE + StatCollector.translateToLocal("item.unbreakable"));
+            list.add(Formatting.BLUE + StatCollector.translateToLocal("item.unbreakable"));
         }
 
         if (this.hasTagCompound() && this.stackTagCompound.hasKey("CanDestroy", 9) && (i1 & 8) == 0)
@@ -680,7 +680,7 @@ public final class ItemStack
             if (nbttaglist2.tagCount() > 0)
             {
                 list.add("");
-                list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.canBreak"));
+                list.add(Formatting.GRAY + StatCollector.translateToLocal("item.canBreak"));
 
                 for (int k1 = 0; k1 < nbttaglist2.tagCount(); ++k1)
                 {
@@ -688,11 +688,11 @@ public final class ItemStack
 
                     if (block != null)
                     {
-                        list.add(EnumChatFormatting.DARK_GRAY + block.getLocalizedName());
+                        list.add(Formatting.DARK_GRAY + block.getLocalizedName());
                     }
                     else
                     {
-                        list.add(EnumChatFormatting.DARK_GRAY + "missingno");
+                        list.add(Formatting.DARK_GRAY + "missingno");
                     }
                 }
             }
@@ -705,7 +705,7 @@ public final class ItemStack
             if (nbttaglist3.tagCount() > 0)
             {
                 list.add("");
-                list.add(EnumChatFormatting.GRAY + StatCollector.translateToLocal("item.canPlace"));
+                list.add(Formatting.GRAY + StatCollector.translateToLocal("item.canPlace"));
 
                 for (int l1 = 0; l1 < nbttaglist3.tagCount(); ++l1)
                 {
@@ -713,11 +713,11 @@ public final class ItemStack
 
                     if (block1 != null)
                     {
-                        list.add(EnumChatFormatting.DARK_GRAY + block1.getLocalizedName());
+                        list.add(Formatting.DARK_GRAY + block1.getLocalizedName());
                     }
                     else
                     {
-                        list.add(EnumChatFormatting.DARK_GRAY + "missingno");
+                        list.add(Formatting.DARK_GRAY + "missingno");
                     }
                 }
             }
@@ -730,11 +730,11 @@ public final class ItemStack
                 list.add("Durability: " + (this.getMaxDamage() - this.getItemDamage()) + " / " + this.getMaxDamage());
             }
 
-            list.add(EnumChatFormatting.DARK_GRAY + ((ResourceLocation)Item.itemRegistry.getNameForObject(this.item)).toString());
+            list.add(Formatting.DARK_GRAY + ((ResourceLocation)Item.itemRegistry.getNameForObject(this.item)).toString());
 
             if (this.hasTagCompound())
             {
-                list.add(EnumChatFormatting.DARK_GRAY + "NBT: " + this.getTagCompound().getKeySet().size() + " tag(s)");
+                list.add(Formatting.DARK_GRAY + "NBT: " + this.getTagCompound().getKeySet().size() + " tag(s)");
             }
         }
 

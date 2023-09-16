@@ -95,7 +95,7 @@ public class Config
     public static boolean fancyFogAvailable = false;
     public static boolean occlusionAvailable = false;
     private static GameSettings gameSettings = null;
-    private static Minecraft minecraft = Minecraft.getMinecraft();
+    private static Minecraft minecraft = Minecraft.getInstance();
     private static boolean initialized = false;
     private static Thread minecraftThread = null;
     private static DisplayMode desktopDisplayMode = null;
@@ -163,7 +163,7 @@ public class Config
         checkDisplayMode();
         minecraftThread = Thread.currentThread();
         updateThreadPriorities();
-        Shaders.startup(Minecraft.getMinecraft());
+        Shaders.startup(Minecraft.getInstance());
     }
 
     public static void checkInitialized()
@@ -1032,7 +1032,7 @@ public class Config
     {
         if (defaultResourcePackLazy == null)
         {
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             defaultResourcePackLazy = (DefaultResourcePack)Reflector.getFieldValue(minecraft, Reflector.Minecraft_defaultResourcePack);
 
             if (defaultResourcePackLazy == null)
@@ -2280,7 +2280,7 @@ public class Config
     public static void showGuiMessage(String p_showGuiMessage_0_, String p_showGuiMessage_1_)
     {
         GuiMessage guimessage = new GuiMessage(minecraft.currentScreen, p_showGuiMessage_0_, p_showGuiMessage_1_);
-        minecraft.displayGuiScreen(guimessage);
+        minecraft.display(guimessage);
     }
 
     public static int[] addIntToArray(int[] p_addIntToArray_0_, int p_addIntToArray_1_)

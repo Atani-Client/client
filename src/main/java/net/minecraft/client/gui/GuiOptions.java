@@ -50,18 +50,18 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
             ++i;
         }
 
-        if (this.mc.theWorld != null)
+        if (this.mc.world != null)
         {
-            EnumDifficulty enumdifficulty = this.mc.theWorld.getDifficulty();
+            EnumDifficulty enumdifficulty = this.mc.world.getDifficulty();
             this.field_175357_i = new GuiButton(108, this.width / 2 - 155 + i % 2 * 160, this.height / 6 - 12 + 24 * (i >> 1), 150, 20, this.func_175355_a(enumdifficulty));
             this.buttonList.add(this.field_175357_i);
 
-            if (this.mc.isSingleplayer() && !this.mc.theWorld.getWorldInfo().isHardcoreModeEnabled())
+            if (this.mc.isSingleplayer() && !this.mc.world.getWorldInfo().isHardcoreModeEnabled())
             {
                 this.field_175357_i.setWidth(this.field_175357_i.getButtonWidth() - 20);
                 this.field_175356_r = new GuiLockIconButton(109, this.field_175357_i.xPosition + this.field_175357_i.getButtonWidth(), this.field_175357_i.yPosition);
                 this.buttonList.add(this.field_175356_r);
-                this.field_175356_r.func_175229_b(this.mc.theWorld.getWorldInfo().isDifficultyLocked());
+                this.field_175356_r.func_175229_b(this.mc.world.getWorldInfo().isDifficultyLocked());
                 this.field_175356_r.enabled = !this.field_175356_r.func_175230_c();
                 this.field_175357_i.enabled = !this.field_175356_r.func_175230_c();
             }
@@ -111,11 +111,11 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
 
     public void confirmClicked(boolean result, int id)
     {
-        this.mc.displayGuiScreen(this);
+        this.mc.display(this);
 
-        if (id == 109 && result && this.mc.theWorld != null)
+        if (id == 109 && result && this.mc.world != null)
         {
-            this.mc.theWorld.getWorldInfo().setDifficultyLocked(true);
+            this.mc.world.getWorldInfo().setDifficultyLocked(true);
             this.field_175356_r.func_175229_b(true);
             this.field_175356_r.enabled = false;
             this.field_175357_i.enabled = false;
@@ -135,19 +135,19 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
 
             if (button.id == 108)
             {
-                this.mc.theWorld.getWorldInfo().setDifficulty(EnumDifficulty.getDifficultyEnum(this.mc.theWorld.getDifficulty().getDifficultyId() + 1));
-                this.field_175357_i.displayString = this.func_175355_a(this.mc.theWorld.getDifficulty());
+                this.mc.world.getWorldInfo().setDifficulty(EnumDifficulty.getDifficultyEnum(this.mc.world.getDifficulty().getDifficultyId() + 1));
+                this.field_175357_i.displayString = this.func_175355_a(this.mc.world.getDifficulty());
             }
 
             if (button.id == 109)
             {
-                this.mc.displayGuiScreen(new GuiYesNo(this, (new ChatComponentTranslation("difficulty.lock.title", new Object[0])).getFormattedText(), (new ChatComponentTranslation("difficulty.lock.question", new Object[] {new ChatComponentTranslation(this.mc.theWorld.getWorldInfo().getDifficulty().getDifficultyResourceKey(), new Object[0])})).getFormattedText(), 109));
+                this.mc.display(new GuiYesNo(this, (new ChatComponentTranslation("difficulty.lock.title", new Object[0])).getFormattedText(), (new ChatComponentTranslation("difficulty.lock.question", new Object[] {new ChatComponentTranslation(this.mc.world.getWorldInfo().getDifficulty().getDifficultyResourceKey(), new Object[0])})).getFormattedText(), 109));
             }
 
             if (button.id == 110)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(new GuiCustomizeSkin(this));
+                this.mc.display(new GuiCustomizeSkin(this));
             }
 
             if (button.id == 8675309)
@@ -158,49 +158,49 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
             if (button.id == 101)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(new GuiVideoSettings(this, this.game_settings_1));
+                this.mc.display(new GuiVideoSettings(this, this.game_settings_1));
             }
 
             if (button.id == 100)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(new GuiControls(this, this.game_settings_1));
+                this.mc.display(new GuiControls(this, this.game_settings_1));
             }
 
             if (button.id == 102)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(new GuiLanguage(this, this.game_settings_1, this.mc.getLanguageManager()));
+                this.mc.display(new GuiLanguage(this, this.game_settings_1, this.mc.getLanguageManager()));
             }
 
             if (button.id == 103)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(new ScreenChatOptions(this, this.game_settings_1));
+                this.mc.display(new ScreenChatOptions(this, this.game_settings_1));
             }
 
             if (button.id == 104)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(new GuiSnooper(this, this.game_settings_1));
+                this.mc.display(new GuiSnooper(this, this.game_settings_1));
             }
 
             if (button.id == 200)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(this.field_146441_g);
+                this.mc.display(this.field_146441_g);
             }
 
             if (button.id == 105)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(new GuiScreenResourcePacks(this));
+                this.mc.display(new GuiScreenResourcePacks(this));
             }
 
             if (button.id == 106)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(new GuiScreenOptionsSounds(this, this.game_settings_1));
+                this.mc.display(new GuiScreenOptionsSounds(this, this.game_settings_1));
             }
 
             if (button.id == 107)
@@ -210,7 +210,7 @@ public class GuiOptions extends GuiScreen implements GuiYesNoCallback
 
                 if (istream.func_152936_l() && istream.func_152928_D())
                 {
-                    this.mc.displayGuiScreen(new GuiStreamOptions(this, this.game_settings_1));
+                    this.mc.display(new GuiStreamOptions(this, this.game_settings_1));
                 }
                 else
                 {

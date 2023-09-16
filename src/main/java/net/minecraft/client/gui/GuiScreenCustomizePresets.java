@@ -75,11 +75,11 @@ public class GuiScreenCustomizePresets extends GuiScreen
         {
             case 0:
                 this.field_175314_r.func_175324_a(this.field_175317_i.getText());
-                this.mc.displayGuiScreen(this.field_175314_r);
+                this.mc.display(this.field_175314_r);
                 break;
 
             case 1:
-                this.mc.displayGuiScreen(this.field_175314_r);
+                this.mc.display(this.field_175314_r);
         }
     }
 

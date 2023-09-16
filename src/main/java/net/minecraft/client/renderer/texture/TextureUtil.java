@@ -250,7 +250,7 @@ public class TextureUtil
     {
         int[] aint = p_110994_0_;
 
-        if (Minecraft.getMinecraft().settings.anaglyph)
+        if (Minecraft.getInstance().settings.anaglyph)
         {
             aint = updateAnaglyph(p_110994_0_);
         }

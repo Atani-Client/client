@@ -41,7 +41,7 @@ public class ModelAdapterBat extends ModelAdapter
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         RenderBat renderbat = new RenderBat(rendermanager);
         renderbat.mainModel = modelBase;
         renderbat.shadowSize = shadowSize;

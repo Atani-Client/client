@@ -56,7 +56,7 @@ public class GuiControls extends GuiScreen
     {
         if (button.id == 200)
         {
-            this.mc.displayGuiScreen(this.parentScreen);
+            this.mc.display(this.parentScreen);
         }
         else if (button.id == 201)
         {

@@ -227,8 +227,8 @@ public enum FunctionType
                 return f2 - f3 * (float)MathHelper.floor_float(f2 / f3);
 
             case TIME:
-                Minecraft minecraft = Minecraft.getMinecraft();
-                World world = minecraft.theWorld;
+                Minecraft minecraft = Minecraft.getInstance();
+                World world = minecraft.world;
 
                 if (world == null)
                 {

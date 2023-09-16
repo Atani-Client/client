@@ -25,7 +25,7 @@ public class LayerHeldBlock implements LayerRenderer<EntityEnderman>
 
         if (iblockstate.getBlock().getMaterial() != Material.air)
         {
-            BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
+            BlockRendererDispatcher blockrendererdispatcher = Minecraft.getInstance().getBlockRendererDispatcher();
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
             GlStateManager.translate(0.0F, 0.6875F, -0.75F);

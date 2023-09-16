@@ -1325,8 +1325,8 @@ public class CustomColors
                 break;
 
             case 0:
-                Minecraft minecraft = Minecraft.getMinecraft();
-                fogVec = getFogColor(fogVec, minecraft.theWorld, renderViewEntity.posX, renderViewEntity.posY + 1.0D, renderViewEntity.posZ);
+                Minecraft minecraft = Minecraft.getInstance();
+                fogVec = getFogColor(fogVec, minecraft.world, renderViewEntity.posX, renderViewEntity.posY + 1.0D, renderViewEntity.posZ);
                 break;
 
             case 1:
@@ -1343,8 +1343,8 @@ public class CustomColors
         switch (i)
         {
             case 0:
-                Minecraft minecraft = Minecraft.getMinecraft();
-                skyVec = getSkyColor(skyVec, minecraft.theWorld, renderViewEntity.posX, renderViewEntity.posY + 1.0D, renderViewEntity.posZ);
+                Minecraft minecraft = Minecraft.getInstance();
+                skyVec = getSkyColor(skyVec, minecraft.world, renderViewEntity.posX, renderViewEntity.posY + 1.0D, renderViewEntity.posZ);
                 break;
 
             case 1:
@@ -1755,7 +1755,7 @@ public class CustomColors
 
             if (flag)
             {
-                Minecraft.getMinecraft().getTextureManager().reloadBannerTextures();
+                Minecraft.getInstance().getTextureManager().reloadBannerTextures();
             }
         }
     }

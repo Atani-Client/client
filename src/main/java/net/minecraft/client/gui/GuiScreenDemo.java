@@ -43,7 +43,7 @@ public class GuiScreenDemo extends GuiScreen
                 break;
 
             case 2:
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.display((GuiScreen)null);
                 this.mc.setIngameFocus();
         }
     }

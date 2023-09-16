@@ -171,12 +171,12 @@ public class GuiShaders extends GuiScreenOF
                         case 202:
                             Shaders.storeConfig();
                             this.saved = true;
-                            this.mc.displayGuiScreen(this.parentGui);
+                            this.mc.display(this.parentGui);
                             break;
 
                         case 203:
                             GuiShaderOptions guishaderoptions = new GuiShaderOptions(this, Config.getGameSettings());
-                            Config.getMinecraft().displayGuiScreen(guishaderoptions);
+                            Config.getMinecraft().display(guishaderoptions);
                             break;
 
                         case 210:

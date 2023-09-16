@@ -27,9 +27,9 @@ public class GuiInventory extends InventoryEffectRenderer
 
     public void updateScreen()
     {
-        if (this.mc.playerController.isInCreativeMode())
+        if (this.mc.controller.isInCreativeMode())
         {
-            this.mc.displayGuiScreen(new GuiContainerCreative(this.mc.thePlayer));
+            this.mc.display(new GuiContainerCreative(this.mc.player));
         }
 
         this.updateActivePotionEffects();
@@ -39,9 +39,9 @@ public class GuiInventory extends InventoryEffectRenderer
     {
         this.buttonList.clear();
 
-        if (this.mc.playerController.isInCreativeMode())
+        if (this.mc.controller.isInCreativeMode())
         {
-            this.mc.displayGuiScreen(new GuiContainerCreative(this.mc.thePlayer));
+            this.mc.display(new GuiContainerCreative(this.mc.player));
         }
         else
         {
@@ -68,7 +68,7 @@ public class GuiInventory extends InventoryEffectRenderer
         int i = this.guiLeft;
         int j = this.guiTop;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
-        drawEntityOnScreen(i + 51, j + 75, 30, (float)(i + 51) - this.oldMouseX, (float)(j + 75 - 50) - this.oldMouseY, this.mc.thePlayer);
+        drawEntityOnScreen(i + 51, j + 75, 30, (float)(i + 51) - this.oldMouseX, (float)(j + 75 - 50) - this.oldMouseY, this.mc.player);
     }
 
     public static void drawEntityOnScreen(int posX, int posY, int scale, float mouseX, float mouseY, EntityLivingBase ent)
@@ -93,7 +93,7 @@ public class GuiInventory extends InventoryEffectRenderer
         ent.rotationYawHead = ent.rotationYaw;
         ent.prevRotationYawHead = ent.rotationYaw;
         GlStateManager.translate(0.0F, 0.0F, 0.0F);
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         rendermanager.setPlayerViewY(180.0F);
         rendermanager.setRenderShadow(false);
         rendermanager.renderEntityWithPosYaw(ent, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
@@ -115,12 +115,12 @@ public class GuiInventory extends InventoryEffectRenderer
     {
         if (button.id == 0)
         {
-            this.mc.displayGuiScreen(new GuiAchievements(this, this.mc.thePlayer.getStatFileWriter()));
+            this.mc.display(new GuiAchievements(this, this.mc.player.getStatFileWriter()));
         }
 
         if (button.id == 1)
         {
-            this.mc.displayGuiScreen(new GuiStats(this, this.mc.thePlayer.getStatFileWriter()));
+            this.mc.display(new GuiStats(this, this.mc.player.getStatFileWriter()));
         }
     }
 }

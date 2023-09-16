@@ -85,7 +85,7 @@ public class RenderHorse extends RenderLiving<EntityHorse>
             if (resourcelocation == null)
             {
                 resourcelocation = new ResourceLocation(s);
-                Minecraft.getMinecraft().getTextureManager().loadTexture(resourcelocation, new LayeredTexture(horse.getVariantTexturePaths()));
+                Minecraft.getInstance().getTextureManager().loadTexture(resourcelocation, new LayeredTexture(horse.getVariantTexturePaths()));
                 field_110852_a.put(s, resourcelocation);
             }
 

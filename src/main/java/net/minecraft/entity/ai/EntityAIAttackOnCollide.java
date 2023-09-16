@@ -114,7 +114,7 @@ public class EntityAIAttackOnCollide extends EntityAIBase
 
             if (this.attacker.getHeldItem() != null)
             {
-                this.attacker.swingItem();
+                this.attacker.swing();
             }
 
             this.attacker.attackEntityAsMob(entitylivingbase);

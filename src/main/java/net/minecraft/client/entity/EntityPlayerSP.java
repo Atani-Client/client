@@ -3,21 +3,8 @@ package net.minecraft.client.entity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiCommandBlock;
-import net.minecraft.client.gui.GuiEnchantment;
-import net.minecraft.client.gui.GuiHopper;
-import net.minecraft.client.gui.GuiMerchant;
-import net.minecraft.client.gui.GuiRepair;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.GuiScreenBook;
-import net.minecraft.client.gui.inventory.GuiBeacon;
-import net.minecraft.client.gui.inventory.GuiBrewingStand;
-import net.minecraft.client.gui.inventory.GuiChest;
-import net.minecraft.client.gui.inventory.GuiCrafting;
-import net.minecraft.client.gui.inventory.GuiDispenser;
-import net.minecraft.client.gui.inventory.GuiEditSign;
-import net.minecraft.client.gui.inventory.GuiFurnace;
-import net.minecraft.client.gui.inventory.GuiScreenHorseInventory;
+import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.inventory.*;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.entity.Entity;
@@ -29,32 +16,24 @@ import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.play.client.C01PacketChatMessage;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
-import net.minecraft.network.play.client.C0APacketAnimation;
-import net.minecraft.network.play.client.C0BPacketEntityAction;
-import net.minecraft.network.play.client.C0CPacketInput;
-import net.minecraft.network.play.client.C0DPacketCloseWindow;
-import net.minecraft.network.play.client.C13PacketPlayerAbilities;
-import net.minecraft.network.play.client.C16PacketClientStatus;
+import net.minecraft.network.play.client.*;
 import net.minecraft.potion.Potion;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntitySign;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.MovementInput;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.world.IInteractionObject;
 import net.minecraft.world.World;
+import tech.atani.Client;
+import tech.atani.event.impl.input.ChatInputEvent;
+import tech.atani.event.impl.motion.PostMotionEvent;
+import tech.atani.event.impl.motion.PreMotionEvent;
+import tech.atani.event.impl.motion.PreUpdateEvent;
+import tech.atani.event.impl.other.MoveEvent;
 
 public class EntityPlayerSP extends AbstractClientPlayer
 {
-    public final NetHandlerPlayClient sendQueue;
+    public final NetHandlerPlayClient connection;
     private final StatFileWriter statWriter;
     private double lastReportedPosX;
     private double lastReportedPosY;
@@ -82,7 +61,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     public EntityPlayerSP(Minecraft mcIn, World worldIn, NetHandlerPlayClient netHandler, StatFileWriter statFile)
     {
         super(worldIn, netHandler.getGameProfile());
-        this.sendQueue = netHandler;
+        this.connection = netHandler;
         this.statWriter = statFile;
         this.mc = mcIn;
         this.dimension = 0;
@@ -111,16 +90,19 @@ public class EntityPlayerSP extends AbstractClientPlayer
     {
         if (this.worldObj.isBlockLoaded(new BlockPos(this.posX, 0.0D, this.posZ)))
         {
+            Client.INSTANCE.getEventBus().handle(new PreUpdateEvent());
             super.onUpdate();
 
             if (this.isRiding())
             {
-                this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
-                this.sendQueue.addToSendQueue(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
+                this.connection.send(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+                this.connection.send(new C0CPacketInput(this.moveStrafing, this.moveForward, this.movementInput.jump, this.movementInput.sneak));
             }
             else
             {
                 this.onUpdateWalkingPlayer();
+
+                Client.INSTANCE.getEventBus().handle(new PostMotionEvent());
             }
         }
     }
@@ -133,11 +115,11 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             if (flag)
             {
-                this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SPRINTING));
+                this.connection.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SPRINTING));
             }
             else
             {
-                this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SPRINTING));
+                this.connection.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SPRINTING));
             }
 
             this.serverSprintState = flag;
@@ -149,73 +131,75 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             if (flag1)
             {
-                this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SNEAKING));
+                this.connection.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.START_SNEAKING));
             }
             else
             {
-                this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SNEAKING));
+                this.connection.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.STOP_SNEAKING));
             }
 
             this.serverSneakState = flag1;
         }
 
-        if (this.isCurrentViewEntity())
-        {
-            double d0 = this.posX - this.lastReportedPosX;
-            double d1 = this.getEntityBoundingBox().minY - this.lastReportedPosY;
-            double d2 = this.posZ - this.lastReportedPosZ;
-            double d3 = (double)(this.rotationYaw - this.lastReportedYaw);
-            double d4 = (double)(this.rotationPitch - this.lastReportedPitch);
-            boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || this.positionUpdateTicks >= 20;
-            boolean flag3 = d3 != 0.0D || d4 != 0.0D;
+        PreMotionEvent event = new PreMotionEvent(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
+        Client.INSTANCE.getEventBus().handle(event);
+        if (event.isCancelled())
+            return;
 
-            if (this.ridingEntity == null)
-            {
-                if (flag2 && flag3)
-                {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
+        if (isCurrentViewEntity()) {
+            double d0 = event.getPosX() - this.lastReportedPosX;
+            double d1 = event.getPosY() - this.lastReportedPosY;
+            double d2 = event.getPosZ() - this.lastReportedPosZ;
+            double d3 = (event.getYaw() - this.lastReportedYaw);
+            double d4 = (event.getPitch() - this.lastReportedPitch);
+            boolean flag2 = (d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || this.positionUpdateTicks >= 20);
+            boolean flag3 = (d3 != 0.0D || d4 != 0.0D);
+            if (this.ridingEntity == null) {
+                if (flag2 && flag3) {
+                    this.connection.send(new C03PacketPlayer.C06PacketPlayerPosLook(event.getPosX(), event.getPosY(), event.getPosZ(), event.getYaw(), event.getPitch(), event.isOnGround()));
+                } else if (flag2) {
+                    this.connection.send(new C03PacketPlayer.C04PacketPlayerPosition(event.getPosX(), event.getPosY(), event.getPosZ(), event.isOnGround()));
+                } else if (flag3) {
+                    this.connection.send(new C03PacketPlayer.C05PacketPlayerLook(event.getYaw(), event.getPitch(), event.isOnGround()));
+                } else {
+                    this.connection.send(new C03PacketPlayer(event.isOnGround()));
                 }
-                else if (flag2)
-                {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.onGround));
+                this.positionUpdateTicks++;
+                if (flag2) {
+                    this.lastReportedPosX = event.getPosX();
+                    this.lastReportedPosY = event.getPosY();
+                    this.lastReportedPosZ = event.getPosZ();
+                    this.positionUpdateTicks = 0;
                 }
-                else if (flag3)
-                {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+                if (flag3) {
+                    this.lastReportedYaw = event.getYaw();
+                    this.lastReportedPitch = event.getPitch();
                 }
-                else
-                {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer(this.onGround));
-                }
-            }
-            else
-            {
-                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
-                flag2 = false;
-            }
-
-            ++this.positionUpdateTicks;
-
-            if (flag2)
-            {
-                this.lastReportedPosX = this.posX;
-                this.lastReportedPosY = this.getEntityBoundingBox().minY;
-                this.lastReportedPosZ = this.posZ;
-                this.positionUpdateTicks = 0;
-            }
-
-            if (flag3)
-            {
-                this.lastReportedYaw = this.rotationYaw;
-                this.lastReportedPitch = this.rotationPitch;
             }
         }
+    }
+
+    @Override
+    public void moveEntity(double x, double y, double z) {
+        MoveEvent event = new MoveEvent(x, y, z);
+
+        Client.INSTANCE.getEventBus().handle(event);
+
+        if (event.isCancelled()) {
+            super.moveEntity(0, 0, 0);
+        } else {
+            super.moveEntity(event.getX(), event.getY(), event.getZ());
+        }
+    }
+
+    public void moveEntityNoEvent(double x, double y, double z) {
+        super.moveEntity(x, y, z);
     }
 
     public EntityItem dropOneItem(boolean dropAll)
     {
         C07PacketPlayerDigging.Action c07packetplayerdigging$action = dropAll ? C07PacketPlayerDigging.Action.DROP_ALL_ITEMS : C07PacketPlayerDigging.Action.DROP_ITEM;
-        this.sendQueue.addToSendQueue(new C07PacketPlayerDigging(c07packetplayerdigging$action, BlockPos.ORIGIN, EnumFacing.DOWN));
+        this.connection.send(new C07PacketPlayerDigging(c07packetplayerdigging$action, BlockPos.ORIGIN, EnumFacing.DOWN));
         return null;
     }
 
@@ -225,18 +209,24 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public void sendChatMessage(String message)
     {
-        this.sendQueue.addToSendQueue(new C01PacketChatMessage(message));
+        ChatInputEvent event = new ChatInputEvent(message);
+        Client.INSTANCE.getEventBus().handle(event);
+
+        if (event.isCancelled())
+            return;
+
+        this.connection.send(new C01PacketChatMessage(event.getMessage()));
     }
 
-    public void swingItem()
+    public void swing()
     {
-        super.swingItem();
-        this.sendQueue.addToSendQueue(new C0APacketAnimation());
+        super.swing();
+        this.connection.send(new C0APacketAnimation());
     }
 
     public void respawnPlayer()
     {
-        this.sendQueue.addToSendQueue(new C16PacketClientStatus(C16PacketClientStatus.EnumState.PERFORM_RESPAWN));
+        this.connection.send(new C16PacketClientStatus(C16PacketClientStatus.EnumState.PERFORM_RESPAWN));
     }
 
     protected void damageEntity(DamageSource damageSrc, float damageAmount)
@@ -249,7 +239,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public void closeScreen()
     {
-        this.sendQueue.addToSendQueue(new C0DPacketCloseWindow(this.openContainer.windowId));
+        this.connection.send(new C0DPacketCloseWindow(this.openContainer.windowId));
         this.closeScreenAndDropStack();
     }
 
@@ -257,7 +247,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     {
         this.inventory.setItemStack((ItemStack)null);
         super.closeScreen();
-        this.mc.displayGuiScreen((GuiScreen)null);
+        this.mc.display((GuiScreen)null);
     }
 
     public void setPlayerSPHealth(float health)
@@ -304,7 +294,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public void sendPlayerAbilities()
     {
-        this.sendQueue.addToSendQueue(new C13PacketPlayerAbilities(this.capabilities));
+        this.connection.send(new C13PacketPlayerAbilities(this.capabilities));
     }
 
     public boolean isUser()
@@ -314,12 +304,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     protected void sendHorseJump()
     {
-        this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.RIDING_JUMP, (int)(this.getHorseJumpPower() * 100.0F)));
+        this.connection.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.RIDING_JUMP, (int)(this.getHorseJumpPower() * 100.0F)));
     }
 
     public void sendHorseInventory()
     {
-        this.sendQueue.addToSendQueue(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.OPEN_INVENTORY));
+        this.connection.send(new C0BPacketEntityAction(this, C0BPacketEntityAction.Action.OPEN_INVENTORY));
     }
 
     public void setClientBrand(String brand)
@@ -465,12 +455,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public void openEditSign(TileEntitySign signTile)
     {
-        this.mc.displayGuiScreen(new GuiEditSign(signTile));
+        this.mc.display(new GuiEditSign(signTile));
     }
 
     public void openEditCommandBlock(CommandBlockLogic cmdBlockLogic)
     {
-        this.mc.displayGuiScreen(new GuiCommandBlock(cmdBlockLogic));
+        this.mc.display(new GuiCommandBlock(cmdBlockLogic));
     }
 
     public void displayGUIBook(ItemStack bookStack)
@@ -479,7 +469,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         if (item == Items.writable_book)
         {
-            this.mc.displayGuiScreen(new GuiScreenBook(this, bookStack, true));
+            this.mc.display(new GuiScreenBook(this, bookStack, true));
         }
     }
 
@@ -489,37 +479,37 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         if ("minecraft:chest".equals(s))
         {
-            this.mc.displayGuiScreen(new GuiChest(this.inventory, chestInventory));
+            this.mc.display(new GuiChest(this.inventory, chestInventory));
         }
         else if ("minecraft:hopper".equals(s))
         {
-            this.mc.displayGuiScreen(new GuiHopper(this.inventory, chestInventory));
+            this.mc.display(new GuiHopper(this.inventory, chestInventory));
         }
         else if ("minecraft:furnace".equals(s))
         {
-            this.mc.displayGuiScreen(new GuiFurnace(this.inventory, chestInventory));
+            this.mc.display(new GuiFurnace(this.inventory, chestInventory));
         }
         else if ("minecraft:brewing_stand".equals(s))
         {
-            this.mc.displayGuiScreen(new GuiBrewingStand(this.inventory, chestInventory));
+            this.mc.display(new GuiBrewingStand(this.inventory, chestInventory));
         }
         else if ("minecraft:beacon".equals(s))
         {
-            this.mc.displayGuiScreen(new GuiBeacon(this.inventory, chestInventory));
+            this.mc.display(new GuiBeacon(this.inventory, chestInventory));
         }
         else if (!"minecraft:dispenser".equals(s) && !"minecraft:dropper".equals(s))
         {
-            this.mc.displayGuiScreen(new GuiChest(this.inventory, chestInventory));
+            this.mc.display(new GuiChest(this.inventory, chestInventory));
         }
         else
         {
-            this.mc.displayGuiScreen(new GuiDispenser(this.inventory, chestInventory));
+            this.mc.display(new GuiDispenser(this.inventory, chestInventory));
         }
     }
 
     public void displayGUIHorse(EntityHorse horse, IInventory horseInventory)
     {
-        this.mc.displayGuiScreen(new GuiScreenHorseInventory(this.inventory, horseInventory, horse));
+        this.mc.display(new GuiScreenHorseInventory(this.inventory, horseInventory, horse));
     }
 
     public void displayGui(IInteractionObject guiOwner)
@@ -528,21 +518,21 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         if ("minecraft:crafting_table".equals(s))
         {
-            this.mc.displayGuiScreen(new GuiCrafting(this.inventory, this.worldObj));
+            this.mc.display(new GuiCrafting(this.inventory, this.worldObj));
         }
         else if ("minecraft:enchanting_table".equals(s))
         {
-            this.mc.displayGuiScreen(new GuiEnchantment(this.inventory, this.worldObj, guiOwner));
+            this.mc.display(new GuiEnchantment(this.inventory, this.worldObj, guiOwner));
         }
         else if ("minecraft:anvil".equals(s))
         {
-            this.mc.displayGuiScreen(new GuiRepair(this.inventory, this.worldObj));
+            this.mc.display(new GuiRepair(this.inventory, this.worldObj));
         }
     }
 
     public void displayVillagerTradeGui(IMerchant villager)
     {
-        this.mc.displayGuiScreen(new GuiMerchant(this.inventory, villager, this.worldObj));
+        this.mc.display(new GuiMerchant(this.inventory, villager, this.worldObj));
     }
 
     public void onCriticalHit(Entity entityHit)
@@ -605,7 +595,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             if (this.mc.currentScreen != null && !this.mc.currentScreen.doesGuiPauseGame())
             {
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.display((GuiScreen)null);
             }
 
             if (this.timeInPortal == 0.0F)
@@ -692,7 +682,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         if (this.capabilities.allowFlying)
         {
-            if (this.mc.playerController.isSpectatorMode())
+            if (this.mc.controller.isSpectatorMode())
             {
                 if (!this.capabilities.isFlying)
                 {
@@ -771,7 +761,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         super.onLivingUpdate();
 
-        if (this.onGround && this.capabilities.isFlying && !this.mc.playerController.isSpectatorMode())
+        if (this.onGround && this.capabilities.isFlying && !this.mc.controller.isSpectatorMode())
         {
             this.capabilities.isFlying = false;
             this.sendPlayerAbilities();

@@ -48,7 +48,7 @@ public class GuiScreenCapeOF extends GuiScreenOF
         {
             if (button.id == 200)
             {
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
 
             if (button.id == 210)
@@ -95,11 +95,11 @@ public class GuiScreenCapeOF extends GuiScreenOF
             {
                 this.showMessage(Lang.get("of.message.capeOF.reloadCape"), 15000L);
 
-                if (this.mc.thePlayer != null)
+                if (this.mc.player != null)
                 {
                     long i = 15000L;
                     long j = System.currentTimeMillis() + i;
-                    this.mc.thePlayer.setReloadCapeTimeMs(j);
+                    this.mc.player.setReloadCapeTimeMs(j);
                 }
             }
 

@@ -35,7 +35,7 @@ public class GuiMessage extends GuiScreen
 
     protected void actionPerformed(GuiButton button) throws IOException
     {
-        Config.getMinecraft().displayGuiScreen(this.parentScreen);
+        Config.getMinecraft().display(this.parentScreen);
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

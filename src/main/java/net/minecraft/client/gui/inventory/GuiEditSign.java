@@ -42,7 +42,7 @@ public class GuiEditSign extends GuiScreen
 
         if (nethandlerplayclient != null)
         {
-            nethandlerplayclient.addToSendQueue(new C12PacketUpdateSign(this.tileSign.getPos(), this.tileSign.signText));
+            nethandlerplayclient.send(new C12PacketUpdateSign(this.tileSign.getPos(), this.tileSign.signText));
         }
 
         this.tileSign.setEditable(true);
@@ -60,7 +60,7 @@ public class GuiEditSign extends GuiScreen
             if (button.id == 0)
             {
                 this.tileSign.markDirty();
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.display((GuiScreen)null);
             }
         }
     }

@@ -33,7 +33,7 @@ public class GuiDownloadTerrain extends GuiScreen
 
         if (this.progress % 20 == 0)
         {
-            this.netHandlerPlayClient.addToSendQueue(new C00PacketKeepAlive());
+            this.netHandlerPlayClient.send(new C00PacketKeepAlive());
         }
     }
 

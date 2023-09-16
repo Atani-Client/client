@@ -11,7 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.IChatComponent;
 
 public class CommandMessage extends CommandBase
@@ -55,8 +55,8 @@ public class CommandMessage extends CommandBase
                 IChatComponent ichatcomponent = getChatComponentFromNthArg(sender, args, 1, !(sender instanceof EntityPlayer));
                 ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("commands.message.display.incoming", new Object[] {sender.getDisplayName(), ichatcomponent.createCopy()});
                 ChatComponentTranslation chatcomponenttranslation1 = new ChatComponentTranslation("commands.message.display.outgoing", new Object[] {entityplayer.getDisplayName(), ichatcomponent.createCopy()});
-                chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.GRAY).setItalic(Boolean.valueOf(true));
-                chatcomponenttranslation1.getChatStyle().setColor(EnumChatFormatting.GRAY).setItalic(Boolean.valueOf(true));
+                chatcomponenttranslation.getChatStyle().setColor(Formatting.GRAY).setItalic(Boolean.valueOf(true));
+                chatcomponenttranslation1.getChatStyle().setColor(Formatting.GRAY).setItalic(Boolean.valueOf(true));
                 entityplayer.addChatMessage(chatcomponenttranslation);
                 sender.addChatMessage(chatcomponenttranslation1);
             }

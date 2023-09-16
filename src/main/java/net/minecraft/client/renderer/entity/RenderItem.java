@@ -54,7 +54,7 @@ import net.minecraft.item.ItemFishFood;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.src.Config;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.util.ReportedException;
@@ -141,7 +141,7 @@ public class RenderItem implements IResourceManagerReloadListener
     {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        boolean flag = Minecraft.getMinecraft().getTextureMapBlocks().isTextureBound();
+        boolean flag = Minecraft.getInstance().getTextureMapBlocks().isTextureBound();
         boolean flag1 = Config.isMultiTexture() && flag;
 
         if (flag1)
@@ -580,7 +580,7 @@ public class RenderItem implements IResourceManagerReloadListener
 
                 if (text == null && stack.stackSize < 1)
                 {
-                    s = EnumChatFormatting.RED + String.valueOf(stack.stackSize);
+                    s = Formatting.RED + String.valueOf(stack.stackSize);
                 }
 
                 GlStateManager.disableLighting();

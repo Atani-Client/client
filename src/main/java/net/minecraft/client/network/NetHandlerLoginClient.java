@@ -106,7 +106,7 @@ public class NetHandlerLoginClient implements INetHandlerLoginClient
 
     public void onDisconnect(IChatComponent reason)
     {
-        this.mc.displayGuiScreen(new GuiDisconnected(this.previousGuiScreen, "connect.failed", reason));
+        this.mc.display(new GuiDisconnected(this.previousGuiScreen, "connect.failed", reason));
     }
 
     public void handleDisconnect(S00PacketDisconnect packetIn)

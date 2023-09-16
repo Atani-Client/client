@@ -83,11 +83,11 @@ public class GuiFlatPresets extends GuiScreen
         if (button.id == 0 && this.func_146430_p())
         {
             this.parentScreen.func_146383_a(this.field_146433_u.getText());
-            this.mc.displayGuiScreen(this.parentScreen);
+            this.mc.display(this.parentScreen);
         }
         else if (button.id == 1)
         {
-            this.mc.displayGuiScreen(this.parentScreen);
+            this.mc.display(this.parentScreen);
         }
     }
 

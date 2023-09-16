@@ -135,7 +135,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
                     String s2 = I18n.format("selectServer.deleteButton", new Object[0]);
                     String s3 = I18n.format("gui.cancel", new Object[0]);
                     GuiYesNo guiyesno = new GuiYesNo(this, s, s1, s2, s3, this.serverListSelector.func_148193_k());
-                    this.mc.displayGuiScreen(guiyesno);
+                    this.mc.display(guiyesno);
                 }
             }
             else if (button.id == 1)
@@ -145,12 +145,12 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
             else if (button.id == 4)
             {
                 this.directConnect = true;
-                this.mc.displayGuiScreen(new GuiScreenServerList(this, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName", new Object[0]), "", false)));
+                this.mc.display(new GuiScreenServerList(this, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName", new Object[0]), "", false)));
             }
             else if (button.id == 3)
             {
                 this.addingServer = true;
-                this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName", new Object[0]), "", false)));
+                this.mc.display(new GuiScreenAddServer(this, this.selectedServer = new ServerData(I18n.format("selectServer.defaultName", new Object[0]), "", false)));
             }
             else if (button.id == 7 && guilistextended$iguilistentry instanceof ServerListEntryNormal)
             {
@@ -158,11 +158,11 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
                 ServerData serverdata = ((ServerListEntryNormal)guilistextended$iguilistentry).getServerData();
                 this.selectedServer = new ServerData(serverdata.serverName, serverdata.serverIP, false);
                 this.selectedServer.copyFrom(serverdata);
-                this.mc.displayGuiScreen(new GuiScreenAddServer(this, this.selectedServer));
+                this.mc.display(new GuiScreenAddServer(this, this.selectedServer));
             }
             else if (button.id == 0)
             {
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
             else if (button.id == 8)
             {
@@ -173,7 +173,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
 
     private void refreshServerList()
     {
-        this.mc.displayGuiScreen(new GuiMultiplayer(this.parentScreen));
+        this.mc.display(new GuiMultiplayer(this.parentScreen));
     }
 
     public void confirmClicked(boolean result, int id)
@@ -192,7 +192,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
                 this.serverListSelector.func_148195_a(this.savedServerList);
             }
 
-            this.mc.displayGuiScreen(this);
+            this.mc.display(this);
         }
         else if (this.directConnect)
         {
@@ -204,7 +204,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
             }
             else
             {
-                this.mc.displayGuiScreen(this);
+                this.mc.display(this);
             }
         }
         else if (this.addingServer)
@@ -219,7 +219,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
                 this.serverListSelector.func_148195_a(this.savedServerList);
             }
 
-            this.mc.displayGuiScreen(this);
+            this.mc.display(this);
         }
         else if (this.editingServer)
         {
@@ -235,7 +235,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
                 this.serverListSelector.func_148195_a(this.savedServerList);
             }
 
-            this.mc.displayGuiScreen(this);
+            this.mc.display(this);
         }
     }
 
@@ -369,7 +369,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
 
     private void connectToServer(ServerData server)
     {
-        this.mc.displayGuiScreen(new GuiConnecting(this, this.mc, server));
+        this.mc.display(new GuiConnecting(this, this.mc, server));
     }
 
     public void selectServer(int index)

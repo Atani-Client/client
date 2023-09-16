@@ -74,7 +74,7 @@ public class GuiSnooper extends GuiScreen
             {
                 this.game_settings_2.saveOptions();
                 this.game_settings_2.saveOptions();
-                this.mc.displayGuiScreen(this.field_146608_a);
+                this.mc.display(this.field_146608_a);
             }
 
             if (button.id == 1)

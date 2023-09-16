@@ -7,7 +7,7 @@ import net.minecraft.client.gui.GuiOptionSlider;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 
 public class GuiStreamOptions extends GuiScreen
 {
@@ -108,12 +108,12 @@ public class GuiStreamOptions extends GuiScreen
             if (button.id == 200)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
             else if (button.id == 201)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(new GuiIngestServers(this));
+                this.mc.display(new GuiIngestServers(this));
             }
         }
     }
@@ -126,7 +126,7 @@ public class GuiStreamOptions extends GuiScreen
 
         if (this.field_152315_t)
         {
-            this.drawCenteredString(this.fontRendererObj, EnumChatFormatting.RED + I18n.format("options.stream.changes", new Object[0]), this.width / 2, 20 + this.fontRendererObj.FONT_HEIGHT, 16777215);
+            this.drawCenteredString(this.fontRendererObj, Formatting.RED + I18n.format("options.stream.changes", new Object[0]), this.width / 2, 20 + this.fontRendererObj.FONT_HEIGHT, 16777215);
         }
 
         super.drawScreen(mouseX, mouseY, partialTicks);

@@ -14,23 +14,23 @@ public class Realms
 {
     public static boolean isTouchScreen()
     {
-        return Minecraft.getMinecraft().settings.touchscreen;
+        return Minecraft.getInstance().settings.touchscreen;
     }
 
     public static Proxy getProxy()
     {
-        return Minecraft.getMinecraft().getProxy();
+        return Minecraft.getInstance().getProxy();
     }
 
     public static String sessionId()
     {
-        Session session = Minecraft.getMinecraft().getSession();
+        Session session = Minecraft.getInstance().getSession();
         return session == null ? null : session.getSessionID();
     }
 
     public static String userName()
     {
-        Session session = Minecraft.getMinecraft().getSession();
+        Session session = Minecraft.getInstance().getSession();
         return session == null ? null : session.getUsername();
     }
 
@@ -41,32 +41,32 @@ public class Realms
 
     public static String getSessionId()
     {
-        return Minecraft.getMinecraft().getSession().getSessionID();
+        return Minecraft.getInstance().getSession().getSessionID();
     }
 
     public static String getUUID()
     {
-        return Minecraft.getMinecraft().getSession().getPlayerID();
+        return Minecraft.getInstance().getSession().getPlayerID();
     }
 
     public static String getName()
     {
-        return Minecraft.getMinecraft().getSession().getUsername();
+        return Minecraft.getInstance().getSession().getUsername();
     }
 
     public static String uuidToName(String p_uuidToName_0_)
     {
-        return Minecraft.getMinecraft().getSessionService().fillProfileProperties(new GameProfile(UUIDTypeAdapter.fromString(p_uuidToName_0_), (String)null), false).getName();
+        return Minecraft.getInstance().getSessionService().fillProfileProperties(new GameProfile(UUIDTypeAdapter.fromString(p_uuidToName_0_), (String)null), false).getName();
     }
 
     public static void setScreen(RealmsScreen p_setScreen_0_)
     {
-        Minecraft.getMinecraft().displayGuiScreen(p_setScreen_0_.getProxy());
+        Minecraft.getInstance().display(p_setScreen_0_.getProxy());
     }
 
     public static String getGameDirectoryPath()
     {
-        return Minecraft.getMinecraft().mcDataDir.getAbsolutePath();
+        return Minecraft.getInstance().mcDataDir.getAbsolutePath();
     }
 
     public static int survivalId()
@@ -91,27 +91,27 @@ public class Realms
 
     public static void setConnectedToRealms(boolean p_setConnectedToRealms_0_)
     {
-        Minecraft.getMinecraft().setConnectedToRealms(p_setConnectedToRealms_0_);
+        Minecraft.getInstance().setConnectedToRealms(p_setConnectedToRealms_0_);
     }
 
     public static ListenableFuture<Object> downloadResourcePack(String p_downloadResourcePack_0_, String p_downloadResourcePack_1_)
     {
-        ListenableFuture<Object> listenablefuture = Minecraft.getMinecraft().getResourcePackRepository().downloadResourcePack(p_downloadResourcePack_0_, p_downloadResourcePack_1_);
+        ListenableFuture<Object> listenablefuture = Minecraft.getInstance().getResourcePackRepository().downloadResourcePack(p_downloadResourcePack_0_, p_downloadResourcePack_1_);
         return listenablefuture;
     }
 
     public static void clearResourcePack()
     {
-        Minecraft.getMinecraft().getResourcePackRepository().clearResourcePack();
+        Minecraft.getInstance().getResourcePackRepository().clearResourcePack();
     }
 
     public static boolean getRealmsNotificationsEnabled()
     {
-        return Minecraft.getMinecraft().settings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS);
+        return Minecraft.getInstance().settings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS);
     }
 
     public static boolean inTitleScreen()
     {
-        return Minecraft.getMinecraft().currentScreen != null && Minecraft.getMinecraft().currentScreen instanceof GuiMainMenu;
+        return Minecraft.getInstance().currentScreen != null && Minecraft.getInstance().currentScreen instanceof GuiMainMenu;
     }
 }

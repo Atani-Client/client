@@ -47,7 +47,7 @@ public class LayerHeldItem implements LayerRenderer<EntityLivingBase>
             }
 
             Item item = itemstack.getItem();
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
 
             if (item instanceof ItemBlock && Block.getBlockFromItem(item).getRenderType() == 2)
             {

@@ -58,7 +58,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
 
     public void initGui()
     {
-        this.mc.getNetHandler().addToSendQueue(new C16PacketClientStatus(C16PacketClientStatus.EnumState.REQUEST_STATS));
+        this.mc.getNetHandler().send(new C16PacketClientStatus(C16PacketClientStatus.EnumState.REQUEST_STATS));
         this.buttonList.clear();
         this.buttonList.add(new GuiOptionButton(1, this.width / 2 + 24, this.height / 2 + 74, 80, 20, I18n.format("gui.done", new Object[0])));
     }
@@ -69,7 +69,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
         {
             if (button.id == 1)
             {
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
         }
     }
@@ -78,7 +78,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
     {
         if (keyCode == this.mc.settings.keyBindInventory.getKeyCode())
         {
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.display((GuiScreen)null);
             this.mc.setIngameFocus();
         }
         else
@@ -538,7 +538,7 @@ public class GuiAchievements extends GuiScreen implements IProgressMeter
 
     private TextureAtlasSprite func_175371_a(Block p_175371_1_)
     {
-        return Minecraft.getMinecraft().getBlockRendererDispatcher().getBlockModelShapes().getTexture(p_175371_1_.getDefaultState());
+        return Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelShapes().getTexture(p_175371_1_.getDefaultState());
     }
 
     public boolean doesGuiPauseGame()

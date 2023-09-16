@@ -59,7 +59,7 @@ public class GuiMerchant extends GuiContainer
     public void updateScreen()
     {
         super.updateScreen();
-        MerchantRecipeList merchantrecipelist = this.merchant.getRecipes(this.mc.thePlayer);
+        MerchantRecipeList merchantrecipelist = this.merchant.getRecipes(this.mc.player);
 
         if (merchantrecipelist != null)
         {
@@ -75,7 +75,7 @@ public class GuiMerchant extends GuiContainer
         if (button == this.nextButton)
         {
             ++this.selectedMerchantRecipe;
-            MerchantRecipeList merchantrecipelist = this.merchant.getRecipes(this.mc.thePlayer);
+            MerchantRecipeList merchantrecipelist = this.merchant.getRecipes(this.mc.player);
 
             if (merchantrecipelist != null && this.selectedMerchantRecipe >= merchantrecipelist.size())
             {
@@ -101,7 +101,7 @@ public class GuiMerchant extends GuiContainer
             ((ContainerMerchant)this.inventorySlots).setCurrentRecipeIndex(this.selectedMerchantRecipe);
             PacketBuffer packetbuffer = new PacketBuffer(Unpooled.buffer());
             packetbuffer.writeInt(this.selectedMerchantRecipe);
-            this.mc.getNetHandler().addToSendQueue(new C17PacketCustomPayload("MC|TrSel", packetbuffer));
+            this.mc.getNetHandler().send(new C17PacketCustomPayload("MC|TrSel", packetbuffer));
         }
     }
 
@@ -112,7 +112,7 @@ public class GuiMerchant extends GuiContainer
         int i = (this.width - this.xSize) / 2;
         int j = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(i, j, 0, 0, this.xSize, this.ySize);
-        MerchantRecipeList merchantrecipelist = this.merchant.getRecipes(this.mc.thePlayer);
+        MerchantRecipeList merchantrecipelist = this.merchant.getRecipes(this.mc.player);
 
         if (merchantrecipelist != null && !merchantrecipelist.isEmpty())
         {
@@ -139,7 +139,7 @@ public class GuiMerchant extends GuiContainer
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         super.drawScreen(mouseX, mouseY, partialTicks);
-        MerchantRecipeList merchantrecipelist = this.merchant.getRecipes(this.mc.thePlayer);
+        MerchantRecipeList merchantrecipelist = this.merchant.getRecipes(this.mc.player);
 
         if (merchantrecipelist != null && !merchantrecipelist.isEmpty())
         {

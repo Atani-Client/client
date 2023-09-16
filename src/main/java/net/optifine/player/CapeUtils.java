@@ -26,7 +26,7 @@ public class CapeUtils
         {
             String s1 = "http://s.optifine.net/capes/" + s + ".png";
             ResourceLocation resourcelocation = new ResourceLocation("capeof/" + s);
-            TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
+            TextureManager texturemanager = Minecraft.getInstance().getTextureManager();
             ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
 
             if (itextureobject != null && itextureobject instanceof ThreadDownloadImageData)

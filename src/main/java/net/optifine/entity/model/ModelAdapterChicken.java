@@ -40,7 +40,7 @@ public class ModelAdapterChicken extends ModelAdapter
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         RenderChicken renderchicken = new RenderChicken(rendermanager, modelBase, shadowSize);
         return renderchicken;
     }

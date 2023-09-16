@@ -723,7 +723,7 @@ public class GuiCustomizeWorldScreen extends GuiScreen implements GuiSlider.Form
             {
                 case 300:
                     this.field_175343_i.chunkProviderSettingsJson = this.field_175336_F.toString();
-                    this.mc.displayGuiScreen(this.field_175343_i);
+                    this.mc.display(this.field_175343_i);
                     break;
 
                 case 301:
@@ -786,7 +786,7 @@ public class GuiCustomizeWorldScreen extends GuiScreen implements GuiSlider.Form
                     break;
 
                 case 305:
-                    this.mc.displayGuiScreen(new GuiScreenCustomizePresets(this));
+                    this.mc.display(new GuiScreenCustomizePresets(this));
                     break;
 
                 case 306:

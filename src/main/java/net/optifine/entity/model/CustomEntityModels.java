@@ -90,7 +90,7 @@ public class CustomEntityModels
 
     private static Map<Class, Render> getEntityRenderMap()
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         Map<Class, Render> map = rendermanager.getEntityRenderMap();
 
         if (map == null)

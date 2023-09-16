@@ -3,7 +3,7 @@ package net.minecraft.scoreboard;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.WorldSavedData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,7 +81,7 @@ public class ScoreboardSaveData extends WorldSavedData
 
             if (nbttagcompound.hasKey("TeamColor", 8))
             {
-                scoreplayerteam.setChatFormat(EnumChatFormatting.getValueByName(nbttagcompound.getString("TeamColor")));
+                scoreplayerteam.setChatFormat(Formatting.getValueByName(nbttagcompound.getString("TeamColor")));
             }
 
             scoreplayerteam.setNamePrefix(nbttagcompound.getString("Prefix"));

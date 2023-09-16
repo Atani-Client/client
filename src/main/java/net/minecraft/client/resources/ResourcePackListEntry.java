@@ -24,7 +24,7 @@ public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListE
     public ResourcePackListEntry(GuiScreenResourcePacks resourcePacksGUIIn)
     {
         this.resourcePacksGUI = resourcePacksGUIIn;
-        this.mc = Minecraft.getMinecraft();
+        this.mc = Minecraft.getInstance();
     }
 
     public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected)
@@ -179,12 +179,12 @@ public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListE
                 {
                     String s1 = I18n.format("resourcePack.incompatible.confirm.title", new Object[0]);
                     String s = I18n.format("resourcePack.incompatible.confirm." + (j > 1 ? "new" : "old"), new Object[0]);
-                    this.mc.displayGuiScreen(new GuiYesNo(new GuiYesNoCallback()
+                    this.mc.display(new GuiYesNo(new GuiYesNoCallback()
                     {
                         public void confirmClicked(boolean result, int id)
                         {
                             List<ResourcePackListEntry> list2 = ResourcePackListEntry.this.resourcePacksGUI.getListContaining(ResourcePackListEntry.this);
-                            ResourcePackListEntry.this.mc.displayGuiScreen(ResourcePackListEntry.this.resourcePacksGUI);
+                            ResourcePackListEntry.this.mc.display(ResourcePackListEntry.this.resourcePacksGUI);
 
                             if (result)
                             {

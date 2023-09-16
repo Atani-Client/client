@@ -48,13 +48,13 @@ public class GuiRenameWorld extends GuiScreen
         {
             if (button.id == 1)
             {
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
             else if (button.id == 0)
             {
                 ISaveFormat isaveformat = this.mc.getSaveLoader();
                 isaveformat.renameWorld(this.saveName, this.field_146583_f.getText().trim());
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
         }
     }

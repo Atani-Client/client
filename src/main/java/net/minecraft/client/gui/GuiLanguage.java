@@ -50,7 +50,7 @@ public class GuiLanguage extends GuiScreen
                     break;
 
                 case 6:
-                    this.mc.displayGuiScreen(this.parentScreen);
+                    this.mc.display(this.parentScreen);
                     break;
 
                 case 100:

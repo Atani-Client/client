@@ -50,7 +50,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
     {
         this.screenTitle = I18n.format("gui.stats", new Object[0]);
         this.doesGuiPauseGame = true;
-        this.mc.getNetHandler().addToSendQueue(new C16PacketClientStatus(C16PacketClientStatus.EnumState.REQUEST_STATS));
+        this.mc.getNetHandler().send(new C16PacketClientStatus(C16PacketClientStatus.EnumState.REQUEST_STATS));
     }
 
     public void handleMouseInput() throws IOException
@@ -108,7 +108,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
         {
             if (button.id == 0)
             {
-                this.mc.displayGuiScreen(this.parentScreen);
+                this.mc.display(this.parentScreen);
             }
             else if (button.id == 1)
             {

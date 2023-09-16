@@ -45,7 +45,7 @@ public class ModelAdapterSpider extends ModelAdapter
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         RenderSpider renderspider = new RenderSpider(rendermanager);
         renderspider.mainModel = modelBase;
         renderspider.shadowSize = shadowSize;

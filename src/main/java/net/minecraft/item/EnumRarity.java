@@ -1,18 +1,18 @@
 package net.minecraft.item;
 
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 
 public enum EnumRarity
 {
-    COMMON(EnumChatFormatting.WHITE, "Common"),
-    UNCOMMON(EnumChatFormatting.YELLOW, "Uncommon"),
-    RARE(EnumChatFormatting.AQUA, "Rare"),
-    EPIC(EnumChatFormatting.LIGHT_PURPLE, "Epic");
+    COMMON(Formatting.WHITE, "Common"),
+    UNCOMMON(Formatting.YELLOW, "Uncommon"),
+    RARE(Formatting.AQUA, "Rare"),
+    EPIC(Formatting.LIGHT_PURPLE, "Epic");
 
-    public final EnumChatFormatting rarityColor;
+    public final Formatting rarityColor;
     public final String rarityName;
 
-    private EnumRarity(EnumChatFormatting color, String name)
+    private EnumRarity(Formatting color, String name)
     {
         this.rarityColor = color;
         this.rarityName = name;

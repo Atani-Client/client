@@ -25,7 +25,7 @@ public class GuiOptionSlider extends GuiButton
         this.options = p_i45017_4_;
         this.field_146132_r = p_i45017_5_;
         this.field_146131_s = p_i45017_6_;
-        Minecraft minecraft = Minecraft.getMinecraft();
+        Minecraft minecraft = Minecraft.getInstance();
         this.sliderValue = p_i45017_4_.normalizeValue(minecraft.settings.getOptionFloatValue(p_i45017_4_));
         this.displayString = minecraft.settings.getKeyBinding(p_i45017_4_);
     }

@@ -51,7 +51,7 @@ public class GuiScreenOptionsSounds extends GuiScreen
             if (button.id == 200)
             {
                 this.mc.settings.saveOptions();
-                this.mc.displayGuiScreen(this.field_146505_f);
+                this.mc.display(this.field_146505_f);
             }
         }
     }

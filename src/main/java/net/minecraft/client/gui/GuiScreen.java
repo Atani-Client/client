@@ -35,7 +35,7 @@ import net.minecraft.stats.Achievement;
 import net.minecraft.stats.StatBase;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.IChatComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -80,7 +80,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         if (keyCode == 1)
         {
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.display((GuiScreen)null);
 
             if (this.mc.currentScreen == null)
             {
@@ -126,7 +126,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     protected void renderToolTip(ItemStack stack, int x, int y)
     {
-        List<String> list = stack.getTooltip(this.mc.thePlayer, this.mc.settings.advancedItemTooltips);
+        List<String> list = stack.getTooltip(this.mc.player, this.mc.settings.advancedItemTooltips);
 
         for (int i = 0; i < list.size(); ++i)
         {
@@ -136,7 +136,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
             }
             else
             {
-                list.set(i, EnumChatFormatting.GRAY + (String)list.get(i));
+                list.set(i, Formatting.GRAY + (String)list.get(i));
             }
         }
 
@@ -254,7 +254,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 }
                 else
                 {
-                    this.drawCreativeTabHoveringText(EnumChatFormatting.RED + "Invalid Item!", x, y);
+                    this.drawCreativeTabHoveringText(Formatting.RED + "Invalid Item!", x, y);
                 }
             }
             else if (hoverevent.getAction() == HoverEvent.Action.SHOW_ENTITY)
@@ -282,12 +282,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                         }
                         else
                         {
-                            this.drawCreativeTabHoveringText(EnumChatFormatting.RED + "Invalid Entity!", x, y);
+                            this.drawCreativeTabHoveringText(Formatting.RED + "Invalid Entity!", x, y);
                         }
                     }
                     catch (NBTException var10)
                     {
-                        this.drawCreativeTabHoveringText(EnumChatFormatting.RED + "Invalid Entity!", x, y);
+                        this.drawCreativeTabHoveringText(Formatting.RED + "Invalid Entity!", x, y);
                     }
                 }
             }
@@ -316,7 +316,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 }
                 else
                 {
-                    this.drawCreativeTabHoveringText(EnumChatFormatting.RED + "Invalid statistic/achievement!", x, y);
+                    this.drawCreativeTabHoveringText(Formatting.RED + "Invalid statistic/achievement!", x, y);
                 }
             }
 
@@ -372,7 +372,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                         if (this.mc.settings.chatLinksPrompt)
                         {
                             this.clickedLinkURI = uri;
-                            this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, clickevent.getValue(), 31102009, false));
+                            this.mc.display(new GuiConfirmOpenLink(this, clickevent.getValue(), 31102009, false));
                         }
                         else
                         {
@@ -403,7 +403,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
                     if (chatuserinfo != null)
                     {
-                        this.mc.displayGuiScreen(new GuiTwitchUserMode(this.mc.getTwitchStream(), chatuserinfo));
+                        this.mc.display(new GuiTwitchUserMode(this.mc.getTwitchStream(), chatuserinfo));
                     }
                     else
                     {
@@ -434,7 +434,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
             this.mc.ingameGUI.getChatGUI().addToSentMessages(msg);
         }
 
-        this.mc.thePlayer.sendChatMessage(msg);
+        this.mc.player.sendChatMessage(msg);
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
@@ -571,7 +571,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     public void drawWorldBackground(int tint)
     {
-        if (this.mc.theWorld != null)
+        if (this.mc.world != null)
         {
             this.drawGradientRect(0, 0, this.width, this.height, -1072689136, -804253680);
         }
@@ -613,7 +613,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
             }
 
             this.clickedLinkURI = null;
-            this.mc.displayGuiScreen(this);
+            this.mc.display(this);
         }
     }
 

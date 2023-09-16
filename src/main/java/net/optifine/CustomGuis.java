@@ -62,7 +62,7 @@ public class CustomGuis
                 }
                 else
                 {
-                    IBlockAccess iblockaccess = mc.theWorld;
+                    IBlockAccess iblockaccess = mc.world;
 
                     if (iblockaccess == null)
                     {
@@ -70,11 +70,11 @@ public class CustomGuis
                     }
                     else if (guiscreen instanceof GuiContainerCreative)
                     {
-                        return getTexturePos(CustomGuiProperties.EnumContainer.CREATIVE, mc.thePlayer.getPosition(), iblockaccess, loc, guiscreen);
+                        return getTexturePos(CustomGuiProperties.EnumContainer.CREATIVE, mc.player.getPosition(), iblockaccess, loc, guiscreen);
                     }
                     else if (guiscreen instanceof GuiInventory)
                     {
-                        return getTexturePos(CustomGuiProperties.EnumContainer.INVENTORY, mc.thePlayer.getPosition(), iblockaccess, loc, guiscreen);
+                        return getTexturePos(CustomGuiProperties.EnumContainer.INVENTORY, mc.player.getPosition(), iblockaccess, loc, guiscreen);
                     }
                     else
                     {

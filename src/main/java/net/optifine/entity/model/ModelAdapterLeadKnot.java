@@ -42,7 +42,7 @@ public class ModelAdapterLeadKnot extends ModelAdapter
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         RenderLeashKnot renderleashknot = new RenderLeashKnot(rendermanager);
 
         if (!Reflector.RenderLeashKnot_leashKnotModel.exists())

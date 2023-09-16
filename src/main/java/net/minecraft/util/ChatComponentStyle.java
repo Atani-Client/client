@@ -80,7 +80,7 @@ public abstract class ChatComponentStyle implements IChatComponent
         {
             stringbuilder.append(ichatcomponent.getChatStyle().getFormattingCode());
             stringbuilder.append(ichatcomponent.getUnformattedTextForChat());
-            stringbuilder.append((Object)EnumChatFormatting.RESET);
+            stringbuilder.append((Object) Formatting.RESET);
         }
 
         return stringbuilder.toString();

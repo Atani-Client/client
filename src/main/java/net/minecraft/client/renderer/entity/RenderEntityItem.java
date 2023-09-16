@@ -10,6 +10,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import tech.atani.module.impl.visual.EntityCulling;
 
 public class RenderEntityItem extends Render<EntityItem>
 {
@@ -87,6 +88,9 @@ public class RenderEntityItem extends Render<EntityItem>
 
     public void doRender(EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
+        if (EntityCulling.renderItem(entity))
+            return;
+
         ItemStack itemstack = entity.getEntityItem();
         this.field_177079_e.setSeed(187L);
         boolean flag = false;

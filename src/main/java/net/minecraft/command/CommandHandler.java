@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.Formatting;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,7 +39,7 @@ public class CommandHandler implements ICommandManager
         if (icommand == null)
         {
             ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("commands.generic.notFound", new Object[0]);
-            chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.RED);
+            chatcomponenttranslation.getChatStyle().setColor(Formatting.RED);
             sender.addChatMessage(chatcomponenttranslation);
         }
         else if (icommand.canCommandSenderUseCommand(sender))
@@ -75,7 +75,7 @@ public class CommandHandler implements ICommandManager
         else
         {
             ChatComponentTranslation chatcomponenttranslation1 = new ChatComponentTranslation("commands.generic.permission", new Object[0]);
-            chatcomponenttranslation1.getChatStyle().setColor(EnumChatFormatting.RED);
+            chatcomponenttranslation1.getChatStyle().setColor(Formatting.RED);
             sender.addChatMessage(chatcomponenttranslation1);
         }
 
@@ -93,19 +93,19 @@ public class CommandHandler implements ICommandManager
         catch (WrongUsageException wrongusageexception)
         {
             ChatComponentTranslation chatcomponenttranslation2 = new ChatComponentTranslation("commands.generic.usage", new Object[] {new ChatComponentTranslation(wrongusageexception.getMessage(), wrongusageexception.getErrorObjects())});
-            chatcomponenttranslation2.getChatStyle().setColor(EnumChatFormatting.RED);
+            chatcomponenttranslation2.getChatStyle().setColor(Formatting.RED);
             sender.addChatMessage(chatcomponenttranslation2);
         }
         catch (CommandException commandexception)
         {
             ChatComponentTranslation chatcomponenttranslation1 = new ChatComponentTranslation(commandexception.getMessage(), commandexception.getErrorObjects());
-            chatcomponenttranslation1.getChatStyle().setColor(EnumChatFormatting.RED);
+            chatcomponenttranslation1.getChatStyle().setColor(Formatting.RED);
             sender.addChatMessage(chatcomponenttranslation1);
         }
         catch (Throwable var9)
         {
             ChatComponentTranslation chatcomponenttranslation = new ChatComponentTranslation("commands.generic.exception", new Object[0]);
-            chatcomponenttranslation.getChatStyle().setColor(EnumChatFormatting.RED);
+            chatcomponenttranslation.getChatStyle().setColor(Formatting.RED);
             sender.addChatMessage(chatcomponenttranslation);
             logger.warn("Couldn\'t process command: \'" + input + "\'");
         }

@@ -39,7 +39,7 @@ public class ScreenShotHelper
         {
             File file1 = new File(gameDirectory, "screenshots");
             file1.mkdir();
-            Minecraft minecraft = Minecraft.getMinecraft();
+            Minecraft minecraft = Minecraft.getInstance();
             int i = Config.getGameSettings().guiScale;
             ScaledResolution scaledresolution = new ScaledResolution(minecraft);
             int j = scaledresolution.getScaleFactor();
@@ -160,7 +160,7 @@ public class ScreenShotHelper
 
     private static void resize(int p_resize_0_, int p_resize_1_)
     {
-        Minecraft minecraft = Minecraft.getMinecraft();
+        Minecraft minecraft = Minecraft.getInstance();
         minecraft.displayWidth = Math.max(1, p_resize_0_);
         minecraft.displayHeight = Math.max(1, p_resize_1_);
 
@@ -175,7 +175,7 @@ public class ScreenShotHelper
 
     private static void updateFramebufferSize()
     {
-        Minecraft minecraft = Minecraft.getMinecraft();
+        Minecraft minecraft = Minecraft.getInstance();
         minecraft.getFramebuffer().createBindFramebuffer(minecraft.displayWidth, minecraft.displayHeight);
 
         if (minecraft.entityRenderer != null)

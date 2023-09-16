@@ -113,7 +113,7 @@ public class RenderMinecart<T extends EntityMinecart> extends Render<T>
     protected void func_180560_a(T minecart, float partialTicks, IBlockState state)
     {
         GlStateManager.pushMatrix();
-        Minecraft.getMinecraft().getBlockRendererDispatcher().renderBlockBrightness(state, minecart.getBrightness(partialTicks));
+        Minecraft.getInstance().getBlockRendererDispatcher().renderBlockBrightness(state, minecart.getBrightness(partialTicks));
         GlStateManager.popMatrix();
     }
 }

@@ -34,11 +34,12 @@ import net.minecraft.world.storage.MapData;
 import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
+import tech.atani.module.impl.visual.EntityCulling;
 
 public class RenderItemFrame extends Render<EntityItemFrame>
 {
     private static final ResourceLocation mapBackgroundTextures = new ResourceLocation("textures/map/map_background.png");
-    private final Minecraft mc = Minecraft.getMinecraft();
+    private final Minecraft mc = Minecraft.getInstance();
     private final ModelResourceLocation itemFrameModel = new ModelResourceLocation("item_frame", "normal");
     private final ModelResourceLocation mapModel = new ModelResourceLocation("item_frame", "map");
     private RenderItem itemRenderer;
@@ -52,6 +53,9 @@ public class RenderItemFrame extends Render<EntityItemFrame>
 
     public void doRender(EntityItemFrame entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
+        if (EntityCulling.renderItem(entity))
+            return;
+
         GlStateManager.pushMatrix();
         BlockPos blockpos = entity.getHangingPosition();
         double d0 = (double)blockpos.getX() - entity.posX + x;
@@ -101,7 +105,7 @@ public class RenderItemFrame extends Render<EntityItemFrame>
 
             if (!Config.zoomMode)
             {
-                Entity entity = this.mc.thePlayer;
+                Entity entity = this.mc.player;
                 double d0 = itemFrame.getDistanceSq(entity.posX, entity.posY, entity.posZ);
 
                 if (d0 > 4096.0D)

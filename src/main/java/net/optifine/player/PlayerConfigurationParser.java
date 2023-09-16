@@ -107,7 +107,7 @@ public class PlayerConfigurationParser
 
         try
         {
-            byte[] abyte = HttpPipeline.get(s, Minecraft.getMinecraft().getProxy());
+            byte[] abyte = HttpPipeline.get(s, Minecraft.getInstance().getProxy());
             BufferedImage bufferedimage = ImageIO.read((InputStream)(new ByteArrayInputStream(abyte)));
             return bufferedimage;
         }
@@ -124,7 +124,7 @@ public class PlayerConfigurationParser
 
         try
         {
-            byte[] abyte = HttpPipeline.get(s, Minecraft.getMinecraft().getProxy());
+            byte[] abyte = HttpPipeline.get(s, Minecraft.getInstance().getProxy());
             String s1 = new String(abyte, "ASCII");
             JsonParser jsonparser = new JsonParser();
             JsonObject jsonobject = (JsonObject)jsonparser.parse(s1);

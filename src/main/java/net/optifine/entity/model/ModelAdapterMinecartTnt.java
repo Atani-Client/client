@@ -17,7 +17,7 @@ public class ModelAdapterMinecartTnt extends ModelAdapterMinecart
 
     public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
     {
-        RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager rendermanager = Minecraft.getInstance().getRenderManager();
         RenderTntMinecart rendertntminecart = new RenderTntMinecart(rendermanager);
 
         if (!Reflector.RenderMinecart_modelMinecart.exists())

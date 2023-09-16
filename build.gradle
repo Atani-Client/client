@@ -22,6 +22,7 @@ configurations {
 
 dependencies {
     implementation fileTree('lib')
+    implementation fileTree('lwjgl')
 }
 
 sourceCompatibility = JavaVersion.VERSION_16

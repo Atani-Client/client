@@ -2039,7 +2039,7 @@ public class Config
 
                 updateFramebufferSize();
                 Display.setFullscreen(true);
-                minecraft.gameSettings.updateVSync();
+                minecraft.settings.updateVSync();
                 GlStateManager.enableTexture2D();
             }
             else
@@ -2051,7 +2051,7 @@ public class Config
 
                 desktopModeChecked = true;
                 fullscreenModeChecked = false;
-                minecraft.gameSettings.updateVSync();
+                minecraft.settings.updateVSync();
                 Display.update();
                 GlStateManager.enableTexture2D();
 

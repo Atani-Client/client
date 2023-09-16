@@ -146,7 +146,7 @@ public class IntegratedServer extends MinecraftServer
 
             if (worldserver.getWorldInfo().getDifficulty() == null)
             {
-                this.setDifficultyForAllWorlds(this.mc.gameSettings.difficulty);
+                this.setDifficultyForAllWorlds(this.mc.settings.difficulty);
             }
         }
         else
@@ -190,7 +190,7 @@ public class IntegratedServer extends MinecraftServer
 
             if (this.worldServers[0].getWorldInfo().getDifficulty() == null)
             {
-                this.setDifficultyForAllWorlds(this.mc.gameSettings.difficulty);
+                this.setDifficultyForAllWorlds(this.mc.settings.difficulty);
             }
         }
 
@@ -263,10 +263,10 @@ public class IntegratedServer extends MinecraftServer
         {
             super.tick();
 
-            if (this.mc.gameSettings.renderDistanceChunks != this.getConfigurationManager().getViewDistance())
+            if (this.mc.settings.renderDistanceChunks != this.getConfigurationManager().getViewDistance())
             {
-                logger.info("Changing view distance to {}, from {}", new Object[] {Integer.valueOf(this.mc.gameSettings.renderDistanceChunks), Integer.valueOf(this.getConfigurationManager().getViewDistance())});
-                this.getConfigurationManager().setViewDistance(this.mc.gameSettings.renderDistanceChunks);
+                logger.info("Changing view distance to {}, from {}", new Object[] {Integer.valueOf(this.mc.settings.renderDistanceChunks), Integer.valueOf(this.getConfigurationManager().getViewDistance())});
+                this.getConfigurationManager().setViewDistance(this.mc.settings.renderDistanceChunks);
             }
 
             if (this.mc.theWorld != null)
@@ -307,7 +307,7 @@ public class IntegratedServer extends MinecraftServer
 
     public EnumDifficulty getDifficulty()
     {
-        return this.mc.theWorld == null ? this.mc.gameSettings.difficulty : this.mc.theWorld.getWorldInfo().getDifficulty();
+        return this.mc.theWorld == null ? this.mc.settings.difficulty : this.mc.theWorld.getWorldInfo().getDifficulty();
     }
 
     public boolean isHardcore()
@@ -330,7 +330,7 @@ public class IntegratedServer extends MinecraftServer
         if (dontLog)
         {
             int i = this.getTickCounter();
-            int j = this.mc.gameSettings.ofAutoSaveTicks;
+            int j = this.mc.settings.ofAutoSaveTicks;
 
             if ((long)i < this.ticksSaveLast + (long)j)
             {

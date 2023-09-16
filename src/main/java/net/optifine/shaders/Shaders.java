@@ -3447,7 +3447,7 @@ public class Shaders
                 setProgramUniform1f(uniform_viewWidth, (float)renderWidth);
                 setProgramUniform1f(uniform_viewHeight, (float)renderHeight);
                 setProgramUniform1f(uniform_near, 0.05F);
-                setProgramUniform1f(uniform_far, (float)(mc.gameSettings.renderDistanceChunks * 16));
+                setProgramUniform1f(uniform_far, (float)(mc.settings.renderDistanceChunks * 16));
                 setProgramUniform3f(uniform_sunPosition, sunPosition[0], sunPosition[1], sunPosition[2]);
                 setProgramUniform3f(uniform_moonPosition, moonPosition[0], moonPosition[1], moonPosition[2]);
                 setProgramUniform3f(uniform_shadowLightPosition, shadowLightPosition[0], shadowLightPosition[1], shadowLightPosition[2]);
@@ -3478,8 +3478,8 @@ public class Shaders
                 setProgramUniform1i(uniform_isEyeInWater, isEyeInWater);
                 setProgramUniform1f(uniform_nightVision, nightVision);
                 setProgramUniform1f(uniform_blindness, blindness);
-                setProgramUniform1f(uniform_screenBrightness, mc.gameSettings.gammaSetting);
-                setProgramUniform1i(uniform_hideGUI, mc.gameSettings.hideGUI ? 1 : 0);
+                setProgramUniform1f(uniform_screenBrightness, mc.settings.gammaSetting);
+                setProgramUniform1i(uniform_hideGUI, mc.settings.hideGUI ? 1 : 0);
                 setProgramUniform1f(uniform_centerDepthSmooth, centerDepthSmooth);
                 setProgramUniform2i(uniform_atlasSize, atlasSizeX, atlasSizeY);
 
@@ -4509,7 +4509,7 @@ public class Shaders
         setProgramUniformMatrix4ARB(uniform_shadowProjectionInverse, false, shadowProjectionInverse);
         setProgramUniformMatrix4ARB(uniform_shadowModelView, false, shadowModelView);
         setProgramUniformMatrix4ARB(uniform_shadowModelViewInverse, false, shadowModelViewInverse);
-        mc.gameSettings.thirdPersonView = 1;
+        mc.settings.thirdPersonView = 1;
         checkGLError("setCamera");
     }
 
@@ -4924,7 +4924,7 @@ public class Shaders
     public static void drawHorizon()
     {
         WorldRenderer worldrenderer = Tessellator.getInstance().getWorldRenderer();
-        float f = (float)(mc.gameSettings.renderDistanceChunks * 16);
+        float f = (float)(mc.settings.renderDistanceChunks * 16);
         double d0 = (double)f * 0.9238D;
         double d1 = (double)f * 0.3826D;
         double d2 = -d1;

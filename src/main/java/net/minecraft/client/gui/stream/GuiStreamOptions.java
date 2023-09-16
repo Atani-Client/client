@@ -107,12 +107,12 @@ public class GuiStreamOptions extends GuiScreen
 
             if (button.id == 200)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 this.mc.displayGuiScreen(this.parentScreen);
             }
             else if (button.id == 201)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 this.mc.displayGuiScreen(new GuiIngestServers(this));
             }
         }

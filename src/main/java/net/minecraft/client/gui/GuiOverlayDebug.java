@@ -57,7 +57,7 @@ public class GuiOverlayDebug extends Gui
         this.renderDebugInfoRight(scaledResolutionIn);
         GlStateManager.popMatrix();
 
-        if (this.mc.gameSettings.showLagometer)
+        if (this.mc.settings.showLagometer)
         {
             this.renderLagometer();
         }
@@ -67,7 +67,7 @@ public class GuiOverlayDebug extends Gui
 
     private boolean isReducedDebug()
     {
-        return this.mc.thePlayer.hasReducedDebug() || this.mc.gameSettings.reducedDebugInfo;
+        return this.mc.thePlayer.hasReducedDebug() || this.mc.settings.reducedDebugInfo;
     }
 
     protected void renderDebugInfoLeft()

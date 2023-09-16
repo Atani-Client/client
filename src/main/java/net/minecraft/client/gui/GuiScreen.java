@@ -126,7 +126,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     protected void renderToolTip(ItemStack stack, int x, int y)
     {
-        List<String> list = stack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+        List<String> list = stack.getTooltip(this.mc.thePlayer, this.mc.settings.advancedItemTooltips);
 
         for (int i = 0; i < list.size(); ++i)
         {
@@ -259,7 +259,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
             }
             else if (hoverevent.getAction() == HoverEvent.Action.SHOW_ENTITY)
             {
-                if (this.mc.gameSettings.advancedItemTooltips)
+                if (this.mc.settings.advancedItemTooltips)
                 {
                     try
                     {
@@ -349,7 +349,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
             {
                 if (clickevent.getAction() == ClickEvent.Action.OPEN_URL)
                 {
-                    if (!this.mc.gameSettings.chatLinks)
+                    if (!this.mc.settings.chatLinks)
                     {
                         return false;
                     }
@@ -369,7 +369,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                             throw new URISyntaxException(clickevent.getValue(), "Unsupported protocol: " + s.toLowerCase());
                         }
 
-                        if (this.mc.gameSettings.chatLinksPrompt)
+                        if (this.mc.settings.chatLinksPrompt)
                         {
                             this.clickedLinkURI = uri;
                             this.mc.displayGuiScreen(new GuiConfirmOpenLink(this, clickevent.getValue(), 31102009, false));
@@ -520,7 +520,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
         if (Mouse.getEventButtonState())
         {
-            if (this.mc.gameSettings.touchscreen && this.touchValue++ > 0)
+            if (this.mc.settings.touchscreen && this.touchValue++ > 0)
             {
                 return;
             }
@@ -531,7 +531,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         }
         else if (k != -1)
         {
-            if (this.mc.gameSettings.touchscreen && --this.touchValue > 0)
+            if (this.mc.settings.touchscreen && --this.touchValue > 0)
             {
                 return;
             }

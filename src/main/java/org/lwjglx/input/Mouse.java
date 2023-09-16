@@ -101,7 +101,7 @@ public class Mouse {
 	}
 
 	public static void setGrabbed(boolean grab) {
-		GLFW.glfwSetInputMode(Display.getWindow(),
+		GLFW.glfwSetInputMode(Display.getHandle(),
 				GLFW.GLFW_CURSOR,
 				grab ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL
 		);
@@ -118,7 +118,7 @@ public class Mouse {
 	}
 
 	public static boolean isButtonDown(int button) {
-		return GLFW.glfwGetMouseButton(Display.getWindow(), button) == GLFW.GLFW_PRESS;
+		return GLFW.glfwGetMouseButton(Display.getHandle(), button) == GLFW.GLFW_PRESS;
 	}
 
 	public static boolean next() {
@@ -187,16 +187,16 @@ public class Mouse {
 	}
 
 	public static void setCursorPosition(int new_x, int new_y) {
-		GLFW.glfwSetCursorPos(Display.getWindow(), new_x, new_y);
+		GLFW.glfwSetCursorPos(Display.getHandle(), new_x, new_y);
 	}
 
 	public static Cursor setNativeCursor(Cursor cursor) throws LWJGLException {
 		if (cursor == null) {
-			GLFW.glfwSetCursor(Display.getWindow(), MemoryUtil.NULL);
+			GLFW.glfwSetCursor(Display.getHandle(), MemoryUtil.NULL);
 			return null;
 		}
 
-		GLFW.glfwSetCursor(Display.getWindow(), Display.Window.handle);
+		GLFW.glfwSetCursor(Display.getHandle(), Display.Window.handle);
 		currentCursor = cursor;
 		return cursor;
 	}

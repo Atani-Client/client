@@ -51,7 +51,7 @@ public class ScreenChatOptions extends GuiScreen
 
             if (button.id == 200)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 this.mc.displayGuiScreen(this.parentScreen);
             }
         }

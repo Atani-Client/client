@@ -39,7 +39,7 @@ public class GuiIngameMenu extends GuiScreen
         switch (button.id)
         {
             case 0:
-                this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
+                this.mc.displayGuiScreen(new GuiOptions(this, this.mc.settings));
                 break;
 
             case 1:

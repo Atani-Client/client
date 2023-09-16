@@ -43,7 +43,7 @@ public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListE
         String s = this.func_148312_b();
         String s1 = this.func_148311_a();
 
-        if ((this.mc.gameSettings.touchscreen || isSelected) && this.func_148310_d())
+        if ((this.mc.settings.touchscreen || isSelected) && this.func_148310_d())
         {
             this.mc.getTextureManager().bindTexture(RESOURCE_PACKS_TEXTURE);
             Gui.drawRect(x, y, x + 32, y + 32, -1601138544);

@@ -140,7 +140,7 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
 
     public void func_152935_j()
     {
-        int i = this.mc.gameSettings.streamChatEnabled;
+        int i = this.mc.settings.streamChatEnabled;
         boolean flag = this.field_176029_e != null && this.chatController.func_175990_d(this.field_176029_e);
         boolean flag1 = this.chatController.func_153000_j() == ChatController.ChatState.Initialized && (this.field_176029_e == null || this.chatController.func_175989_e(this.field_176029_e) == ChatController.EnumChannelState.Disconnected);
 
@@ -344,16 +344,16 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
     {
         if (this.isBroadcasting())
         {
-            float f = this.mc.gameSettings.streamGameVolume;
+            float f = this.mc.settings.streamGameVolume;
             boolean flag = this.field_152962_n || f <= 0.0F;
             this.broadcastController.setPlaybackDeviceVolume(flag ? 0.0F : f);
-            this.broadcastController.setRecordingDeviceVolume(this.func_152929_G() ? 0.0F : this.mc.gameSettings.streamMicVolume);
+            this.broadcastController.setRecordingDeviceVolume(this.func_152929_G() ? 0.0F : this.mc.settings.streamMicVolume);
         }
     }
 
     public void func_152930_t()
     {
-        GameSettings gamesettings = this.mc.gameSettings;
+        GameSettings gamesettings = this.mc.settings;
         VideoParams videoparams = this.broadcastController.func_152834_a(formatStreamKbps(gamesettings.streamKbps), formatStreamFps(gamesettings.streamFps), formatStreamBps(gamesettings.streamBytesPerPixel), (float)this.mc.displayWidth / (float)this.mc.displayHeight);
 
         switch (gamesettings.streamCompression)
@@ -573,7 +573,7 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
         {
             this.func_176027_a(chatrawmessage.userName, chatrawmessage);
 
-            if (this.func_176028_a(chatrawmessage.modes, chatrawmessage.subscriptions, this.mc.gameSettings.streamChatUserFilter))
+            if (this.func_176028_a(chatrawmessage.modes, chatrawmessage.subscriptions, this.mc.settings.streamChatUserFilter))
             {
                 IChatComponent ichatcomponent = new ChatComponentText(chatrawmessage.userName);
                 IChatComponent ichatcomponent1 = new ChatComponentTranslation("chat.stream." + (chatrawmessage.action ? "emote" : "text"), new Object[] {this.twitchComponent, ichatcomponent, EnumChatFormatting.getTextWithoutFormattingCodes(chatrawmessage.message)});
@@ -716,8 +716,8 @@ public class TwitchStream implements BroadcastController.BroadcastListener, Chat
 
     public boolean func_152929_G()
     {
-        boolean flag = this.mc.gameSettings.streamMicToggleBehavior == 1;
-        return this.field_152962_n || this.mc.gameSettings.streamMicVolume <= 0.0F || flag != this.field_152963_o;
+        boolean flag = this.mc.settings.streamMicToggleBehavior == 1;
+        return this.field_152962_n || this.mc.settings.streamMicVolume <= 0.0F || flag != this.field_152963_o;
     }
 
     public IStream.AuthFailureReason func_152918_H()

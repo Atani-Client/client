@@ -523,7 +523,7 @@ public class Display {
 			@Override
 			public void setTitle(String title) {
 				windowTitle = title;
-				glfwSetWindowTitle(getWindow(), windowTitle);
+				glfwSetWindowTitle(getHandle(), windowTitle);
 			}
 
 			@Override
@@ -733,7 +733,7 @@ public class Display {
 		glfwSwapInterval(vsyncEnabled ? 1 : 0);
 	}
 
-	public static long getWindow() {
+	public static long getHandle() {
 		return Window.handle;
 	}
 

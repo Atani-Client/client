@@ -279,7 +279,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     {
         if (selectedTabIndex != CreativeTabs.tabAllSearch.getTabIndex())
         {
-            if (GameSettings.isKeyDown(this.mc.gameSettings.keyBindChat))
+            if (GameSettings.isKeyDown(this.mc.settings.keyBindChat))
             {
                 this.setCurrentCreativeTab(CreativeTabs.tabAllSearch);
             }
@@ -339,7 +339,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
             ItemStack itemstack = (ItemStack)iterator.next();
             boolean flag = false;
 
-            for (String s : itemstack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips))
+            for (String s : itemstack.getTooltip(this.mc.thePlayer, this.mc.settings.advancedItemTooltips))
             {
                 if (EnumChatFormatting.getTextWithoutFormattingCodes(s).toLowerCase().contains(s1))
                 {
@@ -577,7 +577,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
     {
         if (selectedTabIndex == CreativeTabs.tabAllSearch.getTabIndex())
         {
-            List<String> list = stack.getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+            List<String> list = stack.getTooltip(this.mc.thePlayer, this.mc.settings.advancedItemTooltips);
             CreativeTabs creativetabs = stack.getItem().getCreativeTab();
 
             if (creativetabs == null && stack.getItem() == Items.enchanted_book)

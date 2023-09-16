@@ -14,7 +14,7 @@ public class Realms
 {
     public static boolean isTouchScreen()
     {
-        return Minecraft.getMinecraft().gameSettings.touchscreen;
+        return Minecraft.getMinecraft().settings.touchscreen;
     }
 
     public static Proxy getProxy()
@@ -107,7 +107,7 @@ public class Realms
 
     public static boolean getRealmsNotificationsEnabled()
     {
-        return Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS);
+        return Minecraft.getMinecraft().settings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS);
     }
 
     public static boolean inTitleScreen()

@@ -59,13 +59,13 @@ public class GuiOtherSettingsOF extends GuiScreen implements GuiYesNoCallback
 
             if (guibutton.id == 200)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 this.mc.displayGuiScreen(this.prevScreen);
             }
 
             if (guibutton.id == 210)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 GuiYesNo guiyesno = new GuiYesNo(this, I18n.format("of.message.other.reset", new Object[0]), "", 9999);
                 this.mc.displayGuiScreen(guiyesno);
             }
@@ -76,7 +76,7 @@ public class GuiOtherSettingsOF extends GuiScreen implements GuiYesNoCallback
     {
         if (flag)
         {
-            this.mc.gameSettings.resetSettings();
+            this.mc.settings.resetSettings();
         }
 
         this.mc.displayGuiScreen(this);

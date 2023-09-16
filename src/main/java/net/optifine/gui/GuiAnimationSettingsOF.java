@@ -59,18 +59,18 @@ public class GuiAnimationSettingsOF extends GuiScreen
 
             if (guibutton.id == 200)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 this.mc.displayGuiScreen(this.prevScreen);
             }
 
             if (guibutton.id == 210)
             {
-                this.mc.gameSettings.setAllAnimations(true);
+                this.mc.settings.setAllAnimations(true);
             }
 
             if (guibutton.id == 211)
             {
-                this.mc.gameSettings.setAllAnimations(false);
+                this.mc.settings.setAllAnimations(false);
             }
 
             ScaledResolution scaledresolution = new ScaledResolution(this.mc);

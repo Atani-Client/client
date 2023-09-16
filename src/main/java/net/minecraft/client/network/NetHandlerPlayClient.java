@@ -244,7 +244,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         PacketThreadUtil.checkThreadAndEnqueue(packetIn, this, this.gameController);
         this.gameController.playerController = new PlayerControllerMP(this.gameController, this);
         this.clientWorldController = new WorldClient(this, new WorldSettings(0L, packetIn.getGameType(), false, packetIn.isHardcoreMode(), packetIn.getWorldType()), packetIn.getDimension(), packetIn.getDifficulty(), this.gameController.mcProfiler);
-        this.gameController.gameSettings.difficulty = packetIn.getDifficulty();
+        this.gameController.settings.difficulty = packetIn.getDifficulty();
         this.gameController.loadWorld(this.clientWorldController);
         this.gameController.thePlayer.dimension = packetIn.getDimension();
         this.gameController.displayGuiScreen(new GuiDownloadTerrain(this));
@@ -252,7 +252,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         this.currentServerMaxPlayers = packetIn.getMaxPlayers();
         this.gameController.thePlayer.setReducedDebug(packetIn.isReducedDebugInfo());
         this.gameController.playerController.setGameType(packetIn.getGameType());
-        this.gameController.gameSettings.sendSettingsToServer();
+        this.gameController.settings.sendSettingsToServer();
         this.netManager.sendPacket(new C17PacketCustomPayload("MC|Brand", (new PacketBuffer(Unpooled.buffer())).writeString(ClientBrandRetriever.getClientModName())));
     }
 
@@ -884,7 +884,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
             if (flag)
             {
-                GameSettings gamesettings = this.gameController.gameSettings;
+                GameSettings gamesettings = this.gameController.settings;
                 this.gameController.ingameGUI.setRecordPlaying(I18n.format("mount.onboard", new Object[] {GameSettings.getKeyDisplayString(gamesettings.keyBindSneak.getKeyCode())}), false);
             }
         }
@@ -1227,7 +1227,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
         }
         else if (i == 5)
         {
-            GameSettings gamesettings = this.gameController.gameSettings;
+            GameSettings gamesettings = this.gameController.settings;
 
             if (f == 0.0F)
             {
@@ -1307,8 +1307,8 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
 
                     if (statbase == AchievementList.openInventory)
                     {
-                        this.gameController.gameSettings.showInventoryAchievementHint = false;
-                        this.gameController.gameSettings.saveOptions();
+                        this.gameController.settings.showInventoryAchievementHint = false;
+                        this.gameController.settings.saveOptions();
                     }
                 }
 
@@ -1318,7 +1318,7 @@ public class NetHandlerPlayClient implements INetHandlerPlayClient
             this.gameController.thePlayer.getStatFileWriter().unlockAchievement(this.gameController.thePlayer, statbase, i);
         }
 
-        if (!this.field_147308_k && !flag && this.gameController.gameSettings.showInventoryAchievementHint)
+        if (!this.field_147308_k && !flag && this.gameController.settings.showInventoryAchievementHint)
         {
             this.gameController.guiAchievement.displayUnformattedAchievement(AchievementList.openInventory);
         }

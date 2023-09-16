@@ -113,7 +113,7 @@ public class GuiIngame extends Gui
 
         ItemStack itemstack = this.mc.thePlayer.inventory.armorItemInSlot(3);
 
-        if (this.mc.gameSettings.thirdPersonView == 0 && itemstack != null && itemstack.getItem() == Item.getItemFromBlock(Blocks.pumpkin))
+        if (this.mc.settings.thirdPersonView == 0 && itemstack != null && itemstack.getItem() == Item.getItemFromBlock(Blocks.pumpkin))
         {
             this.renderPumpkinOverlay(scaledresolution);
         }
@@ -193,7 +193,7 @@ public class GuiIngame extends Gui
             this.renderExpBar(scaledresolution, k1);
         }
 
-        if (this.mc.gameSettings.heldItemTooltips && !this.mc.playerController.isSpectator())
+        if (this.mc.settings.heldItemTooltips && !this.mc.playerController.isSpectator())
         {
             this.renderSelectedItem(scaledresolution);
         }
@@ -207,7 +207,7 @@ public class GuiIngame extends Gui
             this.renderDemo(scaledresolution);
         }
 
-        if (this.mc.gameSettings.showDebugInfo)
+        if (this.mc.settings.showDebugInfo)
         {
             this.overlayDebug.renderDebugInfo(scaledresolution);
         }
@@ -317,7 +317,7 @@ public class GuiIngame extends Gui
         GlStateManager.popMatrix();
         scoreobjective1 = scoreboard.getObjectiveInDisplaySlot(0);
 
-        if (this.mc.gameSettings.keyBindPlayerList.isKeyDown() && (!this.mc.isIntegratedServerRunning() || this.mc.thePlayer.sendQueue.getPlayerInfoMap().size() > 1 || scoreobjective1 != null))
+        if (this.mc.settings.keyBindPlayerList.isKeyDown() && (!this.mc.isIntegratedServerRunning() || this.mc.thePlayer.sendQueue.getPlayerInfoMap().size() > 1 || scoreobjective1 != null))
         {
             this.overlayPlayerList.updatePlayerList(true);
             this.overlayPlayerList.renderPlayerlist(i, scoreboard, scoreobjective1);
@@ -488,7 +488,7 @@ public class GuiIngame extends Gui
 
     protected boolean showCrosshair()
     {
-        if (this.mc.gameSettings.showDebugInfo && !this.mc.thePlayer.hasReducedDebug() && !this.mc.gameSettings.reducedDebugInfo)
+        if (this.mc.settings.showDebugInfo && !this.mc.thePlayer.hasReducedDebug() && !this.mc.settings.reducedDebugInfo)
         {
             return false;
         }

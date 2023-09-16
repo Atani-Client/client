@@ -228,7 +228,7 @@ public class Keyboard {
 	}
             
 	public static boolean isKeyDown(int key) {
-		return GLFW.glfwGetKey(Display.getWindow(), KeyCodes.toGlfwKey(key)) == GLFW.GLFW_PRESS;
+		return GLFW.glfwGetKey(Display.getHandle(), KeyCodes.toGlfwKey(key)) == GLFW.GLFW_PRESS;
 	}
 	
 	public static void poll() {

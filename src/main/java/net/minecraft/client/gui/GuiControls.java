@@ -60,7 +60,7 @@ public class GuiControls extends GuiScreen
         }
         else if (button.id == 201)
         {
-            for (KeyBinding keybinding : this.mc.gameSettings.keyBindings)
+            for (KeyBinding keybinding : this.mc.settings.keyBindings)
             {
                 keybinding.setKeyCode(keybinding.getKeyCodeDefault());
             }

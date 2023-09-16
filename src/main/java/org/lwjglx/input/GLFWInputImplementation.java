@@ -65,7 +65,7 @@ public class GLFWInputImplementation implements InputImplementation {
     public void grabMouse(boolean new_grab) {
         System.out.println("Grab: " + new_grab);
         grab = new_grab;
-        GLFW.glfwSetInputMode(Display.getWindow(), GLFW.GLFW_CURSOR,
+        GLFW.glfwSetInputMode(Display.getHandle(), GLFW.GLFW_CURSOR,
                 grab ? GLFW.GLFW_CURSOR_DISABLED : GLFW.GLFW_CURSOR_NORMAL);
     }
 

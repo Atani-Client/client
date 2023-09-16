@@ -29,13 +29,13 @@ public class GuiNewChat extends Gui
 
     public void drawChat(int updateCounter)
     {
-        if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN)
+        if (this.mc.settings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN)
         {
             int i = this.getLineCount();
             boolean flag = false;
             int j = 0;
             int k = this.drawnChatLines.size();
-            float f = this.mc.gameSettings.chatOpacity * 0.9F + 0.1F;
+            float f = this.mc.settings.chatOpacity * 0.9F + 0.1F;
 
             if (k > 0)
             {
@@ -309,17 +309,17 @@ public class GuiNewChat extends Gui
 
     public int getChatWidth()
     {
-        return calculateChatboxWidth(this.mc.gameSettings.chatWidth);
+        return calculateChatboxWidth(this.mc.settings.chatWidth);
     }
 
     public int getChatHeight()
     {
-        return calculateChatboxHeight(this.getChatOpen() ? this.mc.gameSettings.chatHeightFocused : this.mc.gameSettings.chatHeightUnfocused);
+        return calculateChatboxHeight(this.getChatOpen() ? this.mc.settings.chatHeightFocused : this.mc.settings.chatHeightUnfocused);
     }
 
     public float getChatScale()
     {
-        return this.mc.gameSettings.chatScale;
+        return this.mc.settings.chatScale;
     }
 
     public static int calculateChatboxWidth(float scale)

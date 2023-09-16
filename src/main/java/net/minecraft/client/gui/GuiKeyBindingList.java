@@ -20,7 +20,7 @@ public class GuiKeyBindingList extends GuiListExtended
         super(mcIn, controls.width, controls.height, 63, controls.height - 32, 20);
         this.field_148191_k = controls;
         this.mc = mcIn;
-        KeyBinding[] akeybinding = (KeyBinding[])ArrayUtils.clone(mcIn.gameSettings.keyBindings);
+        KeyBinding[] akeybinding = (KeyBinding[])ArrayUtils.clone(mcIn.settings.keyBindings);
         this.listEntries = new GuiListExtended.IGuiListEntry[akeybinding.length + KeyBinding.getKeybinds().size()];
         Arrays.sort((Object[])akeybinding);
         int i = 0;
@@ -127,7 +127,7 @@ public class GuiKeyBindingList extends GuiListExtended
 
             if (this.keybinding.getKeyCode() != 0)
             {
-                for (KeyBinding keybinding : GuiKeyBindingList.this.mc.gameSettings.keyBindings)
+                for (KeyBinding keybinding : GuiKeyBindingList.this.mc.settings.keyBindings)
                 {
                     if (keybinding != this.keybinding && keybinding.getKeyCode() == this.keybinding.getKeyCode())
                     {
@@ -158,7 +158,7 @@ public class GuiKeyBindingList extends GuiListExtended
             }
             else if (this.btnReset.mousePressed(GuiKeyBindingList.this.mc, p_148278_2_, p_148278_3_))
             {
-                GuiKeyBindingList.this.mc.gameSettings.setOptionKeyBinding(this.keybinding, this.keybinding.getKeyCodeDefault());
+                GuiKeyBindingList.this.mc.settings.setOptionKeyBinding(this.keybinding, this.keybinding.getKeyCodeDefault());
                 KeyBinding.resetKeyBindingArrayAndHash();
                 return true;
             }

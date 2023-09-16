@@ -33,7 +33,7 @@ public class GuiOptionsRowList extends GuiListExtended
         else
         {
             int i = p_148182_4_.returnEnumOrdinal();
-            return (GuiButton)(p_148182_4_.getEnumFloat() ? new GuiOptionSlider(i, p_148182_2_, p_148182_3_, p_148182_4_) : new GuiOptionButton(i, p_148182_2_, p_148182_3_, p_148182_4_, mcIn.gameSettings.getKeyBinding(p_148182_4_)));
+            return (GuiButton)(p_148182_4_.getEnumFloat() ? new GuiOptionSlider(i, p_148182_2_, p_148182_3_, p_148182_4_) : new GuiOptionButton(i, p_148182_2_, p_148182_3_, p_148182_4_, mcIn.settings.getKeyBinding(p_148182_4_)));
         }
     }
 
@@ -90,8 +90,8 @@ public class GuiOptionsRowList extends GuiListExtended
             {
                 if (this.field_148323_b instanceof GuiOptionButton)
                 {
-                    this.field_148325_a.gameSettings.setOptionValue(((GuiOptionButton)this.field_148323_b).returnEnumOptions(), 1);
-                    this.field_148323_b.displayString = this.field_148325_a.gameSettings.getKeyBinding(GameSettings.Options.getEnumOptions(this.field_148323_b.id));
+                    this.field_148325_a.settings.setOptionValue(((GuiOptionButton)this.field_148323_b).returnEnumOptions(), 1);
+                    this.field_148323_b.displayString = this.field_148325_a.settings.getKeyBinding(GameSettings.Options.getEnumOptions(this.field_148323_b.id));
                 }
 
                 return true;
@@ -100,8 +100,8 @@ public class GuiOptionsRowList extends GuiListExtended
             {
                 if (this.field_148324_c instanceof GuiOptionButton)
                 {
-                    this.field_148325_a.gameSettings.setOptionValue(((GuiOptionButton)this.field_148324_c).returnEnumOptions(), 1);
-                    this.field_148324_c.displayString = this.field_148325_a.gameSettings.getKeyBinding(GameSettings.Options.getEnumOptions(this.field_148324_c.id));
+                    this.field_148325_a.settings.setOptionValue(((GuiOptionButton)this.field_148324_c).returnEnumOptions(), 1);
+                    this.field_148324_c.displayString = this.field_148325_a.settings.getKeyBinding(GameSettings.Options.getEnumOptions(this.field_148324_c.id));
                 }
 
                 return true;

@@ -26,8 +26,8 @@ public class GuiOptionSlider extends GuiButton
         this.field_146132_r = p_i45017_5_;
         this.field_146131_s = p_i45017_6_;
         Minecraft minecraft = Minecraft.getMinecraft();
-        this.sliderValue = p_i45017_4_.normalizeValue(minecraft.gameSettings.getOptionFloatValue(p_i45017_4_));
-        this.displayString = minecraft.gameSettings.getKeyBinding(p_i45017_4_);
+        this.sliderValue = p_i45017_4_.normalizeValue(minecraft.settings.getOptionFloatValue(p_i45017_4_));
+        this.displayString = minecraft.settings.getKeyBinding(p_i45017_4_);
     }
 
     protected int getHoverState(boolean mouseOver)
@@ -44,9 +44,9 @@ public class GuiOptionSlider extends GuiButton
                 this.sliderValue = (float)(mouseX - (this.xPosition + 4)) / (float)(this.width - 8);
                 this.sliderValue = MathHelper.clamp_float(this.sliderValue, 0.0F, 1.0F);
                 float f = this.options.denormalizeValue(this.sliderValue);
-                mc.gameSettings.setOptionFloatValue(this.options, f);
+                mc.settings.setOptionFloatValue(this.options, f);
                 this.sliderValue = this.options.normalizeValue(f);
-                this.displayString = mc.gameSettings.getKeyBinding(this.options);
+                this.displayString = mc.settings.getKeyBinding(this.options);
             }
 
             mc.getTextureManager().bindTexture(buttonTextures);
@@ -62,8 +62,8 @@ public class GuiOptionSlider extends GuiButton
         {
             this.sliderValue = (float)(mouseX - (this.xPosition + 4)) / (float)(this.width - 8);
             this.sliderValue = MathHelper.clamp_float(this.sliderValue, 0.0F, 1.0F);
-            mc.gameSettings.setOptionFloatValue(this.options, this.options.denormalizeValue(this.sliderValue));
-            this.displayString = mc.gameSettings.getKeyBinding(this.options);
+            mc.settings.setOptionFloatValue(this.options, this.options.denormalizeValue(this.sliderValue));
+            this.displayString = mc.settings.getKeyBinding(this.options);
             this.dragging = true;
             return true;
         }

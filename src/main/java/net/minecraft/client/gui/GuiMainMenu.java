@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import imgui.ImGui;
+import imgui.renderer.ImImpl;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -137,7 +140,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 
     private boolean func_183501_a()
     {
-        return Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && this.field_183503_M != null;
+        return Minecraft.getMinecraft().settings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && this.field_183503_M != null;
     }
 
     public void updateScreen()
@@ -208,7 +211,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
 
         this.mc.setConnectedToRealms(false);
 
-        if (Minecraft.getMinecraft().gameSettings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && !this.field_183502_L)
+        if (Minecraft.getMinecraft().settings.getOptionOrdinalValue(GameSettings.Options.REALMS_NOTIFICATIONS) && !this.field_183502_L)
         {
             RealmsBridge realmsbridge = new RealmsBridge();
             this.field_183503_M = realmsbridge.getNotificationScreen(this);
@@ -255,12 +258,12 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
     {
         if (button.id == 0)
         {
-            this.mc.displayGuiScreen(new GuiOptions(this, this.mc.gameSettings));
+            this.mc.displayGuiScreen(new GuiOptions(this, this.mc.settings));
         }
 
         if (button.id == 5)
         {
-            this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.gameSettings, this.mc.getLanguageManager()));
+            this.mc.displayGuiScreen(new GuiLanguage(this, this.mc.settings, this.mc.getLanguageManager()));
         }
 
         if (button.id == 1)
@@ -630,6 +633,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback
         {
             this.modUpdateNotification.drawScreen(mouseX, mouseY, partialTicks);
         }
+
+        ImImpl.render(io -> {
+            ImGui.begin("Sexy imgui window atani clarnet");
+            ImGui.text("Made by the best femboy!");
+            ImGui.end();
+            ImGui.showDemoWindow();
+        });
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException

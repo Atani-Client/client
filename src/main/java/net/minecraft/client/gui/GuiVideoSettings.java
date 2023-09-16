@@ -103,7 +103,7 @@ public class GuiVideoSettings extends GuiScreenOF
 
             if (p_actionPerformed_1_.id == 200)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 this.mc.displayGuiScreen(this.parentGuiScreen);
             }
 
@@ -117,35 +117,35 @@ public class GuiVideoSettings extends GuiScreenOF
 
             if (p_actionPerformed_1_.id == 201)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 GuiDetailSettingsOF guidetailsettingsof = new GuiDetailSettingsOF(this, this.guiGameSettings);
                 this.mc.displayGuiScreen(guidetailsettingsof);
             }
 
             if (p_actionPerformed_1_.id == 202)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 GuiQualitySettingsOF guiqualitysettingsof = new GuiQualitySettingsOF(this, this.guiGameSettings);
                 this.mc.displayGuiScreen(guiqualitysettingsof);
             }
 
             if (p_actionPerformed_1_.id == 211)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 GuiAnimationSettingsOF guianimationsettingsof = new GuiAnimationSettingsOF(this, this.guiGameSettings);
                 this.mc.displayGuiScreen(guianimationsettingsof);
             }
 
             if (p_actionPerformed_1_.id == 212)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 GuiPerformanceSettingsOF guiperformancesettingsof = new GuiPerformanceSettingsOF(this, this.guiGameSettings);
                 this.mc.displayGuiScreen(guiperformancesettingsof);
             }
 
             if (p_actionPerformed_1_.id == 222)
             {
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 GuiOtherSettingsOF guiothersettingsof = new GuiOtherSettingsOF(this, this.guiGameSettings);
                 this.mc.displayGuiScreen(guiothersettingsof);
             }
@@ -176,7 +176,7 @@ public class GuiVideoSettings extends GuiScreenOF
                     return;
                 }
 
-                this.mc.gameSettings.saveOptions();
+                this.mc.settings.saveOptions();
                 GuiShaders guishaders = new GuiShaders(this, this.guiGameSettings);
                 this.mc.displayGuiScreen(guishaders);
             }

@@ -1,6 +1,5 @@
 package tech.atani.client.utility.render.transform;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
@@ -8,7 +7,7 @@ import net.minecraft.client.shader.Framebuffer;
 import org.lwjgl.opengl.GL11;
 import tech.atani.client.utility.render.shader.TextureRenderer;
 import tech.atani.client.utility.render.shader.util.FramebufferHelper;
-@Native
+
 public class Transormer {
 
     private final Minecraft mc = Minecraft.getMinecraft();

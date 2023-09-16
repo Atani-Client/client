@@ -1,12 +1,11 @@
 package tech.atani.client.utility.render.color;
 
-import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.math.MathUtil;
 
 import java.awt.*;
 import java.util.Random;
-@Native
+
 public class ColorUtil {
 
     public static final int[] RAINBOW_COLORS = {

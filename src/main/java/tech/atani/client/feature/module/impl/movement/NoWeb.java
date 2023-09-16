@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.movement;
 
-import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.listener.event.minecraft.input.MoveButtonEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;
@@ -9,7 +8,6 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 
-@Native
 @ModuleData(name = "NoWeb", description = "Prevents slowdown in Webs", category = Category.MOVEMENT)
 public class NoWeb extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Intave", "Fast Fall", "AAC 4", "AAC 5"});

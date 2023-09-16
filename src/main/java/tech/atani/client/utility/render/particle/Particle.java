@@ -1,6 +1,5 @@
 package tech.atani.client.utility.render.particle;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.sun.javafx.geom.Vec2f;
 import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.utility.interfaces.Methods;
@@ -8,7 +7,7 @@ import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
 import java.util.concurrent.ThreadLocalRandom;
-@Native
+
 public class Particle implements Methods {
 
     private double x;

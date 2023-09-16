@@ -6,7 +6,6 @@ import static org.lwjgl.opengl.GL11.glEnd;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 
-import cn.muyang.nativeobfuscator.Native;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.gui.ScaledResolution;
@@ -16,7 +15,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.shader.Framebuffer;
 import tech.atani.client.utility.interfaces.Methods;
-@Native
+
 public class TextureRenderer implements Methods {
 
     public static void drawTexture(float x, float y, float width, float height) {

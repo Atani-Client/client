@@ -1,6 +1,6 @@
 package tech.atani.client.protection.antitamper.impl;
 
-import cn.muyang.nativeobfuscator.Native;
+
 import net.minecraft.util.Util;
 import tech.atani.client.protection.antitamper.AntiTamper;
 
@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-@Native
 public class AntiVM extends AntiTamper {
 
     public AntiVM() {

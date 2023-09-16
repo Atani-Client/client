@@ -1,6 +1,5 @@
 package tech.atani.client.utility.render;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.sun.javafx.geom.Vec3d;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.gui.Gui;
@@ -24,7 +23,7 @@ import tech.atani.client.utility.render.color.ColorUtil;
 import java.awt.*;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-@Native
+
 public class RenderUtil implements Methods {
 
     public static void drawBorder(final float left, final float top, final float right, final float bottom, final float borderWidth, final int borderColor, final boolean borderIncludedInBounds) {

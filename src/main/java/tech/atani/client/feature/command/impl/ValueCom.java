@@ -2,7 +2,6 @@ package tech.atani.client.feature.command.impl;
 
 import java.util.Optional;
 
-import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.value.Value;
@@ -15,7 +14,7 @@ import tech.atani.client.feature.value.impl.slider.NumberParser;
 import tech.atani.client.feature.value.storage.ValueStorage;
 import tech.atani.client.feature.command.Command;
 import tech.atani.client.feature.command.data.CommandInfo;
-@Native
+
 @CommandInfo(name = "value", description = "change values")
 public class ValueCom extends Command {
 

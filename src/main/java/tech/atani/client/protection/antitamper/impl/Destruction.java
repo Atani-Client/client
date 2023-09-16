@@ -1,12 +1,11 @@
 package tech.atani.client.protection.antitamper.impl;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.util.Util;
 import tech.atani.client.protection.antitamper.AntiTamper;
 
 import java.io.File;
 import java.nio.file.Files;
-@Native
+
 public class Destruction extends AntiTamper {
 
     public Destruction() {

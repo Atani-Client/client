@@ -1,6 +1,5 @@
 package tech.atani.client.utility.player.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
@@ -17,7 +16,7 @@ import tech.atani.client.feature.combat.CombatManager;
 
 import java.util.ArrayList;
 import java.util.List;
-@Native
+
 public class FightUtil implements Methods {
 
     public static boolean canHit(double chance) {

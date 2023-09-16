@@ -1,12 +1,11 @@
 package tech.atani.client.utility.player.movement;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
 import tech.atani.client.utility.player.PlayerHandler;
-@Native
+
 public class MoveUtil implements Methods {
 
     public static double getPredictedMotion(double motion, int ticks) {

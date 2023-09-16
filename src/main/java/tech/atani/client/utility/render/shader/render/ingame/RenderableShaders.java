@@ -2,12 +2,11 @@ package tech.atani.client.utility.render.shader.render.ingame;
 
 import java.util.Arrays;
 
-import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.feature.module.impl.hud.PostProcessing;
 import tech.atani.client.utility.render.shader.access.ShaderAccess;
 import tech.atani.client.utility.render.shader.data.ShaderRenderType;
 import tech.atani.client.utility.render.shader.render.Type;
-@Native
+
 public interface RenderableShaders {
 
     static void render(boolean bloom, boolean blur, Runnable... runnables) {

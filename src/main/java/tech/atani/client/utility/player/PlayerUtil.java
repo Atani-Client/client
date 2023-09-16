@@ -1,6 +1,5 @@
 package tech.atani.client.utility.player;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemArmor;
@@ -8,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import tech.atani.client.utility.interfaces.Methods;
 
-@Native
 public class PlayerUtil implements Methods {
 
     public static boolean canBuildForward() {

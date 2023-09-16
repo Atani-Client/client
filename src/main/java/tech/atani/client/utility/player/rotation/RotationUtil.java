@@ -1,6 +1,5 @@
 package tech.atani.client.utility.player.rotation;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.*;
 import tech.atani.client.utility.interfaces.Methods;
@@ -10,7 +9,7 @@ import tech.atani.client.utility.player.raytrace.RaytraceUtil;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-@Native
+
 public class RotationUtil implements Methods {
 
     public static Vec3 getBestVector(Vec3 look, AxisAlignedBB axisAlignedBB) {

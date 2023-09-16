@@ -13,6 +13,7 @@ import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
 import tech.atani.client.feature.module.impl.hud.PostProcessing;
 import tech.atani.client.protection.GithubAPI;
 import tech.atani.client.protection.antitamper.impl.Destruction;
+import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.internet.NetUtils;
 import tech.atani.client.utility.render.animation.advanced.Direction;
 import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
@@ -24,6 +25,8 @@ import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
 import tech.atani.client.utility.render.shader.shaders.RoundedShader;
 
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 
 public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
@@ -79,10 +82,11 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
         int buttonY = this.height / 2 - fullButtonHeight / 2;
 
         this.buttonList.add(new AtaniButton(0, buttonX, buttonY + 30, "Login"));
+        buttonY += 30;
+        this.buttonList.add(new AtaniButton(1, buttonX, buttonY + 30, "Copy HWID"));
 
         this.mc.func_181537_a(false);
     }
-
 
     protected void actionPerformed(GuiButton button) throws IOException {
        switch (button.id) {
@@ -99,7 +103,7 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
                        status = "Couldn't connect to the internet.";
                        break;
                    case 2:
-                       NetUtils.sendToWebhook("**Someone failed to authorize on Atani!** \n Error: HWID is not whitelisted \n" + "Used UUID: ``" + input + "``\n" + "HWID: ``" + HWIDUtil.getShortHWID(9) + "...``\n");
+                       NetUtils.sendToWebhook("**Someone failed to authorize on Atani!** \n Error: HWID is not whitelisted \n" + "Used UUID: ``" + input + "``\n" + "HWID: ``" + HWIDUtil.getHashedHWID() + "...``\n");
                        try {
                            Destruction.selfDestructJARFile();
                        } catch (Exception e) {
@@ -114,6 +118,12 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
                        status = String.format("Welcome to Atani, %s!", GithubAPI.username);
                        break;
                }
+               break;
+           case 1:
+               StringSelection stringSelection = new StringSelection(HWIDUtil.getHashedHWID());
+               Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+               clipboard.setContents(stringSelection, null);
+               status = "Your HWID has been copied to the clipboard!";
                break;
        }
     }

@@ -78,7 +78,7 @@ public class GithubAPI {
 
     private static boolean isWhitelisted(String hwid) {
         String documentContent = getDocument();
-        String[] lines = documentContent.split(",\n");
+        String[] lines = documentContent.split(",");
 
         for (String line : lines) {
             String[] parts = line.split(":");
@@ -89,6 +89,7 @@ public class GithubAPI {
                 String[] hwidArray = documentHWIDs.split(",");
 
                 for (String docHwid : hwidArray) {
+
                     if (docHwid.equals(hwid)) {
                         return true;
                     }
@@ -101,7 +102,7 @@ public class GithubAPI {
 
     private static String getUUID(String hwid) {
         String documentContent = getDocument();
-        String[] lines = documentContent.split(",\n");
+        String[] lines = documentContent.split(",");
 
         for (String line : lines) {
             String[] parts = line.split(":");

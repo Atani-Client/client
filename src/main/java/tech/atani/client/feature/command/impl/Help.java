@@ -1,11 +1,10 @@
 package tech.atani.client.feature.command.impl;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.util.MathHelper;
 import tech.atani.client.feature.command.storage.CommandStorage;
 import tech.atani.client.feature.command.Command;
 import tech.atani.client.feature.command.data.CommandInfo;
-@Native
+
 @CommandInfo(name = "help", aliases = {"?"}, description = "for help")
 public class Help extends Command {
     @Override

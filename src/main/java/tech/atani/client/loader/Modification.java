@@ -1,8 +1,6 @@
 package tech.atani.client.loader;
 
-import cn.muyang.nativeobfuscator.Native;
 import de.florianmichael.viamcp.ViaMCP;
-import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import tech.atani.client.feature.anticheat.check.CheckStorage;
 import tech.atani.client.feature.module.storage.ModuleStorage;
@@ -23,7 +21,7 @@ import tech.atani.client.utility.discord.DiscordRP;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-@Native
+
 public enum Modification implements ClientInformationAccess {
     INSTANCE;
 

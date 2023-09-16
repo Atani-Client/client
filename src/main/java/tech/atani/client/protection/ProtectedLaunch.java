@@ -1,6 +1,5 @@
 package tech.atani.client.protection;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.authlib.properties.PropertyMap;
@@ -39,7 +38,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.OpenGLException;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniLoginScreen;
+import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniRenameWorld;
 import tech.atani.client.feature.performance.memory.TextureFix;
 import tech.atani.client.loader.Injector;
 
@@ -53,7 +52,6 @@ import java.net.Proxy;
 import java.util.List;
 import java.util.UUID;
 
-@Native
 public class ProtectedLaunch {
 
     private static String[] args;
@@ -362,7 +360,9 @@ public class ProtectedLaunch {
             textureFix.runFix();
         }
 
-        mc.displayGuiScreen(new AtaniLoginScreen());
+        AtaniRenameWorld guiScreen = new AtaniRenameWorld();
+        mc.displayGuiScreen(guiScreen);
+
 
         mc.renderEngine.deleteTexture(mc.mojangLogo);
         mc.mojangLogo = null;

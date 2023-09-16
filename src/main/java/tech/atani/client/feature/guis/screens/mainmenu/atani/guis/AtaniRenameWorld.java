@@ -27,7 +27,7 @@ import java.awt.*;
 import java.io.IOException;
 
 @Native
-public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
+public class AtaniRenameWorld extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
 {
     private String input = "", status = "Please login with your UID.";
     private int cursorCounter;
@@ -35,7 +35,7 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
     private ShaderBackground shaderBackground;
     private final DecelerateAnimation decelerateAnimation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
 
-    public AtaniLoginScreen() {
+    public AtaniRenameWorld() {
         if(shaderBackground == null) {
             shaderBackground = new ShaderBackground(new ResourceLocation("atani/shaders/fragment/ataniWave.glsl"));
             shaderBackground.init();

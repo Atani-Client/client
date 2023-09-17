@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.movement;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -20,6 +21,7 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 
+@Native
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "BlocksMC", "Old NCP", "Verus", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3"}),

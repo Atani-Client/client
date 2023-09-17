@@ -1,56 +1,46 @@
 package tech.atani.client.utility.system;
 
-
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 public class HWIDUtil {
 
     public static String getHashedHWID() {
+        StringBuilder systemInfoBuilder = new StringBuilder();
+
+        String processorArchitecture = System.getenv("PROCESSOR_ARCHITECTURE");
+        if (processorArchitecture != null) {
+            systemInfoBuilder.append("PROCESSOR_ARCHITECTURE: ").append(processorArchitecture).append("\n");
+        }
+
+        String processorIdentifier = System.getenv("PROCESSOR_IDENTIFIER");
+        if (processorIdentifier != null) {
+            systemInfoBuilder.append("PROCESSOR_IDENTIFIER: ").append(processorIdentifier).append("\n");
+        }
+
+        Runtime runtime = Runtime.getRuntime();
+        int availableProcessors = runtime.availableProcessors();
+        systemInfoBuilder.append("Number of processors: ").append(availableProcessors).append("\n");
+
+        String systemInfoString = systemInfoBuilder.toString();
+
+        return calculateSHA256(systemInfoString);
+    }
+
+    private static String calculateSHA256(String input) {
         try {
-            String hwid = null;
-            try {
-                MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                String hwidString = System.getProperty("os.name") +
-                        System.getProperty("os.arch") +
-                        System.getProperty("os.version") +
-                        Runtime.getRuntime().availableProcessors() +
-                        System.getenv("PROCESSOR_IDENTIFIER") +
-                        System.getenv("PROCESSOR_ARCHITECTURE") +
-                        System.getenv("PROCESSOR_ARCHITEW6432") +
-                        System.getenv("NUMBER_OF_PROCESSORS");
-
-                byte[] hashBytes = digest.digest(hwidString.getBytes(StandardCharsets.UTF_8));
-                hwid = Arrays.toString(hashBytes);
-            } catch (Exception ignored) {
-                //
-            }
-
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashedBytes = md.digest(hwid != null ? hwid.getBytes() : new byte[0]);
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = messageDigest.digest(input.getBytes());
 
             StringBuilder hexStringBuilder = new StringBuilder();
-            for (byte b : hashedBytes) {
-                String hex = String.format("%02x", b);
-                hexStringBuilder.append(hex);
+            for (byte b : hashBytes) {
+                hexStringBuilder.append(String.format("%02x", b));
             }
 
             return hexStringBuilder.toString();
         } catch (NoSuchAlgorithmException e) {
-            return "######################";
+            System.err.println("SHA-256 algorithm not available.");
+            return null;
         }
     }
-
-    public static String getShortHWID(int size) {
-        String fullHWID = getHashedHWID();
-
-        if (fullHWID.length() >= size) {
-            return fullHWID.substring(0, size);
-        } else {
-            return fullHWID;
-        }
-    }
-
 }

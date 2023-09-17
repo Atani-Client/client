@@ -49,7 +49,7 @@ public class Velocity extends Module {
     // Grim Flag
     private boolean grimFlag;
 
-    // Grim
+    // Grim Spoof
     private final Queue<Short> transactionQueue = new ConcurrentLinkedQueue<>();
     private boolean grimPacket;
 

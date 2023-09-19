@@ -8,6 +8,7 @@ import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
@@ -17,7 +18,7 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
-	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat", "Test"});
+	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat", "Intave Timer"});
 
 	private final CheckBoxValue keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?", this, false, new Supplier[]{() -> mode.is("Custom")}),
 			c0fConfirm = new CheckBoxValue("C0FConfirmTransaction", "Should the module cancel C0FConfirmTransaction?", this, false, new Supplier[]{() -> mode.is("Custom")}),
@@ -92,10 +93,24 @@ public class Disabler extends Module {
 						event.setCancelled(true);
 					}
 					break;
-				case "Test":
-					mc.thePlayer.sendQueue.addToSendQueue(new C19PacketResourcePackStatus());
+				case "Intave Timer":
+					if(packet instanceof C19PacketResourcePackStatus) {
+						event.setCancelled(true);
+					}
 					break;
 			}
+		}
+	}
+
+	@Listen
+	public void onMotion(UpdateMotionEvent event) {
+		switch (mode.getValue()) {
+			case "Intave Timer":
+				StringBuilder builder = new StringBuilder();
+				for (int i = 32; i < 256; i++) builder.append((char)i);
+				this.sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.ACCEPTED));
+				this.sendPacketUnlogged(new C19PacketResourcePackStatus(builder.toString(), C19PacketResourcePackStatus.Action.FAILED_DOWNLOAD));
+				break;
 		}
 	}
 

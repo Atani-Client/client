@@ -4,6 +4,9 @@ import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0APacketAnimation;
+import net.minecraft.network.play.client.C14PacketTabComplete;
+import net.minecraft.network.play.client.C19PacketResourcePackStatus;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.util.AxisAlignedBB;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
@@ -24,10 +27,10 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "Intave"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")}),
             grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")}),
-            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump"}, new Supplier[]{() -> mode.is("Verus")});
+            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump", "Collision"}, new Supplier[]{() -> mode.is("Verus")});
     private final SliderValue<Integer> time = new SliderValue<Integer>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
     private final SliderValue<Float> timer = new SliderValue<Float>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")}),
             speed = new SliderValue<Float>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> ((mode.is("Vulcan") && vulcanMode.is("Normal")) || mode.is("Vanilla"))});
@@ -49,6 +52,7 @@ public class Flight extends Module {
 
     // Verus
     private final TimeHelper verusTimer = new TimeHelper();
+    private boolean verusUp;
 
     @Override
     public String getSuffix() {
@@ -61,6 +65,13 @@ public class Flight extends Module {
             return;
 
         switch(mode.getValue()) {
+            case "Verus":
+                switch (verusMode.getValue()) {
+                    case "Collision":
+                        boxesEvent.setBoundingBox(new AxisAlignedBB(-5, -1, -5, 5, 1, 5).offset(boxesEvent.getBlockPos().getX(), boxesEvent.getBlockPos().getY(), boxesEvent.getBlockPos().getZ()));
+                        break;
+                }
+                break;
             case "Collision":
                 if(!mc.gameSettings.keyBindSneak.pressed)
                     boxesEvent.setBoundingBox(new AxisAlignedBB(-2, -1, -2, 2, 1, 2).offset(boxesEvent.getBlockPos().getX(), boxesEvent.getBlockPos().getY(), boxesEvent.getBlockPos().getZ()));
@@ -92,9 +103,29 @@ public class Flight extends Module {
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent motionEvent) {
         switch (mode.getValue()) {
+            case "Intave":
+                mc.thePlayer.motionY = 0.0D;
+                MoveUtil.setMoveSpeed(0.2f);
+                break;
             case "Verus":
                 if (motionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     switch (verusMode.getValue()) {
+                        case "Collision":
+                            if (!mc.gameSettings.keyBindJump.isKeyDown()) {
+                                if (mc.thePlayer.onGround) {
+                                    mc.thePlayer.motionY = 0.42f;
+                                    verusUp = true;
+                                } else if (verusUp) {
+                                    if (!mc.thePlayer.isCollidedHorizontally) {
+                                        mc.thePlayer.motionY = -0.0784000015258789;
+                                    }
+                                    verusUp = false;
+                                }
+                            } else if (mc.thePlayer.ticksExisted % 3 == 0) {
+                                mc.thePlayer.motionY = 0.42f;
+                            }
+                            MoveUtil.setMoveSpeed(mc.gameSettings.keyBindJump.isKeyDown() ? 0 : 0.33);
+                            break;
                         case "Damage":
                             if (mc.thePlayer.hurtTime != 0) {
                                 MoveUtil.strafe(5);
@@ -238,6 +269,19 @@ public class Flight extends Module {
             return;
 
         switch (mode.getValue()) {
+            case "Intave":
+                if(packetEvent.getPacket() instanceof C0APacketAnimation) {
+                    packetEvent.setCancelled(true);
+                }
+
+                if(packetEvent.getPacket() instanceof C19PacketResourcePackStatus) {
+                    packetEvent.setCancelled(true);
+                }
+
+                if(packetEvent.getPacket() instanceof C14PacketTabComplete) {
+                    packetEvent.setCancelled(true);
+                }
+                break;
             case "Grim":
                 switch(grimMode.getValue()){
                     case "Explosion":
@@ -295,26 +339,25 @@ public class Flight extends Module {
 
     @Override
     public void onEnable() {
-        jumped = false;
-        moveSpeed = speed.getValue();
-        startY = mc.thePlayer.posY;
         stage = 0;
-        jumped = false;
         jumps = 0;
         launch = false;
+        jumped = false;
+        startY = mc.thePlayer.posY;
+        moveSpeed = speed.getValue();
     }
 
     @Override
     public void onDisable() {
+        stage = 0;
+        jumps = 0;
         moveSpeed = 0;
         jumped = false;
-        MoveUtil.strafe(0);
-        mc.timer.timerSpeed = 1f;
         launch = false;
-        stage = 0;
-        mc.thePlayer.speedInAir = 0.02F;
-        jumped = false;
-        jumps = 0;
+        verusUp = false;
+        mc.timer.timerSpeed = 1f;
+        mc.thePlayer.speedInAir = 0.02f;
+        MoveUtil.strafe(0);
 
         if(mode.is("Vulcan") && vulcanMode.is("Vanilla")) {
             this.setPosition(mc.thePlayer.posX + 0.01, mc.thePlayer.posY, mc.thePlayer.posZ + 0.01);

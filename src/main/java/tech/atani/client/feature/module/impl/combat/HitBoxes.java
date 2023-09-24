@@ -1,27 +1,15 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import com.google.common.base.Supplier;
-import com.viaversion.viabackwards.utils.ChatUtil;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.module.storage.ModuleStorage;
-import tech.atani.client.feature.value.impl.CheckBoxValue;
-import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
-import tech.atani.client.listener.event.minecraft.player.rotation.RayTraceRangeEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.radbus.Listen;
-import tech.atani.client.utility.interfaces.Methods;
-import tech.atani.client.utility.player.PlayerHandler;
 import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.player.rotation.RotationUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 @ModuleData(name = "HitBoxes", description = "Allows you to hit further", category = Category.COMBAT)

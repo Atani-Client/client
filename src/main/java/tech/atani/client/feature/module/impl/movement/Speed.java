@@ -6,6 +6,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
+import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
@@ -78,13 +79,25 @@ public class Speed extends Module {
     // NCP
     private int ncpTicks;
 
-    // BlocksMC
-    private float bmcSpeed;
-    private int bmcTicks;
+    // Intave
+    private int onTicks, offTicks;
 
     @Override
     public String getSuffix() {
         return mode.getValue();
+    }
+
+    @Listen
+    public void onTick(RunTickEvent event) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+
+        switch (mode.getValue()) {
+            case "Intave":
+                onTicks = mc.thePlayer.onGround ? ++onTicks : 0;
+                offTicks = mc.thePlayer.onGround ? 0 : ++offTicks;
+                break;
+        }
     }
 
     @Listen
@@ -314,8 +327,6 @@ public class Speed extends Module {
                         case "Hop":
                             if (mc.thePlayer.onGround) {
                                 mc.thePlayer.jump();
-                            //    MoveUtil.strafe(0.53);
-                                // This ^^ bypasses, idk if I should add it.
                             }
 
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 100);
@@ -559,27 +570,20 @@ public class Speed extends Module {
 
                     switch (ncpMode.getValue()) {
                         case "Low":
-                            // By Exterminate
-                            //Method by Exterminate (Lowest lowhop ever, trust)
                             if (!isMoving()) return;
 
-                            //Anti Retard
                             mc.gameSettings.keyBindJump.pressed = false;
 
-                            //Timer balance
                             if (lowNcpMode.getValue().equalsIgnoreCase("Balance")) {
                                 if (BalanceProcessor.getBalance() > 150 || mc.timer.timerSpeed == 1f) {
-                                    //TimerHandler.setTimer(0.3f, 10);
                                     mc.timer.timerSpeed = 0.3F;
                                 } else if (BalanceProcessor.getBalance() < -400) {
-                                    //TimerHandler.setTimer(1.3f, 10);
                                     mc.timer.timerSpeed = 1.3F;
                                 }
                             }
 
                             if (mc.thePlayer.onGround) {
                                 if (lowNcpMode.is("Normal")) {
-                                    //TimerHandler.setTimer(0.95f, 10);
                                     mc.timer.timerSpeed = 0.95F;
                                 }
                                 mc.thePlayer.jump();
@@ -595,7 +599,6 @@ public class Speed extends Module {
                             } else if (mc.thePlayer.motionY < 0.16 && mc.thePlayer.motionY > 0.0) {
                                 mc.thePlayer.motionY = -0.1;
                             } else if (mc.thePlayer.motionY < 0.0 && mc.thePlayer.motionY > -0.3 && lowNcpMode.is("Normal")) {
-                                //TimerHandler.setTimer(1.2f, 10);
                                 mc.timer.timerSpeed = 1.2f;
                             }
                             MoveUtil.strafe();
@@ -793,22 +796,10 @@ public class Speed extends Module {
                 }
                 break;
             case "Intave":
-                mc.gameSettings.keyBindJump.pressed = MoveUtil.getSpeed() != 0;
+                mc.gameSettings.keyBindJump.pressed = true;
 
-                if(mc.thePlayer.onGround) {
-                    mc.timer.timerSpeed = 1.07F;
-                } else {
-                    mc.timer.timerSpeed = (float) (1 + Math.random() / 1200);
-                }
-
-                if(mc.thePlayer.motionY > 0) {
-                    mc.timer.timerSpeed += 0.01;
-                    mc.thePlayer.motionX *= 1.0004;
-                    mc.thePlayer.motionZ *= 1.0004;
-                }
-
-                if(mc.thePlayer.hurtTime != 0) {
-                    mc.timer.timerSpeed = 1.21F;
+                if (offTicks >= 10 && offTicks % 5 == 0) {
+                    MoveUtil.setMoveSpeed(MoveUtil.getSpeed());
                 }
                 break;
             case "MineMenClub":
@@ -854,7 +845,7 @@ public class Speed extends Module {
     }
 
     @Listen
-    public final void onPacketEvent(PacketEvent packetEvent) {
+    public final void onPacket(PacketEvent packetEvent) {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
 
@@ -879,6 +870,8 @@ public class Speed extends Module {
 
     @Override
     public void onDisable() {
+        onTicks = 0;
+        offTicks = 0;
         mc.timer.timerSpeed = 1.0F;
         mc.thePlayer.speedInAir = 0.02F;
         mc.gameSettings.keyBindJump.pressed = false;

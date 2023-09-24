@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.server.hypixel;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import tech.atani.client.feature.module.Module;
@@ -12,6 +13,7 @@ import tech.atani.client.listener.radbus.Listen;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@Native
 @ModuleData(name = "AutoBounty", identifier = "mc.hypixel.net AutoBounty", description = "Tracks people bounty on the Pit", category = Category.SERVER, supportedIPs = {"mc.hypixel.net"})
 public class AutoBounty extends Module {
     

@@ -2,6 +2,7 @@ package tech.atani.client.utility.render.shader.shaders;
 
 import java.util.List;
 
+import cn.muyang.nativeobfuscator.Native;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
@@ -18,6 +19,7 @@ import tech.atani.client.utility.render.shader.render.FramebufferQuads;
 import tech.atani.client.utility.render.shader.render.Type;
 import tech.atani.client.utility.render.shader.util.ProgramHelper;
 
+@Native
 @Info(frag = "/fragment/acrylblur.glsl")
 public class BlurShader extends ShaderContainer {
 

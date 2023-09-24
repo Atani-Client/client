@@ -1,5 +1,6 @@
 package tech.atani.client.utility.render.shader.shaders;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.utility.render.color.ColorUtil;
@@ -12,6 +13,7 @@ import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
+@Native
 public class RoundedShader {
 
     public static ShaderProgram roundedShader = new ShaderProgram("vertex/vertex.vsh", "/fragment/roundedRect.glsl", ShaderType.GLSL);

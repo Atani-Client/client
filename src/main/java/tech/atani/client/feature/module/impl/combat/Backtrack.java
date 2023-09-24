@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.combat;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -39,6 +40,7 @@ import tech.atani.client.utility.world.entities.EntitiesUtil;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
+@Native
 @ModuleData(name = "Backtrack", description = "Delay packets to get higher reach", category = Category.COMBAT)
 public class Backtrack extends Module {
 

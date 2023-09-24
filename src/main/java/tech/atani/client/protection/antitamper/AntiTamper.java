@@ -1,8 +1,11 @@
 package tech.atani.client.protection.antitamper;
 
+import cn.muyang.nativeobfuscator.Native;
+
 import java.io.File;
 import java.net.URISyntaxException;
 
+@Native
 public abstract class AntiTamper {
 
     private final String name, description;

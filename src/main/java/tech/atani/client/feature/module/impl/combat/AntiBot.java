@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.combat;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityZombie;
@@ -21,6 +22,7 @@ import tech.atani.client.feature.combat.interfaces.IgnoreList;
 import java.util.ArrayList;
 import java.util.List;
 
+@Native
 @ModuleData(name = "AntiBot", description = "Blocks anticheat bots", category = Category.COMBAT)
 public class AntiBot extends Module implements IgnoreList {
 

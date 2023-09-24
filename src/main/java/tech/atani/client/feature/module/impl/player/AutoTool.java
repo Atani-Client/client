@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.player;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
@@ -10,6 +11,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 
+@Native
 @ModuleData(name = "AutoTool", description = "Switches to best tools", category = Category.PLAYER)
 public class AutoTool extends Module {
 

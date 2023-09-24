@@ -31,13 +31,9 @@ public class AntiBan extends Module {
     }
 
     @Override
-    public void onEnable() {
-        security.antiCrashExploits.setValue(true);
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 
 }

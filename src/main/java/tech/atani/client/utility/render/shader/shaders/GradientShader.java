@@ -1,5 +1,6 @@
 package tech.atani.client.utility.render.shader.shaders;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import tech.atani.client.utility.interfaces.Methods;
@@ -12,6 +13,7 @@ import tech.atani.client.utility.render.shader.render.FramebufferQuads;
 import java.awt.*;
 import static org.lwjgl.opengl.GL11.*;
 
+@Native
 public class GradientShader implements Methods {
 
     private static final ShaderProgram gradientMaskShader = new ShaderProgram("vertex/vertex.vsh", "/fragment/gradientMask.glsl", ShaderType.GLSL);

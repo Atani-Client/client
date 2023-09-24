@@ -1,6 +1,6 @@
 package tech.atani.client.feature.guis.screens.mainmenu.atani.guis;
 
-
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +13,6 @@ import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
 import tech.atani.client.feature.module.impl.hud.PostProcessing;
 import tech.atani.client.protection.GithubAPI;
 import tech.atani.client.protection.antitamper.impl.Destruction;
-import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.internet.NetUtils;
 import tech.atani.client.utility.render.animation.advanced.Direction;
 import tech.atani.client.utility.render.animation.advanced.impl.DecelerateAnimation;
@@ -29,7 +28,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 
-public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
+@Native
+public class AtaniRenameWorld extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
 {
     private String input = "", status = "Please login with your UID.";
     private int cursorCounter;
@@ -37,7 +37,7 @@ public class AtaniLoginScreen extends GuiScreen implements GuiYesNoCallback, Cli
     private ShaderBackground shaderBackground;
     private final DecelerateAnimation decelerateAnimation = new DecelerateAnimation(200, 1, Direction.BACKWARDS);
 
-    public AtaniLoginScreen() {
+    public AtaniRenameWorld() {
         if(shaderBackground == null) {
             shaderBackground = new ShaderBackground(new ResourceLocation("atani/shaders/fragment/ataniWave.glsl"));
             shaderBackground.init();

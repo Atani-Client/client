@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.server.hypixel;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.network.play.client.C01PacketChatMessage;
 import net.minecraft.network.play.server.S02PacketChat;
@@ -15,6 +16,7 @@ import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
 
+@Native
 @ModuleData(name = "AutoPlay", identifier = "mc.hypixel.net AutoPlay", description = "Automatically joins new games.", category = Category.SERVER, supportedIPs = {"mc.hypixel.net"})
 public class AutoPlay extends Module {
 

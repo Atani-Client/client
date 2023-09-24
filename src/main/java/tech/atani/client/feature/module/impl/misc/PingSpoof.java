@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.misc;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
@@ -13,6 +14,7 @@ import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.random.RandomUtil;
 
+@Native
 @ModuleData(name = "PingSpoof", description = "Spoofs your ping", category = Category.MISCELLANEOUS)
 public class PingSpoof extends Module {
     private SliderValue<Long> minDelay = new SliderValue<>("Minimum Delay", "What'll be the minimum delay for freezing packets?", this, 1500L, 0L, 5000L, 0),

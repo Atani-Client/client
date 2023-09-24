@@ -70,20 +70,6 @@ public enum Modification implements ClientInformationAccess {
         DiscordRP.startup();
         DiscordRP.create();
 
-        String[] fonts = {
-                "5 Line Oblique", "AMC AAA01", "ANSI Regular", "ANSI Shadow", "Alligator", "Alligator2","Alphabet", "Banner", "Banner3", "Bell",
-                "Big Chief", "Big Money-nw", "Block", "Calvin S", "Catwalk", "Colossal", "DOS Rebel", "Delta Corps Priest 1", "Doh",  "Speed",
-                "Small Keyboard", "Siant Relief", "Lean"
-        };
-        Map<String, String> parameters = new HashMap<>();
-        parameters.put("style", ArrayUtils.getRandomItem(fonts));
-        parameters.put("text", "ATANI");
-        try {
-            System.out.println(NetUtils.sendPostRequest("https://texttoascii.com/api/figlet", (HashMap<String, String>) parameters));
-        } catch (IOException e) {
-            // Don't stop the client please, I can't launch it.
-        }
-
         Runtime.getRuntime().addShutdownHook(new Thread(this::end));
 
         loaded = true;

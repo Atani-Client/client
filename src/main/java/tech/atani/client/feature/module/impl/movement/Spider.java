@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.movement;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -16,6 +17,7 @@ import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 
+@Native
 @ModuleData(name = "Spider", description = "Climb up walls", category = Category.MOVEMENT)
 public class Spider extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Jump", "Collision", "Vulcan", "Verus"});

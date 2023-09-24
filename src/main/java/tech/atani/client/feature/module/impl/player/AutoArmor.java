@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.player;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -20,6 +21,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 import java.util.Arrays;
 import java.util.List;
 
+@Native
 @ModuleData(category = Category.PLAYER, description = "Automatically equips best armor", name = "AutoArmor")
 public class AutoArmor extends Module {
     private final CheckBoxValue openInventory = new CheckBoxValue("Open Inventory", "Operate only with open inventory?", this, true);

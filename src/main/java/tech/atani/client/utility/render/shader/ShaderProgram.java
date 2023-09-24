@@ -1,5 +1,6 @@
 package tech.atani.client.utility.render.shader;
 
+import cn.muyang.nativeobfuscator.Native;
 import org.lwjgl.opengl.GL20;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.logging.LogUtil;
@@ -28,6 +29,7 @@ import static org.lwjgl.opengl.GL20.glUniform3f;
 import static org.lwjgl.opengl.GL20.glUniform4f;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 
+@Native
 public class ShaderProgram implements Methods {
 
     private final String vertexName, fragmentName;

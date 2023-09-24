@@ -8,6 +8,7 @@ import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.src.Config;
 import net.optifine.CustomColors;
 import org.lwjgl.opengl.GL11;
@@ -22,9 +23,8 @@ import net.minecraft.util.ResourceLocation;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.render.color.ColorUtil;
 
-public final class ClassicFontRenderer
-extends FontRenderer
-implements Methods {
+@Native
+public final class ClassicFontRenderer extends FontRenderer implements Methods {
     public static final int IMAGE_SIZE = 1524;
     private final DynamicTexture boldTexture;
     private final DynamicTexture italicTexture;

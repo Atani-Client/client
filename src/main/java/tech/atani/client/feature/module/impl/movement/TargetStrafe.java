@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.movement;
 
+import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;
@@ -14,6 +15,7 @@ import tech.atani.client.utility.player.rotation.RotationUtil;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 
+@Native
 @ModuleData(name = "TargetStrafe", description = "Strafe around entities", category = Category.MOVEMENT)
 public class TargetStrafe extends Module {
     private final SliderValue<Float> strafeSize = new SliderValue<Float>("Size", "How far should the player strafe from the target?", this, 2.5F, 1F, 6F, 1);

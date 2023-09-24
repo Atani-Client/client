@@ -1,5 +1,6 @@
 package tech.atani.client.feature.module.impl.player;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -41,6 +42,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+@Native
 @ModuleData(name = "ScaffoldWalk", description = "Bridging automatically", category = Category.PLAYER)
 public class ScaffoldWalk extends Module {
 

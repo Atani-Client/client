@@ -184,9 +184,13 @@ public class Step extends Module {
 
     @Override
     public void onDisable() {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
+            return;
+        }
+
         Methods.mc.thePlayer.stepHeight = 0.6F;
         step = false;
-        mc.timer.timerSpeed = 1;
+        Methods.mc.timer.timerSpeed = 1;
     }
 
     private boolean canStep() {

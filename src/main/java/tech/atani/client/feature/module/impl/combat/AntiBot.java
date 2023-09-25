@@ -110,12 +110,13 @@ public class AntiBot extends Module implements IgnoreList {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
     public void onDisable() {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
+            return;
+        }
         this.bots.clear();
     }
 

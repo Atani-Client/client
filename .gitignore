@@ -1,24 +1,38 @@
-.idea/
-.gradle/
-.settings/
-
-*.iml
-
-*.classpath
-*.project
-
 target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 build/
-test_run/
-work/crash-reports
-work/resourcepacks
-work/shaderpacks
-work/saves
-work/options.txt
-work/optionsof.txt
-work/server.properties
-work/servers.dat
-work/usercache.json
-work/imgui-atani.ini
-work/optionsshaders.txt
-work/Atani/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store

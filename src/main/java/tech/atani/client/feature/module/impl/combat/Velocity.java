@@ -17,6 +17,7 @@ import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
@@ -346,6 +347,10 @@ public class Velocity extends Module {
 
     @Override
     public void onDisable() {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
+            return;
+        }
+
         grimPacket = false;
         transactionQueue.clear();
     }

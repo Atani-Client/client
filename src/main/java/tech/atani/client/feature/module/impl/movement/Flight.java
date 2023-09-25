@@ -349,14 +349,18 @@ public class Flight extends Module {
 
     @Override
     public void onDisable() {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
+            return;
+        }
+
         stage = 0;
         jumps = 0;
         moveSpeed = 0;
         jumped = false;
         launch = false;
         verusUp = false;
-        mc.timer.timerSpeed = 1f;
-        mc.thePlayer.speedInAir = 0.02f;
+        Methods.mc.timer.timerSpeed = 1f;
+        Methods.mc.thePlayer.speedInAir = 0.02f;
         MoveUtil.strafe(0);
 
         if(mode.is("Vulcan") && vulcanMode.is("Vanilla")) {

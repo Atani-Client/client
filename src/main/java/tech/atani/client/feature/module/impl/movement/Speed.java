@@ -870,15 +870,11 @@ public class Speed extends Module {
 
     @Override
     public void onDisable() {
-        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
-            return;
-        }
-
         onTicks = 0;
         offTicks = 0;
-        Methods.mc.timer.timerSpeed = 1.0F;
-        Methods.mc.thePlayer.speedInAir = 0.02F;
-        Methods.mc.gameSettings.keyBindJump.pressed = false;
-        KeyBinding.setKeyBindState(Methods.mc.gameSettings.keyBindSprint.getKeyCode(), false);
+        mc.timer.timerSpeed = 1.0F;
+        mc.thePlayer.speedInAir = 0.02F;
+        mc.gameSettings.keyBindJump.pressed = false;
+        KeyBinding.setKeyBindState(mc.gameSettings.keyBindSprint.getKeyCode(), false);
     }
 }

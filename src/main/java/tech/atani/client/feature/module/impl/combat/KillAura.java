@@ -359,12 +359,8 @@ public class KillAura extends Module {
 
     @Override
     public void onDisable() {
-        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
-            return;
-        }
-
         if(autoBlock.getValue() && autoBlockMode.is("GrimAC")) {
-            Methods.mc.gameSettings.keyBindUseItem.pressed = false;
+            mc.gameSettings.keyBindUseItem.pressed = false;
         }
         curEntity = null;
     }

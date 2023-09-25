@@ -290,10 +290,6 @@ public class ScaffoldWalk extends Module {
 
     @Override
     public void onDisable() {
-        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
-            return;
-        }
-
         if(this.lastItem != -1) {
             Methods.mc.thePlayer.inventory.currentItem = this.lastItem;
             this.lastItem = -1;

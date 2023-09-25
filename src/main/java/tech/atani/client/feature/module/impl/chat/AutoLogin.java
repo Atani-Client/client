@@ -9,8 +9,8 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 
-@ModuleData(name = "AutoAuth", description = "Automatically authenticates for you", category = Category.CHAT)
-public class AutoAuth extends Module {
+@ModuleData(name = "AutoLogin", description = "Automatically logins for you", category = Category.CHAT)
+public class AutoLogin extends Module {
     private final CheckBoxValue login = new CheckBoxValue("Login", "Should the module automatically login for you?", this, true),
             register = new CheckBoxValue("Register", "Should the module automatically register for you?", this, true),
             notify = new CheckBoxValue("Notify", "Should the module notify you when logging in?", this, true);

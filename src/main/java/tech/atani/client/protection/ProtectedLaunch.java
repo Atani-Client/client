@@ -44,7 +44,6 @@ import tech.atani.client.loader.Injector;
 
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.io.IOException;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.PasswordAuthentication;
@@ -52,13 +51,12 @@ import java.net.Proxy;
 import java.util.List;
 import java.util.UUID;
 
-
 public class ProtectedLaunch {
 
     private static String[] args;
 
     public void runMain(String[] args) {
-        this.args = args;
+        ProtectedLaunch.args = args;
         System.setProperty("java.net.preferIPv4Stack", "true");
         final OptionParser optionparser = new OptionParser();
         optionparser.allowsUnrecognizedOptions();
@@ -66,24 +64,24 @@ public class ProtectedLaunch {
         optionparser.accepts("fullscreen");
         optionparser.accepts("checkGlErrors");
         final OptionSpec<String> optionspec = optionparser.accepts("server").withRequiredArg();
-        final OptionSpec<Integer> optionspec2 = optionparser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(25565, new Integer[0]);
-        final OptionSpec<File> optionspec3 = optionparser.accepts("gameDir").withRequiredArg().ofType(File.class).defaultsTo(new File("."), new File[0]);
+        final OptionSpec<Integer> optionspec2 = optionparser.accepts("port").withRequiredArg().ofType(Integer.class).defaultsTo(25565);
+        final OptionSpec<File> optionspec3 = optionparser.accepts("gameDir").withRequiredArg().ofType(File.class).defaultsTo(new File("."));
         final OptionSpec<File> optionspec4 = optionparser.accepts("assetsDir").withRequiredArg().ofType(File.class);
         final OptionSpec<File> optionspec5 = optionparser.accepts("resourcePackDir").withRequiredArg().ofType(File.class);
         final OptionSpec<String> optionspec6 = optionparser.accepts("proxyHost").withRequiredArg();
         final OptionSpec<Integer> optionspec7 = optionparser.accepts("proxyPort").withRequiredArg().defaultsTo("8080", new String[0]).ofType(Integer.class);
         final OptionSpec<String> optionspec8 = optionparser.accepts("proxyUser").withRequiredArg();
         final OptionSpec<String> optionspec9 = optionparser.accepts("proxyPass").withRequiredArg();
-        final OptionSpec<String> optionspec10 = optionparser.accepts("username").withRequiredArg().defaultsTo("Player" + Minecraft.getSystemTime() % 1000L, new String[0]);
+        final OptionSpec<String> optionspec10 = optionparser.accepts("username").withRequiredArg().defaultsTo("Player" + Minecraft.getSystemTime() % 1000L);
         final OptionSpec<String> optionspec11 = optionparser.accepts("uuid").withRequiredArg();
         final OptionSpec<String> optionspec12 = optionparser.accepts("accessToken").withRequiredArg().required();
         final OptionSpec<String> optionspec13 = optionparser.accepts("version").withRequiredArg().required();
-        final OptionSpec<Integer> optionspec14 = optionparser.accepts("width").withRequiredArg().ofType(Integer.class).defaultsTo(854, new Integer[0]);
-        final OptionSpec<Integer> optionspec15 = optionparser.accepts("height").withRequiredArg().ofType(Integer.class).defaultsTo(480, new Integer[0]);
-        final OptionSpec<String> optionspec16 = optionparser.accepts("userProperties").withRequiredArg().defaultsTo("{}", new String[0]);
-        final OptionSpec<String> optionspec17 = optionparser.accepts("profileProperties").withRequiredArg().defaultsTo("{}", new String[0]);
+        final OptionSpec<Integer> optionspec14 = optionparser.accepts("width").withRequiredArg().ofType(Integer.class).defaultsTo(854);
+        final OptionSpec<Integer> optionspec15 = optionparser.accepts("height").withRequiredArg().ofType(Integer.class).defaultsTo(480);
+        final OptionSpec<String> optionspec16 = optionparser.accepts("userProperties").withRequiredArg().defaultsTo("{}");
+        final OptionSpec<String> optionspec17 = optionparser.accepts("profileProperties").withRequiredArg().defaultsTo("{}");
         final OptionSpec<String> optionspec18 = optionparser.accepts("assetIndex").withRequiredArg();
-        final OptionSpec<String> optionspec19 = optionparser.accepts("userType").withRequiredArg().defaultsTo("legacy", new String[0]);
+        final OptionSpec<String> optionspec19 = optionparser.accepts("userType").withRequiredArg().defaultsTo("legacy");
         final OptionSpec<String> optionspec20 = optionparser.nonOptions();
         final OptionSet optionset = optionparser.parse(args);
         final List<String> list = optionset.valuesOf(optionspec20);
@@ -162,10 +160,12 @@ public class ProtectedLaunch {
         mc.field_181038_N = userInfo.field_181172_c;
         mc.mcDefaultResourcePack = new DefaultResourcePack(new ResourceIndex(folderInfo.assetsDir, folderInfo.assetIndex).getResourceMap());
         mc.proxy = userInfo.proxy == null ? Proxy.NO_PROXY : userInfo.proxy;
-        mc.sessionService = new YggdrasilAuthenticationService(userInfo.proxy, UUID.randomUUID().toString()).createMinecraftSessionService();
+        if (userInfo.proxy != null) {
+            mc.sessionService = new YggdrasilAuthenticationService(userInfo.proxy, UUID.randomUUID().toString()).createMinecraftSessionService();
+        }
         mc.session = userInfo.session;
-        mc.logger.info("Setting user: " + mc.session.getUsername());
-        mc.logger.info("(Session ID is " + mc.session.getSessionID() + ")");
+        Minecraft.logger.info("Setting user: " + mc.session.getUsername());
+        Minecraft.logger.info("(Session ID is " + mc.session.getSessionID() + ")");
         mc.isDemo = gameInfo.isDemo;
 
         int width = gameConfig.displayInfo.width > 0 ? gameConfig.displayInfo.width : 1;
@@ -176,7 +176,7 @@ public class ProtectedLaunch {
         mc.tempDisplayWidth = width;
         mc.tempDisplayHeight = height;
         mc.fullscreen = displayInfo.fullscreen;
-        mc.jvm64bit = mc.isJvm64bit();
+        mc.jvm64bit = Minecraft.isJvm64bit();
         mc.theIntegratedServer = new IntegratedServer(mc);
 
         if (serverInfo.serverName != null) {
@@ -204,8 +204,7 @@ public class ProtectedLaunch {
             return;
         }
 
-        while (true)
-        {
+        while (true) {
             try
             {
                 while (mc.running)
@@ -237,7 +236,7 @@ public class ProtectedLaunch {
             {
                 mc.addGraphicsAndWorldToCrashReport(reportedexception.getCrashReport());
                 mc.freeMemory();
-                mc.logger.fatal((String)"Reported exception thrown!", (Throwable)reportedexception);
+                Minecraft.logger.fatal("Reported exception thrown!", reportedexception);
                 mc.displayCrashReport(reportedexception.getCrashReport());
                 break;
             }
@@ -245,7 +244,7 @@ public class ProtectedLaunch {
             {
                 CrashReport crashreport1 = mc.addGraphicsAndWorldToCrashReport(new CrashReport("Unexpected error", throwable1));
                 mc.freeMemory();
-                mc.logger.fatal("Unreported exception thrown!", throwable1);
+                Minecraft.logger.fatal("Unreported exception thrown!", throwable1);
                 mc.displayCrashReport(crashreport1);
                 break;
             }
@@ -258,8 +257,7 @@ public class ProtectedLaunch {
         }
     }
 
-    public void startGame() throws LWJGLException, IOException
-    {
+    public void startGame() throws LWJGLException {
         mc.gameSettings = new GameSettings(mc, mc.mcDataDir);
         mc.defaultResourcePacks.add(mc.mcDefaultResourcePack);
         mc.startTimerHackThread();
@@ -269,8 +267,7 @@ public class ProtectedLaunch {
             mc.displayWidth = mc.gameSettings.overrideWidth;
             mc.displayHeight = mc.gameSettings.overrideHeight;
         }
-
-        mc.logger.info("LWJGL Version: " + Sys.getVersion());
+        Minecraft.logger.info("LWJGL Version: " + Sys.getVersion());
         mc.setWindowIcon();
         mc.setInitialDisplayMode();
         mc.createDisplay();

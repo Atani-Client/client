@@ -147,7 +147,7 @@ public class CrashReportCategory
 
             if (stacktraceelement.isNativeMethod() == s1.isNativeMethod() && stacktraceelement.getClassName().equals(s1.getClassName()) && stacktraceelement.getFileName().equals(s1.getFileName()) && stacktraceelement.getMethodName().equals(s1.getMethodName()))
             {
-                if (s2 != null != this.stackTrace.length > 1)
+                if (s2 == null == this.stackTrace.length > 1)
                 {
                     return false;
                 }

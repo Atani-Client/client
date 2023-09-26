@@ -69,10 +69,10 @@ public class Window extends GuiScreen{
                         fontRenderer.drawStringWithShadow(string, valueX + width - 50 - length + 5.5f, stringsY + 3, multiStringBoxValue.getValue().contains(string) ? new Color(14, 223, 39).getRGB() : -1);
                         stringsY += 15;
                     }
-                    fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
+                    fontRenderer.drawStringWithShadow((multiStringBoxValue.getValue().size() - 2) + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
                 } else {
                     RoundedShader.drawRound(valueX + width - 50 - length, valueY - 1, length + 10, 15, 3, new Color(31, 33, 35));
-                    fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
+                    fontRenderer.drawStringWithShadow((multiStringBoxValue.getValue().size() - 2) + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
                 }
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(multiStringBoxValue) ? multiStringBoxValue.getValues().length * 15 : 0);
             } else if(value instanceof StringBoxValue) {

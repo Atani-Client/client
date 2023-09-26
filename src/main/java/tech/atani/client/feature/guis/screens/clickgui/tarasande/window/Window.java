@@ -92,10 +92,10 @@ public class Window extends GuiScreen implements ColorPalette {
                         fontRenderer.drawStringWithShadow(string, valueX + width - 50 - length + 5.5f, stringsY + 3, multiStringBoxValue.getValue().contains(string) ? TARASANDE : -1);
                         stringsY += 15;
                     }
-                    fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
+                    fontRenderer.drawStringWithShadow((multiStringBoxValue.getValue().size() - 2) + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
                 } else {
                     RenderUtil.drawRect(valueX + width - 50 - length, valueY - 1, length + 10, 15, new Color(0, 0, 0, 80).getRGB());
-                    fontRenderer.drawStringWithShadow(multiStringBoxValue.getValue().size() + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
+                    fontRenderer.drawStringWithShadow((multiStringBoxValue.getValue().size() - 2) + " Enabled", valueX + width - 50 - length + 5.5f, valueY + 3, -1);
                 }
                 valueY += fontRenderer.FONT_HEIGHT + 13 + (this.expanded.contains(multiStringBoxValue) ? multiStringBoxValue.getValues().length * 15 : 0);
             } else if(value instanceof StringBoxValue) {

@@ -172,11 +172,11 @@ public class GoldenClickGuiScreen extends GuiScreen implements ColorPalette {
                 }
             } else if (value instanceof MultiStringBoxValue) {
                 MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
-                fontRenderer.drawStringWithShadow(value.getName() + ": " + (multiStringBoxValue.getValue().size() - 1) + " Enabled", halfX, valueY, -1);
+                fontRenderer.drawStringWithShadow(value.getName() + ": " + (multiStringBoxValue.getValue().size() - 2) + " Enabled", halfX, valueY, -1);
                 if (this.expandedValues.contains(value)) {
                     valueY += fontRenderer.FONT_HEIGHT + 2;
                     for (String string : multiStringBoxValue.getValues()) {
-                        fontRenderer.drawStringWithShadow((multiStringBoxValue.get(string) ? ChatFormatting.BOLD.toString() : "") + string, halfX + fontRenderer.getStringWidthInt(value.getName() + ": "), valueY, -1);
+                        fontRenderer.drawStringWithShadow((multiStringBoxValue.get(string) ? ChatFormatting.BOLD.toString() : "") + string, halfX + fontRenderer.getStringWidthInt(value.getName() + ": "), valueY, multiStringBoxValue.getValue().contains(string) ? ColorUtil.fadeBetween(GOLDEN_FIRST, GOLDEN_SECOND, counter * 150L) : -1);
                         valueY += fontRenderer.FONT_HEIGHT + 2;
                     }
                     valueY -= fontRenderer.FONT_HEIGHT + 2;

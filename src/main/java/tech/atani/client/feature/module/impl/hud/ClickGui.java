@@ -11,7 +11,6 @@ import tech.atani.client.feature.guis.screens.clickgui.tarasande.TarasandeClickG
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.guis.screens.clickgui.astolfo.AstolfoClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.oldaugustus.OldAugustusClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.golden.GoldenClickGuiScreen;
 import tech.atani.client.feature.guis.screens.clickgui.icarus.IcarusClickGuiScreen;
@@ -24,11 +23,10 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "ClickGui", description = "A clicky gui", category = Category.HUD, key = Keyboard.KEY_RSHIFT)
 public class ClickGui extends Module {
 
-    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani CS:GO", "Atani Golden", "Augustus", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Astolfo", "Koks", "Tarasande"});
+    public final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani CS:GO", "Atani Golden", "Augustus", "Augustus 2.6", "Xave", "Ryu", "Icarus", "Fatality", "Koks", "Tarasande"});
     public final CheckBoxValue openingAnimation = new CheckBoxValue("Opening Animation", "Animate the opening and closing of the gui?", this, true);
     public final StringBoxValue dropdownAnimation = new StringBoxValue("Animation Mode", "How will the opening animation look like?", this, new String[]{"Scale-In", "Frame Scale-In", "Left to Right", "Right to Left", "Up to Down", "Down to Up"}, new Supplier[]{() ->
             mode.getValue().equalsIgnoreCase("Atani Simple") || // Dropdown guis go here
-            mode.getValue().equalsIgnoreCase("Astolfo") ||
             mode.getValue().equalsIgnoreCase("Koks") ||
             mode.getValue().equalsIgnoreCase("Augustus 2.6") ||
             mode.getValue().equalsIgnoreCase("Xave") ||
@@ -53,7 +51,6 @@ public class ClickGui extends Module {
     public static XaveClickGuiScreen clickGuiScreenXave;
     public static RyuClickGuiScreen clickGuiScreenRyu;
     public static IcarusClickGuiScreen clickGuiScreenIcarus;
-    public static AstolfoClickGuiScreen clickGuiScreenAstolfo;
     public static KoksClickGuiScreen clickGuiScreenKoks;
     public static TarasandeClickGuiScreen clickGuiScreenTarasande;
 
@@ -83,12 +80,6 @@ public class ClickGui extends Module {
                     clickGuiScreenAtani = new AtaniClickGuiScreen();
                 }
                 mc.displayGuiScreen(clickGuiScreenAtani);
-                break;
-            case "Astolfo":
-                if(clickGuiScreenAstolfo == null || true) {
-                    clickGuiScreenAstolfo = new AstolfoClickGuiScreen();
-                }
-                mc.displayGuiScreen(clickGuiScreenAstolfo);
                 break;
             case "Atani Simple":
                 if(clickGuiScreenSimple == null) {

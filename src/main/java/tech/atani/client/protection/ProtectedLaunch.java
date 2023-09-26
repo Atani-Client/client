@@ -1,5 +1,7 @@
 package tech.atani.client.protection;
 
+import cn.muyang.nativeobfuscator.Native;
+import cn.muyang.nativeobfuscator.NotNative;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.authlib.properties.PropertyMap;
@@ -51,10 +53,12 @@ import java.net.Proxy;
 import java.util.List;
 import java.util.UUID;
 
+@Native
 public class ProtectedLaunch {
 
     private static String[] args;
 
+    @NotNative
     public void runMain(String[] args) {
         ProtectedLaunch.args = args;
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -143,6 +147,7 @@ public class ProtectedLaunch {
 
     private static Minecraft mc;
 
+    @NotNative
     private void createMinecraft(GameConfiguration gameConfig) {
         mc = new Injector();
         Minecraft.theMinecraft = mc;
@@ -188,6 +193,7 @@ public class ProtectedLaunch {
         Bootstrap.register();
     }
 
+    @NotNative
     public void run()
     {
         mc.running = true;

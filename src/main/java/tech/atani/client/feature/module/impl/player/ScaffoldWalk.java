@@ -51,6 +51,7 @@ public class ScaffoldWalk extends Module {
     public SliderValue<Float> maxYaw = new SliderValue<>("Maximum Yaw", "What will be the maximum yaw for rotating?", this, 40f, 0f, 180f, 0);
     public SliderValue<Float> minPitch = new SliderValue<>("Minimum Pitch", "What will be the minimum pitch for rotating?", this, 40f, 0f, 180f, 0);
     public SliderValue<Float> maxPitch = new SliderValue<>("Maximum Pitch", "What will be the maximum pitch for rotating?", this, 40f, 0f, 180f, 0);    private final CheckBoxValue swinging = new CheckBoxValue("Swing Client-Side", "Swing client-side when placing blocks?", this, true);
+    private SliderValue<Float> timerSpeed = new SliderValue<>("Timer", "What will the timer be while using scaffold?", this, 1f, 0.1f, 5.0f, 3);
     public SliderValue<Float> minStartYaw = new SliderValue<>("Minimum Start Yaw", "What will be the minimum yaw for rotating?", this, 4f, 0f, 180f, 0);
     public SliderValue<Float> maxStartYaw = new SliderValue<>("Maximum Start Yaw", "What will be the maximum yaw for rotating?", this, 5f, 0f, 180f, 0);
     public SliderValue<Float> minStartPitch = new SliderValue<>("Minimum Start Pitch", "What will be the minimum pitch for rotating?", this, 4f, 0f, 180f, 0);
@@ -73,7 +74,6 @@ public class ScaffoldWalk extends Module {
     private BlockPos blockPos;
     private boolean starting;
     private int verusTicks;
-
     @Listen
     public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {
         if (MoveUtil.getSpeed() != 0 && sprint.getValue()) {
@@ -85,6 +85,8 @@ public class ScaffoldWalk extends Module {
     public final void onTick(RunTickEvent runTickEvent) {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
+
+        mc.timer.timerSpeed = timerSpeed.getValue();
 
         if(Methods.mc.thePlayer.motionX == 0.0 && Methods.mc.thePlayer.motionZ == 0.0 && Methods.mc.thePlayer.onGround) {
             starting = true;
@@ -294,10 +296,13 @@ public class ScaffoldWalk extends Module {
             return;
         }
 
+        mc.timer.timerSpeed = 1;
+
         if(this.lastItem != -1) {
             Methods.mc.thePlayer.inventory.currentItem = this.lastItem;
             this.lastItem = -1;
         }
+
         getGameSettings().keyBindSneak.pressed = isKeyDown(getGameSettings().keyBindSneak.getKeyCode());
         getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindBack.getKeyCode());
         getGameSettings().keyBindForward.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());

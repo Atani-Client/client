@@ -19,7 +19,6 @@ public class AutoClicker extends Module {
 
     private final StringBoxValue mode = new StringBoxValue("Mouse Mode", "Which mode will the module use?", this, new String[] {"Left", "Right"});
     private final SliderValue<Integer> cps = new SliderValue<Integer>("CPS", "How much cps will the clicker make?", this, 12, 0, 30, 0);
-    private final CheckBoxValue hold = new CheckBoxValue("Hold", "Should the clicker only work when holding down the mouse?", this, false);
     private final CheckBoxValue allowBlockHit = new CheckBoxValue("Allow Block-Hitting", "Should the clicker allow block hitting?", this, false);
     private final CheckBoxValue randomise = new CheckBoxValue("Randomise", "Should the module randomise CPS?", this, false);
     private final SliderValue<Integer> randomisedValue = new SliderValue<Integer>("Randomizer Amount", "How much random will the CPS be?", this, 3, 0, 7, 0, new Supplier[]{randomise::getValue});
@@ -28,26 +27,13 @@ public class AutoClicker extends Module {
 
 
     public void click() {
-        if (hold.getValue()) {
-            switch (mode.getValue()) {
-                case "Right":
-                    if (Mouse.isButtonDown(1))
-                        mc.rightClickMouse();
-                    break;
-                case "Left":
-                    if (Mouse.isButtonDown(0))
-                        mc.clickMouse();
-                    break;
-            }
-        } else {
-            switch (mode.getValue()) {
-                case "Right":
-                    mc.rightClickMouse();
-                    break;
-                case "Left":
-                    mc.clickMouse();
-                    break;
-            }
+        switch (mode.getValue()) {
+            case "Right":
+                mc.rightClickMouse();
+                break;
+            case "Left":
+                mc.clickMouse();
+                break;
         }
     }
 

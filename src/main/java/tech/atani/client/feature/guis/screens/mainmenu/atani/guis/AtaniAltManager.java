@@ -83,7 +83,7 @@ public class AtaniAltManager extends GuiScreen
                     this.loginThread = null;
                 }
                 AccountStorage.getInstance().getList().remove(this.selectedAlt);
-                this.status = "cRemoved.";
+                this.status = "§cRemoved.";
                 this.selectedAlt = null;
             
                 break;

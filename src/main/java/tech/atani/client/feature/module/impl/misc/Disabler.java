@@ -20,7 +20,7 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 @Native
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
-	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat", "Intave Timer"});
+	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat", "Intave Timer", "Omni Sprint"});
 
 	private final CheckBoxValue keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?", this, false, new Supplier[]{() -> mode.is("Custom")}),
 			c0fConfirm = new CheckBoxValue("C0FConfirmTransaction", "Should the module cancel C0FConfirmTransaction?", this, false, new Supplier[]{() -> mode.is("Custom")}),
@@ -98,6 +98,12 @@ public class Disabler extends Module {
 				case "Intave Timer":
 					if(packet instanceof C19PacketResourcePackStatus) {
 						event.setCancelled(true);
+					}
+					break;
+				case "Omni Sprint":
+					if(packet instanceof C03PacketPlayer.C06PacketPlayerPosLook) {
+						if(mc.thePlayer.moveForward < 0)
+						((C03PacketPlayer.C06PacketPlayerPosLook) packet).setYaw(mc.thePlayer.rotationYaw + 180);
 					}
 					break;
 			}

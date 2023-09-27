@@ -137,9 +137,12 @@ public class XaveClickGuiScreen extends GuiScreen {
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        for(Frame frame : framesAnimations.keySet()) {
+        ArrayList<Frame> framesCopy = new ArrayList<>(framesAnimations.keySet());
+
+        for (Frame frame : framesCopy) {
             frame.mouseClick(mouseX, mouseY, mouseButton);
         }
+
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 

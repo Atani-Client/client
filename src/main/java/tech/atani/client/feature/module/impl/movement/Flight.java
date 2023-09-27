@@ -48,7 +48,6 @@ public class Flight extends Module {
     // Grim
     boolean velo = false;
     private boolean launch;
-    private int launchTicks;
 
     // Verus
     private final TimeHelper verusTimer = new TimeHelper();

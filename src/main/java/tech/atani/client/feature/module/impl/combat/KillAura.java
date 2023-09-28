@@ -49,7 +49,7 @@ public class KillAura extends Module {
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true);
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
     public CheckBoxValue autoBlock = new CheckBoxValue("AutoBlock", "Should the aura block on hit?", this, true);
-    public StringBoxValue autoBlockMode = new StringBoxValue("AutoBlock Mode", "Which mode should the autoblock use?", this, new String[] {"Fake", "Vanilla", "NCP", "AAC", "GrimAC"}, new Supplier[]{() -> autoBlock.getValue()});
+    public StringBoxValue autoBlockMode = new StringBoxValue("AutoBlock Mode", "Which mode should the autoblock use?", this, new String[] {"Fake", "Vanilla", "NCP", "AAC", "GrimAC", "Intave"}, new Supplier[]{() -> autoBlock.getValue()});
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
     public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Misplace", "Fix Server-Side Misplace?", this, true);
@@ -279,6 +279,7 @@ public class KillAura extends Module {
                                     }
                                     break;
                                 case "GrimAC":
+                                case "Intave":
                                     Methods.mc.playerController.interactWithEntitySendPacket(Methods.mc.thePlayer, objectPosition.entityHit);
                                     Methods.mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(currentItem));
                                     mc.gameSettings.keyBindUseItem.pressed = true;

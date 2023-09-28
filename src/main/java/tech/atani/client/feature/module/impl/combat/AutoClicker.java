@@ -1,7 +1,7 @@
 package tech.atani.client.feature.module.impl.combat;
 
+import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
-import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
@@ -14,11 +14,12 @@ import tech.atani.client.utility.math.time.TimeHelper;
 
 import java.util.Random;
 
+@Native
 @ModuleData(name = "AutoClicker", description = "clicks for you", category = Category.COMBAT)
 public class AutoClicker extends Module {
 
     private final StringBoxValue mode = new StringBoxValue("Mouse Mode", "Which mode will the module use?", this, new String[] {"Left", "Right"});
-    private final SliderValue<Integer> cps = new SliderValue<Integer>("CPS", "How much cps will the clicker make?", this, 12, 0, 30, 0);
+    private final SliderValue<Integer> cps = new SliderValue<>("CPS", "How much cps will the clicker make?", this, 12, 0, 30, 0);
     private final CheckBoxValue allowBlockHit = new CheckBoxValue("Allow Block-Hitting", "Should the clicker allow block hitting?", this, false);
     private final CheckBoxValue randomise = new CheckBoxValue("Randomise", "Should the module randomise CPS?", this, false);
     private final SliderValue<Integer> randomisedValue = new SliderValue<Integer>("Randomizer Amount", "How much random will the CPS be?", this, 3, 0, 7, 0, new Supplier[]{randomise::getValue});

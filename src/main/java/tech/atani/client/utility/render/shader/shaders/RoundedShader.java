@@ -61,9 +61,6 @@ public class RoundedShader {
         RenderUtil.endBlend();
     }
 
-
-
-
     public static void drawRound(float x, float y, float width, float height, float radius, boolean blur, Color color) {
         RenderUtil.resetColor();
         RenderUtil.startBlend();
@@ -79,7 +76,6 @@ public class RoundedShader {
         roundedShader.deleteShader();
         RenderUtil.endBlend();
     }
-
 
     public static void drawRoundOutline(float x, float y, float width, float height, float radius, float outlineThickness, Color color, Color outlineColor) {
         RenderUtil.resetColor();
@@ -99,7 +95,6 @@ public class RoundedShader {
         roundedOutlineShader.deleteShader();
         RenderUtil.endBlend();
     }
-
 
     public static void drawRoundTextured(float x, float y, float width, float height, float radius, float alpha) {
         RenderUtil.resetColor();
@@ -121,6 +116,4 @@ public class RoundedShader {
         roundedTexturedShader.setUniformf("rectSize", width * sr.getScaleFactor(), height * sr.getScaleFactor());
         roundedTexturedShader.setUniformf("radius", radius * sr.getScaleFactor());
     }
-
-
 }

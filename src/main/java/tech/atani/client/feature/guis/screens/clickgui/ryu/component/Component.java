@@ -27,6 +27,7 @@ public abstract class Component implements ColorPalette {
     }
 
     public abstract void drawScreen(int mouseX, int mouseY);
+
     public abstract void mouseClick(int mouseX, int mouseY, int mouseButton);
 
     public float getFinalHeight() {

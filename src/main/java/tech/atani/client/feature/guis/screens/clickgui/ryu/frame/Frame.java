@@ -94,7 +94,6 @@ public class Frame extends Component implements ColorPalette {
             }
         }
         RoundedShader.drawRoundOutline(getPosX() + getAddX(), getPosY() + getAddY(), getBaseWidth(), moduleY - getPosY(), 7,  2, new Color(0, 0, 0, 0), new Color(-1));
-
     }
 
     @Override

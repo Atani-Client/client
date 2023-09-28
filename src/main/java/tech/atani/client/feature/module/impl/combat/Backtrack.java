@@ -47,9 +47,9 @@ public class Backtrack extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "How will the module operate?", this, new String[]{"Packet", "Packet (Old)", "AABB"});
     public StringBoxValue packetMode = new StringBoxValue("Packets", "Which packets to cancel?", this, new String[]{"Select", "All"}, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet (Old)")});
     private SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the packet delay?", this, 450L, 0L, 5000L, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet (Old)")});
-    public SliderValue<Float> maximumRange = new SliderValue<>("Maximum Range", "What'll be the maximum range?", this, 6f, 3f, 6f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet (Old)")});
+    public SliderValue<Float> maximumRange = new SliderValue<>("Max Range", "What'll be the maximum range?", this, 6f, 1f, 6f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet (Old)")});
     public CheckBoxValue onlyWhenNeeded = new CheckBoxValue("Only When Out of Reach", "Backtrack target only if it is out of reach?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet (Old)")});
-    private final SliderValue<Float> minRange = new SliderValue<>("Min Range",  "What will be the minimum range for operating?", this, 2.9f, 2f, 4f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
+    private final SliderValue<Float> minRange = new SliderValue<>("Min Range",  "What will be the minimum range for operating?", this, 2.9f, 0f, 6f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     private final SliderValue<Float> maxStartRange = new SliderValue<>("Max Start Range", "What will be the maximum range to start?", this, 3.2f, 2f, 4f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     private final SliderValue<Float> maxActiveRange = new SliderValue<>("Max Active Range", "What will be the maximum range for being active?", this, 5f, 2f, 6f, 1, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     private final SliderValue<Integer> minDelay = new SliderValue<>("Min Delay", "What will the minimum packet delay?", this, 100, 0, 500, 0, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
@@ -97,9 +97,9 @@ public class Backtrack extends Module {
         if(this.mode.getValue().equalsIgnoreCase("Packet (Old)")) {
             try {
                 if (entity != null && getPlayer() != null && this.packetListener != null && getWorld() != null) {
-                    double d0 = (double) this.entity.realPosX / 32.0D;
-                    double d1 = (double) this.entity.realPosY / 32.0D;
-                    double d2 = (double) this.entity.realPosZ / 32.0D;
+                    double d0 = this.entity.realPosX / 32.0D;
+                    double d1 = this.entity.realPosY / 32.0D;
+                    double d2 = this.entity.realPosZ / 32.0D;
                     double d3 = (double) this.entity.serverPosX / 32.0D;
                     double d4 = (double) this.entity.serverPosY / 32.0D;
                     double d5 = (double) this.entity.serverPosZ / 32.0D;
@@ -112,7 +112,7 @@ public class Backtrack extends Module {
                     double realX = MathHelper.clamp_double(positionEyes.xCoord, alignedBB2.minX, alignedBB2.maxX);
                     double realY = MathHelper.clamp_double(positionEyes.yCoord, alignedBB2.minY, alignedBB2.maxY);
                     double realZ = MathHelper.clamp_double(positionEyes.zCoord, alignedBB2.minZ, alignedBB2.maxZ);
-                    double distance = this.maximumRange.getValue().floatValue();
+                    double distance = this.maximumRange.getValue();
                     if (!this.getPlayer().canEntityBeSeen(this.entity)) {
                         distance = distance > 3 ? 3 : distance;
                     }

@@ -374,7 +374,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     public void createDisplay() throws LWJGLException
     {
         Display.setResizable(true);
-        Display.setTitle("Minecraft 1.8.9");
+        Display.setTitle("Loading Atani Client...");
 
         try
         {

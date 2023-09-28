@@ -815,7 +815,7 @@ public class Speed extends Module {
                             //  1st: 0.15306319260371434
                             mc.timer.timerSpeed = 1.07F;
                             if(MoveUtil.getSpeed() < 0.15306319260371435) {
-                                MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 77 : 0.15306319260371434 + Math.random() / 100);
+                                MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 90 : 0.15306319260371434 + Math.random() / 100);
                             }
                             groundBoost = true;
                         } else {
@@ -834,7 +834,7 @@ public class Speed extends Module {
                             //  1st: 0.15306319260371434
                             mc.timer.timerSpeed = 1.07F;
                             if(MoveUtil.getSpeed() < 0.15306319260371435) {
-                                MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 77 : 0.15306319260371434 + Math.random() / 100);
+                                MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 90 : 0.15306319260371434 + Math.random() / 100);
                             }
                             groundBoost = true;
                         } else {

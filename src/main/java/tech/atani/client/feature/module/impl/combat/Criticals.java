@@ -23,6 +23,7 @@ public class Criticals extends Module {
     
     private int attacked = 0;
 
+    //We love skidded offsets
     @Listen
     public final void onAttack(AttackEntityEvent attackEntityEvent) {
         attacked++;
@@ -78,13 +79,9 @@ public class Criticals extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 
 }

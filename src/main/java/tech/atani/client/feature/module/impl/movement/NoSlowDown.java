@@ -26,7 +26,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
 public class NoSlowDown extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP", "Matrix", "Hypixel", "MineMenClub"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP", "Matrix", "Old Hypixel", "MineMenClub"});
 
     private final MultiStringBoxValue items = new MultiStringBoxValue("Items", "Should the module disable slowdown with these items?", this, new String[] {"Sword"}, new String[] {"Sword", "Food", "Bow"});
     private final SliderValue<Float> swordForward = new SliderValue<Float>("Sword Forward", "How high should the sword forward multiplier be?", this, 1f, 0f, 1f, 2, new Supplier[]{() -> items.get("Sword")}),
@@ -78,7 +78,7 @@ public class NoSlowDown extends Module {
         }
 
         switch (mode.getValue()) {
-            case "Hypixel":
+            case "Old Hypixel":
                 if (event.getType() == UpdateMotionEvent.Type.POST) {
                     if(mc.thePlayer.isUsingItem() && currentItem.getItem() instanceof ItemSword) {
                         sendPacket(new C08PacketPlayerBlockPlacement(currentItem));

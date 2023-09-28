@@ -107,10 +107,10 @@ public class RyuClickGuiScreen extends GuiScreen {
                 }
                 frame.setAddY(scroll + animationUpDown);
                 frame.setAddX(animationLeftRight);
-                if(renders.get() == 0)
+                if(renders.get() == 0) {
                     frame.renderShader();
-                else
-                    frame.drawScreen(mouseX, mouseY);
+                }
+                frame.drawScreen(mouseX, mouseY);
                 RenderUtil.scaleEnd();
             }
             if(clickGui.openingAnimation.getValue()) {

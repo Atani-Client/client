@@ -28,6 +28,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "Test"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
+            intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
             ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop", "Low"}, new Supplier[]{() -> mode.is("NCP")}),
@@ -798,10 +799,56 @@ public class Speed extends Module {
                 }
                 break;
             case "Intave":
-                mc.gameSettings.keyBindJump.pressed = true;
+                switch(intaveMode.getValue()) {
+                    case "Strafe":
+                        mc.gameSettings.keyBindJump.pressed = true;
 
-                if (offTicks >= 10 && offTicks % 5 == 0) {
-                    MoveUtil.setMoveSpeed(MoveUtil.getSpeed());
+                        if (offTicks >= 10 && offTicks % 5 == 0) {
+                            MoveUtil.setMoveSpeed(MoveUtil.getSpeed());
+                        }
+                        break;
+                    case "Ground Strafe":
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                        if(mc.thePlayer.onGround && isMoving()) {
+                        //    System.out.println("Speed: " + MoveUtil.getSpeed());
+                            //  1st: 0.15306319260371434
+                            mc.timer.timerSpeed = 1.07F;
+                            if(MoveUtil.getSpeed() < 0.15306319260371435) {
+                                MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 77 : 0.15306319260371434 + Math.random() / 100);
+                            }
+                            groundBoost = true;
+                        } else {
+                            mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
+                            mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
+                            if(!isMoving()) {
+                                groundBoost = false;
+                            }
+                        }
+                        break;
+                    case "Combined Strafe":
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                        if(mc.thePlayer.onGround && isMoving()) {
+                        //    System.out.println("Speed: " + MoveUtil.getSpeed());
+                            //  1st: 0.15306319260371434
+                            mc.timer.timerSpeed = 1.07F;
+                            if(MoveUtil.getSpeed() < 0.15306319260371435) {
+                                MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 77 : 0.15306319260371434 + Math.random() / 100);
+                            }
+                            groundBoost = true;
+                        } else {
+                            mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
+                            mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
+                            if(!isMoving()) {
+                                groundBoost = false;
+                            }
+                        }
+
+                        if (offTicks >= 10 && offTicks % 5 == 0) {
+                            MoveUtil.setMoveSpeed(MoveUtil.getSpeed());
+                        }
+                        break;
                 }
                 break;
             case "MineMenClub":
@@ -838,7 +885,8 @@ public class Speed extends Module {
                     }
                     groundBoost = true;
                 } else {
-                    mc.timer.timerSpeed = 1;
+                    mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
+                    mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
                     if(!isMoving()) {
                         groundBoost = false;
                     }
@@ -882,9 +930,11 @@ public class Speed extends Module {
                     }
                 }
                 break;
-            case "Test":
-                if(packetEvent.getPacket() instanceof C03PacketPlayer.C06PacketPlayerPosLook && mc.thePlayer.onGround) {
-                    ((C03PacketPlayer.C06PacketPlayerPosLook) packetEvent.getPacket()).setYaw(mc.thePlayer.rotationYaw + 180);
+            case "Intave":
+                if(intaveMode.is("Ground Strafe") || intaveMode.is("Combined Strafe")) {
+                    if(packetEvent.getPacket() instanceof C03PacketPlayer.C06PacketPlayerPosLook && mc.thePlayer.onGround) {
+                        ((C03PacketPlayer.C06PacketPlayerPosLook) packetEvent.getPacket()).setYaw(mc.thePlayer.rotationYaw + 180);
+                    }
                 }
                 break;
         }

@@ -26,7 +26,7 @@ public class AutoClicker extends Module {
     private final SliderValue<Integer> randomisedValue = new SliderValue<Integer>("Randomizer Amount", "How much random will the CPS be?", this, 3, 0, 7, 0, new Supplier[]{randomise::getValue});
 
     private final TimeHelper timer = new TimeHelper();
-    
+
     public void click() {
         switch (mode.getValue()) {
             case "Right":

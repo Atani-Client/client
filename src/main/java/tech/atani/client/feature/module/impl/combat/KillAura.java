@@ -48,8 +48,8 @@ public class KillAura extends Module {
     public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters?", this, true);
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true);
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
-    public CheckBoxValue autoBlock = new CheckBoxValue("AutoBlock", "Should the aura block on hit?", this, true);
-    public StringBoxValue autoBlockMode = new StringBoxValue("AutoBlock Mode", "Which mode should the autoblock use?", this, new String[] {"Fake", "Vanilla", "NCP", "AAC", "GrimAC", "Intave"}, new Supplier[]{() -> autoBlock.getValue()});
+    public CheckBoxValue autoBlock = new CheckBoxValue("Auto Block", "Should the aura block on hit?", this, true);
+    public StringBoxValue autoBlockMode = new StringBoxValue("Auto Block Mode", "Which mode should the autoblock use?", this, new String[] {"Vanilla", "NCP", "AAC", "GrimAC", "Intave"}, new Supplier[]{() -> autoBlock.getValue()});
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
     public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Misplace", "Fix Server-Side Misplace?", this, true);
@@ -61,7 +61,7 @@ public class KillAura extends Module {
     public CheckBoxValue snapYaw = new CheckBoxValue("Snap Yaw", "Skip smoothing out yaw rotations?", this, false);
     public CheckBoxValue snapPitch = new CheckBoxValue("Snap Pitch", "Skip smoothing out pitch rotations?", this, false);
     public StringBoxValue aimVector = new StringBoxValue("Aim Vector", "Where to aim?", this, new String[]{"Perfect", "Bruteforce", "Head", "Torso", "Feet", "Custom", "Random"});
-    public SliderValue<Float> heightDivisor = new SliderValue<>("Height Divisor", "By what amount to divide the height?", this, 2f, 1f, 10f, 1, new Supplier[]{() -> aimVector.getValue().equalsIgnoreCase("Custom")});
+    public SliderValue<Float> heightDivisor = new SliderValue<Float>("Height Divisor", "By what amount to divide the height?", this, 2f, 1f, 10f, 1, new Supplier[]{() -> aimVector.getValue().equalsIgnoreCase("Custom")});
     public CheckBoxValue skipUnnecessaryRotations = new CheckBoxValue("Necessary Rotations", "Rotate only if necessary?", this, false);
     public StringBoxValue unnecessaryRotations = new StringBoxValue("Necessary Mode", "What rotations to skip?", this, new String[]{"Both", "Yaw", "Pitch"}, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
     public CheckBoxValue skipIfNear = new CheckBoxValue("Skip If Near", "Rotate only if far enough?", this, true, new Supplier[]{() -> skipUnnecessaryRotations.getValue()});
@@ -263,9 +263,6 @@ public class KillAura extends Module {
                         ItemStack currentItem = Methods.mc.thePlayer.getHeldItem();
                         if (currentItem != null && currentItem.getItem() instanceof ItemSword) {
                             switch (autoBlockMode.getValue()) {
-                                case "Fake":
-                                    Methods.mc.thePlayer.sendQueue.addToSendQueue(new C0APacketAnimation());
-                                    break;
                                 case "Vanilla":
                                     Methods.mc.playerController.sendUseItem(Methods.mc.thePlayer, Methods.mc.theWorld, currentItem);
                                     break;

@@ -161,7 +161,7 @@ public class FatalityClickGuiScreen extends GuiScreen implements ClientInformati
                 } else if(value instanceof MultiStringBoxValue) {
                     MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
                     RenderUtil.drawBorderedRect(valueX2 - 65, valueY - 2, valueX2, valueY - 2 + 10 + (expanded.contains(value) ? multiStringBoxValue.getValues().length * 10 : 0), 0.5f, new Color(30, 26, 68).getRGB(), new Color(170, 170, 170).getRGB(), true);
-                    smallFont.drawCenteredString((((MultiStringBoxValue)value).getValue().size() - 2) + " Enabled", valueX2 - 32.5f, valueY, -1);
+                    smallFont.drawCenteredString((((MultiStringBoxValue)value).getValue().size() - 1) + " Enabled", valueX2 - 32.5f, valueY, -1);
                     valueY += 10;
                     if(expanded.contains(value)) {
                         for(String string : multiStringBoxValue.getValues()) {

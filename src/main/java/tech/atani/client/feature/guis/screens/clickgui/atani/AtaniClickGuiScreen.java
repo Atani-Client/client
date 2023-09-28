@@ -263,7 +263,7 @@ public class AtaniClickGuiScreen extends GuiScreen implements ClientInformationA
                         }
                     } else if(value instanceof MultiStringBoxValue) {
                         MultiStringBoxValue multiStringBoxValue = (MultiStringBoxValue) value;
-                        fontRendererSmaller.drawString(value.getName() + ": " + (multiStringBoxValue.getValue().size() - 2) + " Enabled", modX + 10, valY2, textColor.getRGB());
+                        fontRendererSmaller.drawString(value.getName() + ": " + (multiStringBoxValue.getValue().size() - 1) + " Enabled", modX + 10, valY2, textColor.getRGB());
                         valY2 += fontRendererSmall.FONT_HEIGHT + 2;
                         if(this.expanded.contains(value)) {
                             for(String s : multiStringBoxValue.getValues()) {

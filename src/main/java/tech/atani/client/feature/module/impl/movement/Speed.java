@@ -84,6 +84,7 @@ public class Speed extends Module {
     // Intave
     private int onTicks, offTicks;
     private boolean groundBoost;
+    private int groundTicks;
 
     @Override
     public String getSuffix() {
@@ -813,12 +814,17 @@ public class Speed extends Module {
                         if(mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
                             //  1st: 0.15306319260371434
+                            if(groundTicks <= 2)
+                                return;
+
+                            groundTicks++;
                             mc.timer.timerSpeed = 1.07F;
                             if(MoveUtil.getSpeed() < 0.15306319260371435) {
                                 MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 100 : 0.15306319260371434);
                             }
                             groundBoost = true;
                         } else {
+                            groundTicks = 0;
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
                             mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
                             if(!isMoving()) {
@@ -832,6 +838,9 @@ public class Speed extends Module {
                         if(mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
                             //  1st: 0.15306319260371434
+                            if(groundTicks <= 2)
+                                return;
+                            
                             mc.timer.timerSpeed = 1.07F;
                             if(MoveUtil.getSpeed() < 0.15306319260371435) {
                                 MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 90 : 0.15306319260371434 + Math.random() / 100);

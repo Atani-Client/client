@@ -809,10 +809,10 @@ public class Speed extends Module {
                         }
                         break;
                     case "Ground Strafe":
-                        if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava() || groundTicks > 5)
-                            return;
-
                         mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                        if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
+                            return;
 
                         if(mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
@@ -834,10 +834,10 @@ public class Speed extends Module {
                         }
                         break;
                     case "Combined Strafe":
-                        if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava() || groundTicks > 5)
-                            return;
-
                         mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                        if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
+                            return;
 
                         if(mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());

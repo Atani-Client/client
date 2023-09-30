@@ -171,8 +171,9 @@ public class ScaffoldWalk extends Module {
                 }
             }
         }
-
-        if (MoveUtil.getSpeed() != 0 && sprint.getValue()) {
+        if(!sprint.getValue()) {
+            getPlayer().setSprinting(false);
+        } else if (MoveUtil.getSpeed() != 0 && sprint.getValue()) {
             getPlayer().setSprinting(true);
         }
 

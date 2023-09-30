@@ -110,6 +110,13 @@ public class LongJump extends Module {
                     Methods.mc.thePlayer.motionY += 0.1;
                     ncpSpeed += 0.014;
                     break;
+                default:
+                    if(ncpTicks > 2) {
+                        ncpSpeed += Math.random() / 200;
+                        if(mc.thePlayer.isPotionActive(Potion.moveSpeed))
+                        Methods.mc.thePlayer.motionY += Math.random() / 100;
+                    }
+                    break;
             }
             break;
         case "Vulcan":

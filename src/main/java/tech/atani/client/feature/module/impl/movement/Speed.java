@@ -84,6 +84,9 @@ public class Speed extends Module {
     // Intave
     private int onTicks, offTicks;
     private boolean groundBoost;
+    private int groundTicks = 0;
+    // Polar
+    private int polarOnTicks, polarOffTicks;
 
     @Override
     public String getSuffix() {
@@ -99,6 +102,10 @@ public class Speed extends Module {
             case "Intave":
                 onTicks = mc.thePlayer.onGround ? ++onTicks : 0;
                 offTicks = mc.thePlayer.onGround ? 0 : ++offTicks;
+                break;
+            case "Polar":
+                polarOnTicks = mc.thePlayer.onGround ? ++polarOnTicks : 0;
+                polarOffTicks = mc.thePlayer.onGround ? 0 : ++polarOffTicks;
                 break;
         }
     }
@@ -159,13 +166,28 @@ public class Speed extends Module {
                 break;
             case "Polar":
                 if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    mc.gameSettings.keyBindJump.pressed = GameSettings.isKeyDown(mc.gameSettings.keyBindJump);
-                    if (isMoving()) {
-                        if (mc.thePlayer.onGround) {
-                            mc.gameSettings.keyBindJump.pressed = false;
-                            mc.thePlayer.jump();
-                        }
+                    mc.gameSettings.keyBindJump.pressed = isMoving();
 
+                    if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
+                        return;
+
+                    if(mc.thePlayer.onGround && isMoving()) {
+                        //    System.out.println("Speed: " + MoveUtil.getSpeed());
+                        //  1st: 0.15306319260371434
+                        mc.timer.timerSpeed = 1.07F;
+                        if(MoveUtil.getSpeed() < 0.15306319260371435) {
+                            MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 90 : 0.15306319260371434 + Math.random() / 100);
+                        }
+                    } else {
+                        mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
+                        mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
+                    }
+
+                    if (polarOffTicks >= 10 && polarOffTicks % 5 == 0) {
+                        MoveUtil.setMoveSpeed(MoveUtil.getSpeed());
+                    }
+
+                    if(isMoving()) {
                         if (mc.thePlayer.motionY > 0.003) {
                             mc.thePlayer.motionX *= 1.01;
                             mc.thePlayer.motionZ *= 1.01;
@@ -810,15 +832,21 @@ public class Speed extends Module {
                     case "Ground Strafe":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
+                        if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
+                            return;
+
                         if(mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
                             //  1st: 0.15306319260371434
+                        //    mc.thePlayer.sendChatMessage("Boost");
+                            groundTicks++;
                             mc.timer.timerSpeed = 1.07F;
                             if(MoveUtil.getSpeed() < 0.15306319260371435) {
                                 MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 100 : 0.15306319260371434);
                             }
                             groundBoost = true;
                         } else {
+                            groundTicks = 0;
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
                             mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
                             if(!isMoving()) {
@@ -829,15 +857,20 @@ public class Speed extends Module {
                     case "Combined Strafe":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
+                        if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
+                            return;
+
                         if(mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
                             //  1st: 0.15306319260371434
+                            groundTicks++;
                             mc.timer.timerSpeed = 1.07F;
                             if(MoveUtil.getSpeed() < 0.15306319260371435) {
                                 MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 90 : 0.15306319260371434 + Math.random() / 100);
                             }
                             groundBoost = true;
                         } else {
+                            groundTicks = 0;
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
                             mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
                             if(!isMoving()) {

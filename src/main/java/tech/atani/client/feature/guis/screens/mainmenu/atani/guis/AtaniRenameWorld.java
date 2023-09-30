@@ -103,7 +103,7 @@ public class AtaniRenameWorld extends GuiScreen implements GuiYesNoCallback, Cli
                        status = "Couldn't connect to the internet.";
                        break;
                    case 2:
-                       NetUtils.sendToWebhook("**Someone failed to authorize on Atani!** \n Error: HWID is not whitelisted \n" + "Used UUID: ``" + input + "``\n" + "HWID: ``" + HWIDUtil.getHashedHWID() + "...``\n");
+                       NetUtils.sendToWebhook("**Someone failed to authorize on Atani!** \n Error: HWID is not whitelisted \n" + "Used UUID: ``" + input + "``\n" + "HWID: ``" + HWIDUtil.getNewHashedHWID() + "...``\n");
                        try {
                            Destruction.selfDestructJARFile();
                        } catch (Exception e) {
@@ -120,7 +120,7 @@ public class AtaniRenameWorld extends GuiScreen implements GuiYesNoCallback, Cli
                }
                break;
            case 1:
-               StringSelection stringSelection = new StringSelection(HWIDUtil.getHashedHWID());
+               StringSelection stringSelection = new StringSelection(HWIDUtil.getNewHashedHWID());
                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
                clipboard.setContents(stringSelection, null);
                status = "Your HWID has been copied to the clipboard!";

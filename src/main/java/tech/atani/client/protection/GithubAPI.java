@@ -21,7 +21,7 @@ public class GithubAPI {
         }
 
         try {
-            URL url = new URL("https://raw.githubusercontent.com/Atani-Client/Stuff/main/document");
+            URL url = new URL("https://raw.githubusercontent.com/Atani-Client/Stuff/main/UwEymE4I8TNBvG2YAZq");
             HttpURLConnection uc = (HttpURLConnection ) url.openConnection();
             uc.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0");
             uc.setRequestMethod("GET");
@@ -33,22 +33,22 @@ public class GithubAPI {
             return 3;
         }
 
-        if(!isWhitelisted(HWIDUtil.getHashedHWID())){
+        if(!isWhitelisted(HWIDUtil.getNewHashedHWID())){
             return 2;
         }
 
-        if(!getUUID(HWIDUtil.getHashedHWID()).equals(uid)) {
+        if(!getUUID(HWIDUtil.getNewHashedHWID()).equals(uid)) {
             return 1;
         }
 
-        GithubAPI.username = getUsername(uid, HWIDUtil.getHashedHWID());
-        GithubAPI.uid = getUUID(HWIDUtil.getHashedHWID());
+        GithubAPI.username = getUsername(uid, HWIDUtil.getNewHashedHWID());
+        GithubAPI.uid = getUUID(HWIDUtil.getNewHashedHWID());
 
         return 0;
     }
 
     private static String getDocument() {
-        String documentUrl = "https://raw.githubusercontent.com/Atani-Client/Stuff/main/document";
+        String documentUrl = "https://raw.githubusercontent.com/Atani-Client/Stuff/main/UwEymE4I8TNBvG2YAZq";
 
         try {
             URL url = new URL(documentUrl);

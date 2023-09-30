@@ -483,72 +483,58 @@ public class EntityPlayerSP extends AbstractClientPlayer
         this.mc.ingameGUI.getChatGUI().printChatMessage(chatComponent);
     }
 
-    protected boolean pushOutOfBlocks(double x, double y, double z)
-    {
-        if (this.noClip)
-        {
-            return false;
-        }
-        else
-        {
+    protected boolean pushOutOfBlocks(double x, double y, double z) {
+        BlockPushEvent blockPushEvent = new BlockPushEvent();
+        blockPushEvent.publishItself();
+        if (!this.noClip || !blockPushEvent.isCancelled()) {
             BlockPos blockpos = new BlockPos(x, y, z);
-            double d0 = x - (double)blockpos.getX();
-            double d1 = z - (double)blockpos.getZ();
+            double d0 = x - (double) blockpos.getX();
+            double d1 = z - (double) blockpos.getZ();
 
-            if (!this.isOpenBlockSpace(blockpos))
-            {
+            if (!this.isOpenBlockSpace(blockpos)) {
                 int i = -1;
                 double d2 = 9999.0D;
 
-                if (this.isOpenBlockSpace(blockpos.west()) && d0 < d2)
-                {
+                if (this.isOpenBlockSpace(blockpos.west()) && d0 < d2) {
                     d2 = d0;
                     i = 0;
                 }
 
-                if (this.isOpenBlockSpace(blockpos.east()) && 1.0D - d0 < d2)
-                {
+                if (this.isOpenBlockSpace(blockpos.east()) && 1.0D - d0 < d2) {
                     d2 = 1.0D - d0;
                     i = 1;
                 }
 
-                if (this.isOpenBlockSpace(blockpos.north()) && d1 < d2)
-                {
+                if (this.isOpenBlockSpace(blockpos.north()) && d1 < d2) {
                     d2 = d1;
                     i = 4;
                 }
 
-                if (this.isOpenBlockSpace(blockpos.south()) && 1.0D - d1 < d2)
-                {
-                    d2 = 1.0D - d1;
+                if (this.isOpenBlockSpace(blockpos.south()) && 1.0D - d1 < d2) {
                     i = 5;
                 }
 
                 float f = 0.1F;
 
-                if (i == 0)
-                {
-                    this.motionX = (double)(-f);
+                if (i == 0) {
+                    this.motionX = -f;
                 }
 
-                if (i == 1)
-                {
-                    this.motionX = (double)f;
+                if (i == 1) {
+                    this.motionX = f;
                 }
 
-                if (i == 4)
-                {
-                    this.motionZ = (double)(-f);
+                if (i == 4) {
+                    this.motionZ = -f;
                 }
 
-                if (i == 5)
-                {
-                    this.motionZ = (double)f;
+                if (i == 5) {
+                    this.motionZ = f;
                 }
             }
 
-            return false;
         }
+        return false;
     }
 
     /**

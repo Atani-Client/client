@@ -29,7 +29,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @ModuleData(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block", "Fake Lag", "MineMenClub"});
+    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Intave Jump", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block", "Fake Lag", "MineMenClub"});
     public SliderValue<Integer> horizontal = new SliderValue<Integer>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
     public SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
@@ -42,7 +42,7 @@ public class Velocity extends Module {
     // AAC v5.2.0
     private TimeHelper aacTimer = new TimeHelper();
 
-    // Intave
+    // Intave Jump
     private int counter;
 
     // Grim
@@ -326,7 +326,7 @@ public class Velocity extends Module {
     @Listen
     public final void onSilent(SilentMoveEvent silentMoveEvent) {
         switch(this.mode.getValue()) {
-            case "Intave":
+            case "Intave Jump":
                 if (Velocity.mc.thePlayer.hurtTime == 9 && Velocity.mc.thePlayer.onGround && ++this.counter % 2 == 0) {
                     Velocity.mc.thePlayer.movementInput.jump = true;
                     break;

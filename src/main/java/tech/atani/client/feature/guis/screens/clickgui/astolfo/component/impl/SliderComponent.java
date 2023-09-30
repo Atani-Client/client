@@ -67,7 +67,6 @@ public class SliderComponent extends ValueComponent {
         if (owner instanceof Module) {
             return ((Module) owner).getCategory();
         }
-        // Handle other cases or return a default category as needed
         return Category.HUD;
     }
 }

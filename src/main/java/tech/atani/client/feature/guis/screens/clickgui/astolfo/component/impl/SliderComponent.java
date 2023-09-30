@@ -5,6 +5,7 @@ import net.minecraft.util.MathHelper;
 import org.lwjgl.input.Mouse;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.module.Module;
+import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.color.ColorUtil;
@@ -28,8 +29,8 @@ public class SliderComponent extends ValueComponent {
         normal.drawString(((Number)value.getValue()).floatValue() + "", getPosX() + this.getBaseWidth() - 5 - normal.getStringWidthInt(((Number)value.getValue()).floatValue() + "") + getAddX(), getPosY() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
         if(this.expanded) {
             SliderValue sliderValue = (SliderValue) value;
-            String min = sliderValue.getMinimum().floatValue() + "";
-            String max = sliderValue.getMaximum().floatValue() + "";
+            String min = String.valueOf(sliderValue.getMinimum().floatValue());
+            String max = String.valueOf(sliderValue.getMaximum().floatValue());
             normal.drawString(min, getPosX() + 5 + getAddX(), getPosY() + getBaseHeight() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
             normal.drawString(max, getPosX() + this.getBaseWidth() - 5 - normal.getStringWidthInt(max) + getAddX(), getPosY() + getBaseHeight() + getBaseHeight() / 2 - normal.FONT_HEIGHT / 2, -1);
             float sliderX = getPosX() + 5 + normal.getStringWidthInt(min) + 3 + getAddX();
@@ -40,7 +41,7 @@ public class SliderComponent extends ValueComponent {
             float length = MathHelper
                     .floor_double(((sliderValue.getValue()).floatValue() - sliderValue.getMinimum().floatValue())
                             / (sliderValue.getMaximum().floatValue() - sliderValue.getMinimum().floatValue()) * sliderWidth);
-            RenderUtil.drawRect(sliderX, sliderY, length, sliderHeight, ColorUtil.getAstolfoColor(((Module)value.getOwner()).getCategory()));
+            RenderUtil.drawRect(sliderX, sliderY, length, sliderHeight, ColorUtil.getAstolfoColor(getModuleCategory(value.getOwner())));
             if(Mouse.isButtonDown(0) && RenderUtil.isHovered(mouseX, mouseY, this.getPosX() + getAddX(), this.getPosY() + this.getBaseHeight(), this.getBaseWidth(), this.getBaseHeight())) {
                 double min1 = sliderValue.getMinimum().floatValue();
                 double max1 = sliderValue.getMaximum().floatValue();
@@ -60,5 +61,13 @@ public class SliderComponent extends ValueComponent {
         if(RenderUtil.isHovered(mouseX, mouseY, this.getPosX(), this.getPosY(), this.getBaseWidth(), this.getBaseHeight())) {
             expanded = !expanded;
         }
+    }
+
+    private Category getModuleCategory(Object owner) {
+        if (owner instanceof Module) {
+            return ((Module) owner).getCategory();
+        }
+        // Handle other cases or return a default category as needed
+        return Category.HUD;
     }
 }

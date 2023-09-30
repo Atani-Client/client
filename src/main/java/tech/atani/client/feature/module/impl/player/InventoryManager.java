@@ -118,14 +118,10 @@ public class InventoryManager extends Module {
     }
 
     @Override
-    public void onEnable() {
-
-    }
+    public void onEnable() {}
 
     @Override
-    public void onDisable() {
-
-    }
+    public void onDisable() {}
 
     public boolean isBadStack(ItemStack is) {
         if ((is.getItem() instanceof ItemSword) && is != bestWeapon() && !preferSwords.getValue())

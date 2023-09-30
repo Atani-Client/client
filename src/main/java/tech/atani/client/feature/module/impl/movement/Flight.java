@@ -59,7 +59,7 @@ public class Flight extends Module {
     }
 
     @Listen
-    public final void onCollisionBoxes(CollisionBoxesEvent boxesEvent) {
+    public void onCollisionBoxes(CollisionBoxesEvent boxesEvent) {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
 
@@ -79,7 +79,7 @@ public class Flight extends Module {
     }
 
     @Listen
-    public final void onRotation(RotationEvent rotationEvent) {
+    public void onRotation(RotationEvent rotationEvent) {
         switch (this.mode.getValue()) {
             case "Grim":
                 switch (this.grimMode.getValue()) {
@@ -100,7 +100,7 @@ public class Flight extends Module {
     }
 
     @Listen
-    public final void onUpdateMotion(UpdateMotionEvent motionEvent) {
+    public void onUpdateMotion(UpdateMotionEvent motionEvent) {
         switch (mode.getValue()) {
             case "BWPractice":
                 mc.thePlayer.motionY = 0.0D;
@@ -263,7 +263,7 @@ public class Flight extends Module {
     }
 
     @Listen
-    public final void onPacket(PacketEvent packetEvent) {
+    public void onPacket(PacketEvent packetEvent) {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
 
@@ -315,7 +315,7 @@ public class Flight extends Module {
     }
 
     @Listen
-    public final void onMove(MovePlayerEvent movePlayerEvent) {
+    public void onMove(MovePlayerEvent movePlayerEvent) {
         switch (mode.getValue()) {
             case "Old NCP":
                 if (!mc.thePlayer.onGround) {

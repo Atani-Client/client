@@ -52,7 +52,7 @@ public class ScaffoldWalk extends Module {
     public SliderValue<Float> maxYaw = new SliderValue<>("Maximum Yaw", "What will be the maximum yaw for rotating?", this, 40f, 0f, 180f, 0);
     public SliderValue<Float> minPitch = new SliderValue<>("Minimum Pitch", "What will be the minimum pitch for rotating?", this, 40f, 0f, 180f, 0);
     public SliderValue<Float> maxPitch = new SliderValue<>("Maximum Pitch", "What will be the maximum pitch for rotating?", this, 40f, 0f, 180f, 0);    private final CheckBoxValue swinging = new CheckBoxValue("Swing Client-Side", "Swing client-side when placing blocks?", this, true);
-    private SliderValue<Float> timerSpeed = new SliderValue<>("Timer", "What will the timer be while using scaffold?", this, 1f, 0.1f, 5.0f, 3);
+    private final SliderValue<Float> timerSpeed = new SliderValue<>("Timer", "What will the timer be while using scaffold?", this, 1f, 0.1f, 5.0f, 3);
     public SliderValue<Float> minStartYaw = new SliderValue<>("Minimum Start Yaw", "What will be the minimum yaw for rotating?", this, 4f, 0f, 180f, 0);
     public SliderValue<Float> maxStartYaw = new SliderValue<>("Maximum Start Yaw", "What will be the maximum yaw for rotating?", this, 5f, 0f, 180f, 0);
     public SliderValue<Float> minStartPitch = new SliderValue<>("Minimum Start Pitch", "What will be the minimum pitch for rotating?", this, 4f, 0f, 180f, 0);
@@ -65,7 +65,7 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false);
     private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
-    private final SliderValue<Long> unSneakDelay = new SliderValue<>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
+    private final SliderValue<Long> unSneakDelay = new SliderValue<Long>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
 
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
 
@@ -75,6 +75,7 @@ public class ScaffoldWalk extends Module {
     private BlockPos blockPos;
     private boolean starting;
     private int verusTicks;
+
     @Listen
     public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {
         if (MoveUtil.getSpeed() != 0 && sprint.getValue()) {

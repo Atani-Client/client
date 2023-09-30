@@ -279,7 +279,6 @@ public class KillAura extends Module {
                                 case "Intave":
                                     Methods.mc.playerController.interactWithEntitySendPacket(Methods.mc.thePlayer, objectPosition.entityHit);
                                     Methods.mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(currentItem));
-                                    mc.gameSettings.keyBindUseItem.pressed = true;
                                     break;
                             }
                         }

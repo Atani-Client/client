@@ -907,6 +907,9 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
+                MoveUtil.strafe((0.15306319260371434 * 1.15) + MoveUtil.getSpeedBoost(2F));
+                mc.thePlayer.setSprinting(isMoving() && mc.thePlayer.moveForward > 0);
+                /*
                 mc.gameSettings.keyBindJump.pressed = isMoving();
 
                 if(mc.thePlayer.onGround && isMoving()) {
@@ -924,6 +927,7 @@ public class Speed extends Module {
                         groundBoost = false;
                     }
                 }
+                 */
                 break;
         }
     }

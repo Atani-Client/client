@@ -321,7 +321,7 @@ public class Minecraft implements IThreadListener, IPlayerUsage
     public ResourceLocation mojangLogo;
     public MinecraftSessionService sessionService;
     public SkinManager skinManager;
-    public Queue < FutureTask<? >> scheduledTasks = Queues. < FutureTask<? >> newArrayDeque();
+    public final Queue < FutureTask<? >> scheduledTasks = Queues. < FutureTask<? >> newArrayDeque();
     public Thread mcThread = Thread.currentThread();
     public ModelManager modelManager;
 

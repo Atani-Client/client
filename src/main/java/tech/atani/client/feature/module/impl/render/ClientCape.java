@@ -12,7 +12,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "ClientCape", description = "Equips Atani's custom cape", category = Category.RENDER)
 public class ClientCape extends Module {
 
-    public final StringBoxValue cape = new StringBoxValue("Cape", "Which cape to use?", this, new String[]{"Technoblade", "Normal", "Small Text", "Small Text Up", "Atan+I Logo", "Minecraft Res", "Laugh At This User", "Verus Airlines", "Menace \uD83D\uDE14", "Stolas"});
+    public final StringBoxValue cape = new StringBoxValue("Cape", "Which cape to use?", this, new String[]{"Technoblade", "Normal", "Small Text", "Small Text Up", "Atan+I Logo", "Minecraft Res", "Laugh At This User", "Verus Airlines", "Menace \uD83D\uDE14", "Stolas White", "Stolas Black"});
 
     ResourceLocation normal = new ResourceLocation("atani/capes/AtaniCape.png");
     ResourceLocation small = new ResourceLocation("atani/capes/AtaniCapeSmall.png");
@@ -23,7 +23,8 @@ public class ClientCape extends Module {
     ResourceLocation laughAtThisUser = new ResourceLocation("atani/capes/Laugh.png");
     ResourceLocation verusAirlines = new ResourceLocation("atani/capes/Verus.png");
     ResourceLocation menace = new ResourceLocation("atani/capes/Menace.png");
-    ResourceLocation stolas = new ResourceLocation("atani/capes/Stolas.png");
+    ResourceLocation stolasWhite = new ResourceLocation("atani/capes/StolasWhite.png");
+    ResourceLocation stolasBlack = new ResourceLocation("atani/capes/StolasBlack.png");
 
     @Listen
     public void onUpdate(UpdateEvent event) {
@@ -56,8 +57,11 @@ public class ClientCape extends Module {
             case "Menace \uD83D\uDE14":
                 resourceLocation = menace;
                 break;
-            case "Stolas":
-                resourceLocation = stolas;
+            case "Stolas White":
+                resourceLocation = stolasWhite;
+                break;
+            case "Stolas Black":
+                resourceLocation = stolasBlack;
                 break;
         }
         getPlayer().setLocationOfCape(resourceLocation);

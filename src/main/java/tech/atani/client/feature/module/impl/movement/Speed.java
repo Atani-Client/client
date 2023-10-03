@@ -841,8 +841,8 @@ public class Speed extends Module {
                         //    mc.thePlayer.sendChatMessage("Boost");
                             groundTicks++;
                             mc.timer.timerSpeed = 1.07F;
-                            if(MoveUtil.getSpeed() < 0.15306319260371435) {
-                                MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 100 : 0.15306319260371434);
+                            if(MoveUtil.getSpeed() < 0.15306319260371435 && groundBoost) {
+                                MoveUtil.strafe(0.15306319260371434 + Math.random() / 100);
                             }
                             groundBoost = true;
                         } else {
@@ -865,8 +865,8 @@ public class Speed extends Module {
                             //  1st: 0.15306319260371434
                             groundTicks++;
                             mc.timer.timerSpeed = 1.07F;
-                            if(MoveUtil.getSpeed() < 0.15306319260371435) {
-                                MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 90 : 0.15306319260371434 + Math.random() / 100);
+                            if(MoveUtil.getSpeed() < 0.15306319260371435 && groundBoost) {
+                                MoveUtil.strafe(0.15306319260371434 + Math.random() / 100);
                             }
                             groundBoost = true;
                         } else {

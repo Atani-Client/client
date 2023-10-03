@@ -10,6 +10,7 @@ import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.DirectionSprintCheckEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
@@ -897,15 +898,6 @@ public class Speed extends Module {
                     }
                 }
                 break;
-            case "Grim":
-                if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    getGameSettings().keyBindSprint.pressed = true;
-
-                    if (mc.thePlayer.onGround && this.isMoving()){
-                        mc.thePlayer.jump();
-                    }
-                }
-                break;
             case "Test":
                 MoveUtil.strafe((0.15306319260371434 * 1.15) + MoveUtil.getSpeedBoost(2F));
                 mc.thePlayer.setSprinting(isMoving() && mc.thePlayer.moveForward > 0);
@@ -950,6 +942,19 @@ public class Speed extends Module {
     }
 
     @Listen
+    public void onUpdate(UpdateEvent event) {
+        switch (mode.getValue()) {
+            case "Grim":
+                getGameSettings().keyBindSprint.pressed = true;
+
+                if (mc.thePlayer.onGround && this.isMoving()){
+                    mc.thePlayer.jump();
+                }
+                break;
+        }
+    }
+
+    @Listen
     public final void onPacket(PacketEvent packetEvent) {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
@@ -976,16 +981,6 @@ public class Speed extends Module {
                 break;
         }
     }
-
-    /*
-    @Listen
-    public final void onOmniCheck(DirectionSprintCheckEvent directionSprintCheckEvent) {
-        if(isMoving() && mode.is("Test") && mc.thePlayer.onGround) {
-            directionSprintCheckEvent.setSprintCheck(false);
-            mc.thePlayer.setSprinting(true);
-        }
-    }
-     */
 
     @Override
     public void onEnable() {}

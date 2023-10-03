@@ -12,14 +12,6 @@ public class ColorUtil {
             0xfffc6a8c, 0xfffc6ad5, 0xffda6afc, 0xff916afc, 0xff6a8cfc, 0xff6ad5fc, 0xffda6afc, 0xfffc6a8c,
     };
 
-    public static final int[] CZECHIA_COLORS = {
-            0xFF11457E, 0xFF11457E, 0xFFD7141A, 0xFFD7141A, 0xFFFFFFFF, 0xFF11457E,
-    };
-
-    public static final int[] GERMAN_COLORS = {
-            0xFF000000, 0xFFFE0000, 0xFFFFCF00, 0xFF000000,
-    };
-
     private static final int[] HEALTH_COLOURS = {
             0xFF006B32, // Darker green
             0xFFFFFF00,
@@ -28,28 +20,12 @@ public class ColorUtil {
             0xFF800000
     };
 
-    public static int blendCzechiaColours(final double progress) {
-        return blendColours(CZECHIA_COLORS, progress);
-    }
-
-    public static int blendCzechiaColours(final long offset) {
-        return blendCzechiaColours(getFadingFromSysTime(offset));
-    }
-
     public static int blendRainbowColours(final double progress) {
         return blendColours(RAINBOW_COLORS, progress);
     }
 
     public static int blendRainbowColours(final long offset) {
         return blendRainbowColours(getFadingFromSysTime(offset));
-    }
-
-    public static int blendGermanColours(final double progress) {
-        return blendColours(GERMAN_COLORS, progress);
-    }
-
-    public static int blendGermanColours(final long offset) {
-        return blendGermanColours(getFadingFromSysTime(offset));
     }
 
     public static int blendHealthColours(final double progress) {

@@ -69,12 +69,6 @@ public class ChinaHat extends Module {
                 color = ColorUtil.blendRainbowColours(counter * 150L);
                 break;
         }
-        if(calendar.get(Calendar.DAY_OF_MONTH) == 28 && calendar.get(Calendar.MONTH) == Calendar.OCTOBER) {
-            color = ColorUtil.blendCzechiaColours(counter * 150L);
-        }
-        if(calendar.get(Calendar.DAY_OF_MONTH) == 3 && calendar.get(Calendar.MONTH) == Calendar.OCTOBER) {
-            color = ColorUtil.blendGermanColours(counter * 150L);
-        }
 
         //I had to convert these colors to their own values because glColor4f doesn't allow one argument :/
 

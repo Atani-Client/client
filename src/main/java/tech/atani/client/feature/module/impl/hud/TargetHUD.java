@@ -37,13 +37,14 @@ import java.awt.*;
 @ModuleData(name = "TargetHUD", description = "Draws a little box with the targets info", category = Category.HUD)
 public class TargetHUD extends Module implements ColorPalette {
 
-    public final StringBoxValue targethudMode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani Modern", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Fatality", "Icarus", "Atani CS:GO", "Koks", "Astolfo"});
+    public final StringBoxValue targethudMode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Atani Simple", "Atani Modern", "Atani Modern 2", "Atani Golden", "Augustus 2.6", "Xave", "Ryu", "Fatality", "Icarus", "Atani CS:GO", "Koks", "Astolfo"});
     public final CheckBoxValue followTargetHUD = new CheckBoxValue("Follow Target HUD", "Follow the player in 3d space?", this, false);
     private final SliderValue<Integer> red = new SliderValue<>("Red", "What red will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
     private final SliderValue<Integer> green = new SliderValue<>("Green", "What green will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
     private final SliderValue<Integer> blue = new SliderValue<>("Blue", "What blue will the color have?", this, 255, 0, 255, 0, new Supplier[]{() -> targethudMode.getValue().equalsIgnoreCase("Atani Modern")});
 
     private SimpleAnimation koksHealthAnim = new SimpleAnimation(1, 0.5f);
+    private SimpleAnimation modernHealthAnim = new SimpleAnimation(1, 0.75f);
 
     private final Frustum frustum = new Frustum();
 
@@ -216,6 +217,30 @@ public class TargetHUD extends Module implements ColorPalette {
                             predictedOutcome = ChatFormatting.GREEN + "Winning";
                         }
                         roboto17.drawString(predictedOutcome, x + 36, y + 6 + (roboto17.FONT_HEIGHT + 2) * 2, -1);
+                    });
+                    break;
+                case "Atani Modern 2":
+                    RenderableShaders.renderAndRun(() -> {
+                        FontRenderer pangramRegular = FontStorage.getInstance().findFont("Pangram Regular", 17);
+                        float textX = x + 4, textY = y + 4.5f;
+                        float rectWidth = 120, rectHeight = 50;
+                        RoundedShader.drawRoundOutline(x, y, rectWidth, rectHeight, 7, 1.2F, new Color(20, 20, 20), new Color(red.getValue(), green.getValue(), blue.getValue()));
+                        GuiInventory.drawEntityOnScreen((int) x + 20, (int) (y + rectHeight) - 5, 18, target.rotationYaw, -target.rotationPitch, target);
+                        pangramRegular.drawString(target.getCommandSenderName(), x + 36, y + 6, -1);
+                        String predictedOutcome = "";
+                        int roundedOwn = Math.round(Methods.mc.thePlayer.getHealth());
+                        int roundedTarget = Math.round(target.getHealth());
+                        if(roundedOwn == roundedTarget) {
+                            predictedOutcome = ChatFormatting.YELLOW + "Draw";
+                        } else if(roundedOwn < roundedTarget) {
+                            predictedOutcome = ChatFormatting.RED + "Losing";
+                        } else if(roundedOwn > roundedTarget) {
+                            predictedOutcome = ChatFormatting.GREEN + "Winning";
+                        }
+                        pangramRegular.drawString(predictedOutcome, x + 36, y + 6 + pangramRegular.FONT_HEIGHT + 2, -1);
+                        double health = target.getHealth() / target.getMaxHealth();
+                        modernHealthAnim.interpolate(health);
+                        RenderUtil.drawRect(x + 36, y + 30, (float) ((70) * modernHealthAnim.getValue()), 7, -1);
                     });
                     break;
                 case "Atani Golden":

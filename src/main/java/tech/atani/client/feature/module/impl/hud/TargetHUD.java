@@ -224,7 +224,7 @@ public class TargetHUD extends Module implements ColorPalette {
                         FontRenderer pangramRegular = FontStorage.getInstance().findFont("Pangram Regular", 17);
                         float textX = x + 4, textY = y + 4.5f;
                         float rectWidth = 120, rectHeight = 50;
-                        RoundedShader.drawRoundOutline(x, y, rectWidth, rectHeight, 7, 1.2F, new Color(20, 20, 20), new Color(red.getValue(), green.getValue(), blue.getValue()));
+                        RoundedShader.drawRoundOutline(x, y, rectWidth, rectHeight, 9, 1.2F, new Color(20, 20, 20), new Color(red.getValue(), green.getValue(), blue.getValue()));
                         GuiInventory.drawEntityOnScreen((int) x + 20, (int) (y + rectHeight) - 5, 18, target.rotationYaw, -target.rotationPitch, target);
                         pangramRegular.drawString(target.getCommandSenderName(), x + 36, y + 6, -1);
                         String predictedOutcome = "";

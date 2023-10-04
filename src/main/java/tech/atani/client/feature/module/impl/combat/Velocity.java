@@ -21,6 +21,7 @@ import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
+import tech.atani.client.utility.player.movement.MoveUtil;
 
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -74,6 +75,15 @@ public class Velocity extends Module {
         switch (mode.getValue()) {
             case "MineMenClub":
                 mmcCounter++;
+                break;
+            case "Intave":
+                switch(mc.thePlayer.hurtTime) {
+                    case 1:
+                        mc.thePlayer.jump();
+                        MoveUtil.setMoveSpeed(0);
+                        mc.thePlayer.motionX = mc.thePlayer.motionZ = 0;
+                        break;
+                }
                 break;
             case "Polar": {
                 if (mc.thePlayer.isSwingInProgress) {
@@ -158,6 +168,7 @@ public class Velocity extends Module {
         }
         switch (mode.getValue()) {
             case "MineMenClub":
+            case "Intave":
                 if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
                     if (mmcCounter > 20) {

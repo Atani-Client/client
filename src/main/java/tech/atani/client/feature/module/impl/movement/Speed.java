@@ -879,9 +879,11 @@ public class Speed extends Module {
                             }
                         }
 
-                        if (offTicks >= 10 && offTicks % 5 == 0) {
+                        if (offTicks >= 10 && offTicks % 5 == 0 && mc.thePlayer.hurtTime == 0) {
                             MoveUtil.setMoveSpeed(MoveUtil.getSpeed());
                         }
+
+                        // HurtTime is solution till i fix it!
                         break;
                 }
                 break;

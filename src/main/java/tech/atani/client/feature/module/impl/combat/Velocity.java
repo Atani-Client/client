@@ -73,8 +73,9 @@ public class Velocity extends Module {
 
     @Listen
     public void onUpdateMotionEvent(UpdateMotionEvent event) {
-        if (mc.theWorld == null || mc.thePlayer == null)
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
             return;
+        }
 
         switch (mode.getValue()) {
             case "MineMenClub": {
@@ -155,8 +156,10 @@ public class Velocity extends Module {
 
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
-    	if(mc.thePlayer == null || mc.theWorld == null)
-    		return;
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
+            return;
+        }
+
         if(packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
             S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
             if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
@@ -353,12 +356,13 @@ public class Velocity extends Module {
     @Listen
     public final void onSilent(SilentMoveEvent silentMoveEvent) {
         switch(this.mode.getValue()) {
-            case "Intave Jump":
+            case "Intave Jump": {
                 if (Velocity.mc.thePlayer.hurtTime == 9 && Velocity.mc.thePlayer.onGround && ++this.counter % 2 == 0) {
                     Velocity.mc.thePlayer.movementInput.jump = true;
                     break;
                 }
                 break;
+            }
         }
     }
 

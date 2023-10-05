@@ -85,7 +85,7 @@ public class Speed extends Module {
     // Intave
     private int onTicks, offTicks;
     private boolean groundBoost;
-    private int groundTicks = 0;
+    private int ticks = 0;
     // Polar
     private int polarOnTicks, polarOffTicks;
 
@@ -840,14 +840,14 @@ public class Speed extends Module {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
                             //  1st: 0.15306319260371434
                         //    mc.thePlayer.sendChatMessage("Boost");
-                            groundTicks++;
                             mc.timer.timerSpeed = 1.07F;
                             if(MoveUtil.getSpeed() < 0.15306319260371434 && groundBoost) {
                                 MoveUtil.strafe(0.15306319260371434);
                             }
                             groundBoost = true;
+                            ticks = 0;
                         } else {
-                            groundTicks = 0;
+                            ticks++;
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
                             mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
                             if(!isMoving()) {
@@ -864,14 +864,12 @@ public class Speed extends Module {
                         if(mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
                             //  1st: 0.15306319260371434
-                            groundTicks++;
                             mc.timer.timerSpeed = 1.07F;
                             if(MoveUtil.getSpeed() < 0.15306319260371435 && groundBoost) {
                                 MoveUtil.strafe(0.15306319260371434);
                             }
                             groundBoost = true;
                         } else {
-                            groundTicks = 0;
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
                             mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
                             if(!isMoving()) {
@@ -883,7 +881,18 @@ public class Speed extends Module {
                             MoveUtil.setMoveSpeed(MoveUtil.getSpeed());
                         }
 
-                        // HurtTime is solution till i fix it!
+                        // HurtTime is solution till I fix it!
+
+                        if(mc.thePlayer.hurtTime == 1) {
+                            mc.timer.timerSpeed = 1.05F;
+                        }
+
+                        if(mc.thePlayer.hurtTime == 9) {
+                            mc.timer.timerSpeed = 1;
+                            mc.thePlayer.motionY -= 0.0002;
+                        }
+
+                        // I dont have a good way for dmgBoost :.(
                         break;
                 }
                 break;
@@ -901,6 +910,7 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
+                // Verus Lol
                 MoveUtil.strafe((0.15306319260371434 * 1.15) + MoveUtil.getSpeedBoost(2F));
                 mc.thePlayer.setSprinting(isMoving() && mc.thePlayer.moveForward > 0);
                 /*

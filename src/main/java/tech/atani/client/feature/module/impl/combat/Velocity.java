@@ -30,18 +30,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @ModuleData(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    public StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Intave", "Intave Jump", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block", "Fake Lag", "MineMenClub"});
-    public SliderValue<Integer> horizontal = new SliderValue<Integer>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
-    public SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse")});
-    public SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Delay", "Intave Jump", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block", "Fake Lag", "MineMenClub"});
+    private final SliderValue<Integer> horizontal = new SliderValue<Integer>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse") || mode.is("Delay")});
+    private final SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse") || mode.is("Delay")});
+    private final SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
+    private final SliderValue<Integer> delayTicks = new SliderValue<Integer>("Delay Ticks", "How long will the velocity wait before cancelling it?", this, 500, 0, 1000, 0, new Supplier[]{() -> mode.is("Delay")});
 
     private double packetX = 0;
     private double packetY = 0;
     private double packetZ = 0;
     private boolean receivedVelocity = false;
 
+    // Delay
+    private final TimeHelper delayTimer = new TimeHelper();
+
     // AAC v5.2.0
-    private TimeHelper aacTimer = new TimeHelper();
+    private final TimeHelper aacTimer = new TimeHelper();
 
     // Intave Jump
     private int counter;
@@ -73,18 +77,10 @@ public class Velocity extends Module {
             return;
 
         switch (mode.getValue()) {
-            case "MineMenClub":
+            case "MineMenClub": {
                 mmcCounter++;
                 break;
-            case "Intave":
-                switch(mc.thePlayer.hurtTime) {
-                    case 1:
-                        mc.thePlayer.jump();
-                        MoveUtil.setMoveSpeed(0);
-                        mc.thePlayer.motionX = mc.thePlayer.motionZ = 0;
-                        break;
-                }
-                break;
+            }
             case "Polar": {
                 if (mc.thePlayer.isSwingInProgress) {
                     attacked = true;
@@ -109,15 +105,17 @@ public class Velocity extends Module {
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
         switch (mode.getValue()) {
-            case "Grim Spoof":
+            case "Grim Spoof": {
                 if (transactionQueue.isEmpty() && grimPacket) grimPacket = false;
                 break;
-            case "Grim Flag":
+            }
+            case "Grim Flag": {
                 if (mc.thePlayer.hurtTime != 0)
                     mc.thePlayer.setPosition(mc.thePlayer.lastTickPosX, mc.thePlayer.lastTickPosY, mc.thePlayer.lastTickPosZ);
                 break;
-            case "AAC v5.2.0":
-                if (mc.thePlayer.hurtTime> 0 && this.receivedVelocity) {
+            }
+            case "AAC v5.2.0": {
+                if (mc.thePlayer.hurtTime > 0 && this.receivedVelocity) {
                     this.receivedVelocity = false;
                     mc.thePlayer.motionX = 0.0;
                     mc.thePlayer.motionZ = 0.0;
@@ -133,22 +131,25 @@ public class Velocity extends Module {
                     mc.thePlayer.jumpMovementFactor = -0.002f;
                 }
                 break;
-            case "AAC v4":
-                if (mc.thePlayer.hurtTime > 0 && !mc.thePlayer.onGround){
+            }
+            case "AAC v4": {
+                if (mc.thePlayer.hurtTime > 0 && !mc.thePlayer.onGround) {
                     mc.thePlayer.motionX *= aacv4Reduce.getValue();
                     mc.thePlayer.motionZ *= aacv4Reduce.getValue();
                 }
                 break;
-            case "Old Grim":
+            }
+            case "Old Grim": {
                 updates++;
 
                 if (updates >= 0 || updates >= 10) {
                     updates = 0;
-                    if (grimCancel > 0){
+                    if (grimCancel > 0) {
                         grimCancel--;
                     }
                 }
                 break;
+            }
         }
     }
 
@@ -167,8 +168,22 @@ public class Velocity extends Module {
             }
         }
         switch (mode.getValue()) {
-            case "MineMenClub":
-            case "Intave":
+            case "Delay": {
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
+
+                    if(delayTimer.hasReached(delayTicks.getValue() * 50) && packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                        if (horizontal.getValue() == 0 && vertical.getValue() == 0)
+                            packetEvent.setCancelled(true);
+                        packet.setMotionX((int) (packet.getMotionX() * (horizontal.getValue().doubleValue() / 100D)));
+                        packet.setMotionY((int) (packet.getMotionY() * (vertical.getValue().doubleValue() / 100D)));
+                        packet.setMotionZ((int) (packet.getMotionZ() * (horizontal.getValue().doubleValue() / 100D)));
+                        delayTimer.reset();
+                    }
+                }
+                break;
+            }
+            case "MineMenClub": {
                 if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
                     if (mmcCounter > 20) {
@@ -179,6 +194,7 @@ public class Velocity extends Module {
                     }
                 }
                 break;
+            }
             case "Fake Lag": {
                 if(mc.thePlayer.hurtTime > 0 || (packetEvent.getPacket() instanceof S12PacketEntityVelocity && ((S12PacketEntityVelocity)packetEvent.getPacket()).getEntityID() == mc.thePlayer.getEntityId())) {
                     if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {

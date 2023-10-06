@@ -798,7 +798,7 @@ public class Speed extends Module {
                             if(mc.thePlayer.onGround) {
                                 watchDogTicks = 0;
                                 mc.thePlayer.jump();
-                                MoveUtil.strafe(0.418f);
+                                MoveUtil.strafe(0.399F);
                             } else {
                                 watchDogTicks++;
                                 mc.thePlayer.motionY -= 0.0008;

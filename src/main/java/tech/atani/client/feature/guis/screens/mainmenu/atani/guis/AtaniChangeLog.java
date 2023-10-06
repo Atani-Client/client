@@ -1,27 +1,27 @@
-package tech.atani.client.feature.guis.screens.mainmenu.atani;
+package tech.atani.client.feature.guis.screens.mainmenu.atani.guis;
 
-import net.minecraft.client.gui.*;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiOptions;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.util.ResourceLocation;
+import tech.atani.client.feature.guis.elements.background.ShaderBackground;
+import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniAltManager;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniChangeLog;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniMultiPlayerMenu;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniSinglePlayerMenu;
 import tech.atani.client.protection.GithubAPI;
 import tech.atani.client.utility.discord.DiscordRP;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.render.RenderUtil;
-import tech.atani.client.feature.guis.elements.background.ShaderBackground;
 
 import java.awt.*;
 import java.io.IOException;
 
-public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
+public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
 {
 
     public static ShaderBackground shaderBackground;
 
-    public AtaniMainMenu() {
+    public AtaniChangeLog() {
         if(shaderBackground == null) {
             shaderBackground = new ShaderBackground(new ResourceLocation("atani/shaders/fragment/ataniWave.glsl"));
             shaderBackground.init();
@@ -48,52 +48,18 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
      * window resizes, the buttonList is cleared beforehand.
      */
     public void initGui() {
-        DiscordRP.update("In Main Menu", String.format("Logged in as %s (%s)", GithubAPI.username, GithubAPI.uid));
+        DiscordRP.update("Looking At ChangeLog", String.format("Logged in as %s (%s)", GithubAPI.username, GithubAPI.uid));
 
-        this.buttonList.clear();
-
-        int fullButtonHeight = 4 * 30;
-
-        int buttonX = this.width / 2 - 100;
-        int buttonY = this.height / 2 - fullButtonHeight / 2;
-
-        this.buttonList.add(new AtaniButton(0, buttonX, buttonY, "SinglePlayer"));
-        buttonY += 30;
-        this.buttonList.add(new AtaniButton(1, buttonX, buttonY, "MultiPlayer"));
-        buttonY += 30;
-        this.buttonList.add(new AtaniButton(2, buttonX, buttonY, "Alts"));
-        buttonY += 30;
-        this.buttonList.add(new AtaniButton(3, buttonX, buttonY, 95, 20, "Options"));
-        this.buttonList.add(new AtaniButton(4, buttonX, buttonY + 30, "Changelog"));
-        this.buttonList.add(new AtaniButton(5, buttonX + 105, buttonY, 95, 20, "Quit"));
-
-        this.mc.func_181537_a(false);
+        this.buttonList.add(new AtaniButton(1, this.width / 2 - 100, 500, "Back"));
     }
 
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
      */
     protected void actionPerformed(GuiButton button) throws IOException {
-       switch (button.id) {
-           case 0:
-               mc.displayGuiScreen(new AtaniSinglePlayerMenu(this));
-               break;
-           case 1:
-               mc.displayGuiScreen(new AtaniMultiPlayerMenu(this));
-               break;
-           case 2:
-               mc.displayGuiScreen(new AtaniAltManager());
-               break;
-           case 3:
-               mc.displayGuiScreen(new GuiOptions(this, mc.gameSettings));
-               break;
-           case 4:
-               mc.displayGuiScreen(new AtaniChangeLog());
-               break;
-           case 5:
-               mc.shutdown();
-               break;
-       }
+        if(button.id == 1) {
+            mc.displayGuiScreen(new AtaniMainMenu());
+        }
     }
 
     /**
@@ -101,6 +67,9 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         RenderUtil.drawRect(0, 0, this.width, this.height, new Color(16, 16, 16).getRGB());
+        mc.fontRendererObj.drawCenteredString("Changelog - " + ClientInformationAccess.CLIENT_VERSION + ":", (float) this.width / 2, 20, -1);
+        mc.fontRendererObj.drawCenteredString("- Fixed WatchDog Speed", (float) this.width / 2, 100, Color.HSBtoRGB(60.0F / 360.0f, 1.0F, 1.0F));
+
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

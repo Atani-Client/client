@@ -19,7 +19,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "Step", description = "Makes you walk up blocks.", category = Category.MOVEMENT)
 public class Step extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Intave", "NCP", "Motion", "Spartan", "WatchDog"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Fake Jump", "Intave", "NCP", "Motion", "Spartan", "WatchDog"});
     private final StringBoxValue ncpMode = new StringBoxValue("NCP Mode", "Which mode will the NCP mode use?", this, new String[]{"Normal", "Fast", "Packet", "OldNCP"});
     private final SliderValue<Integer> height = new SliderValue<Integer>("Height", "How high will the step go?", this, 2, 0, 10, 1, new Supplier[]{() -> mode.is("Vanilla") || (mode.is("NCP") && ncpMode.is("OldNCP"))});
     private final SliderValue<Float> timer = new SliderValue<>("Timer", "How fast will the timer be?", this, 0.3F, 0.1F, 1.5F, 1);
@@ -136,6 +136,16 @@ public class Step extends Module {
         switch (mode.getValue()) {
             case "Vanilla":
                 stepEvent.setStepHeight(height.getValue());
+                break;
+            case "Fake Jump":
+                stepEvent.setStepHeight(height.getValue());
+                for (int i = 0; i < Math.round(height.getValue()); i++) {
+                float[] heights = {
+                        0.425111231f, 0.821111231f, 0.699111231f, 0.599111231f, 1.022111231f, 1.372111231f, 1.652111231f, 1.869111231f};
+                for (double off : heights) {
+                    mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + off, mc.thePlayer.posZ, false));
+                }
+            }
                 break;
             case "Spartan":
                 stepEvent.setStepHeight(1);

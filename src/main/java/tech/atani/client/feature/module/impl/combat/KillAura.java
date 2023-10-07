@@ -17,6 +17,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.listener.event.minecraft.game.PostTickEvent;
+import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
@@ -49,7 +50,7 @@ public class KillAura extends Module {
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true);
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
     public CheckBoxValue autoBlock = new CheckBoxValue("Auto Block", "Should the aura block on hit?", this, true);
-    public StringBoxValue autoBlockMode = new StringBoxValue("Auto Block Mode", "Which mode should the autoblock use?", this, new String[] {"Vanilla", "NCP", "AAC", "GrimAC", "Intave"}, new Supplier[]{() -> autoBlock.getValue()});
+    public StringBoxValue autoBlockMode = new StringBoxValue("Auto Block Mode", "Which mode should the autoblock use?", this, new String[] {"Vanilla", "NCP", "AAC", "GrimAC", "Intave", "Matrix", "Legit"}, new Supplier[]{() -> autoBlock.getValue()});
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
     public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Misplace", "Fix Server-Side Misplace?", this, true);
@@ -193,6 +194,10 @@ public class KillAura extends Module {
 
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
+        if(curEntity == null && autoBlockMode.is("Legit")) {
+            mc.gameSettings.keyBindUseItem.pressed = false;
+        }
+
         if (curEntity != null) {
             final float[] rotations = RotationUtil.getRotation(curEntity, aimVector.getValue(), heightDivisor.getValue(), mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
 
@@ -277,8 +282,12 @@ public class KillAura extends Module {
                                     break;
                                 case "GrimAC":
                                 case "Intave":
+                                case "Matrix":
                                     Methods.mc.playerController.interactWithEntitySendPacket(Methods.mc.thePlayer, objectPosition.entityHit);
                                     Methods.mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(currentItem));
+                                    break;
+                                case "Legit":
+                                    mc.gameSettings.keyBindUseItem.pressed = true;
                                     break;
                             }
                         }
@@ -358,7 +367,7 @@ public class KillAura extends Module {
             return;
         }
 
-        if(autoBlock.getValue() && autoBlockMode.is("GrimAC")) {
+        if(autoBlock.getValue() && autoBlockMode.is("Legit")) {
             Methods.mc.gameSettings.keyBindUseItem.pressed = false;
         }
         curEntity = null;

@@ -68,7 +68,13 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         RenderUtil.drawRect(0, 0, this.width, this.height, new Color(16, 16, 16).getRGB());
         mc.fontRendererObj.drawCenteredString("Changelog - " + ClientInformationAccess.CLIENT_VERSION + ":", (float) this.width / 2, 20, -1);
-        mc.fontRendererObj.drawCenteredString("- Fixed WatchDog Speed", (float) this.width / 2, 100, Color.HSBtoRGB(60.0F / 360.0f, 1.0F, 1.0F));
+
+        int yellow = Color.HSBtoRGB(60F / 360.0f, 1.0F, 1.0F);
+        int green = Color.HSBtoRGB(120F / 360.0f, 1.0F, 1.0F);
+
+        mc.fontRendererObj.drawCenteredString("- Fixed WatchDog Speed", (float) this.width / 2, 100, yellow);
+        mc.fontRendererObj.drawCenteredString("- Fixed Intave Speed DmgBoost", (float) this.width / 2, 110, yellow);
+        mc.fontRendererObj.drawCenteredString("+ Added SpoofGround Flight", (float) this.width / 2, 120, green);
 
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);

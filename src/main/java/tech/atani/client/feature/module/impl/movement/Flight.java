@@ -27,7 +27,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")}),
             grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")}),
             verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump", "Collision"}, new Supplier[]{() -> mode.is("Verus")});
@@ -105,6 +105,12 @@ public class Flight extends Module {
             case "BWPractice":
                 mc.thePlayer.motionY = 0.0D;
                 MoveUtil.setMoveSpeed(0.2f);
+                break;
+            case "Spoof Ground":
+                mc.thePlayer.motionY = 0;
+                mc.thePlayer.onGround = true;
+                mc.thePlayer.cameraPitch = 0.1F;
+                mc.thePlayer.cameraYaw = 0.1F;
                 break;
             case "Verus":
                 if (motionEvent.getType() == UpdateMotionEvent.Type.MID) {
@@ -268,6 +274,11 @@ public class Flight extends Module {
             return;
 
         switch (mode.getValue()) {
+            case "Spoof Ground":
+                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                    ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
+                }
+                break;
             case "BWPractice":
                 if(packetEvent.getPacket() instanceof C0APacketAnimation) {
                     packetEvent.setCancelled(true);

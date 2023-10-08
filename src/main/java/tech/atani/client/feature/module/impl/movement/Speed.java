@@ -259,6 +259,10 @@ public class Speed extends Module {
                                 case 10:
                                     MoveUtil.strafe((float) (MoveUtil.getSpeed() * 0.8));
                             }
+
+                            if(mc.thePlayer.hurtTime == 1) {
+                                MoveUtil.strafe();
+                            }
                             break;
                         case "Slow":
                             if(mc.thePlayer.onGround) {

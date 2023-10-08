@@ -27,7 +27,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground", "Test"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")}),
             grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")}),
             verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump", "Collision"}, new Supplier[]{() -> mode.is("Verus")});
@@ -52,6 +52,7 @@ public class Flight extends Module {
     // Verus
     private final TimeHelper verusTimer = new TimeHelper();
     private boolean verusUp;
+    private int ticks;
 
     @Override
     public String getSuffix() {
@@ -102,6 +103,17 @@ public class Flight extends Module {
     @Listen
     public void onUpdateMotion(UpdateMotionEvent motionEvent) {
         switch (mode.getValue()) {
+            case "Test":
+                if(mc.thePlayer.onGround) {
+                    mc.thePlayer.motionY = 0.4199;
+                    ticks = 0;
+                } else {
+                    ticks++;
+                    mc.thePlayer.motionY = ticks == 1 ? -0.09800000190734864 : mc.thePlayer.motionY;
+                }
+
+                MoveUtil.strafe(mc.thePlayer.onGround ? 0.53 : 0.33);
+                break;
             case "BWPractice":
                 mc.thePlayer.motionY = 0.0D;
                 MoveUtil.setMoveSpeed(0.2f);

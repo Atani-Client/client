@@ -130,11 +130,7 @@ public class NoSlowDown extends Module {
 
     @Listen
     public void onPacketEvent(PacketEvent event) {
-        if(mode.is("Matrix") && mc.thePlayer.isBlocking() && isMoving()) {
-            if(event.getPacket() instanceof C03PacketPlayer) {
-                ((C03PacketPlayer) event.getPacket()).setOnGround(false);
-            }
-        }
+
     }
 
     @Listen

@@ -80,6 +80,7 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
         mc.fontRendererObj.drawCenteredString("+ Added Matrix AutoBlock", (float) this.width / 2, 150, green);
         mc.fontRendererObj.drawCenteredString("+ Added Legit AutoBlock", (float) this.width / 2, 160, green);
         mc.fontRendererObj.drawCenteredString("+ Added Fake Jump Step", (float) this.width / 2, 170, green);
+        mc.fontRendererObj.drawCenteredString("+ Added Verus Fast Speed", (float) this.width / 2, 180, green);
 
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);

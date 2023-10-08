@@ -35,7 +35,7 @@ public class Speed extends Module {
             ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop", "Low"}, new Supplier[]{() -> mode.is("NCP")}),
             lowNcpMode = new StringBoxValue("Lowhop Timer Mode", "Which timer mode will the ncp lowhop mode use?", this, new String[]{"Normal", "Balance"}, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Low")}),
             oldNcpMode = new StringBoxValue("Old NCP Mode", "Which mode will the old ncp mode use?", this, new String[]{"Timer", "Y-Port"}, new Supplier[]{() -> mode.is("Old NCP")}),
-            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Hop", "Air Boost", "Low", "Float", "Custom"}, new Supplier[]{() -> mode.is("Verus")}),
+            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Hop", "Air Boost", "Low", "Float", "Custom", "Fast"}, new Supplier[]{() -> mode.is("Verus")}),
             watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});
     private final SliderValue<Float> boost = new SliderValue<Float>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")}),
             jumpHeight = new SliderValue<Float>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1f, 2, new Supplier[]{() -> mode.is("BHop")});
@@ -86,8 +86,12 @@ public class Speed extends Module {
     private int onTicks, offTicks;
     private boolean groundBoost;
     private int ticks = 0;
+    private int ticks2 = 0;
     // Polar
     private int polarOnTicks, polarOffTicks;
+
+    // Verus
+    private boolean spoofGround;
 
     @Override
     public String getSuffix() {
@@ -382,6 +386,35 @@ public class Speed extends Module {
                             }
 
                             MoveUtil.strafe();
+                            break;
+                        case "Fast":
+                            if(mc.thePlayer.moveForward < 0)
+                                return;
+
+                            boolean ground = false;
+                            if(mc.thePlayer.onGround) {
+                                ticks = 0;
+                            } else {
+                                ticks++;
+                            }
+
+                            switch (ticks) {
+                                case 0:
+                                    if(ticks2 == 4)
+                                        mc.thePlayer.jump();
+
+                                    ticks2 += 1;
+                                    break;
+                                case 1:
+                                    ticks2 = 0;
+                                    break;
+                            }
+
+                            if(spoofGround || mc.thePlayer.onGround) {
+                                ground = true;
+                            }
+
+                            MoveUtil.strafe(ground ? 0.53 + MoveUtil.getSpeedBoost(0.08F) : 0.33 + MoveUtil.getSpeedBoost(0.05F));
                             break;
                         case "Custom":
                             if(!isMoving())
@@ -972,6 +1005,17 @@ public class Speed extends Module {
             return;
 
         switch (mode.getValue()) {
+            case "Verus":
+                if(verusMode.is("Fast")) {
+                    if(spoofGround) {
+                        if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                            ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
+                            ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
+                            spoofGround = false;
+                        }
+                    }
+                }
+                break;
             case "Vulcan":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {
                     ((C03PacketPlayer) packetEvent.getPacket()).y = mc.thePlayer.posY + y;

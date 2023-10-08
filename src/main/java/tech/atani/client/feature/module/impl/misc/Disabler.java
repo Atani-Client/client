@@ -109,9 +109,6 @@ public class Disabler extends Module {
 					}
 					break;
 				case "Test":
-					if(mc.thePlayer.ticksExisted % 5 == 0) {
-						mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.STOP_DESTROY_BLOCK, new BlockPos(mc.thePlayer), EnumFacing.UP));
-					}
 					break;
 			}
 		}

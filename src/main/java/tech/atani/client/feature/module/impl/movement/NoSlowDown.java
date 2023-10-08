@@ -13,6 +13,7 @@ import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
+import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.NoSlowEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
@@ -26,7 +27,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 @ModuleData(name = "NoSlowDown", description = "Removes the blocking & eating slowdown", category = Category.MOVEMENT)
 public class NoSlowDown extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP", "Old Matrix", "Old Hypixel", "MineMenClub"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Vanilla", "Switch", "Grim", "Old Intave", "Old NCP", "Old Matrix", "Matrix", "Old Hypixel", "MineMenClub"});
 
     private final MultiStringBoxValue items = new MultiStringBoxValue("Items", "Should the module disable slowdown with these items?", this, new String[] {"Sword"}, new String[] {"Sword", "Food", "Bow"});
     private final SliderValue<Float> swordForward = new SliderValue<Float>("Sword Forward", "How high should the sword forward multiplier be?", this, 1f, 0f, 1f, 2, new Supplier[]{() -> items.get("Sword")}),
@@ -118,11 +119,21 @@ public class NoSlowDown extends Module {
                 break;
             case "Grim":
             case "Switch":
+            case "Matrix":
                 if(event.getType() == UpdateMotionEvent.Type.MID) {
                     sendPacket(new C09PacketHeldItemChange((mc.thePlayer.inventory.currentItem + 1) % 9));
                     sendPacket(new C09PacketHeldItemChange(mc.thePlayer.inventory.currentItem));
                 }
                 break;
+        }
+    }
+
+    @Listen
+    public void onPacketEvent(PacketEvent event) {
+        if(mode.is("Matrix") && mc.thePlayer.isBlocking() && isMoving()) {
+            if(event.getPacket() instanceof C03PacketPlayer) {
+                ((C03PacketPlayer) event.getPacket()).setOnGround(false);
+            }
         }
     }
 

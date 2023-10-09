@@ -1,15 +1,15 @@
 package tech.atani.client.utility.player.movement;
 
-import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.MathHelper;
-import tech.atani.client.listener.event.minecraft.network.PacketEvent;
-import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
 import tech.atani.client.utility.player.PlayerHandler;
 
 public class MoveUtil implements Methods {
+    public static boolean enoughMovementForSprinting() {
+        return Math.abs(mc.thePlayer.moveForward) >= 0.8F || Math.abs(mc.thePlayer.moveStrafing) >= 0.8F;
+    }
 
     public static double getPredictedMotion(double motion, int ticks) {
         if (ticks == 0) return motion;
@@ -39,10 +39,52 @@ public class MoveUtil implements Methods {
 
         return boost;
     }
-
     public static double getSpeed() {
         return mc.thePlayer == null ? 0 : Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX
                 + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
+    }
+
+    public static double getAllowedHorizontalDistance() {
+        double horizontalDistance;
+        boolean useBaseModifiers = false;
+
+        if (mc.thePlayer.isInWeb) {
+            horizontalDistance = 0.105 / 0.221 * 0.221;
+        } else if (mc.thePlayer.isInWater() || mc.thePlayer.isInLava()) {
+            horizontalDistance = 0.115F / 0.221 * 0.221;
+
+        } else if (mc.thePlayer.isSneaking()) {
+            horizontalDistance = 0.3 * 0.221;
+        } else {
+            horizontalDistance = 0.221;
+            useBaseModifiers = true;
+        }
+
+        if (useBaseModifiers) {
+            if (canSprint(false)) {
+                horizontalDistance *= 1.3;
+            }
+
+            if (mc.thePlayer.isPotionActive(Potion.moveSpeed) && mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).duration > 0) {
+                horizontalDistance *= 1 + (0.2 * (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1));
+            }
+
+            if (mc.thePlayer.isPotionActive(Potion.moveSlowdown)) {
+                horizontalDistance = 0.29;
+            }
+        }
+
+        return horizontalDistance;
+    }
+
+    public static boolean canSprint(final boolean legit) {
+        return (legit ? mc.thePlayer.moveForward >= 0.8F
+                && !mc.thePlayer.isCollidedHorizontally
+                && (mc.thePlayer.getFoodStats().getFoodLevel() > 6 || mc.thePlayer.capabilities.allowFlying)
+                && !mc.thePlayer.isPotionActive(Potion.blindness)
+                && !mc.thePlayer.isUsingItem()
+                && !mc.thePlayer.isSneaking()
+                : enoughMovementForSprinting());
     }
 
     public static void strafe() {

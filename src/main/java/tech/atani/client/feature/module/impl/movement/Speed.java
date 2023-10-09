@@ -5,6 +5,7 @@ import com.google.common.base.Supplier;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C03PacketPlayer;
+import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
 import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.DirectionSprintCheckEvent;
@@ -17,8 +18,10 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.processor.impl.BalanceProcessor;
+import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
+import tech.atani.client.utility.player.PlayerUtil;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
@@ -27,7 +30,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "Test"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "Test"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
@@ -92,6 +95,13 @@ public class Speed extends Module {
 
     // Verus
     private boolean spoofGround;
+    private int jumps;
+    /*
+    // BMC
+    private int offGroundTicks;
+    private boolean reset;
+    private double speed;
+     */
 
     @Override
     public String getSuffix() {
@@ -129,6 +139,54 @@ public class Speed extends Module {
                     mc.timer.timerSpeed = 1f;
                 }
                 break;
+            case "BlocksMC":
+                /*
+                if(!ClientInformationAccess.DEVELOPMENT_SWITCH)
+                    return;
+
+                final double base = MoveUtil.getAllowedHorizontalDistance();
+                final boolean potionActive = mc.thePlayer.isPotionActive(Potion.moveSpeed);
+
+                if(mc.thePlayer.onGround) {
+                    offGroundTicks = 0;
+                } else {
+                    offGroundTicks++;
+                }
+
+                if (isMoving()) {
+                    switch (offGroundTicks) {
+                        case 0:
+                            mc.thePlayer.jump();
+                            speed = base * (potionActive ? 2.15 : 2.15);
+                            break;
+
+                        case 1:
+                            speed -= 0.8 * (speed - base);
+                            break;
+                        case 5:
+                            speed += (speed / 159.9) * 2;
+                            PlayerUtil.addChatMessgae("Boosted", true);
+                            break;
+                        default:
+                            speed -= speed / 159.9;
+                            break;
+                    }
+
+                    reset = false;
+                } else if (!reset) {
+                    speed = 0;
+
+                    reset = true;
+                    speed = MoveUtil.getAllowedHorizontalDistance();
+                }
+
+                if (mc.thePlayer.isCollidedHorizontally) {
+                    speed = MoveUtil.getAllowedHorizontalDistance();
+                }
+
+                MoveUtil.strafe(Math.max(speed, base));
+                break;
+                */
             case "Custom":
                 mc.timer.timerSpeed = timer.getValue();
                 if (mc.thePlayer.onGround) {
@@ -368,13 +426,31 @@ public class Speed extends Module {
                             MoveUtil.strafe((float) MoveUtil.getSpeed());
                             break;
                         case "Normal":
+                            if(!isMoving())
+                                return;
+
                             if(mc.thePlayer.onGround) {
-                                MoveUtil.strafe(0.53 + MoveUtil.getSpeedBoost(0.08F));
-                                mc.thePlayer.jump();
-                                mc.timer.timerSpeed = 1.04F;
+                                ticks = 0;
                             } else {
-                                mc.timer.timerSpeed = 1;
-                                MoveUtil.strafe(0.33 + MoveUtil.getSpeedBoost(0.05F));
+                                ticks++;
+                            }
+
+                            MoveUtil.strafe(mc.thePlayer.onGround ? 0.55 + MoveUtil.getSpeedBoost(0.09F) : 0.33 + MoveUtil.getSpeedBoost(0.084F));
+
+                            switch (ticks) {
+                                case 0:
+                                    mc.thePlayer.jump();
+                                    mc.timer.timerSpeed = 1.027F;
+                                    break;
+                                case 2:
+                                case 8:
+                                    mc.timer.timerSpeed = 1;
+                                    break;
+                                case 5:
+                                    PlayerUtil.addChatMessgae("Boosted: Lower Motion", true);
+                                    mc.timer.timerSpeed = (float) (1.08 + Math.random() / 50);
+                                    mc.thePlayer.motionY = -0.09800000190734864;
+                                    break;
                             }
                             break;
                         case "Float":
@@ -987,6 +1063,14 @@ public class Speed extends Module {
                     mc.thePlayer.motionZ = 0.0;
                 }
                 break;
+            case "BlocksMC":
+                if (!isMoving()) {
+                    movePlayerEvent.setX(movePlayerEvent.getX() + (Math.random() - 0.5) / 100);
+                    movePlayerEvent.setZ(movePlayerEvent.getZ() + (Math.random() - 0.5) / 100);
+                }
+
+                this.sendPacketUnlogged(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.START_SPRINTING));
+                break;
         }
     }
 
@@ -1018,6 +1102,11 @@ public class Speed extends Module {
                             spoofGround = false;
                         }
                     }
+                }
+                break;
+            case "BlocksMC":
+                if(packetEvent.getPacket() instanceof C0BPacketEntityAction) {
+                    packetEvent.setCancelled(true);
                 }
                 break;
             case "Vulcan":

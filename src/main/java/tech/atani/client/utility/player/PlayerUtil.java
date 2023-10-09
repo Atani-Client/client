@@ -17,6 +17,14 @@ public class PlayerUtil implements Methods {
                 || (yaw > -12.5 && yaw < 12.5);
     }
 
+    public static void addChatMessgae(final Object message, boolean prefix) {
+        if (mc.thePlayer != null) {
+            final String msg = String.format(message.toString());
+            final String prefixString = "Atani Client: ";
+            mc.thePlayer.addChatMessage(new ChatComponentText(prefix ? prefixString + msg : msg));
+        }
+    }
+
     public static int getLeatherArmorColor(EntityPlayer player) {
         int armorColor = -1;
         for (ItemStack itemStack : player.inventory.armorInventory) {

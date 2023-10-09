@@ -5,6 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
+import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.interfaces.Methods;
 
 public class PlayerUtil implements Methods {
@@ -20,8 +21,7 @@ public class PlayerUtil implements Methods {
     public static void addChatMessgae(final Object message, boolean prefix) {
         if (mc.thePlayer != null) {
             final String msg = String.format(message.toString());
-            final String prefixString = "Atani Client: ";
-            mc.thePlayer.addChatMessage(new ChatComponentText(prefix ? prefixString + msg : msg));
+            mc.thePlayer.addChatMessage(new ChatComponentText(prefix ? ClientInformationAccess.PREFIX + ": " + msg : msg));
         }
     }
 

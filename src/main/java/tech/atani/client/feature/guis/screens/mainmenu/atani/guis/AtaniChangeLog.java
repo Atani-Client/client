@@ -76,7 +76,7 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
         mc.fontRendererObj.drawCenteredString("- Fixed Intave Speed DmgBoost", (float) this.width / 2, 110, yellow);
         mc.fontRendererObj.drawCenteredString("- Fixed Timer", (float) this.width / 2, 120, yellow);
         mc.fontRendererObj.drawCenteredString("- Rename Matrix NoSlowDown to Old Matrix", (float) this.width / 2, 130, yellow);
-        mc.fontRendererObj.drawCenteredString("- Add an exploit to Verus Normal Speed", (float) this.width / 2, 140, yellow);
+        mc.fontRendererObj.drawCenteredString("- Add Verus Boost Speed", (float) this.width / 2, 140, yellow);
         mc.fontRendererObj.drawCenteredString("+ Added SpoofGround Flight", (float) this.width / 2, 150, green);
         mc.fontRendererObj.drawCenteredString("+ Added Matrix AutoBlock", (float) this.width / 2, 160, green);
         mc.fontRendererObj.drawCenteredString("+ Added Legit AutoBlock", (float) this.width / 2, 170, green);

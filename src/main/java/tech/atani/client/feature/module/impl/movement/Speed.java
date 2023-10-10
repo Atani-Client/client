@@ -308,14 +308,13 @@ public class Speed extends Module {
                                     break;
                                 case 1:
                                 case 2:
+                                case 8:
                                     MoveUtil.strafe();
                                     mc.timer.timerSpeed = 1;
                                     break;
                                 case 5:
                                     mc.thePlayer.motionY = -0.175;
                                     break;
-                                case 10:
-                                    MoveUtil.strafe((float) (MoveUtil.getSpeed() * 0.8));
                             }
 
                             if(mc.thePlayer.hurtTime == 1) {

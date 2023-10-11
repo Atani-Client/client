@@ -141,55 +141,8 @@ public class Speed extends Module {
                 break;
             case "BlocksMC":
                     mc.gameSettings.keyBindJump.pressed = isMoving();
-
+                    
                     MoveUtil.strafe(mc.thePlayer.hurtTime == 0 ? 0.27 : 0.4);
-                /*
-                if(!ClientInformationAccess.DEVELOPMENT_SWITCH)
-                    return;
-
-                final double base = MoveUtil.getAllowedHorizontalDistance();
-                final boolean potionActive = mc.thePlayer.isPotionActive(Potion.moveSpeed);
-
-                if(mc.thePlayer.onGround) {
-                    offGroundTicks = 0;
-                } else {
-                    offGroundTicks++;
-                }
-
-                if (isMoving()) {
-                    switch (offGroundTicks) {
-                        case 0:
-                            mc.thePlayer.jump();
-                            speed = base * (potionActive ? 2.15 : 2.15);
-                            break;
-
-                        case 1:
-                            speed -= 0.8 * (speed - base);
-                            break;
-                        case 5:
-                            speed += (speed / 159.9) * 2;
-                            PlayerUtil.addChatMessgae("Boosted", true);
-                            break;
-                        default:
-                            speed -= speed / 159.9;
-                            break;
-                    }
-
-                    reset = false;
-                } else if (!reset) {
-                    speed = 0;
-
-                    reset = true;
-                    speed = MoveUtil.getAllowedHorizontalDistance();
-                }
-
-                if (mc.thePlayer.isCollidedHorizontally) {
-                    speed = MoveUtil.getAllowedHorizontalDistance();
-                }
-
-                MoveUtil.strafe(Math.max(speed, base));
-                break;
-                */
             case "Custom":
                 mc.timer.timerSpeed = timer.getValue();
                 if (mc.thePlayer.onGround) {
@@ -1078,16 +1031,6 @@ public class Speed extends Module {
                     mc.thePlayer.motionZ = 0.0;
                 }
                 break;
-            case "BlocksMC":
-                /*
-                if (!isMoving()) {
-                    movePlayerEvent.setX(movePlayerEvent.getX() + (Math.random() - 0.5) / 100);
-                    movePlayerEvent.setZ(movePlayerEvent.getZ() + (Math.random() - 0.5) / 100);
-                }
-
-                this.sendPacketUnlogged(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.START_SPRINTING));
-                 */
-                break;
         }
     }
 
@@ -1120,13 +1063,6 @@ public class Speed extends Module {
                         }
                     }
                 }
-                break;
-            case "BlocksMC":
-                /*
-                if(packetEvent.getPacket() instanceof C0BPacketEntityAction) {
-                    packetEvent.setCancelled(true);
-                }
-                 */
                 break;
             case "Vulcan":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {

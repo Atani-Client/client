@@ -3,10 +3,7 @@ package tech.atani.client.feature.guis.screens.mainmenu.atani;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniAltManager;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniChangeLog;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniMultiPlayerMenu;
-import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniSinglePlayerMenu;
+import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.*;
 import tech.atani.client.protection.GithubAPI;
 import tech.atani.client.utility.discord.DiscordRP;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
@@ -66,6 +63,7 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
         this.buttonList.add(new AtaniButton(3, buttonX, buttonY, 95, 20, "Options"));
         this.buttonList.add(new AtaniButton(4, buttonX, buttonY + 30, "Changelog"));
         this.buttonList.add(new AtaniButton(5, buttonX + 105, buttonY, 95, 20, "Quit"));
+        this.buttonList.add(new AtaniButton(6, buttonX + 105, buttonY + 200, 10, 20, ""));
 
         this.mc.func_181537_a(false);
     }
@@ -93,6 +91,8 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
            case 5:
                mc.shutdown();
                break;
+           case 6:
+               mc.displayGuiScreen(new AtaniSecretSettingsByKellohylly());
        }
     }
 

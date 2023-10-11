@@ -86,6 +86,7 @@ public class LongJump extends Module {
             }
 
             if(Methods.mc.thePlayer.onGround) {
+                if(!mc.thePlayer.isPotionActive(Potion.moveSpeed)) mc.thePlayer.motionY = 0.43;
                 ncpSpeed = Methods.mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.53;
             } else {
                 ncpSpeed -= Methods.mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.03 : 0.02;

@@ -140,6 +140,9 @@ public class Speed extends Module {
                 }
                 break;
             case "BlocksMC":
+                    mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                    MoveUtil.strafe(mc.thePlayer.hurtTime == 0 ? 0.27 : 0.4);
                 /*
                 if(!ClientInformationAccess.DEVELOPMENT_SWITCH)
                     return;
@@ -823,7 +826,7 @@ public class Speed extends Module {
                                 mc.timer.timerSpeed = (float) (1.02 - Math.random() / 50);
                             }
 
-                            MoveUtil.strafe();
+                            MoveUtil.strafe(MoveUtil.getSpeed());
                             break;
                         case "Stable":
                             if(!isMoving())
@@ -1076,12 +1079,14 @@ public class Speed extends Module {
                 }
                 break;
             case "BlocksMC":
+                /*
                 if (!isMoving()) {
                     movePlayerEvent.setX(movePlayerEvent.getX() + (Math.random() - 0.5) / 100);
                     movePlayerEvent.setZ(movePlayerEvent.getZ() + (Math.random() - 0.5) / 100);
                 }
 
                 this.sendPacketUnlogged(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.START_SPRINTING));
+                 */
                 break;
         }
     }
@@ -1117,9 +1122,11 @@ public class Speed extends Module {
                 }
                 break;
             case "BlocksMC":
+                /*
                 if(packetEvent.getPacket() instanceof C0BPacketEntityAction) {
                     packetEvent.setCancelled(true);
                 }
+                 */
                 break;
             case "Vulcan":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {

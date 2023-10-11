@@ -112,7 +112,7 @@ public class Flight extends Module {
                     mc.thePlayer.motionY = ticks == 1 ? -0.09800000190734864 : mc.thePlayer.motionY;
                 }
 
-                MoveUtil.strafe(mc.thePlayer.onGround ? 0.53 : 0.33);
+                MoveUtil.strafe(mc.thePlayer.onGround ? 0.55 : ticks == 1 ? 0.35 : 0.33);
                 break;
             case "BWPractice":
                 mc.thePlayer.motionY = 0.0D;

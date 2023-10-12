@@ -115,7 +115,7 @@ public class LongJump extends Module {
                     if(ncpTicks > 2) {
                         ncpSpeed += Math.random() / 200;
                         if(mc.thePlayer.isPotionActive(Potion.moveSpeed))
-                        Methods.mc.thePlayer.motionY += Math.random() / 100;
+                        Methods.mc.thePlayer.motionY += Math.random() / 100 + 0.003;
                     }
                     break;
             }

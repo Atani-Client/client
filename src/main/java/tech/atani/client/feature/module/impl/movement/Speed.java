@@ -103,6 +103,9 @@ public class Speed extends Module {
     private double speed;
      */
 
+    // BMC ReCode
+    private int bmcTicks;
+
     @Override
     public String getSuffix() {
         return mode.getValue();
@@ -140,9 +143,25 @@ public class Speed extends Module {
                 }
                 break;
             case "BlocksMC":
-                    mc.gameSettings.keyBindJump.pressed = isMoving();
-                    
-                    MoveUtil.strafe(mc.thePlayer.hurtTime == 0 ? 0.27 : 0.4);
+                bmcTicks = mc.thePlayer.onGround ? 0 : bmcTicks + 1;
+                mc.gameSettings.keyBindJump.pressed = isMoving();
+                mc.gameSettings.keyBindSprint.pressed = isMoving();
+
+                switch (bmcTicks) {
+                    case 0:
+                        mc.timer.timerSpeed = 1.2F;
+                        break;
+                    case 1:
+                        mc.thePlayer.motionY -= 0.005;
+                        mc.thePlayer.motionX *= 1.005;
+                        mc.thePlayer.motionZ *= 1.005;
+                        break;
+                    case 2:
+                        mc.timer.timerSpeed = 1;
+                        break;
+                }
+                MoveUtil.strafe(0.27 > MoveUtil.getSpeed() ? !mc.thePlayer.onGround ? 0.27 : MoveUtil.getSpeed() : MoveUtil.getSpeed());
+                    break;
             case "Custom":
                 mc.timer.timerSpeed = timer.getValue();
                 if (mc.thePlayer.onGround) {
@@ -1097,6 +1116,7 @@ public class Speed extends Module {
 
         onTicks = 0;
         offTicks = 0;
+        bmcTicks = 0;
         Methods.mc.timer.timerSpeed = 1.0F;
         Methods.mc.thePlayer.speedInAir = 0.02F;
         Methods.mc.gameSettings.keyBindJump.pressed = false;

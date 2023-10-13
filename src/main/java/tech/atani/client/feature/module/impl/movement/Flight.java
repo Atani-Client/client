@@ -3,10 +3,7 @@ package tech.atani.client.feature.module.impl.movement;
 import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C0APacketAnimation;
-import net.minecraft.network.play.client.C14PacketTabComplete;
-import net.minecraft.network.play.client.C19PacketResourcePackStatus;
+import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.util.AxisAlignedBB;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
@@ -104,15 +101,9 @@ public class Flight extends Module {
     public void onUpdateMotion(UpdateMotionEvent motionEvent) {
         switch (mode.getValue()) {
             case "Test":
-                if(mc.thePlayer.onGround) {
-                    mc.thePlayer.motionY = 0.4199;
-                    ticks = 0;
-                } else {
-                    ticks++;
-                    mc.thePlayer.motionY = ticks == 1 ? -0.09800000190734864 : mc.thePlayer.motionY;
-                }
-
-                MoveUtil.strafe(mc.thePlayer.onGround ? 0.55 : ticks == 1 ? 0.35 : 0.33);
+                mc.thePlayer.motionY = 0;
+                mc.thePlayer.onGround = true;
+                MoveUtil.strafe(0.33 + MoveUtil.getSpeedBoost(0));
                 break;
             case "BWPractice":
                 mc.thePlayer.motionY = 0.0D;
@@ -287,6 +278,7 @@ public class Flight extends Module {
 
         switch (mode.getValue()) {
             case "Spoof Ground":
+            case "Test":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {
                     ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
                 }

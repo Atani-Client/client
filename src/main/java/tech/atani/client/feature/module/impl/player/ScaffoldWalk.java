@@ -65,6 +65,8 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false);
     private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
+    private final CheckBoxValue tower = new CheckBoxValue("Tower", "Tower?", this, false);
+    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus"}, new Supplier[]{() -> tower.getValue()});
     private final SliderValue<Long> unSneakDelay = new SliderValue<Long>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
 
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
@@ -141,6 +143,18 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
+        if(tower.getValue() && mc.gameSettings.keyBindJump.pressed && mc.thePlayer.fallDistance < 1.5) {
+            switch(towerMode.getValue()) {
+                case "Vanilla":
+                    mc.thePlayer.motionY = 0.3;
+                    break;
+                case "Verus":
+                    if(mc.thePlayer.ticksExisted % 3 == 0) {
+                        mc.thePlayer.motionY = 0.42;
+                    }
+                    break;
+            }
+        }
         if(verusBoost.getValue()) {
             if(!isMoving())
                 return;

@@ -66,7 +66,7 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
     private final CheckBoxValue tower = new CheckBoxValue("Tower", "Tower?", this, false);
-    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP"}, new Supplier[]{() -> tower.getValue()});
+    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Matrix", "Intave"}, new Supplier[]{() -> tower.getValue()});
     private final SliderValue<Long> unSneakDelay = new SliderValue<Long>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
 
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
@@ -77,7 +77,7 @@ public class ScaffoldWalk extends Module {
     private BlockPos blockPos;
     private boolean starting;
     private int verusTicks;
-    private int ncpTicks;
+    private int jumpTicks;
 
     @Listen
     public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {
@@ -156,11 +156,27 @@ public class ScaffoldWalk extends Module {
                     break;
                 case "NCP":
                     if(mc.thePlayer.onGround) {
-                        ncpTicks = 0;
+                        jumpTicks = 0;
                     }
-                    ncpTicks++;
-                    if(ncpTicks == 4) {
+                    jumpTicks++;
+                    if(jumpTicks == 4) {
                         mc.thePlayer.motionY = 0;
+                    }
+                    break;
+                case "Matrix":
+                    if (mc.thePlayer.motionY < 0.2) {
+                        mc.thePlayer.motionY = 0.42F;
+                        mc.thePlayer.onGround = true;
+                    }
+                    break;
+                case "Intave":
+                    if(mc.thePlayer.onGround) {
+                        jumpTicks = 0;
+                        mc.timer.timerSpeed = 1;
+                    }
+                    jumpTicks++;
+                    if(jumpTicks == 4) {
+                        mc.timer.timerSpeed = 2F;
                     }
                     break;
             }

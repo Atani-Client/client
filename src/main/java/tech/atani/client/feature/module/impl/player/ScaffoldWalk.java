@@ -66,7 +66,7 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
     private final CheckBoxValue tower = new CheckBoxValue("Tower", "Tower?", this, false);
-    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus"}, new Supplier[]{() -> tower.getValue()});
+    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP"}, new Supplier[]{() -> tower.getValue()});
     private final SliderValue<Long> unSneakDelay = new SliderValue<Long>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
 
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
@@ -77,6 +77,7 @@ public class ScaffoldWalk extends Module {
     private BlockPos blockPos;
     private boolean starting;
     private int verusTicks;
+    private int ncpTicks;
 
     @Listen
     public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {
@@ -151,6 +152,15 @@ public class ScaffoldWalk extends Module {
                 case "Verus":
                     if(mc.thePlayer.ticksExisted % 3 == 0) {
                         mc.thePlayer.motionY = 0.42;
+                    }
+                    break;
+                case "NCP":
+                    if(mc.thePlayer.onGround) {
+                        ncpTicks = 0;
+                    }
+                    ncpTicks++;
+                    if(ncpTicks == 4) {
+                        mc.thePlayer.motionY = 0;
                     }
                     break;
             }

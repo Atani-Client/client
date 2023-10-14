@@ -39,6 +39,16 @@ public class MoveUtil implements Methods {
 
         return boost;
     }
+    public static void stop(float multiplier) {
+        if(multiplier == 0)
+            mc.thePlayer.motionX = mc.thePlayer.motionZ;
+        else
+            mc.thePlayer.motionX *= multiplier; mc.thePlayer.motionZ *= multiplier;
+    }
+
+    public static void stop() {
+        mc.thePlayer.motionX = mc.thePlayer.motionZ = 0;
+    }
     public static double getSpeed() {
         return mc.thePlayer == null ? 0 : Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX
                 + mc.thePlayer.motionZ * mc.thePlayer.motionZ);

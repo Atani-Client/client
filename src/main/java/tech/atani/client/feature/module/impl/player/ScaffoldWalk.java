@@ -199,6 +199,7 @@ public class ScaffoldWalk extends Module {
                 mc.thePlayer.onGround = true;
             }
         }
+
         if (switchItems.getValue()) {
             if ((Methods.mc.thePlayer.getHeldItem() != null && !(Methods.mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)) || Methods.mc.thePlayer.getHeldItem() == null) {
                 for (int i = 0; i < 9; i++) {

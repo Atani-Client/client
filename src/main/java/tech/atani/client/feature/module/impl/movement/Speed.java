@@ -7,6 +7,8 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
+import tech.atani.client.feature.module.impl.combat.KillAura;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.DirectionSprintCheckEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
@@ -1005,25 +1007,20 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                /*
                 mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                if(mc.thePlayer.onGround && isMoving()) {
-                    System.out.println("Speed: " + MoveUtil.getSpeed());
-                //  1st: 0.15306319260371434
-                    mc.timer.timerSpeed = 1.07F;
-                    if(MoveUtil.getSpeed() < 0.15306319260371435) {
-                        MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 77 : 0.15306319260371434 + Math.random() / 100);
-                    }
-                    groundBoost = true;
-                } else {
-                    mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
-                    mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
-                    if(!isMoving()) {
-                        groundBoost = false;
-                    }
+                if(mc.thePlayer.hurtTime != 0)
+                    return;
+
+                if(!isMoving()) {
+                    // 0.5 Kinda works? Gonna make it 0.75 for safe.
+                    float multiplier = 0.75F;
+                    mc.thePlayer.motionX *= multiplier;
+                    mc.thePlayer.motionZ *= multiplier;
                 }
-                 */
+
+                if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + (KillAura.curEntity == null ? 0.039 : 0.019))
+                    MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + (KillAura.curEntity == null ? 0.04 : 0.02));
                 break;
         }
     }

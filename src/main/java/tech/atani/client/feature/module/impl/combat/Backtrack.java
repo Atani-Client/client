@@ -64,7 +64,7 @@ public class Backtrack extends Module {
     public CheckBoxValue animals = new CheckBoxValue("Animals", "Attack Animals?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     public CheckBoxValue monsters = new CheckBoxValue("Monsters", "Attack Monsters?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true, new Supplier[]{() -> mode.getValue().equalsIgnoreCase("Packet")});
-
+    private final CheckBoxValue renderEntity = new CheckBoxValue("Render Entity", "Render the entitys old position?",this, true);
     // Old
     private final ArrayList<Packet<INetHandler>> packets = new ArrayList<>();
     private EntityLivingBase entity = null;

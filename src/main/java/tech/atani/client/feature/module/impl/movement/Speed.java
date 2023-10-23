@@ -48,7 +48,7 @@ public class Speed extends Module {
     private final StringBoxValue verusCustomMode = new StringBoxValue("Verus Custom Mode", "Which custom mode will the verus speed use?", this, new String[]{"Normal", "Low", "Float"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
     private final SliderValue<Float> verusFloatTicks = new SliderValue<Float>("Verus Float Ticks", "For how many ticks will the verus float speed float?", this, 5f, 1f, 9f, 0, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Float")});
     private final StringBoxValue verusCustomLowMode = new StringBoxValue("Custom Low Mode", "What mode will the custom lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom") && verusCustomMode.is("Low")}),
-            verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
+            verusLowMode = new StringBoxValue("Low Mode", "What mode will the lowhop use?", this, new String[]{"Normal", "Fast", "Fast 2"}, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Low")});
     private final SliderValue<Double> ncpJumpMotion = new SliderValue<Double>("NCP Jump Motion", "What motion will the NCP Speed use?", this, 0.41d, 0.4, 0.42d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")}),
             ncpOnGroundSpeed = new SliderValue<Double>("NCP Ground Speed", "How fast will the NCP Speed move on ground?", this, 0.485d, 0.1d, 0.5d, 3, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")});
     private final SliderValue<Float> ncpOnGroundSpeedBoost = new SliderValue<Float>("onGround Speed Boost", "How Much Will the NCP Speed Boost on ground?", this, 3f, 0f, 5f, 1, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Custom")}),
@@ -273,7 +273,7 @@ public class Speed extends Module {
                         case "Normal":
                             switch (vulcanTicks) {
                                 case 0:
-                                    if(this.isMoving()) {
+                                    if(isMoving()) {
                                         mc.thePlayer.jump();
                                         mc.timer.timerSpeed = 1.2F;
                                     } else {
@@ -283,17 +283,12 @@ public class Speed extends Module {
                                     break;
                                 case 1:
                                 case 2:
-                                case 8:
                                     MoveUtil.strafe();
                                     mc.timer.timerSpeed = 1;
                                     break;
                                 case 5:
                                     mc.thePlayer.motionY = -0.175;
                                     break;
-                            }
-
-                            if(mc.thePlayer.hurtTime == 1) {
-                                MoveUtil.strafe();
                             }
                             break;
                         case "Slow":
@@ -1010,9 +1005,6 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                // Verus Lol
-                MoveUtil.strafe((0.15306319260371434 * 1.15) + MoveUtil.getSpeedBoost(2F));
-                mc.thePlayer.setSprinting(isMoving() && mc.thePlayer.moveForward > 0);
                 /*
                 mc.gameSettings.keyBindJump.pressed = isMoving();
 
@@ -1050,6 +1042,20 @@ public class Speed extends Module {
                     mc.thePlayer.motionZ = 0.0;
                 }
                 break;
+            case "Verus":
+                if (!isMoving() || !verusMode.is("Low") || !verusLowMode.is("Fast 2"))
+                    return;
+
+                    if (mc.thePlayer.onGround) {
+                        movePlayerEvent.setY(0.42F);
+                        MoveUtil.strafe(0.69F + MoveUtil.getSpeedBoost(0.1F));
+                        mc.thePlayer.motionY = 0F;
+                    } else {
+                        MoveUtil.strafe(0.41F + MoveUtil.getSpeedBoost(0.05F));
+                    }
+
+                    MoveUtil.strafe();
+                    mc.thePlayer.setSprinting(true);
         }
     }
 

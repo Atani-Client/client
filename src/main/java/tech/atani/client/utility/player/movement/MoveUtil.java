@@ -39,6 +39,10 @@ public class MoveUtil implements Methods {
 
         return boost;
     }
+
+    public static float getBaseGroundSpeed() {
+        return 0.15306319260371434F;
+    }
     public static void stop(float multiplier) {
         if(multiplier == 0)
             mc.thePlayer.motionX = mc.thePlayer.motionZ;

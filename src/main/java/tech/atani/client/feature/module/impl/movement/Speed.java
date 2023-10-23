@@ -768,7 +768,7 @@ public class Speed extends Module {
                             if(mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 2F;
                                 mc.thePlayer.motionY = ncpJumpMotion.getValue();
-                                MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(4));
+                                MoveUtil.strafe(0.485 + MoveUtil.getSpeedBoost(4));
                             } else {
                                 mc.timer.timerSpeed = 1;
                                 MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.375F));
@@ -978,16 +978,16 @@ public class Speed extends Module {
 
                         // HurtTime is solution till I fix it!
 
-                        if(mc.thePlayer.hurtTime == 1) {
-                            mc.timer.timerSpeed = 1.05F;
+                        switch (mc.thePlayer.hurtTime) {
+                            case 1:
+                                mc.timer.timerSpeed = 1.07F;
+                                break;
+                            case 4:
+                                mc.timer.timerSpeed = 1;
+                                break;
                         }
 
-                        if(mc.thePlayer.hurtTime == 9) {
-                            mc.timer.timerSpeed = 1;
-                            mc.thePlayer.motionY -= 0.0002;
-                        }
-
-                        // I dont have a good way for dmgBoost :.(
+                        // I dont have a good way for dmgBoost :(
                         break;
                 }
                 break;

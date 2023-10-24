@@ -34,7 +34,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "Test"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
-            intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
+            intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
             ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop", "Low"}, new Supplier[]{() -> mode.is("NCP")}),
@@ -92,20 +92,14 @@ public class Speed extends Module {
     private boolean groundBoost;
     private int ticks = 0;
     private int ticks2 = 0;
+    private int strafeTicks = 0;
     // Polar
     private int polarOnTicks, polarOffTicks;
 
     // Verus
     private boolean spoofGround;
     private int jumps;
-    /*
-    // BMC
-    private int offGroundTicks;
-    private boolean reset;
-    private double speed;
-     */
-
-    // BMC ReCode
+    // BMC Recode
     private int bmcTicks;
 
     @Override
@@ -927,6 +921,37 @@ public class Speed extends Module {
                             MoveUtil.setMoveSpeed(MoveUtil.getSpeed());
                         }
                         break;
+                    case "Strafe 2":
+                        if(isMoving()) {
+                            mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                            if(mc.thePlayer.onGround) {
+                                mc.timer.timerSpeed = 1.1F;
+                                float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
+                                mc.thePlayer.motionX *= multiplier;
+                                mc.thePlayer.motionZ *= multiplier;
+                            } else {
+                                mc.timer.timerSpeed = 1;
+                            }
+
+                            if(mc.thePlayer.hurtTime != 0)
+                                return;
+
+                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
+                                MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + (KillAura.curEntity == null ? 0.04 : 0.02));
+                                strafeTicks++;
+                            } else {
+                                strafeTicks = 0;
+                            }
+                            break;
+                        } else {
+                            // 0.5 Kinda works? Gonna make it 0.75 for safe.
+                            float multiplier = 0.75F;
+                            mc.timer.timerSpeed = 1;
+                            mc.thePlayer.motionX *= multiplier;
+                            mc.thePlayer.motionZ *= multiplier;
+                        }
+                        break;
                     case "Ground Strafe":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
@@ -1007,20 +1032,6 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                mc.gameSettings.keyBindJump.pressed = isMoving();
-
-                if(mc.thePlayer.hurtTime != 0)
-                    return;
-
-                if(!isMoving()) {
-                    // 0.5 Kinda works? Gonna make it 0.75 for safe.
-                    float multiplier = 0.75F;
-                    mc.thePlayer.motionX *= multiplier;
-                    mc.thePlayer.motionZ *= multiplier;
-                }
-
-                if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + (KillAura.curEntity == null ? 0.039 : 0.019))
-                    MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + (KillAura.curEntity == null ? 0.04 : 0.02));
                 break;
         }
     }
@@ -1053,6 +1064,7 @@ public class Speed extends Module {
 
                     MoveUtil.strafe();
                     mc.thePlayer.setSprinting(true);
+                    break;
         }
     }
 
@@ -1104,6 +1116,15 @@ public class Speed extends Module {
                         ((C03PacketPlayer.C06PacketPlayerPosLook) packetEvent.getPacket()).setYaw(mc.thePlayer.rotationYaw + 180);
                     }
                 }
+                break;
+            case "Test":
+                /*
+                if(mc.thePlayer.ticksExisted % 11 == 0) {
+                    if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                        ((C03PacketPlayer) packetEvent.getPacket()).y += 0.42;
+                    }
+                }
+                 */
                 break;
         }
     }

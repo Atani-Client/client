@@ -816,7 +816,7 @@ public class Speed extends Module {
                                 }
 
                                 if(isMoving()) {
-                                    MoveUtil.strafe(MoveUtil.getSpeed() * 1);
+                                    MoveUtil.strafe(MoveUtil.getSpeed());
                                 } else {
                                     mc.thePlayer.motionX = 0;
                                     mc.thePlayer.motionZ = 0;
@@ -1076,9 +1076,12 @@ public class Speed extends Module {
         switch (mode.getValue()) {
             case "Grim":
                 getGameSettings().keyBindSprint.pressed = true;
-
+                // yesyes its shit dont cry2me about it
                 if (mc.thePlayer.onGround && this.isMoving()){
                     mc.thePlayer.jump();
+                    mc.timer.timerSpeed = 1.21F;
+                } else {
+                    mc.timer.timerSpeed = 1;
                 }
                 break;
         }

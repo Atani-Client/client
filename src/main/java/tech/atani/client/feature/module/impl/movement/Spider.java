@@ -20,7 +20,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "Spider", description = "Climb up walls", category = Category.MOVEMENT)
 public class Spider extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Jump", "Collision", "Vulcan", "Verus"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Jump", "Collision", "Vulcan", "Verus", "Karhu"});
     private final CheckBoxValue jumpOnly = new CheckBoxValue("Jump Only", "Should the module only work when pressing the jump key?", this, false);
 
     @Override
@@ -71,6 +71,17 @@ public class Spider extends Module {
 
                 collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(blockPos.getX(), blockPos.getY(), blockPos.getZ(), blockPos.getX() + 1, 1, blockPos.getZ() + 1));
                 break;
+                case "Karhu":
+                    if(!mc.thePlayer.isCollidedHorizontally)
+                        return;
+
+                    BlockPos blocksPos = collisionBoxesEvent.getBlockPos();
+
+                    collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(blocksPos.getX(), blocksPos.getY(), blocksPos.getZ(), blocksPos.getX() + 1, 1, blocksPos.getZ() + 1));
+
+                    if(mc.thePlayer.onGround)
+                        mc.thePlayer.jump();
+                    break;
             }
         }
     }

@@ -827,19 +827,22 @@ public class Speed extends Module {
                 }
                 break;
             case "Karhu":
-                if(mc.gameSettings.keyBindJump.pressed ||!isMoving())
+                if(mc.gameSettings.keyBindJump.pressed ||!isMoving()) {
+                    mc.gameSettings.keyBindJump.pressed = false;
                     return;
+                }
 
-                mc.thePlayer.setSprinting(true);
+                mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
 
-                if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    if(mc.thePlayer.onGround) {
-                        mc.timer.timerSpeed = 1;
-                        mc.thePlayer.jump();
-                        mc.thePlayer.motionY *= 0.55;
-                    } else {
-                        mc.timer.timerSpeed = (float) (1 + (Math.random() - 0.5) / 100);
-                    }
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+
+                if(mc.thePlayer.motionY < 0) {
+                    mc.timer.timerSpeed = 1.004F;
+                    mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 3000F);
+                    mc.thePlayer.motionY -= 0.002;
+                } else {
+                    mc.timer.timerSpeed = 1.0F;
+                    mc.thePlayer.speedInAir = 0.02F;
                 }
                 break;
             case "Incognito":

@@ -5,9 +5,12 @@ import com.google.common.base.Supplier;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
 
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
 import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
+import tech.atani.client.listener.event.minecraft.world.CollisionBoxesEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
@@ -21,7 +24,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "LongJump", description = "Jumps long", category = Category.MOVEMENT)
 public class LongJump extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"NCP", "Vulcan", "Intave"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"NCP", "Vulcan", "Intave", "Karhu"});
     private final SliderValue<Float> vulcanHeight = new SliderValue<Float>("Height", "High high will the player jump?", this, 4F, 0.4F, 10F, 0, new Supplier[]{() -> mode.is("Vulcan")});
 
     // NCP
@@ -32,6 +35,8 @@ public class LongJump extends Module {
     private int vulcanClips = 0;
     private boolean vulcanJumped;
     private final TimeHelper vulcanTimer = new TimeHelper();
+    private boolean karhuTrueGround = true;
+    private int karhuJumpTicks;
 
     @Override
     public String getSuffix() {
@@ -53,6 +58,19 @@ public class LongJump extends Module {
             }
         }
     }
+
+    public void onCollisionBoxes(CollisionBoxesEvent collisionBoxesEvent) {
+        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+            return;
+
+            switch(mode.getValue()) {
+                case "Karhu":
+                    BlockPos blocksPos = collisionBoxesEvent.getBlockPos();
+
+                    collisionBoxesEvent.setBoundingBox(new AxisAlignedBB(blocksPos.getX(), blocksPos.getY(), blocksPos.getZ(), blocksPos.getX() + 1, 1, blocksPos.getZ() + 1));
+                    break;
+            }
+        }
 
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
@@ -78,6 +96,21 @@ public class LongJump extends Module {
     public final void onMove(MovePlayerEvent movePlayerEvent) {
         Methods.mc.gameSettings.keyBindJump.pressed = MoveUtil.getSpeed() != 0;
         switch(mode.getValue()) {
+            case "Karhu":
+                if (karhuTrueGround && mc.thePlayer.onGround) {
+                    mc.thePlayer.jump();
+                    karhuTrueGround = false;
+                    karhuJumpTicks = 0;
+                } else if (!karhuTrueGround) {
+                    karhuJumpTicks++;
+                }
+
+                if (karhuJumpTicks == 10)
+                    mc.thePlayer.jump();
+
+                if(karhuJumpTicks == 25)
+                    this.toggle();
+                break;
         case "NCP":
             if (Methods.mc.thePlayer.onGround) {
                 ncpTicks = 0;
@@ -155,6 +188,8 @@ public class LongJump extends Module {
     public void onDisable() {
         vulcanClips = 0;
         vulcanJumped = false;
+        karhuJumpTicks = 0;
+        karhuTrueGround = true;
         mc.timer.timerSpeed = 1;
         mc.gameSettings.keyBindJump.pressed = false;
     }

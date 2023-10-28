@@ -926,7 +926,7 @@ public class Speed extends Module {
                         break;
                     case "Strafe 2":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
-                        
+
                         if(isMoving()) {
                             if(mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 1.1F;

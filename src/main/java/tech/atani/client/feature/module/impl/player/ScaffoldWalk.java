@@ -15,6 +15,7 @@ import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.feature.module.impl.combat.KillAura;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
@@ -78,6 +79,7 @@ public class ScaffoldWalk extends Module {
     private boolean starting;
     private int verusTicks;
     private int jumpTicks;
+    private int strafeTicks = 0;
 
     @Listen
     public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {
@@ -170,14 +172,16 @@ public class ScaffoldWalk extends Module {
                     }
                     break;
                 case "Intave":
+                    mc.timer.timerSpeed = 1.015F;
                     if(mc.thePlayer.onGround) {
-                        jumpTicks = 0;
-                        mc.timer.timerSpeed = 1;
+                        mc.thePlayer.jump();
+                        mc.thePlayer.motionY -= 0.001F;
+                    } else {
+                        mc.thePlayer.motionY -= 0.0001F;
+                        if(mc.thePlayer.ticksExisted % 3 == 0)
+                            mc.thePlayer.motionY -= 0.0007;
                     }
-                    jumpTicks++;
-                    if(jumpTicks == 4) {
-                        mc.timer.timerSpeed = 2F;
-                    }
+
                     break;
             }
         }

@@ -925,9 +925,9 @@ public class Speed extends Module {
                         }
                         break;
                     case "Strafe 2":
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
+                        
                         if(isMoving()) {
-                            mc.gameSettings.keyBindJump.pressed = isMoving();
-
                             if(mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 1.1F;
                                 float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
@@ -1080,6 +1080,9 @@ public class Speed extends Module {
                 if (mc.thePlayer.onGround && this.isMoving()){
                     mc.thePlayer.jump();
                     mc.timer.timerSpeed = 1.21F;
+                    // Best Byasp:fire:
+                    mc.thePlayer.motionX *= 1.0000000000000000001;
+                    mc.thePlayer.motionZ *= 1.0000000000000000001;
                 } else {
                     mc.timer.timerSpeed = 1;
                 }
@@ -1124,13 +1127,26 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                /*
-                if(mc.thePlayer.ticksExisted % 11 == 0) {
-                    if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                        ((C03PacketPlayer) packetEvent.getPacket()).y += 0.42;
-                    }
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+
+                if(!isMoving())
+                    return;
+
+                switch (ticks) {
+                    case 0:
+                        mc.thePlayer.jump();
+                        MoveUtil.strafe(0.525);
+                        mc.timer.timerSpeed = 1.1F;
+                        break;
+                    case 1:
+                        mc.timer.timerSpeed = 1;
+                        mc.thePlayer.motionY -= 0.005;
+                        break;
+                    case 2:
+                    case 3:
+                        mc.thePlayer.motionY -= 0.001;
+                        break;
                 }
-                 */
                 break;
         }
     }

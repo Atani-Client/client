@@ -1034,7 +1034,40 @@ public class Speed extends Module {
                     }
                 }
                 break;
+
             case "Test":
+                if(!isMoving()) {
+                    mc.gameSettings.keyBindJump.pressed = false;
+                    return;
+                }
+
+                mc.timer.timerSpeed = 1.004F;
+                mc.gameSettings.keyBindSneak.pressed = mc.gameSettings.keyBindJump.pressed = true;
+                MoveUtil.strafe(mc.thePlayer.onGround ? 0.55 : 0.33);
+                verusTicks = mc.thePlayer.onGround ? 0 : verusTicks + 1;
+
+                /*
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+
+                if(!isMoving())
+                    return;
+
+                switch (ticks) {
+                    case 0:
+                        mc.thePlayer.jump();
+                        MoveUtil.strafe(0.525);
+                        mc.timer.timerSpeed = 1.1F;
+                        break;
+                    case 1:
+                        mc.timer.timerSpeed = 1;
+                        mc.thePlayer.motionY -= 0.005;
+                        break;
+                    case 2:
+                    case 3:
+                        mc.thePlayer.motionY -= 0.001;
+                        break;
+                }
+                 */
                 break;
         }
     }
@@ -1126,32 +1159,6 @@ public class Speed extends Module {
                     }
                 }
                 break;
-            case "Test":
-                mc.thePlayer.setSneaking(!mc.thePlayer.isSneaking());
-                MoveUtil.strafe(0.15306319260371434 + MoveUtil.getSpeedBoost(1));
-                /*
-                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
-
-                if(!isMoving())
-                    return;
-
-                switch (ticks) {
-                    case 0:
-                        mc.thePlayer.jump();
-                        MoveUtil.strafe(0.525);
-                        mc.timer.timerSpeed = 1.1F;
-                        break;
-                    case 1:
-                        mc.timer.timerSpeed = 1;
-                        mc.thePlayer.motionY -= 0.005;
-                        break;
-                    case 2:
-                    case 3:
-                        mc.thePlayer.motionY -= 0.001;
-                        break;
-                }
-                break;
-                 */
         }
     }
 

@@ -1127,6 +1127,9 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
+                mc.thePlayer.setSneaking(!mc.thePlayer.isSneaking());
+                MoveUtil.strafe(0.15306319260371434 + MoveUtil.getSpeedBoost(1));
+                /*
                 ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
                 if(!isMoving())
@@ -1148,6 +1151,7 @@ public class Speed extends Module {
                         break;
                 }
                 break;
+                 */
         }
     }
 

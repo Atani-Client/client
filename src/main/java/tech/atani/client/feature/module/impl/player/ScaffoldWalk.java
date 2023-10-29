@@ -67,10 +67,11 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
     private final CheckBoxValue tower = new CheckBoxValue("Tower", "Tower?", this, false);
+    private final CheckBoxValue unSneakTower = new CheckBoxValue("Tower unSneak", "Stop sneaking when towering?", this, false, new Supplier[]{() -> sneak.getValue() && tower.getValue()});
     private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Matrix", "Intave"}, new Supplier[]{() -> tower.getValue()});
     private final SliderValue<Long> unSneakDelay = new SliderValue<Long>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
-
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
+    private final CheckBoxValue intaveBoost = new CheckBoxValue("Intave Speed Boost", "Add speed boost?", this, false);
 
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper(), startingTimeHelper = new TimeHelper();
     private double[] lastPos = new double[3];
@@ -79,7 +80,7 @@ public class ScaffoldWalk extends Module {
     private boolean starting;
     private int verusTicks;
     private int jumpTicks;
-    private int strafeTicks = 0;
+    private int intaveBoosted;
 
     @Listen
     public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {
@@ -93,6 +94,7 @@ public class ScaffoldWalk extends Module {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
 
+        mc.thePlayer.speedInAir = 0.02F;
         mc.timer.timerSpeed = timerSpeed.getValue();
 
         if(Methods.mc.thePlayer.motionX == 0.0 && Methods.mc.thePlayer.motionZ == 0.0 && Methods.mc.thePlayer.onGround) {
@@ -172,15 +174,17 @@ public class ScaffoldWalk extends Module {
                     }
                     break;
                 case "Intave":
-                    mc.timer.timerSpeed = 1.015F;
+                    mc.timer.timerSpeed = 1.004F;
                     if(mc.thePlayer.onGround) {
                         mc.thePlayer.jump();
                         mc.thePlayer.motionY -= 0.001F;
                     } else {
-                        mc.thePlayer.motionY -= 0.0001F;
+                        mc.thePlayer.speedInAir = 0.02008F;
+                        mc.thePlayer.motionY -= 0.0006F;
                         if(mc.thePlayer.ticksExisted % 3 == 0)
-                            mc.thePlayer.motionY -= 0.0007;
-                    }
+                            mc.thePlayer.motionY -= 0.001;
+                            mc.timer.timerSpeed = 1.04F;
+                        }
 
                     break;
             }
@@ -228,6 +232,10 @@ public class ScaffoldWalk extends Module {
             getGameSettings().keyBindForward.pressed = false;
         }
 
+        if(tower.getValue() && sneak.getValue() && unSneakTower.getValue() && mc.gameSettings.keyBindJump.pressed) {
+            mc.thePlayer.setSneaking(false);
+            return;
+        }
         if(sneak.getValue() && sneakMode.is("Edge")) {
             if (unSneakDelay.getValue() == 0 || unsneakTimeHelper.hasReached((long) (unSneakDelay.getValue()))) {
                 getGameSettings().keyBindSneak.pressed = false;
@@ -333,6 +341,13 @@ public class ScaffoldWalk extends Module {
 
     @Override
     public void onEnable() {
+        if(mc.thePlayer.onGround && intaveBoost.getValue()) {
+            mc.thePlayer.jump();
+            mc.thePlayer.jump();
+            mc.timer.timerSpeed = 1.089F;
+            intaveBoosted += 1;
+            PlayerUtil.addChatMessgae("BOOSTED. Boost times: " + intaveBoosted, true);
+        }
         timeHelper.reset();
         startingTimeHelper.reset();
         starting = true;
@@ -344,6 +359,7 @@ public class ScaffoldWalk extends Module {
             return;
         }
 
+        mc.thePlayer.speedInAir = 0.02F;
         mc.timer.timerSpeed = 1;
 
         if(this.lastItem != -1) {

@@ -17,6 +17,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
+import tech.atani.client.utility.player.PlayerUtil;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
@@ -24,7 +25,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground", "Test"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground", "Test", "Intave Boat"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")}),
             grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")}),
             verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump", "Collision"}, new Supplier[]{() -> mode.is("Verus")});
@@ -153,6 +154,27 @@ public class Flight extends Module {
                             break;
                     }
                 }
+                break;
+            case "Intave Boat":
+                PlayerUtil.addChatMessgae("Still trying shit lol", true);
+                /*
+                if(mc.thePlayer.isRiding()) {
+                    ticks = 0;
+                    launch = true;
+                } else {
+                    switch(ticks) {
+                        case 0:
+                            mc.timer.timerSpeed = 0.2F;
+                            mc.thePlayer.jump();
+                            mc.thePlayer.jump();
+                            break;
+                        case 2:
+                            mc.timer.timerSpeed = 1;
+                            break;
+                    }
+                    ticks++;
+                }
+                 */
                 break;
             case "Grim":
                 if (motionEvent.getType() == UpdateMotionEvent.Type.MID) {
@@ -353,6 +375,9 @@ public class Flight extends Module {
 
     @Override
     public void onEnable() {
+        if(mode.is("Intave Boat"))
+            PlayerUtil.addChatMessgae("Enter and leave a boat to launch!", true);
+
         stage = 0;
         jumps = 0;
         launch = false;

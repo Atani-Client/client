@@ -159,12 +159,16 @@ public class ScaffoldWalk extends Module {
                     }
                     break;
                 case "NCP":
-                    if(mc.thePlayer.onGround) {
-                        jumpTicks = 0;
+                    if (isMoving())
+                        return;
+
+                    if (mc.thePlayer.onGround) {
+                        mc.thePlayer.motionY = 0.42;
                     }
-                    jumpTicks++;
-                    if(jumpTicks == 4) {
-                        mc.thePlayer.motionY = 0;
+                    if (mc.thePlayer.motionY < 0.23) {
+                        mc.thePlayer.setPosition(mc.thePlayer.posX, (int)mc.thePlayer.posY, mc.thePlayer.posZ);
+                        mc.thePlayer.motionY = 0.42;
+                        break;
                     }
                     break;
                 case "Matrix":
@@ -179,13 +183,14 @@ public class ScaffoldWalk extends Module {
                         mc.thePlayer.jump();
                         mc.thePlayer.motionY -= 0.001F;
                     } else {
-                        mc.thePlayer.speedInAir = 0.02008F;
+                        mc.thePlayer.speedInAir = 0.02012F;
                         mc.thePlayer.motionY -= 0.0006F;
-                        if(mc.thePlayer.ticksExisted % 3 == 0)
+                        if(mc.thePlayer.ticksExisted % 3 == 0) {
                             mc.thePlayer.motionY -= 0.001;
-                            mc.timer.timerSpeed = 1.04F;
+                            mc.thePlayer.motionX *= 1.0001F;
+                            mc.thePlayer.motionZ *= 1.0001F;
                         }
-
+                    }
                     break;
             }
         }

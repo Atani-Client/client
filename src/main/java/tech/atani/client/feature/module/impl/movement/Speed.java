@@ -910,7 +910,7 @@ public class Speed extends Module {
                         if(mc.thePlayer.onGround && this.isMoving()) {
                             mc.thePlayer.jump();
 
-                            MoveUtil.strafe(0.41f);
+                            MoveUtil.strafe(0.3999f);
                         }
                         break;
                 }

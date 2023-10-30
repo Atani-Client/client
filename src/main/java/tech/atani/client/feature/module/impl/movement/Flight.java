@@ -25,7 +25,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground", "Test", "Intave Boat"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground", "Test", "Intave"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")}),
             grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")}),
             verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump", "Collision"}, new Supplier[]{() -> mode.is("Verus")});
@@ -155,8 +155,9 @@ public class Flight extends Module {
                     }
                 }
                 break;
-            case "Intave Boat":
-                PlayerUtil.addChatMessgae("Still trying shit lol", true);
+            case "Intave":
+                MoveUtil.setMoveSpeed(1);
+                mc.thePlayer.motionY = 0;
                 /*
                 if(mc.thePlayer.isRiding()) {
                     ticks = 0;
@@ -305,6 +306,11 @@ public class Flight extends Module {
                     ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
                 }
                 break;
+            case "Intave":
+                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                    packetEvent.setCancelled(true);
+                }
+                break;
             case "BWPractice":
                 if(packetEvent.getPacket() instanceof C0APacketAnimation) {
                     packetEvent.setCancelled(true);
@@ -376,7 +382,7 @@ public class Flight extends Module {
     @Override
     public void onEnable() {
         if(mode.is("Intave Boat"))
-            PlayerUtil.addChatMessgae("Enter and leave a boat to launch!", true);
+        //    PlayerUtil.addChatMessgae("Enter and leave a boat to launch!", true);
 
         stage = 0;
         jumps = 0;

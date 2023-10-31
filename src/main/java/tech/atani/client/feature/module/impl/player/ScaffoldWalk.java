@@ -181,15 +181,14 @@ public class ScaffoldWalk extends Module {
                     mc.timer.timerSpeed = 1.004F;
                     if(mc.thePlayer.onGround) {
                         mc.thePlayer.jump();
-                        mc.thePlayer.motionY -= 0.0015F;
+                        mc.thePlayer.motionY -= 0.01;
                     } else {
-                        mc.thePlayer.speedInAir = 0.02012F;
-                        mc.thePlayer.motionY -= 0.002F;
+                        mc.thePlayer.speedInAir = 0.0205F;
+                        mc.thePlayer.motionY -= 0.006;
                         if(mc.thePlayer.ticksExisted % 3 == 0) {
-                            mc.thePlayer.motionY -= 0.001;
-                            mc.thePlayer.motionX *= 1.0001F;
-                            mc.thePlayer.motionY *= 0.99975F;
-                            mc.thePlayer.motionZ *= 1.0001F;
+                            mc.thePlayer.motionX *= 1.003F;
+                            mc.thePlayer.motionY *= 0.999F;
+                            mc.thePlayer.motionZ *= 1.003F;
                         }
                     }
                     break;

@@ -35,7 +35,7 @@ public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "Test"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
-            vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe"}, new Supplier[]{() -> mode.is("Vulcan")}),
+            vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe", "TEST"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
             ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop", "Low"}, new Supplier[]{() -> mode.is("NCP")}),
             lowNcpMode = new StringBoxValue("Lowhop Timer Mode", "Which timer mode will the ncp lowhop mode use?", this, new String[]{"Normal", "Balance"}, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Low")}),
@@ -80,6 +80,7 @@ public class Speed extends Module {
     private int vulcanTicks;
     private double y;
     private boolean vulcanMoveForwardGround;
+    private boolean wasTimer;
 
     // WatchDog
     private int watchDogTicks;
@@ -329,6 +330,41 @@ public class Speed extends Module {
 
                                     mc.timer.timerSpeed = 1.18F;
                                 }
+                            }
+                            break;
+                        case "TEST":
+                            ticks++;
+                            if (wasTimer) {
+                                mc.timer.timerSpeed = 1.00f;
+                                wasTimer = false;
+                            }
+                            mc.thePlayer.jumpMovementFactor = 0.0245f;
+                            if (!mc.thePlayer.onGround && ticks > 3 && mc.thePlayer.motionY > 0) {
+                                mc.thePlayer.motionY = -0.27;
+                            }
+
+                            mc.gameSettings.keyBindJump.pressed = GameSettings.isKeyDown(mc.gameSettings.keyBindJump);
+                            if (MoveUtil.getSpeed() < 0.215f && !mc.thePlayer.onGround) {
+                                MoveUtil.strafe(0.215f);
+                            }
+                            if (mc.thePlayer.onGround && isMoving()) {
+                                ticks = 0;
+                                mc.gameSettings.keyBindJump.pressed = false;
+                                mc.thePlayer.jump();
+                                if (!mc.thePlayer.isAirBorne) {
+                                    return;
+                                }
+                                mc.timer.timerSpeed = 1.2f;
+                                wasTimer = true;
+                                if(MoveUtil.getSpeed() < 0.48f) {
+                                    MoveUtil.strafe(0.48f);
+                                }else{
+                                    MoveUtil.strafe((MoveUtil.getSpeed() * 0.985));
+                                }
+                            }else if (!isMoving()) {
+                                mc.timer.timerSpeed = 1.00f;
+                                mc.thePlayer.motionX = 0.0;
+                                mc.thePlayer.motionZ = 0.0;
                             }
                             break;
                         case "Y-Port":

@@ -51,6 +51,8 @@ public class Flight extends Module {
     private final TimeHelper verusTimer = new TimeHelper();
     private boolean verusUp;
     private int ticks;
+    // INTAVE LOL
+    private boolean blink;
 
     @Override
     public String getSuffix() {
@@ -102,9 +104,13 @@ public class Flight extends Module {
     public void onUpdateMotion(UpdateMotionEvent motionEvent) {
         switch (mode.getValue()) {
             case "Test":
-                mc.thePlayer.motionY = 0;
-                mc.thePlayer.onGround = true;
-                MoveUtil.strafe(0.33 + MoveUtil.getSpeedBoost(0));
+                if(mc.thePlayer.ticksExisted % 2 == 0)
+                    blink = !blink;
+
+                if(blink)
+                    mc.thePlayer.motionY = 1.4;
+                else
+                    mc.thePlayer.motionY = 0;
                 break;
             case "BWPractice":
                 mc.thePlayer.motionY = 0.0D;
@@ -302,8 +308,8 @@ public class Flight extends Module {
         switch (mode.getValue()) {
             case "Spoof Ground":
             case "Test":
-                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                    ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
+                if(packetEvent.getPacket() instanceof C03PacketPlayer && blink) {
+                    packetEvent.setCancelled(true);
                 }
                 break;
             case "Intave":

@@ -9,6 +9,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
+import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 import org.lwjgl.input.Keyboard;
@@ -72,7 +73,7 @@ public class ScaffoldWalk extends Module {
     private final SliderValue<Long> unSneakDelay = new SliderValue<Long>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
     private final CheckBoxValue intaveBoost = new CheckBoxValue("Intave Speed Boost", "Add speed boost?", this, false);
-
+    private final CheckBoxValue intaveSprint = new CheckBoxValue("Intave Sprint", "Intave Sprint?", this, false);
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper(), startingTimeHelper = new TimeHelper();
     private double[] lastPos = new double[3];
     private int lastItem = -1;
@@ -148,6 +149,53 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
+        if(verusBoost.getValue()) {
+            if(!isMoving())
+                return;
+            
+            if(mc.thePlayer.onGround) {
+                verusTicks = 0;
+                mc.thePlayer.jump();
+            } else {
+                verusTicks++;
+
+                if(verusTicks > 2)
+                    return;
+
+                mc.thePlayer.motionY = 0;
+                MoveUtil.strafe(0.475);
+                mc.thePlayer.onGround = true;
+            }
+        }
+
+        if (switchItems.getValue()) {
+            if ((Methods.mc.thePlayer.getHeldItem() != null && !(Methods.mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)) || Methods.mc.thePlayer.getHeldItem() == null) {
+                for (int i = 0; i < 9; i++) {
+                    ItemStack stack = Methods.mc.thePlayer.inventory.getStackInSlot(i);
+
+                    if (stack != null && stack.stackSize != 0 && stack.getItem() instanceof ItemBlock && !invalidBlocks.contains(((ItemBlock) stack.getItem()).getBlock())) {
+                        if(lastItem == -1)
+                            lastItem = Methods.mc.thePlayer.inventory.currentItem;
+                        Methods.mc.thePlayer.inventory.currentItem = i;
+                    }
+                }
+            }
+        }
+            if(!sprint.getValue()) {
+                getPlayer().setSprinting(false);
+            } else if (MoveUtil.getSpeed() != 0 && sprint.getValue()) {
+                getPlayer().setSprinting(intaveSprint.getValue() ? mc.thePlayer.ticksExisted % 3 == 0 : true);
+                if(intaveSprint.getValue() && mc.thePlayer.ticksExisted % 3 == 0) {
+                    PlayerUtil.addChatMessgae("SEND", true);
+                    mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SPRINTING));
+                }
+            }
+
+        if (reverseMovement.getValue()) {
+            getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());
+            getGameSettings().keyBindForward.pressed = false;
+        }
+
         if(tower.getValue() && mc.gameSettings.keyBindJump.pressed && mc.thePlayer.fallDistance < 1.5) {
             switch(towerMode.getValue()) {
                 case "Vanilla":
@@ -189,52 +237,11 @@ public class ScaffoldWalk extends Module {
                             mc.thePlayer.motionX *= 1.003F;
                             mc.thePlayer.motionY *= 0.999F;
                             mc.thePlayer.motionZ *= 1.003F;
+
                         }
                     }
                     break;
             }
-        }
-        if(verusBoost.getValue()) {
-            if(!isMoving())
-                return;
-            
-            if(mc.thePlayer.onGround) {
-                verusTicks = 0;
-                mc.thePlayer.jump();
-            } else {
-                verusTicks++;
-
-                if(verusTicks > 2)
-                    return;
-
-                mc.thePlayer.motionY = 0;
-                MoveUtil.strafe(0.475);
-                mc.thePlayer.onGround = true;
-            }
-        }
-
-        if (switchItems.getValue()) {
-            if ((Methods.mc.thePlayer.getHeldItem() != null && !(Methods.mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)) || Methods.mc.thePlayer.getHeldItem() == null) {
-                for (int i = 0; i < 9; i++) {
-                    ItemStack stack = Methods.mc.thePlayer.inventory.getStackInSlot(i);
-
-                    if (stack != null && stack.stackSize != 0 && stack.getItem() instanceof ItemBlock && !invalidBlocks.contains(((ItemBlock) stack.getItem()).getBlock())) {
-                        if(lastItem == -1)
-                            lastItem = Methods.mc.thePlayer.inventory.currentItem;
-                        Methods.mc.thePlayer.inventory.currentItem = i;
-                    }
-                }
-            }
-        }
-        if(!sprint.getValue()) {
-            getPlayer().setSprinting(false);
-        } else if (MoveUtil.getSpeed() != 0 && sprint.getValue()) {
-            getPlayer().setSprinting(true);
-        }
-
-        if (reverseMovement.getValue()) {
-            getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());
-            getGameSettings().keyBindForward.pressed = false;
         }
 
         if(tower.getValue() && sneak.getValue() && unSneakTower.getValue() && mc.gameSettings.keyBindJump.pressed) {
@@ -347,11 +354,16 @@ public class ScaffoldWalk extends Module {
     @Override
     public void onEnable() {
         if(mc.thePlayer.onGround && intaveBoost.getValue()) {
+            mc.thePlayer.setSprinting(true);
+            mc.thePlayer.jump();
+            mc.thePlayer.setSprinting(true);
+            /*
             mc.thePlayer.jump();
             mc.thePlayer.jump();
             mc.timer.timerSpeed = 1.089F;
             intaveBoosted += 1;
             PlayerUtil.addChatMessgae("BOOSTED. Boost times: " + intaveBoosted, true);
+             */
         }
         timeHelper.reset();
         startingTimeHelper.reset();

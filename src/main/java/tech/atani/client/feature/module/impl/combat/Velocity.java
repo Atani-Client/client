@@ -376,7 +376,7 @@ public class Velocity extends Module {
         switch(this.mode.getValue()) {
             case "Intave Jump":
             case "Intave":
-                if (Velocity.mc.thePlayer.hurtTime == 9 && Velocity.mc.thePlayer.onGround && ++this.counter % 2 == 0) {
+                if (Velocity.mc.thePlayer.hurtTime == 9 && Velocity.mc.thePlayer.onGround && ++this.counter % 2 == 0 && !mc.thePlayer.isBurning()) {
                     Velocity.mc.thePlayer.movementInput.jump = true;
                     break;
                 }

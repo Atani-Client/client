@@ -5,6 +5,7 @@ import com.google.common.base.Supplier;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.*;
+import net.minecraft.network.play.client.C02PacketUseEntity;
 import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.network.play.client.C0APacketAnimation;
@@ -16,8 +17,11 @@ import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.feature.module.impl.player.ScaffoldWalk;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.game.PostTickEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
+import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
@@ -53,10 +57,15 @@ public class KillAura extends Module {
     public StringBoxValue autoBlockMode = new StringBoxValue("Auto Block Mode", "Which mode should the autoblock use?", this, new String[] {"Vanilla", "NCP", "AAC", "GrimAC", "Intave", "Matrix", "Legit"}, new Supplier[]{() -> autoBlock.getValue()});
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
+    public CheckBoxValue advancedRange = new CheckBoxValue("Advanced Range", "Make attack range more advanced?", this, true);
+    public SliderValue<Float> groundRange = new SliderValue<>("Ground Attack Range", "What'll be the range for Attacking while on ground?", this, 3f, 3f, 6f, 1, new Supplier[]{() -> advancedRange.getValue()});
+    public SliderValue<Float> airRange = new SliderValue<>("Air Attack Range", "What'll be the range for Attacking while in air?", this, 3f, 3f, 6f, 1, new Supplier[]{() -> advancedRange.getValue()});
+    public SliderValue<Float> sprintRange = new SliderValue<>("Sprint Attack Range", "What'll be the range for Attacking while sprinting?", this, 3f, 3f, 6f, 1, new Supplier[]{() -> advancedRange.getValue()});
     public CheckBoxValue fixServersSideMisplace = new CheckBoxValue("Fix Misplace", "Fix Server-Side Misplace?", this, true);
     public CheckBoxValue waitBeforeAttack = new CheckBoxValue("Delay Clicks", "Wait before attacking the target?", this, true);
     public StringBoxValue waitMode = new StringBoxValue("Wait for", "For what will the module wait before attacking?", this, new String[]{"CPS", "1.9"}, new Supplier[]{() -> waitBeforeAttack.getValue()});
     public SliderValue<Float> cps = new SliderValue<Float>("CPS", "How much will the killaura click every second?", this, 12f, 0f, 20f, 1, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
+    public StringBoxValue attackMode = new StringBoxValue("Attack Mode", "How should KillAura attack?", this, new String[] {"Normal", "Packet"});
     public CheckBoxValue randomizeCps = new CheckBoxValue("Randomize CPS", "Randomize CPS Value to bypass anticheats?", this, true, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
     public CheckBoxValue lockView = new CheckBoxValue("Lock-view", "Rotate non-silently?", this, false);
     public CheckBoxValue snapYaw = new CheckBoxValue("Snap Yaw", "Skip smoothing out yaw rotations?", this, false);
@@ -119,10 +128,19 @@ public class KillAura extends Module {
         }
     }
 
+    /*
+    @Listen
+    public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
+        if(ModuleStorage.getInstance().getModule(String.valueOf(ScaffoldWalk.class)).isEnabled()) {
+            return;
+        }
+    }
+     */
     @Listen
     public void onRayTrace(RayTraceRangeEvent rayTraceRangeEvent) {
         if(curEntity != null) {
-            correctedRange = this.attackRange.getValue() + 0.00256f;
+            double range2 = mc.thePlayer.isSprinting() ? sprintRange.getValue() : mc.thePlayer.onGround ? groundRange.getValue() : airRange.getValue();
+            correctedRange = (advancedRange.getValue() ? range2 : attackRange.getValue()) + 0.00256f;
             if (this.fixServersSideMisplace.getValue()) {
                 final float n = 0.010625f;
                 if (Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.NORTH || Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.WEST) {
@@ -138,6 +156,12 @@ public class KillAura extends Module {
     public void onPostTickEvent(PostTickEvent postTickEvent) {
         if (mc.thePlayer == null || mc.thePlayer.ticksExisted % 5 != 0)
             return;
+
+        /*
+        if(ModuleStorage.getInstance().getModule(String.valueOf(ScaffoldWalk.class)).isEnabled()) {
+            return;
+        }
+         */
 
         List<EntityLivingBase> targets = FightUtil.getMultipleTargets(findRange.getValue(), players.getValue(), animals.getValue(), walls.getValue(), monsters.getValue(), invisible.getValue());
         switch (this.priority.getValue()) {
@@ -294,7 +318,14 @@ public class KillAura extends Module {
                     }
 
                     Methods.mc.thePlayer.swingItem();
-                    Methods.mc.playerController.attackEntity(Methods.mc.thePlayer, objectPosition.entityHit);
+                    switch (attackMode.getValue()) {
+                        case "Normal":
+                            Methods.mc.playerController.attackEntity(Methods.mc.thePlayer, objectPosition.entityHit);
+                            break;
+                        case "Packet":
+                            mc.getNetHandler().addToSendQueue(new C02PacketUseEntity(curEntity, C02PacketUseEntity.Action.ATTACK));
+                            break;
+                    }
                 }
                 this.attackTimer.reset();
             }

@@ -7,7 +7,8 @@ public interface ClientInformationAccess {
 
     // im2lazy2fix lol
     // also hello people that are looking through the src:)
-    String CLIENT_NAME = Catani.catani ? "Catani" : "Atani";
+    // String CLIENT_NAME = Catani.catani ? "Catani" : "Atani";
+    String CLIENT_NAME = "MysteryClarinet";
     String CLIENT_VERSION = "0.0.4";
     String CLIENT_NAME_JAPANASE = "アタニ";
     String[] AUTHORS = new String[] {"Kellohylly", "MarkGG", "Geuxy", "Liticane", "Exterminate", "mistakedev"};

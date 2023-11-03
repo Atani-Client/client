@@ -73,7 +73,7 @@ public class ScaffoldWalk extends Module {
     private final SliderValue<Long> unSneakDelay = new SliderValue<Long>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
     private final CheckBoxValue intaveBoost = new CheckBoxValue("Intave Speed Boost", "Add speed boost?", this, false);
-    private final CheckBoxValue intaveSprint = new CheckBoxValue("Intave Sprint", "Intave Sprint?", this, false);
+    private final CheckBoxValue intaveBoost2 = new CheckBoxValue("Intave Speed Boost 2", "Add speed boost 2?", this, false);
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper(), startingTimeHelper = new TimeHelper();
     private double[] lastPos = new double[3];
     private int lastItem = -1;
@@ -181,15 +181,17 @@ public class ScaffoldWalk extends Module {
                 }
             }
         }
-            if(!sprint.getValue()) {
-                getPlayer().setSprinting(false);
-            } else if (MoveUtil.getSpeed() != 0 && sprint.getValue()) {
-                getPlayer().setSprinting(intaveSprint.getValue() ? mc.thePlayer.ticksExisted % 3 == 0 : true);
-                if(intaveSprint.getValue() && mc.thePlayer.ticksExisted % 3 == 0) {
-                    PlayerUtil.addChatMessgae("SEND", true);
-                    mc.getNetHandler().addToSendQueue(new C0BPacketEntityAction(mc.thePlayer, C0BPacketEntityAction.Action.STOP_SPRINTING));
-                }
+            getPlayer().setSprinting(sprint.getValue());
+
+        if(intaveBoost2.getValue()) {
+            if(mc.thePlayer.ticksExisted % 3 == 0) {
+                mc.thePlayer.motionX *= 1.0007F;
+                mc.thePlayer.motionZ *= 1.0007F;
+                mc.timer.timerSpeed = 1.1F;
+            } else {
+                mc.timer.timerSpeed = 1;
             }
+        }
 
         if (reverseMovement.getValue()) {
             getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());
@@ -232,10 +234,8 @@ public class ScaffoldWalk extends Module {
                         mc.thePlayer.motionY -= 0.01;
                     } else {
                         mc.thePlayer.speedInAir = 0.0205F;
-                        mc.thePlayer.motionY -= 0.006;
                         if(mc.thePlayer.ticksExisted % 3 == 0) {
                             mc.thePlayer.motionX *= 1.003F;
-                            mc.thePlayer.motionY *= 0.999F;
                             mc.thePlayer.motionZ *= 1.003F;
 
                         }

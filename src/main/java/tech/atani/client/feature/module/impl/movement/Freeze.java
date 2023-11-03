@@ -11,6 +11,7 @@ import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;
+import tech.atani.client.utility.player.movement.MoveUtil;
 
 @Native
 @ModuleData(name = "Freeze", description = "Freezes You", category = Category.MOVEMENT)
@@ -26,17 +27,21 @@ public class Freeze extends Module {
     
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
-        if (!mc.thePlayer.isInWeb) {
-            return;
-        }
-
         switch (mode.getValue()) {
             case "Normal":
-                mc.thePlayer.motionX = mc.thePlayer.motionY = mc.thePlayer.motionZ = 0;
+                MoveUtil.setMoveSpeed(mc.thePlayer.motionX = mc.thePlayer.motionY = mc.thePlayer.motionZ = 0);
                 break;
             case "Intave":
-                blink = mc.thePlayer.ticksExisted % 2 == 0;
-                mc.thePlayer.motionY = blink ? 1.4 : 0;
+                if (mc.thePlayer.ticksExisted % 2 == 0)
+                    blink = !blink;
+
+                if (blink) {
+                    mc.thePlayer.motionY = 1.4;
+                    mc.gameSettings.keyBindForward.pressed = false;
+                } else {
+                    mc.thePlayer.motionY = 0;
+                    mc.gameSettings.keyBindForward.pressed = true;
+                }
                 break;
         }
     }

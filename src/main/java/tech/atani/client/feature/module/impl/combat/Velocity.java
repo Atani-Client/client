@@ -2,7 +2,6 @@ package tech.atani.client.feature.module.impl.combat;
 
 import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
@@ -381,10 +380,9 @@ public class Velocity extends Module {
         switch(this.mode.getValue()) {
             case "Intave Jump":
             case "Intave":
-                if (mc.thePlayer.hurtTime == 9) {
-                    KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), true);
-                } else {
-                    KeyBinding.setKeyBindState(mc.gameSettings.keyBindJump.getKeyCode(), false);
+                if (Velocity.mc.thePlayer.hurtTime == 9 && Velocity.mc.thePlayer.onGround && ++this.counter % 2 == 0) {
+                    Velocity.mc.thePlayer.movementInput.jump = true;
+                    break;
                 }
                 break;
         }

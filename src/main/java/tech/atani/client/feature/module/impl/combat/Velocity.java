@@ -3,10 +3,12 @@ package tech.atani.client.feature.module.impl.combat;
 import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.network.Packet;
+import net.minecraft.network.play.client.C00PacketKeepAlive;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.network.play.server.S32PacketConfirmTransaction;
+import net.minecraft.network.status.client.C01PacketPing;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
@@ -18,6 +20,7 @@ import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
+import tech.atani.client.utility.math.random.RandomUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
@@ -203,10 +206,38 @@ public class Velocity extends Module {
                     S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
 
                     if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
-                        packet.setMotionX((int) (packet.getMotionX() * 0.66));
-                        packet.setMotionZ((int) (packet.getMotionZ() * 0.66));
+                        packet.setMotionX((int) (packet.getMotionX() * 0.6));
+                        packet.setMotionZ((int) (packet.getMotionZ() * 0.6));
                     }
                 }
+                /*
+                if(mc.thePlayer.hurtTime != 0) {
+                    if(packetEvent.getType() == PacketEvent.Type.OUTGOING) {
+                        final Packet<?> packet = packetEvent.getPacket();
+                        if (packet instanceof C00PacketKeepAlive) {
+                            packetEvent.setCancelled(true);
+                            new Thread(() -> {
+                                try {
+                                    Thread.sleep(100);
+                                }
+                                catch (InterruptedException ex) {
+                                    ex.printStackTrace();
+                                }
+                                Methods.mc.getNetHandler().getNetworkManager().channel.writeAndFlush(packet);
+                            }).start();
+                        }
+                    }
+                }
+
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
+
+                    if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                        packet.setMotionX((int) (packet.getMotionX() * 0.6));
+                        packet.setMotionZ((int) (packet.getMotionZ() * 0.6));
+                    }
+                }
+                 */
             }
             case "MineMenClub": {
                 if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {

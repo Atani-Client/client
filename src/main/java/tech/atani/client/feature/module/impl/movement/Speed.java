@@ -1075,16 +1075,6 @@ public class Speed extends Module {
                 break;
 
             case "Test":
-                if(!isMoving()) {
-                    mc.gameSettings.keyBindJump.pressed = false;
-                    return;
-                }
-
-                mc.timer.timerSpeed = 1.004F;
-                mc.gameSettings.keyBindSneak.pressed = mc.gameSettings.keyBindJump.pressed = true;
-                MoveUtil.strafe(mc.thePlayer.onGround ? 0.55 : 0.33);
-                verusTicks = mc.thePlayer.onGround ? 0 : verusTicks + 1;
-
                 /*
                 ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
@@ -1123,6 +1113,20 @@ public class Speed extends Module {
                 } else {
                     mc.thePlayer.motionX = 0.0;
                     mc.thePlayer.motionZ = 0.0;
+                }
+                break;
+            case "Test":
+                if (!mc.thePlayer.isInWeb && !mc.thePlayer.isInLava() && !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder() && mc.thePlayer.ridingEntity == null) {
+                    if (isMoving()) {
+                        mc.gameSettings.keyBindJump.pressed = false;
+                        if (mc.thePlayer.onGround) {
+                            mc.thePlayer.jump();
+                            mc.thePlayer.motionY = 0;
+                            MoveUtil.strafe(0.61F);
+                            movePlayerEvent.setY(0.41999998688698);
+                        }
+                        MoveUtil.strafe();
+                    }
                 }
                 break;
             case "Verus":

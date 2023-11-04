@@ -65,6 +65,7 @@ public class KillAura extends Module {
     public CheckBoxValue waitBeforeAttack = new CheckBoxValue("Delay Clicks", "Wait before attacking the target?", this, true);
     public StringBoxValue waitMode = new StringBoxValue("Wait for", "For what will the module wait before attacking?", this, new String[]{"CPS", "1.9"}, new Supplier[]{() -> waitBeforeAttack.getValue()});
     public SliderValue<Float> cps = new SliderValue<Float>("CPS", "How much will the killaura click every second?", this, 12f, 0f, 20f, 1, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
+    public SliderValue<Float> timerSpeed = new SliderValue<Float>("Attack Timer Speed", "What will the timer be while attacking?", this, 1.0f, 0.5f, 5f, 3, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
     public StringBoxValue attackMode = new StringBoxValue("Attack Mode", "How should KillAura attack?", this, new String[] {"Normal", "Packet"});
     public CheckBoxValue randomizeCps = new CheckBoxValue("Randomize CPS", "Randomize CPS Value to bypass anticheats?", this, true, new Supplier[]{() -> waitBeforeAttack.getValue() && waitMode.is("CPS")});
     public CheckBoxValue lockView = new CheckBoxValue("Lock-view", "Rotate non-silently?", this, false);
@@ -154,6 +155,12 @@ public class KillAura extends Module {
 
     @Listen
     public void onPostTickEvent(PostTickEvent postTickEvent) {
+        if(curEntity != null) {
+            mc.timer.timerSpeed = timerSpeed.getValue();
+        } else {
+            mc.timer.timerSpeed = 1;
+        }
+
         if (mc.thePlayer == null || mc.thePlayer.ticksExisted % 5 != 0)
             return;
 

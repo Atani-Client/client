@@ -185,8 +185,8 @@ public class ScaffoldWalk extends Module {
 
         if(intaveBoost2.getValue()) {
             if(mc.thePlayer.ticksExisted % 3 == 0) {
-                mc.thePlayer.motionX *= 1.0007F;
-                mc.thePlayer.motionZ *= 1.0007F;
+                mc.thePlayer.motionX *= 1.002F;
+                mc.thePlayer.motionZ *= 1.002F;
                 mc.timer.timerSpeed = 1.1F;
             } else {
                 mc.timer.timerSpeed = 1;

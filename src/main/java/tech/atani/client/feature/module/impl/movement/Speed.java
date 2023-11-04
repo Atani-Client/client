@@ -34,6 +34,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "Test"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
+            karhuMode = new StringBoxValue("Karhu Mode", "Which mode will the karhu mode use?", this, new String[]{"Normal", "Rage"}, new Supplier[]{() -> mode.is("Karhu")}),
             intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe", "TEST"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
@@ -868,12 +869,20 @@ public class Speed extends Module {
                     return;
                 }
 
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+
+                //mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0 &&
+
+                if(mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0 && ticks == 1 && !mc.thePlayer.onGround) MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() * (karhuMode.is("Rage") ? 3 : 1.6) + MoveUtil.getSpeedBoost(1));
+
+                mc.timer.timerSpeed = 1.004F;
+
                 mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
 
                 ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
                 if(mc.thePlayer.motionY < 0) {
-                    mc.timer.timerSpeed = 1.004F;
+                    mc.timer.timerSpeed = (float) (1.007 + Math.abs(mc.thePlayer.motionY * 0.05));
                     mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 3000F);
                     mc.thePlayer.motionY -= 0.002;
                 } else {

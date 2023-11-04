@@ -21,8 +21,10 @@ public class AntiAura extends Module {
     private final List<Packet<?>> packetsList = new CopyOnWriteArrayList<>();
     @Listen
     public void onPacket(PacketEvent event) {
-        if(event.getPacket() instanceof C03PacketPlayer && active)
+        if(event.getPacket() instanceof C03PacketPlayer) {
+            packetsList.add(event.getPacket());
             event.setCancelled(true);
+        }
     }
 
     @Listen
@@ -39,12 +41,12 @@ public class AntiAura extends Module {
     }
     @Override
     public void onEnable() {
-        active = true;
+
     }
 
     @Override
     public void onDisable() {
-        active = false;
+
     }
 
 }

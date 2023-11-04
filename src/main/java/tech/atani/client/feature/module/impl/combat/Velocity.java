@@ -114,6 +114,17 @@ public class Velocity extends Module {
                 attacked = false;
             break;
             case "Intave":
+                if (mc.thePlayer.isSwingInProgress) {
+                    attacked = true;
+                }
+
+                if (mc.objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY) && mc.thePlayer.hurtTime > 0 && !attacked) {
+                    mc.thePlayer.motionX *= 0.6D;
+                    mc.thePlayer.motionZ *= 0.6D;
+                    mc.thePlayer.setSprinting(false);
+                }
+
+                attacked = false;
                 break;
         }
     }
@@ -202,14 +213,7 @@ public class Velocity extends Module {
                 break;
             }
             case "Intave": {
-                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
-                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
 
-                    if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
-                        packet.setMotionX((int) (packet.getMotionX() * 0.6));
-                        packet.setMotionZ((int) (packet.getMotionZ() * 0.6));
-                    }
-                }
                 /*
                 if(mc.thePlayer.hurtTime != 0) {
                     if(packetEvent.getType() == PacketEvent.Type.OUTGOING) {
@@ -410,7 +414,6 @@ public class Velocity extends Module {
     public final void onSilent(SilentMoveEvent silentMoveEvent) {
         switch(this.mode.getValue()) {
             case "Intave Jump":
-            case "Intave":
                 if (Velocity.mc.thePlayer.hurtTime == 9 && Velocity.mc.thePlayer.onGround && ++this.counter % 2 == 0) {
                     Velocity.mc.thePlayer.movementInput.jump = true;
                     break;

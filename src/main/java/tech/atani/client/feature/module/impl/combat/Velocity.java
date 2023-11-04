@@ -199,9 +199,13 @@ public class Velocity extends Module {
                 break;
             }
             case "Intave": {
-                if(mc.thePlayer.hurtTime == 1) {
-                    mc.thePlayer.motionX *= 0.6F;
-                    mc.thePlayer.motionZ *= 0.6F;
+                if (packetEvent.getPacket() instanceof S12PacketEntityVelocity) {
+                    S12PacketEntityVelocity packet = (S12PacketEntityVelocity) packetEvent.getPacket();
+
+                    if(packet.getEntityID() == mc.thePlayer.getEntityId()) {
+                        packet.setMotionX((int) (packet.getMotionX() * 0.66));
+                        packet.setMotionZ((int) (packet.getMotionZ() * 0.66));
+                    }
                 }
             }
             case "MineMenClub": {

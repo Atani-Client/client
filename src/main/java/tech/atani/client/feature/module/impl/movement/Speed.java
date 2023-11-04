@@ -963,7 +963,7 @@ public class Speed extends Module {
                     case "Strafe 2":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                        double random = (Math.random() - 0.75) * 0.02F;
+                        double random = (Math.random() - 0.75) * 0.05;
                         if(isMoving()) {
                             if(mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 1.1F;
@@ -977,10 +977,12 @@ public class Speed extends Module {
                             if(mc.thePlayer.hurtTime != 0)
                                 return;
 
-                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
+                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random * 1.22 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
                                 MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random + (KillAura.curEntity == null ? 0.04 : 0.02));
+                                mc.timer.timerSpeed = 0.99F + (float) (random * 10);
                                 strafeTicks++;
                             } else {
+                                mc.timer.timerSpeed = 1;
                                 strafeTicks = 0;
                             }
                             break;

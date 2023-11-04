@@ -34,7 +34,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "Test"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
-            intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
+            intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe", "TEST"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
             ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop", "Low"}, new Supplier[]{() -> mode.is("NCP")}),
@@ -977,9 +977,9 @@ public class Speed extends Module {
                             if(mc.thePlayer.hurtTime != 0)
                                 return;
 
-                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random * 1.22 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
+                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
                                 MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random + (KillAura.curEntity == null ? 0.04 : 0.02));
-                                mc.timer.timerSpeed = 0.99F + (float) (random * 10);
+                                mc.timer.timerSpeed = 0.99F + (float) (random * 12);
                                 strafeTicks++;
                             } else {
                                 mc.timer.timerSpeed = 1;
@@ -992,6 +992,30 @@ public class Speed extends Module {
                             mc.timer.timerSpeed = 1;
                             mc.thePlayer.motionX *= multiplier;
                             mc.thePlayer.motionZ *= multiplier;
+                        }
+                        break;
+                    case "Rage":
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                        mc.thePlayer.speedInAir = 0.0205F;
+
+                        if(mc.thePlayer.onGround) {
+                            mc.timer.timerSpeed = 1.2F;
+                            mc.thePlayer.motionY -= 0.002;
+                            double multiplier = 1.0007F;
+                            mc.thePlayer.motionX *= multiplier;
+                            mc.thePlayer.motionZ *= multiplier;
+                        }
+
+                        double random2 = (Math.random() - 0.75) * 0.05;
+
+                        if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random2 * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
+                            MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random2 + (KillAura.curEntity == null ? 0.04 : 0.02));
+                            mc.timer.timerSpeed = 0.99F + (float) (random2 * 12);
+                            strafeTicks++;
+                        } else {
+                            mc.timer.timerSpeed = 1;
+                            strafeTicks = 0;
                         }
                         break;
                     case "Ground Strafe":
@@ -1075,28 +1099,6 @@ public class Speed extends Module {
                 break;
 
             case "Test":
-                /*
-                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
-
-                if(!isMoving())
-                    return;
-
-                switch (ticks) {
-                    case 0:
-                        mc.thePlayer.jump();
-                        MoveUtil.strafe(0.525);
-                        mc.timer.timerSpeed = 1.1F;
-                        break;
-                    case 1:
-                        mc.timer.timerSpeed = 1;
-                        mc.thePlayer.motionY -= 0.005;
-                        break;
-                    case 2:
-                    case 3:
-                        mc.thePlayer.motionY -= 0.001;
-                        break;
-                }
-                 */
                 break;
         }
     }
@@ -1116,6 +1118,29 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
+                mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                mc.thePlayer.speedInAir = 0.0205F;
+
+                if(mc.thePlayer.onGround) {
+                    mc.timer.timerSpeed = 1.2F;
+                    mc.thePlayer.motionY -= 0.002;
+                    double multiplier = 1.0007F;
+                    mc.thePlayer.motionX *= multiplier;
+                    mc.thePlayer.motionZ *= multiplier;
+                }
+
+                double random = (Math.random() - 0.75) * 0.05;
+
+                if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
+                    MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random + (KillAura.curEntity == null ? 0.04 : 0.02));
+                    mc.timer.timerSpeed = 0.99F + (float) (random * 12);
+                    strafeTicks++;
+                } else {
+                    mc.timer.timerSpeed = 1;
+                    strafeTicks = 0;
+                }
+                /*
                 if (!mc.thePlayer.isInWeb && !mc.thePlayer.isInLava() && !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder() && mc.thePlayer.ridingEntity == null) {
                     if (isMoving()) {
                         mc.gameSettings.keyBindJump.pressed = false;
@@ -1128,6 +1153,7 @@ public class Speed extends Module {
                         MoveUtil.strafe();
                     }
                 }
+                 */
                 break;
             case "Verus":
                 if (!isMoving() || !verusMode.is("Low") || !verusLowMode.is("Fast 2"))

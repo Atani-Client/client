@@ -69,6 +69,9 @@ public class Velocity extends Module {
     // MineMenClub
     private int mmcCounter;
 
+    // Intave Jump
+    private boolean jumped;
+
     @Override
     public String getSuffix() {
     	return mode.getValue();
@@ -414,9 +417,13 @@ public class Velocity extends Module {
     public final void onSilent(SilentMoveEvent silentMoveEvent) {
         switch(this.mode.getValue()) {
             case "Intave Jump":
-                if (Velocity.mc.thePlayer.hurtTime == 9 && Velocity.mc.thePlayer.onGround && ++this.counter % 2 == 0) {
-                    Velocity.mc.thePlayer.movementInput.jump = true;
+                if (Velocity.mc.thePlayer.hurtTime == 9) {
+                    mc.gameSettings.keyBindJump.pressed = true;
+                    jumped = true;
                     break;
+                } else if(jumped) {
+                    mc.gameSettings.keyBindJump.pressed = false;
+                    jumped = false;
                 }
                 break;
         }

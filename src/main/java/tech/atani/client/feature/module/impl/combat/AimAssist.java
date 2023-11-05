@@ -14,6 +14,7 @@ import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
+import tech.atani.client.utility.player.rotation.RotationUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -31,11 +32,15 @@ public class AimAssist extends Module {
     private final SliderValue<Float> cameraShake = new SliderValue<>("Camera Shake Amount", "How much will the camera shake?", this, 0.2f, 0f, 5f, 1);
     private final SliderValue<Float> maxRange = new SliderValue<>("Max Range", "What should the max distance to list the target?", this, 5f, 1f, 10f, 1);
     private final SliderValue<Float> minRange = new SliderValue<>("Min Range", "What should the min distance to list the target?", this, 3f, 0f, 10f, 1);
-
+    private final CheckBoxValue aimOnEntity = new CheckBoxValue("Aim While On Entity", "Should the aim assist only work when pointedentity is null?", this, false);
     private final CheckBoxValue clickToAim = new CheckBoxValue("Click to Aim", "Should the aim assist only work when holding down the mouse?", this, false);
 
+    private int speedFriction;
     @Listen
     public void onMotion(UpdateMotionEvent event) {
+        if(mc.pointedEntity != null) {
+            speedFriction = 1;
+        }
         if (event.getType() == UpdateMotionEvent.Type.MID) {
             List<EntityLivingBase> targets = mc.theWorld.loadedEntityList.stream()
                     .filter(entity -> entity instanceof EntityLivingBase)
@@ -92,6 +97,7 @@ public class AimAssist extends Module {
     }
 
     private float[] getRotations(Entity entity) {
+    //    speedFriction -= (0.06) * 1 - (speedFriction * 8);
         float rotationSpeedX = horizontalSpeed.getValue();
         float rotationSpeedY = verticalSpeed.getValue();
         float cameraShakeSpeed = (float) (Math.random() * cameraShake.getValue());
@@ -105,6 +111,17 @@ public class AimAssist extends Module {
 
         float deltaYaw = MathHelper.wrapAngleTo180_float(yaw - mc.thePlayer.rotationYaw);
         float deltaPitch = MathHelper.wrapAngleTo180_float(pitch - mc.thePlayer.rotationPitch);
+
+        /*
+        rotationSpeedX -= speedFriction * horizontalSpeed.getValue();
+        rotationSpeedY -= speedFriction * verticalSpeed.getValue();
+
+        if(rotationSpeedX < rotationSpeedX / 0.4)
+            rotationSpeedX = rotationSpeedX / 0.4F;
+
+        if(rotationSpeedY < rotationSpeedY / 0.4)
+            rotationSpeedY = rotationSpeedY / 0.4F;
+         */
 
         deltaYaw = Math.min(rotationSpeedX, Math.max(-rotationSpeedX, deltaYaw));
         deltaPitch = Math.min(rotationSpeedY, Math.max(-rotationSpeedY, deltaPitch));

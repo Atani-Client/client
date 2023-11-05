@@ -35,7 +35,7 @@ public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "Test"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             karhuMode = new StringBoxValue("Karhu Mode", "Which mode will the karhu mode use?", this, new String[]{"Normal", "Rage"}, new Supplier[]{() -> mode.is("Karhu")}),
-            intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
+            intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Stable", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe", "TEST"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
             ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop", "Low"}, new Supplier[]{() -> mode.is("NCP")}),
@@ -971,18 +971,25 @@ public class Speed extends Module {
                         break;
                     case "Strafe 2":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
+                        ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
-                        double random = (Math.random() - 0.75) * 0.05;
-                        if(isMoving()) {
-                            if(mc.thePlayer.onGround) {
+                        switch(ticks) {
+                            case 0:
                                 mc.timer.timerSpeed = 1.1F;
                                 float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
                                 mc.thePlayer.motionX *= multiplier;
                                 mc.thePlayer.motionZ *= multiplier;
-                            } else {
+                                break;
+                            case 1:
                                 mc.timer.timerSpeed = 1;
-                            }
+                                float multiplier2 = (float) (1 + (Math.random() - 0.7) / 140);
+                                mc.thePlayer.motionX *= multiplier2;
+                                mc.thePlayer.motionZ *= multiplier2;
+                                break;
+                        }
 
+                        double random = (Math.random() - 0.75) * 0.05;
+                        if(isMoving()) {
                             if(mc.thePlayer.hurtTime != 0)
                                 return;
 
@@ -1008,23 +1015,81 @@ public class Speed extends Module {
 
                         mc.thePlayer.speedInAir = 0.0205F;
 
-                        if(mc.thePlayer.onGround) {
-                            mc.timer.timerSpeed = 1.2F;
-                            mc.thePlayer.motionY -= 0.002;
-                            double multiplier = 1.0007F;
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
+                        ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+
+                        switch(ticks) {
+                            case 0:
+                                mc.timer.timerSpeed = 1.1F;
+                                float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
+                                mc.thePlayer.motionX *= multiplier;
+                                mc.thePlayer.motionZ *= multiplier;
+                                break;
+                            case 1:
+                                mc.timer.timerSpeed = 1;
+                                MoveUtil.strafe();
+                                break;
+                        }
+
+                        double random5 = (Math.random() - 0.75) * 0.05;
+                        if(isMoving()) {
+                            if(mc.thePlayer.hurtTime != 0)
+                                return;
+
+                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random5 * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
+                                MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random5 + (KillAura.curEntity == null ? 0.04 : 0.02));
+                                mc.timer.timerSpeed = 0.99F + (float) (random5 * 12);
+                                strafeTicks++;
+                            } else {
+                                mc.timer.timerSpeed = 1;
+                                strafeTicks = 0;
+                            }
+                            break;
+                        } else {
+                            // 0.5 Kinda works? Gonna make it 0.75 for safe.
+                            float multiplier = 0.75F;
+                            mc.timer.timerSpeed = 1;
                             mc.thePlayer.motionX *= multiplier;
                             mc.thePlayer.motionZ *= multiplier;
                         }
+                        break;
+                    case "Stable":
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
+                        ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
-                        double random2 = (Math.random() - 0.75) * 0.05;
+                        switch(ticks) {
+                            case 0:
+                                mc.timer.timerSpeed = 1.1F;
+                                float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
+                                mc.thePlayer.motionX *= multiplier;
+                                mc.thePlayer.motionZ *= multiplier;
+                                break;
+                            case 1:
+                                mc.timer.timerSpeed = 1;
+                                MoveUtil.strafe(MoveUtil.getBaseGroundSpeed() * 1.3);
+                                break;
+                        }
 
-                        if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random2 * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
-                            MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random2 + (KillAura.curEntity == null ? 0.04 : 0.02));
-                            mc.timer.timerSpeed = 0.99F + (float) (random2 * 12);
-                            strafeTicks++;
+                        double randomm = (Math.random() - 0.75) * 0.05;
+                        if(isMoving()) {
+                            if(mc.thePlayer.hurtTime != 0)
+                                return;
+
+                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + randomm * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
+                                MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + randomm + (KillAura.curEntity == null ? 0.04 : 0.02));
+                                mc.timer.timerSpeed = 0.99F + (float) (randomm * 12);
+                                strafeTicks++;
+                            } else {
+                                mc.timer.timerSpeed = 1;
+                                strafeTicks = 0;
+                            }
+                            break;
                         } else {
+                            // 0.5 Kinda works? Gonna make it 0.75 for safe.
+                            float multiplier = 0.75F;
                             mc.timer.timerSpeed = 1;
-                            strafeTicks = 0;
+                            mc.thePlayer.motionX *= multiplier;
+                            mc.thePlayer.motionZ *= multiplier;
                         }
                         break;
                     case "Ground Strafe":

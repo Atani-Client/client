@@ -2,6 +2,7 @@ package tech.atani.client.feature.module.impl.movement;
 
 import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C03PacketPlayer;
@@ -1192,28 +1193,20 @@ public class Speed extends Module {
                 }
                 break;
             case "Test":
-                mc.gameSettings.keyBindJump.pressed = isMoving();
+                mc.gameSettings.keyBindJump.pressed = true;
 
-                mc.thePlayer.speedInAir = 0.0205F;
-
-                if(mc.thePlayer.onGround) {
-                    mc.timer.timerSpeed = 1.2F;
-                    mc.thePlayer.motionY -= 0.002;
-                    double multiplier = 1.0007F;
-                    mc.thePlayer.motionX *= multiplier;
-                    mc.thePlayer.motionZ *= multiplier;
-                }
-
-                double random = (Math.random() - 0.75) * 0.05;
-
-                if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
-                    MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random + (KillAura.curEntity == null ? 0.04 : 0.02));
-                    mc.timer.timerSpeed = 0.99F + (float) (random * 12);
-                    strafeTicks++;
+                mc.thePlayer.speedInAir = 0.021F;
+                if(isMoving()) {
+                    mc.timer.timerSpeed = 1.0865f;
+                    MoveUtil.setMoveSpeed(mc.thePlayer.onGround ? 0.485 : MoveUtil.getSpeed() * 1.002);
+                    if(getPlayer().onGround) {
+                        mc.thePlayer.motionY = 0.399;
+                    }
                 } else {
                     mc.timer.timerSpeed = 1;
-                    strafeTicks = 0;
+                    MoveUtil.stop();
                 }
+                break;
                 /*
                 if (!mc.thePlayer.isInWeb && !mc.thePlayer.isInLava() && !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder() && mc.thePlayer.ridingEntity == null) {
                     if (isMoving()) {
@@ -1228,7 +1221,6 @@ public class Speed extends Module {
                     }
                 }
                  */
-                break;
             case "Verus":
                 if (!isMoving() || !verusMode.is("Low") || !verusLowMode.is("Fast 2"))
                     return;

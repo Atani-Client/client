@@ -28,7 +28,7 @@ public class Flight extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground", "Test", "Intave"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")}),
             grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")}),
-            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Damage", "Jump", "Collision"}, new Supplier[]{() -> mode.is("Verus")});
+            verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Jump", "Collision", "DMG"}, new Supplier[]{() -> mode.is("Verus")});
     private final SliderValue<Integer> time = new SliderValue<Integer>("Time", "How long will the flight fly?", this, 10, 3, 15, 0, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")});
     private final SliderValue<Float> timer = new SliderValue<Float>("Timer", "How high will be the timer when flying?", this, 0.2f, 0.1f, 0.5f, 1, new Supplier[]{() -> mode.is("Vulcan") && vulcanMode.is("Normal")}),
             speed = new SliderValue<Float>("Speed", "How fast will the fly be?", this, 1.4f, 0f, 10f, 1, new Supplier[]{() -> ((mode.is("Vulcan") && vulcanMode.is("Normal")) || mode.is("Vanilla"))});
@@ -53,6 +53,7 @@ public class Flight extends Module {
     private int ticks;
     // INTAVE LOL
     private boolean blink;
+    private boolean bool;
 
     @Override
     public String getSuffix() {
@@ -138,17 +139,20 @@ public class Flight extends Module {
                             }
                             MoveUtil.setMoveSpeed(mc.gameSettings.keyBindJump.isKeyDown() ? 0 : 0.33);
                             break;
-                        case "Damage":
-                            if (mc.thePlayer.hurtTime != 0) {
-                                MoveUtil.strafe(5);
+                        case "DMG":
+                            if(mc.thePlayer.hurtTime == 1) {
+                                bool = true;
                             }
 
-                            if (mc.thePlayer.onGround) {
-                                mc.thePlayer.jump();
-                                MoveUtil.strafe(0.4F);
+                            if(bool && 30 > ticks) {
+                                ticks++;
+                                mc.thePlayer.motionY = 0.42 / 3;
+                                MoveUtil.strafe(5);
+                            } else if(30 < ticks) {
+                                bool = false;
+                                ticks = 0;
                             }
                             break;
-
                         case "Jump":
                             if (verusTimer.hasReached(545, true)) {
                                 mc.thePlayer.jump();
@@ -388,6 +392,11 @@ public class Flight extends Module {
             mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
             mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY - 4, mc.thePlayer.posZ, true));
         }
+        if(mode.is("Verus") && verusMode.is("DMG")) {
+            PlayerUtil.mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(PlayerUtil.mc.thePlayer.posX, PlayerUtil.mc.thePlayer.posY + 3.001, PlayerUtil.mc.thePlayer.posZ, false));
+            PlayerUtil.mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(PlayerUtil.mc.thePlayer.posX, PlayerUtil.mc.thePlayer.posY, PlayerUtil.mc.thePlayer.posZ, false));
+            PlayerUtil.mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(PlayerUtil.mc.thePlayer.posX, PlayerUtil.mc.thePlayer.posY, PlayerUtil.mc.thePlayer.posZ, true));
+        }
         stage = 0;
         jumps = 0;
         launch = false;
@@ -402,6 +411,8 @@ public class Flight extends Module {
             return;
         }
 
+        bool = false;
+        ticks = 0;
         stage = 0;
         jumps = 0;
         moveSpeed = 0;

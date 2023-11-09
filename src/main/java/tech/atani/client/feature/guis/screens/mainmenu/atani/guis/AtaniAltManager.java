@@ -5,8 +5,14 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
+import fr.litarvan.openauth.AuthPoints;
+import fr.litarvan.openauth.Authenticator;
+import fr.litarvan.openauth.microsoft.MicrosoftAuthResult;
+import fr.litarvan.openauth.microsoft.MicrosoftAuthenticationException;
+import fr.litarvan.openauth.microsoft.MicrosoftAuthenticator;
 import net.minecraft.client.gui.*;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.Session;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -17,6 +23,7 @@ import net.minecraft.client.renderer.Tessellator;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
+import tech.atani.client.utility.AltThreadWeb;
 import tech.atani.client.utility.discord.DiscordRP;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
@@ -34,6 +41,7 @@ public class AtaniAltManager extends GuiScreen
     private int offset;
     public Account selectedAlt;
     private String status;
+    private AltThreadWeb threadWeb;
     static {
         AtaniAltManager.mc = Minecraft.getMinecraft();
     }
@@ -52,8 +60,8 @@ public class AtaniAltManager extends GuiScreen
         this.buttonList.add(this.rename = new AtaniButton(6, this.width / 2 - 154, this.height - 28 - 30, 71, 20, "Rename"));
         this.buttonList.add(this.remove = new AtaniButton(2, this.width / 2 - 76 + 1, this.height - 28 - 30, 71, 20, "Remove"));
         this.buttonList.add(new AtaniButton(4, this.width / 2 + 4, this.height - 28 - 30, 71, 20, "Direct"));
-        this.buttonList.add(new AtaniButton(0, this.width / 2 + 82 + 1, this.height - 28 - 30, 71, 20, I18n.format("gui.cancel", new Object[0])));
-        this.login.enabled = false;
+        this.buttonList.add(new AtaniButton(4, this.width / 2 + 4, this.height - 28 - 30, 71, 20, "Direct"));
+        this.buttonList.add(new AtaniButton(69, this.width / 2 - 154, this.height - 52 - 30 - 5 - 100, 71, 20, "OpenAuth Login"));
         this.remove.enabled = false;
         this.rename.enabled = false;
     }
@@ -112,6 +120,12 @@ public class AtaniAltManager extends GuiScreen
             }
             case 6: {
                 AtaniAltManager.mc.displayGuiScreen(new AtaniRenameAlt(this));
+                break;
+            }
+            case 69: {
+                threadWeb = new AltThreadWeb(true);
+                threadWeb.start();
+                this.actionPerformed(this.buttonList.get(7));
                 break;
             }
         }

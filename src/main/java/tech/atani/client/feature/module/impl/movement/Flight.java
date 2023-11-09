@@ -163,8 +163,7 @@ public class Flight extends Module {
                 }
                 break;
             case "Intave":
-                MoveUtil.setMoveSpeed(1);
-                mc.thePlayer.motionY = 0;
+                mc.thePlayer.motionY = 0.10000000149011612D;
                 /*
                 if(mc.thePlayer.isRiding()) {
                     ticks = 0;
@@ -310,9 +309,7 @@ public class Flight extends Module {
             case "Test":
                 break;
             case "Intave":
-                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
-                    packetEvent.setCancelled(true);
-                }
+
                 break;
             case "BWPractice":
                 if(packetEvent.getPacket() instanceof C0APacketAnimation) {

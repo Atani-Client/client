@@ -239,6 +239,7 @@ public class ScaffoldWalk extends Module {
                     } else {
                         mc.thePlayer.speedInAir = 0.0205F;
                         if(mc.thePlayer.ticksExisted % 3 == 0) {
+                            mc.thePlayer.motionY += 0.0000001;
                             mc.thePlayer.motionX *= 1.003F;
                             mc.thePlayer.motionZ *= 1.003F;
 
@@ -336,7 +337,7 @@ public class ScaffoldWalk extends Module {
         }
 
         if (this.timeHelper.hasReached(this.delay.getValue())) {
-            if (Methods.mc.playerController.onPlayerRightClick(Methods.mc.thePlayer, Methods.mc.theWorld, itemstack, mc.gameSettings.keyBindJump.pressed ? new BlockPos(blockpos.getX(), startY, blockpos.getZ()) : blockpos, objectOver.sideHit, objectOver.hitVec)) {
+            if (Methods.mc.playerController.onPlayerRightClick(Methods.mc.thePlayer, Methods.mc.theWorld, itemstack, mc.gameSettings.keyBindJump.pressed && keepY.getValue() ? new BlockPos(blockpos.getX(), startY, blockpos.getZ()) : blockpos, objectOver.sideHit, objectOver.hitVec)) {
                 if(this.swinging.getValue())
                     Methods.mc.thePlayer.swingItem();
                 else

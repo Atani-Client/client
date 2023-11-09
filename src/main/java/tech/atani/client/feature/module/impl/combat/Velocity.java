@@ -417,7 +417,7 @@ public class Velocity extends Module {
     public final void onSilent(SilentMoveEvent silentMoveEvent) {
         switch(this.mode.getValue()) {
             case "Intave Jump":
-                if (Velocity.mc.thePlayer.hurtTime == 9) {
+                if (Velocity.mc.thePlayer.hurtTime == 9 && mc.currentScreen == null) {
                     mc.gameSettings.keyBindJump.pressed = true;
                     jumped = true;
                     break;

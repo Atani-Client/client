@@ -58,10 +58,8 @@ public class AtaniAltManager extends GuiScreen
         this.buttonList.add(this.login = new AtaniButton(1, this.width / 2 - 154, this.height - 52 - 30 - 5, 150, 20, "Login"));
         this.buttonList.add(new AtaniButton(3, this.width / 2 + 4, this.height - 52 - 30 - 5, 150, 20, "Add"));
         this.buttonList.add(this.rename = new AtaniButton(6, this.width / 2 - 154, this.height - 28 - 30, 71, 20, "Rename"));
-        this.buttonList.add(this.remove = new AtaniButton(2, this.width / 2 - 76 + 1, this.height - 28 - 30, 71, 20, "Remove"));
-        this.buttonList.add(new AtaniButton(4, this.width / 2 + 4, this.height - 28 - 30, 71, 20, "Direct"));
-        this.buttonList.add(new AtaniButton(4, this.width / 2 + 4, this.height - 28 - 30, 71, 20, "Direct"));
-        this.buttonList.add(new AtaniButton(69, this.width / 2 - 154, this.height - 52 - 30 - 5 - 100, 71, 20, "OpenAuth Login"));
+        this.buttonList.add(this.remove = new AtaniButton(2, this.width / 2 - 37, this.height - 28 - 30, 71, 20, "Remove"));
+        this.buttonList.add(new AtaniButton(4, this.width / 2 + 4 + 76, this.height - 28 - 30, 71, 20, "Direct"));
         this.remove.enabled = false;
         this.rename.enabled = false;
     }

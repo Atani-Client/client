@@ -40,6 +40,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.OpenGLException;
+import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.AtaniRenameWorld;
 import tech.atani.client.feature.performance.memory.TextureFix;
 import tech.atani.client.loader.Injector;
@@ -364,7 +365,7 @@ public class ProtectedLaunch {
             textureFix.runFix();
         }
 
-        AtaniRenameWorld guiScreen = new AtaniRenameWorld();
+        AtaniMainMenu guiScreen = new AtaniMainMenu();
         mc.displayGuiScreen(guiScreen);
 
         mc.renderEngine.deleteTexture(mc.mojangLogo);

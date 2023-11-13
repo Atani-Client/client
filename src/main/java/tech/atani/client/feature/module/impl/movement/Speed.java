@@ -338,39 +338,7 @@ public class Speed extends Module {
                             }
                             break;
                         case "TEST":
-                            ticks++;
-                            if (wasTimer) {
-                                mc.timer.timerSpeed = 1.00f;
-                                wasTimer = false;
-                            }
-                            mc.thePlayer.jumpMovementFactor = 0.0245f;
-                            if (!mc.thePlayer.onGround && ticks > 3 && mc.thePlayer.motionY > 0) {
-                                mc.thePlayer.motionY = -0.27;
-                            }
-
-                            mc.gameSettings.keyBindJump.pressed = GameSettings.isKeyDown(mc.gameSettings.keyBindJump);
-                            if (MoveUtil.getSpeed() < 0.215f && !mc.thePlayer.onGround) {
-                                MoveUtil.strafe(0.215f);
-                            }
-                            if (mc.thePlayer.onGround && isMoving()) {
-                                ticks = 0;
-                                mc.gameSettings.keyBindJump.pressed = false;
-                                mc.thePlayer.jump();
-                                if (!mc.thePlayer.isAirBorne) {
-                                    return;
-                                }
-                                mc.timer.timerSpeed = 1.2f;
-                                wasTimer = true;
-                                if(MoveUtil.getSpeed() < 0.48f) {
-                                    MoveUtil.strafe(0.48f);
-                                }else{
-                                    MoveUtil.strafe((MoveUtil.getSpeed() * 0.985));
-                                }
-                            }else if (!isMoving()) {
-                                mc.timer.timerSpeed = 1.00f;
-                                mc.thePlayer.motionX = 0.0;
-                                mc.thePlayer.motionZ = 0.0;
-                            }
+                            MoveUtil.strafe(0.2);
                             break;
                         case "Y-Port":
                             if(mc.thePlayer.onGround) {
@@ -384,7 +352,6 @@ public class Speed extends Module {
                             }
 
                             if(mc.thePlayer.fallDistance > 0.1) {
-                                mc.timer.timerSpeed = 1.4F;
                                 mc.thePlayer.motionY = -1337;
                             }
 
@@ -987,7 +954,7 @@ public class Speed extends Module {
                                 break;
                             case 1:
                                 mc.timer.timerSpeed = 1;
-                                mc.thePlayer.motionY -= 0.001;
+                                mc.thePlayer.motionY -= 0.0025;
                                 float multiplier2 = (float) (1 + (Math.random() - 0.7) / 140);
                                 mc.thePlayer.motionX *= multiplier2;
                                 mc.thePlayer.motionZ *= multiplier2;

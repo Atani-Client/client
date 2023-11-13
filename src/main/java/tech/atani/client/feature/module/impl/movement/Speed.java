@@ -957,11 +957,14 @@ public class Speed extends Module {
                                 mc.thePlayer.motionY -= 0.001;
                                 break;
                             case 1:
-                                mc.timer.timerSpeed = 1;
+                                mc.timer.timerSpeed = 1.02F;
                                 mc.thePlayer.motionY -= 0.0025;
                                 float multiplier2 = (float) (1 + (Math.random() - 0.7) / 140);
                                 mc.thePlayer.motionX *= multiplier2;
                                 mc.thePlayer.motionZ *= multiplier2;
+                                break;
+                            case 2:
+                                mc.timer.timerSpeed = 1;
                                 break;
                         }
 

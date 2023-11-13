@@ -216,7 +216,6 @@ public class Velocity extends Module {
                 break;
             }
             case "Intave": {
-
                 /*
                 if(mc.thePlayer.hurtTime != 0) {
                     if(packetEvent.getType() == PacketEvent.Type.OUTGOING) {

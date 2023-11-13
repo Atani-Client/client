@@ -67,7 +67,6 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue sneak = new CheckBoxValue("Sneak", "Sneak?", this, false);
     private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
-    private final CheckBoxValue keepY = new CheckBoxValue("Keep Y", "Keep Y?", this, false);
     private final CheckBoxValue tower = new CheckBoxValue("Tower", "Tower?", this, false);
     private final CheckBoxValue unSneakTower = new CheckBoxValue("Tower unSneak", "Stop sneaking when towering?", this, false, new Supplier[]{() -> sneak.getValue() && tower.getValue()});
     private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Matrix", "Intave"}, new Supplier[]{() -> tower.getValue()});
@@ -209,7 +208,7 @@ public class ScaffoldWalk extends Module {
             getGameSettings().keyBindForward.pressed = false;
         }
 
-        if(tower.getValue() && mc.gameSettings.keyBindJump.pressed && mc.thePlayer.fallDistance < 1.5 && !keepY.getValue()) {
+        if(tower.getValue() && mc.gameSettings.keyBindJump.pressed && mc.thePlayer.fallDistance < 1.5) {
             switch(towerMode.getValue()) {
                 case "Vanilla":
                     mc.thePlayer.motionY = 0.3;
@@ -344,7 +343,7 @@ public class ScaffoldWalk extends Module {
         }
 
         if (this.timeHelper.hasReached(this.delay.getValue())) {
-            if (Methods.mc.playerController.onPlayerRightClick(Methods.mc.thePlayer, Methods.mc.theWorld, itemstack, mc.gameSettings.keyBindJump.pressed && keepY.getValue() ? new BlockPos(blockpos.getX(), startY, blockpos.getZ()) : blockpos, objectOver.sideHit, objectOver.hitVec)) {
+            if (Methods.mc.playerController.onPlayerRightClick(Methods.mc.thePlayer, Methods.mc.theWorld, itemstack, blockpos, objectOver.sideHit, objectOver.hitVec)) {
                 if(this.swinging.getValue())
                     Methods.mc.thePlayer.swingItem();
                 else

@@ -848,21 +848,20 @@ public class Speed extends Module {
 
                 //mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0 &&
 
-                if(mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0 && ticks == 1 && !mc.thePlayer.onGround) MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() * (karhuMode.is("Rage") ? 3 : 1.6) + MoveUtil.getSpeedBoost(1));
-
                 mc.timer.timerSpeed = 1.004F;
 
                 mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
 
                 ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
-                if(mc.thePlayer.motionY < 0) {
-                    mc.timer.timerSpeed = (float) (1.007 + Math.abs(mc.thePlayer.motionY * 0.05));
+                mc.thePlayer.motionY -= 0.00225;
+
+                if(mc.thePlayer.motionY > 0) {
+                    mc.timer.timerSpeed = (float) (0.995 + Math.abs(mc.thePlayer.motionY * (karhuMode.is("Rage") ? 0.1 : 0.05)));
                     mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 3000F);
-                    mc.thePlayer.motionY -= 0.002;
                 } else {
-                    mc.timer.timerSpeed = 1.0F;
-                    mc.thePlayer.speedInAir = 0.02F;
+                    mc.timer.timerSpeed = 1F;
+                    mc.thePlayer.speedInAir = 0.0202F;
                 }
                 break;
             case "Incognito":

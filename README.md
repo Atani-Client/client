@@ -12,3 +12,5 @@ Scaffold raycast broken
 Report bugs at the atani discord or by dming kellohyllyy on discord
 
 DISCORD: https://discord.gg/nqRDznSY3A
+
+NO CONFIG SYSTEM YET | TO USE CONFIGS RENAME THE CONFIG YOU DOWNLOADED TO "modules"

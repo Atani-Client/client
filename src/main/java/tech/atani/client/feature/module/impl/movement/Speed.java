@@ -915,13 +915,15 @@ public class Speed extends Module {
                                 MoveUtil.strafe(0.399F);
                             } else {
                                 watchDogTicks++;
-                                mc.thePlayer.motionY -= 0.0008;
-                                if(watchDogTicks == 1) {
-                                    mc.thePlayer.motionY -= 0.002;
-                                }
-
-                                if(watchDogTicks == 8) {
-                                    mc.thePlayer.motionY -= 0.003;
+                                switch (watchDogTicks) {
+                                    case 1:
+                                        mc.timer.timerSpeed = 1;
+                                        mc.thePlayer.motionY -= 0.005;
+                                        break;
+                                    case 2:
+                                    case 3:
+                                        mc.thePlayer.motionY -= 0.001;
+                                        break;
                                 }
                             }
                         }
@@ -958,7 +960,6 @@ public class Speed extends Module {
                                 break;
                             case 1:
                                 mc.timer.timerSpeed = 1.02F;
-                                mc.thePlayer.motionY -= 0.0025;
                                 float multiplier2 = (float) (1 + (Math.random() - 0.7) / 140);
                                 mc.thePlayer.motionX *= multiplier2;
                                 mc.thePlayer.motionZ *= multiplier2;
@@ -1004,8 +1005,10 @@ public class Speed extends Module {
                                 float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
                                 mc.thePlayer.motionX *= multiplier;
                                 mc.thePlayer.motionZ *= multiplier;
+                                mc.thePlayer.motionY -= 0.001;
                                 break;
                             case 1:
+                                mc.thePlayer.motionY -= 0.005;
                                 mc.timer.timerSpeed = 1;
                                 MoveUtil.strafe();
                                 break;

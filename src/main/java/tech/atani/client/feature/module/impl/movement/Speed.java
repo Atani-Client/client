@@ -72,6 +72,7 @@ public class Speed extends Module {
             stop = new CheckBoxValue("Stop", "Should the module stop all motion when not moving?", this, false, new Supplier[]{() -> mode.is("Custom")}),
             yPort = new CheckBoxValue("Y-Port", "Should the module y-port?", this, false, new Supplier[]{() -> mode.is("Custom")});
     private final SliderValue<Double> minusMotionY = new SliderValue<Double>("Minus Motion Y", "How big will the -y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom") && yPort.getValue()});
+    private final CheckBoxValue cpuSpeedUp = new CheckBoxValue("CPU SpeedUp exploit", "Make timer slightly faster (undetectable)?", this, true);
 
     // Spartan
     private final TimeHelper spartanTimer = new TimeHelper();
@@ -132,6 +133,9 @@ public class Speed extends Module {
 
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
+        if(cpuSpeedUp.getValue())
+            mc.timer.timerSpeed = 1.004F;
+
         switch (mode.getValue()) {
             case "AAC3":
                 mc.timer.timerSpeed = 1.75f;
@@ -1233,7 +1237,6 @@ public class Speed extends Module {
                 // TODO: actually make it works goodingz
                 if (mc.thePlayer.onGround && this.isMoving()){
                     mc.thePlayer.jump();
-                    mc.thePlayer.motionY -= 0.0004;
                 } else {
                     if(mc.thePlayer.motionY > 0)
                         mc.timer.timerSpeed = 0.9F;

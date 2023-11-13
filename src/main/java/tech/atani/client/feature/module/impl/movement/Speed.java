@@ -8,6 +8,7 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
+import tech.atani.client.feature.anticheat.check.Check;
 import tech.atani.client.feature.module.impl.combat.KillAura;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
@@ -33,7 +34,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @Native
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "Test"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             karhuMode = new StringBoxValue("Karhu Mode", "Which mode will the karhu mode use?", this, new String[]{"Normal", "Rage"}, new Supplier[]{() -> mode.is("Karhu")}),
             intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Stable", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
@@ -43,9 +44,10 @@ public class Speed extends Module {
             lowNcpMode = new StringBoxValue("Lowhop Timer Mode", "Which timer mode will the ncp lowhop mode use?", this, new String[]{"Normal", "Balance"}, new Supplier[]{() -> mode.is("NCP") && ncpMode.is("Low")}),
             oldNcpMode = new StringBoxValue("Old NCP Mode", "Which mode will the old ncp mode use?", this, new String[]{"Timer", "Y-Port"}, new Supplier[]{() -> mode.is("Old NCP")}),
             verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Normal", "Boost", "Hop", "Air Boost", "Low", "Float", "Custom", "Fast"}, new Supplier[]{() -> mode.is("Verus")}),
-            watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});
-    private final SliderValue<Float> boost = new SliderValue<Float>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")}),
+            watchDogMode = new StringBoxValue("WatchDog Mode", "Which mode will the watchdog mode use?", this, new String[]{"Normal", "Strafe"}, new Supplier[]{() -> mode.is("WatchDog")});private final SliderValue<Float> boost = new SliderValue<Float>("Boost", "How much will the bhop boost?", this, 1.2f, 0.1f, 5.0f, 1, new Supplier[]{() -> mode.is("BHop")}),
             jumpHeight = new SliderValue<Float>("Jump Height", "How high will the bhop jump?", this, 0.41f, 0.01f, 1f, 2, new Supplier[]{() -> mode.is("BHop")});
+            private final CheckBoxValue intaveTimer = new CheckBoxValue("Intave Timer", "Should the module speed up by adding a intave exploit?", this, false, new Supplier[]{() -> mode.is("Intave")});
+    private final CheckBoxValue intaveTimerBypass = new CheckBoxValue("Intave Timer Bypass", "Make the intave exploit bypass?", this, false, new Supplier[]{() -> mode.is("Intave") && intaveTimer.getValue()});
     private final SliderValue<Float> verusGroundSpeed = new SliderValue<Float>("Verus Ground Speed", "How much will the verus speed strafe onGround?", this, 0.53f, 0.1f, 0.55f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")}),
             verusAirSpeed = new SliderValue<Float>("Verus Air Speed", "How much will the verus speed strafe inAir?", this, 0.33f, 0.1f, 0.4f, 3, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")}),
             verusSpeedBoost = new SliderValue<Float>("Verus Speed Boost", "How Much Will the Verus Speed Boost?", this, 3f, 0f, 5f, 1, new Supplier[]{() -> mode.is("Verus") && verusMode.is("Custom")});
@@ -96,6 +98,7 @@ public class Speed extends Module {
     private int ticks = 0;
     private int ticks2 = 0;
     private int strafeTicks = 0;
+    private boolean timerBoost;
     // Polar
     private int polarOnTicks, polarOffTicks;
 
@@ -984,6 +987,7 @@ public class Speed extends Module {
                                 break;
                             case 1:
                                 mc.timer.timerSpeed = 1;
+                                mc.thePlayer.motionY -= 0.001;
                                 float multiplier2 = (float) (1 + (Math.random() - 0.7) / 140);
                                 mc.thePlayer.motionX *= multiplier2;
                                 mc.thePlayer.motionZ *= multiplier2;
@@ -1159,6 +1163,17 @@ public class Speed extends Module {
                         // I dont have a good way for dmgBoost :(
                         break;
                 }
+
+                if(intaveTimer.getValue()) {
+                    if(intaveTimerBypass.getValue()) {
+                        if(mc.thePlayer.ticksExisted % 20 == 0)
+                            timerBoost = !timerBoost;
+
+                        mc.timer.timerSpeed = timerBoost ? 1.204386728680024479550332481800278015503324817801F : 1;
+                    } else {
+                        mc.timer.timerSpeed = 1.204386728680024479550332481800278015503324817801F;
+                    }
+                }
                 break;
             case "MineMenClub":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
@@ -1174,7 +1189,8 @@ public class Speed extends Module {
                 }
                 break;
 
-            case "Test":
+            case "AAA":
+                mc.timer.timerSpeed = 1.204386728680024479550332481800278015503324817801F;
                 break;
         }
     }

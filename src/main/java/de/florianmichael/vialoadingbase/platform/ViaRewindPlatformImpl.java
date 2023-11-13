@@ -28,7 +28,7 @@ public class ViaRewindPlatformImpl implements ViaRewindPlatform {
 
     public ViaRewindPlatformImpl(final File directory) {
         final ViaRewindConfigImpl config = new ViaRewindConfigImpl(new File(directory, "viarewind.yml"));
-        config.reloadConfig();
+        config.reload();
         this.init(config);
     }
 

@@ -157,7 +157,7 @@ public class ViaVersionPlatformImpl implements ViaPlatform<UUID> {
 
     @Override
     public ConfigurationProvider getConfigurationProvider() {
-        return config;
+        return (ConfigurationProvider) config;
     }
 
     @Override

@@ -980,6 +980,7 @@ public class Speed extends Module {
                                 float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
                                 mc.thePlayer.motionX *= multiplier;
                                 mc.thePlayer.motionZ *= multiplier;
+                                mc.thePlayer.motionY -= 0.001;
                                 break;
                             case 1:
                                 mc.timer.timerSpeed = 1;
@@ -1243,16 +1244,18 @@ public class Speed extends Module {
     public void onUpdate(UpdateEvent event) {
         switch (mode.getValue()) {
             case "Grim":
+                mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2500);
+
                 getGameSettings().keyBindSprint.pressed = true;
-                // yesyes its shit dont cry2me about it
+                // TODO: actually make it works goodingz
                 if (mc.thePlayer.onGround && this.isMoving()){
                     mc.thePlayer.jump();
-                    mc.timer.timerSpeed = 1.21F;
-                    // Best Byasp:fire:
-                    mc.thePlayer.motionX *= 1.0000000000000000001;
-                    mc.thePlayer.motionZ *= 1.0000000000000000001;
+                    mc.thePlayer.motionY -= 0.0004;
                 } else {
-                    mc.timer.timerSpeed = 1;
+                    if(mc.thePlayer.motionY > 0)
+                        mc.timer.timerSpeed = 0.9F;
+                    else
+                        mc.timer.timerSpeed = 1.1F;
                 }
                 break;
         }

@@ -86,6 +86,7 @@ public class Flight extends Module {
             case "Grim":
                 switch (this.grimMode.getValue()) {
                     case "Boat":
+                        /*
                         if(mc.thePlayer.isRiding() && mc.thePlayer.ridingEntity != null) {
                             if(mc.thePlayer.ridingEntity instanceof EntityBoat) {
                                 EntityBoat boat = (EntityBoat) mc.thePlayer.ridingEntity;
@@ -95,6 +96,7 @@ public class Flight extends Module {
                                 rotationEvent.setPitch(pitch);
                             }
                         }
+                         */
                         break;
                 }
                 break;
@@ -207,6 +209,18 @@ public class Flight extends Module {
                                 mc.thePlayer.motionY = 1.5;
                                 MoveUtil.strafe(1.5);
                                 launch = false;
+                                ticks = 1;
+                            }
+
+                            if(ticks > 0) {
+                                ticks++;
+                                mc.timer.timerSpeed = 0.2F;
+                                MoveUtil.setMoveSpeed(MoveUtil.getSpeed() * 1.05);
+                            }
+
+                            if(ticks == 2) {
+                                ticks = 0;
+                                mc.timer.timerSpeed = 1;
                             }
                             break;
                     }

@@ -151,7 +151,9 @@ public class ScaffoldWalk extends Module {
 
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
-        mc.gameSettings.limitFramerate = 145;
+        if(mc.gameSettings.limitFramerate < 145)
+            mc.gameSettings.limitFramerate = 145;
+
         if(verusBoost.getValue()) {
             if(!isMoving())
                 return;
@@ -188,6 +190,11 @@ public class ScaffoldWalk extends Module {
         getPlayer().setSprinting(sprint.getValue());
 
         if(intaveBoost2.getValue()) {
+            if(mc.thePlayer.isSneaking()) {
+                mc.thePlayer.motionX *= 1.01F;
+                mc.thePlayer.motionZ *= 1.01F;
+            }
+
             if(mc.thePlayer.ticksExisted % 3 == 0) {
                 mc.thePlayer.motionX *= 1.005F;
                 mc.thePlayer.motionZ *= 1.005F;

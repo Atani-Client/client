@@ -1,92 +1,64 @@
 package tech.atani.client.feature.module.impl.combat;
 
 import cn.muyang.nativeobfuscator.Native;
-import com.google.common.base.Supplier;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.client.C03PacketPlayer;
-import net.minecraft.network.play.client.C0FPacketConfirmTransaction;
-import net.minecraft.network.play.server.S12PacketEntityVelocity;
-import net.minecraft.network.play.server.S32PacketConfirmTransaction;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
+import tech.atani.client.feature.module.storage.ModuleStorage;
+import tech.atani.client.listener.event.minecraft.game.TimerManipulationEvent;
+import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.value.impl.SliderValue;
-import tech.atani.client.feature.value.impl.StringBoxValue;
-import tech.atani.client.listener.event.minecraft.network.PacketEvent;
-import tech.atani.client.listener.event.minecraft.player.movement.SilentMoveEvent;
-import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
-import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
-import tech.atani.client.listener.radbus.Listen;
-import tech.atani.client.utility.interfaces.Methods;
+import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
-import tech.atani.client.utility.player.PlayerUtil;
-
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import tech.atani.client.feature.value.impl.SliderValue;
 
 @Native
-@ModuleData(name = "TimerRange", description = "Uses timer to get better hits", category = Category.COMBAT)
+@ModuleData(name = "TimerRange", description = "Timer Manipulation", category = Category.COMBAT)
 public class TimerRange extends Module {
 
-    private final SliderValue<Integer> boostTicks = new SliderValue<Integer>("Boost Ticks", "For how many ticks will TimerRange boost?", this, 5, 1, 20, 0);
-    private final SliderValue<Integer> timer = new SliderValue<Integer>("Timer", "With what timer will TimerBoost boost?", this, 2, 1, 5, 0);
-    boolean boost;
-    private Entity lastEntity;
-    TimeHelper timeHelper = new TimeHelper();
-    @Listen
-    public void onUpdateMotionEvent(UpdateMotionEvent event) {
-        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
-            return;
-        }
+    public final SliderValue<Long> maxBalance = new SliderValue<>("Max Balance", "What will be the maximum balance?", this, 100L, 0L, 5000L, 0);
+    public final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between shifting?", this, 300L, 0L, 1000L, 0);
+    public final SliderValue<Float> range = new SliderValue<>("Range", "At what range will the module operate?", this, 3f, 0.1f,7f, 1);
+    public final SliderValue<Float> timer = new SliderValue<>("Timer", "To what timer speed will TimerRange boost?", this, 2f, 1f,5f, 1);
 
-        if(KillAura.curEntity != null && KillAura.curEntity != lastEntity) {
-            boost = true;
-        }
-
-        if(boost) {
-            if(timeHelper.hasReached(Math.round(boostTicks.getValue() * 20))) {
-                PlayerUtil.addChatMessgae("Stop boost", true);
-                boost = false;
-                lastEntity = KillAura.curEntity;
-            }
-            mc.timer.timerSpeed = timer.getValue();
-        } else {
-            mc.timer.timerSpeed = 1;
-        }
-    }
+    private KillAura killAura;
+    private long shifted, previousTime;
+    private final TimeHelper timeHelper = new TimeHelper();
 
     @Listen
-    public final void onUpdate(UpdateEvent updateEvent) {
+    public void onTime(TimerManipulationEvent timerManipulationEvent) {
+        if(killAura == null)
+            killAura = ModuleStorage.getInstance().getByClass(KillAura.class);
 
-    }
-
-    @Listen
-    public final void onPacket(PacketEvent packetEvent) {
-        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
-            return;
+        if(shouldCharge() && this.timeHelper.hasReached(delay.getValue())) {
+            shifted += timerManipulationEvent.getTime() - previousTime;
         }
 
+        if(shouldDischarge()) {
+            shifted = 0;
+            this.timeHelper.reset();
+        }
 
+        previousTime = timerManipulationEvent.getTime();
+        timerManipulationEvent.setTime((long) (timerManipulationEvent.getTime() - shifted * timer.getValue()));
     }
 
-    @Listen
-    public final void onSilent(SilentMoveEvent silentMoveEvent) {
-
+    private boolean shouldCharge() {
+        return killAura.isEnabled() && KillAura.curEntity != null && this.shifted < maxBalance.getValue();
     }
 
-    @Override
-    public void onEnable() {
-
+    private boolean shouldDischarge() {
+        return this.shifted >= this.maxBalance.getValue() && killAura.isEnabled() && killAura.curEntity != null && FightUtil.getRange(KillAura.curEntity) > range.getValue();
     }
 
     @Override
     public void onDisable() {
-        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
-            return;
-        }
+        this.shifted = 0;
     }
+
+    @Override
+    public void onEnable() {
+        this.shifted = 0;
+        this.previousTime = (System.nanoTime() / 1000000L) / 1000L;
+    }
+
 }

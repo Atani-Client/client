@@ -89,15 +89,10 @@ public class Velocity extends Module {
                 break;
             }
             case "Test":
-                    if(getPlayer().hurtTime == 10) {
-                        getPlayer().motionX *= -1;
-                        getPlayer().motionZ *= -1;
-                    } else if(getPlayer().hurtTime == 9) {
-                        if(getPlayer().onGround) {
-                            getPlayer().motionX *= 0.9;
-                            getPlayer().motionZ *= 0.9;
-                        }
-                    }
+                if(mc.thePlayer.hurtTime == 9)
+                    mc.thePlayer.setSneaking(true);
+                else if(mc.thePlayer.hurtTime == 10)
+                    mc.thePlayer.setSneaking(false);
                 break;
             case "Polar":
                 if (mc.thePlayer.isSwingInProgress) {

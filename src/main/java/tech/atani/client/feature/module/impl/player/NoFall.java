@@ -14,7 +14,7 @@ import com.google.common.base.Supplier;
 @Native
 @ModuleData(name = "NoFall", description = "Reduces fall damage", category = Category.PLAYER)
 public class NoFall extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Edit", "Smart", "Vulcan", "Verus"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Edit", "Smart", "Dumb", "Vulcan", "Verus"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[] {"Instant Motion"}, new Supplier[] {() -> mode.is("Vulcan")});
     private final CheckBoxValue modulo = new CheckBoxValue("Modulo", "Set on ground only every 3 blocks?", this, true, new Supplier[] {() -> mode.is("Edit")});
 
@@ -41,6 +41,10 @@ public class NoFall extends Module {
                         ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
                         mc.thePlayer.fallDistance = 0f;
                     }
+                    break;
+                case "Dumb":
+                    if(1 > mc.thePlayer.fallDistance && packetEvent.getPacket() instanceof C03PacketPlayer)
+                        ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
                     break;
                 case "Vulcan":
                     if(packetEvent.getPacket() instanceof C03PacketPlayer) {

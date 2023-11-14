@@ -167,6 +167,7 @@ public class KillAura extends Module {
         if (mc.thePlayer == null)
             return;
 
+        // idk if dis is faster but maybe
         boolean entityIsValid = FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue());
 
         List<EntityLivingBase> targets = FightUtil.getMultipleTargets(findRange.getValue(), players.getValue(), animals.getValue(), walls.getValue(), monsters.getValue(), invisible.getValue());
@@ -415,5 +416,4 @@ public class KillAura extends Module {
         curEntity = null;
         wasHolding = false;
     }
-
 }

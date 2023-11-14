@@ -1,6 +1,5 @@
 package tech.atani.client.feature.guis.screens.mainmenu.atani.guis;
 import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiOptions;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.util.ResourceLocation;
@@ -62,7 +61,7 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
         int green = Color.HSBtoRGB(120F / 360.0f, 1.0F, 1.0F);
         mc.fontRendererObj.drawCenteredString("- Made KillAura better", (float) this.width / 2, 100, yellow);
         mc.fontRendererObj.drawCenteredString("- Fixed Hold AutoBlock (KillAura)", (float) this.width / 2, 110, yellow);
-        mc.fontRendererObj.drawCenteredString("- Fixed Intave Speed DmgBoost", (float) this.width / 2, 120, yellow);
+        //mc.fontRendererObj.drawCenteredString("- Fixed Intave Speed DmgBoost", (float) this.width / 2, 120, yellow);
         mc.fontRendererObj.drawCenteredString("+ Add ChangeLog Menu", (float) this.width / 2, 130, green);
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);

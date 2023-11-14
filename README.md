@@ -19,6 +19,6 @@ Current devs:
 
 Kellohylly (kellohyllyy) Owner
 
-Zmixin. (zmixin) Dev
+Zmixin (zmixin.) Dev
 
 NO CONFIG SYSTEM YET | TO USE CONFIGS RENAME THE CONFIG YOU DOWNLOADED TO "modules"

@@ -1236,17 +1236,15 @@ public class Speed extends Module {
     public void onUpdate(UpdateEvent event) {
         switch (mode.getValue()) {
             case "Grim":
-                mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2500);
-
                 getGameSettings().keyBindSprint.pressed = true;
                 // TODO: actually make it works goodingz
                 if (mc.thePlayer.onGround && this.isMoving()){
                     mc.thePlayer.jump();
                 } else {
                     if(mc.thePlayer.motionY > 0)
-                        mc.timer.timerSpeed = 0.9F;
+                        mc.timer.timerSpeed = 0.96F;
                     else
-                        mc.timer.timerSpeed = 1.1F;
+                        mc.timer.timerSpeed = 1.07F;
                 }
                 break;
         }

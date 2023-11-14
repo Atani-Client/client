@@ -54,7 +54,7 @@ public class KillAura extends Module {
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true);
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
     public CheckBoxValue autoBlock = new CheckBoxValue("Auto Block", "Should the aura block on hit?", this, true);
-    public StringBoxValue autoBlockMode = new StringBoxValue("Auto Block Mode", "Which mode should the autoblock use?", this, new String[] {"Vanilla", "NCP", "AAC", "GrimAC", "Intave", "Matrix", "Legit"}, new Supplier[]{() -> autoBlock.getValue()});
+    public StringBoxValue autoBlockMode = new StringBoxValue("Auto Block Mode", "Which mode should the autoblock use?", this, new String[] {"Vanilla", "NCP", "AAC", "GrimAC", "Intave", "Matrix", "Hold"}, new Supplier[]{() -> autoBlock.getValue()});
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
     public CheckBoxValue advancedRange = new CheckBoxValue("Advanced Range", "Make attack range more advanced?", this, true);
@@ -103,6 +103,9 @@ public class KillAura extends Module {
 
     // Rotations
     private float yawRot, pitchRot;
+
+    // AutoBlock
+    private boolean wasHolding;
 
     @Override
     public String getSuffix() {
@@ -160,15 +163,11 @@ public class KillAura extends Module {
         } else {
             mc.timer.timerSpeed = 1;
         }
-
-        if (mc.thePlayer == null || mc.thePlayer.ticksExisted % 5 != 0)
+        //  || mc.thePlayer.ticksExisted % 5 != 0
+        if (mc.thePlayer == null)
             return;
 
-        /*
-        if(ModuleStorage.getInstance().getModule(String.valueOf(ScaffoldWalk.class)).isEnabled()) {
-            return;
-        }
-         */
+        boolean entityIsValid = FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue());
 
         List<EntityLivingBase> targets = FightUtil.getMultipleTargets(findRange.getValue(), players.getValue(), animals.getValue(), walls.getValue(), monsters.getValue(), invisible.getValue());
         switch (this.priority.getValue()) {
@@ -190,18 +189,18 @@ public class KillAura extends Module {
                 curEntity = targets.get(0);
                 break;
             case "Single":
-                if (curEntity == null || !FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()))
+                if (curEntity == null || !entityIsValid)
                     curEntity = targets.get(0);
                 break;
             case "Multi":
             case "Switch":
                 long switchDelay = targetMode.is("Multi") ? 0 : this.switchDelay.getValue();
                 if (!this.switchTimer.hasReached(switchDelay)) {
-                    if (curEntity == null || !FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()))
+                    if (curEntity == null || !entityIsValid)
                         curEntity = targets.get(0);
                     return;
                 }
-                if (curEntity != null && FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue()) && targets.size() == 1) {
+                if (curEntity != null && entityIsValid && targets.size() == 1) {
                     return;
                 } else if (curEntity == null) {
                     curEntity = targets.get(0);
@@ -225,8 +224,9 @@ public class KillAura extends Module {
 
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
-        if(curEntity == null && autoBlockMode.is("Legit")) {
+        if(curEntity == null && autoBlockMode.is("Hold") && wasHolding) {
             mc.gameSettings.keyBindUseItem.pressed = false;
+            wasHolding = false;
         }
 
         if (curEntity != null) {
@@ -317,7 +317,10 @@ public class KillAura extends Module {
                                     Methods.mc.playerController.interactWithEntitySendPacket(Methods.mc.thePlayer, objectPosition.entityHit);
                                     Methods.mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(currentItem));
                                     break;
-                                case "Legit":
+                                case "Hold":
+                                    if(!wasHolding)
+                                        wasHolding = true;
+
                                     mc.gameSettings.keyBindUseItem.pressed = true;
                                     break;
                             }
@@ -405,10 +408,12 @@ public class KillAura extends Module {
             return;
         }
 
-        if(autoBlock.getValue() && autoBlockMode.is("Legit")) {
+        if(autoBlock.getValue() && autoBlockMode.is("Hold") && wasHolding) {
             Methods.mc.gameSettings.keyBindUseItem.pressed = false;
+            wasHolding = false;
         }
         curEntity = null;
+        wasHolding = false;
     }
 
 }

@@ -9,6 +9,8 @@ CURRENT BUGS:
 
 Scaffold raycast broken
 
+Some (Most) code is super goofy
+
 Report bugs at the atani discord or by dming kellohyllyy on discord
 
 DISCORD: https://discord.gg/nqRDznSY3A

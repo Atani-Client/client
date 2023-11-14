@@ -238,6 +238,7 @@ public class ScaffoldWalk extends Module {
                     }
                     break;
                 case "Intave":
+                    // useless
                     mc.timer.timerSpeed = 1.004F;
                     if(mc.thePlayer.onGround) {
                         mc.thePlayer.jump();
@@ -245,7 +246,7 @@ public class ScaffoldWalk extends Module {
                     } else {
                         mc.thePlayer.speedInAir = 0.0205F;
                         if(mc.thePlayer.ticksExisted % 3 == 0) {
-                            mc.thePlayer.motionY += 0.0000001;
+                            mc.thePlayer.motionY -= 0.0025;
                             mc.thePlayer.motionX *= 1.003F;
                             mc.thePlayer.motionZ *= 1.003F;
 

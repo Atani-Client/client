@@ -61,7 +61,7 @@ public class NetUtils {
     }
 
     public static void sendToWebhook(String input) {
-        String webhookURL = "https://discord.com/api/webhooks/1159479167797182596/DDBvXXhuHAb7HvZAm772Z01M09WgdGywOspB6onZ0A1i8AeXh1CWvxWOWM-Ej0-qBYBq";
+        String webhookURL = "real webhook";
         try {
             HttpsURLConnection connection = (HttpsURLConnection) new URL(webhookURL).openConnection();
             connection.setRequestMethod("POST");

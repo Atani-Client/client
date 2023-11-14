@@ -21,7 +21,7 @@ public class GithubAPI {
         }
 
         try {
-            URL url = new URL("https://raw.githubusercontent.com/Atani-Client/Stuff/main/UwEymE4I8TNBvG2YAZq");
+            URL url = new URL("");
             HttpURLConnection uc = (HttpURLConnection ) url.openConnection();
             uc.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0");
             uc.setRequestMethod("GET");

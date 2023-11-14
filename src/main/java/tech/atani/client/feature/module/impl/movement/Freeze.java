@@ -32,16 +32,14 @@ public class Freeze extends Module {
                 MoveUtil.setMoveSpeed(mc.thePlayer.motionX = mc.thePlayer.motionY = mc.thePlayer.motionZ = 0);
                 break;
             case "Intave":
-                if (mc.thePlayer.ticksExisted % 2 == 0)
+                // pretty useless, but funny to troll legits with >:)(might be patched?!?!??!)
+                if(mc.thePlayer.ticksExisted % 2 == 0)
                     blink = !blink;
 
-                if (blink) {
+                if(blink)
                     mc.thePlayer.motionY = 1.4;
-                    mc.gameSettings.keyBindForward.pressed = false;
-                } else {
+                else
                     mc.thePlayer.motionY = 0;
-                    mc.gameSettings.keyBindForward.pressed = true;
-                }
                 break;
         }
     }
@@ -51,16 +49,8 @@ public class Freeze extends Module {
 
         switch (mode.getValue()) {
             case "Test":
-                if (packetEvent.getPacket() instanceof C03PacketPlayer && blink) {
+                if(packetEvent.getPacket() instanceof C03PacketPlayer && blink)
                     packetEvent.setCancelled(true);
-                } else if (!blink && packetEvent.getPacket() instanceof C03PacketPlayer) {
-                    final double rotation = Math.toRadians(mc.thePlayer.rotationYaw);
-                    final double x = Math.sin(rotation);
-                    final double z = Math.cos(rotation);
-                    ((C03PacketPlayer) packetEvent.getPacket()).setX(mc.thePlayer.posX - x * 0.5);
-                    ((C03PacketPlayer) packetEvent.getPacket()).setZ(mc.thePlayer.posZ + z * 0.5);
-                    mc.thePlayer.setPositionAndUpdate(mc.thePlayer.posX - x * 0.5, mc.thePlayer.posY, mc.thePlayer.posZ + z * 0.5);
-                }
                 break;
         }
     }

@@ -46,7 +46,7 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
      * window resizes, the buttonList is cleared beforehand.
      */
     public void initGui() {
-        DiscordRP.update("In Main Menu", String.format("Logged in as %s (%s)", GithubAPI.username, GithubAPI.uid));
+        DiscordRP.update("In Main Menu - Atani Client");
 
         this.buttonList.clear();
 

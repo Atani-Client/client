@@ -43,7 +43,7 @@ public class NoFall extends Module {
                     }
                     break;
                 case "Dumb":
-                    if(1 > mc.thePlayer.fallDistance && packetEvent.getPacket() instanceof C03PacketPlayer)
+                    if(1 > mc.thePlayer.fallDistance && mc.thePlayer.motionY < -0.6 && packetEvent.getPacket() instanceof C03PacketPlayer)
                         ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
                     break;
                 case "Vulcan":

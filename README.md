@@ -13,7 +13,7 @@ Some (Most) code is super goofy
 
 Report bugs at the atani discord or by dming kellohyllyy on discord
 
-DISCORD: https://discord.gg/nqRDznSY3A
+DISCORD: https://discord.gg/NGrZDFYxyM
 
 Current devs:
 

@@ -980,10 +980,7 @@ public class Speed extends Module {
                                     strafeTicks = 0;
                                 }
                             } else {
-                                /*
-                                if(mc.thePlayer.hurtTime == 1)
-                                    MoveUtil.setMoveSpeed(0.18 + Math.random() / 100);
-                                 */
+                                // Dmg boost :fire:
                             }
                         } else {
                             // 0.5 Kinda works? Gonna make it 0.75 for safe.

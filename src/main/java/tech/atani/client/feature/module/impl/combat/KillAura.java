@@ -3,25 +3,17 @@ package tech.atani.client.feature.module.impl.combat;
 import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.init.Items;
 import net.minecraft.item.*;
 import net.minecraft.network.play.client.C02PacketUseEntity;
-import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
-import net.minecraft.network.play.client.C0APacketAnimation;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.module.impl.player.ScaffoldWalk;
-import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.game.PostTickEvent;
-import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
-import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
@@ -38,7 +30,9 @@ import tech.atani.client.utility.player.rotation.RotationUtil;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Native
 @ModuleData(name = "KillAura", description = "Attacks people", category = Category.COMBAT, key = Keyboard.KEY_R)
@@ -111,12 +105,11 @@ public class KillAura extends Module {
     public String getSuffix() {
     	return targetMode.getValue();
     }
-    
+
     private final class AttackRangeSorter implements Comparator<EntityLivingBase> {
         public int compare(EntityLivingBase o1, EntityLivingBase o2) {
-            int first = FightUtil.getRange(o1) <= attackRange.getValue() ? 0 : 1;
-            int second = FightUtil.getRange(o2) <= attackRange.getValue() ? 0 : 1;
-            return Double.compare(first, second);
+            return Double.compare(FightUtil.getRange(o1) <= attackRange.getValue() ? 0 : 1,
+                    FightUtil.getRange(o2) <= attackRange.getValue() ? 0 : 1);
         }
     }
 
@@ -132,25 +125,17 @@ public class KillAura extends Module {
         }
     }
 
-    /*
-    @Listen
-    public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
-        if(ModuleStorage.getInstance().getModule(String.valueOf(ScaffoldWalk.class)).isEnabled()) {
-            return;
-        }
-    }
-     */
     @Listen
     public void onRayTrace(RayTraceRangeEvent rayTraceRangeEvent) {
-        if(curEntity != null) {
+        if (curEntity != null) {
             double range2 = mc.thePlayer.isSprinting() ? sprintRange.getValue() : mc.thePlayer.onGround ? groundRange.getValue() : airRange.getValue();
             correctedRange = (advancedRange.getValue() ? range2 : attackRange.getValue()) + 0.00256f;
-            if (this.fixServersSideMisplace.getValue()) {
-                final float n = 0.010625f;
-                if (Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.NORTH || Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.WEST) {
-                    correctedRange += n * 2.0f;
-                }
+
+            if (fixServersSideMisplace.getValue() &&
+                    (Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.NORTH || Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.WEST)) {
+                correctedRange += 0.010625f * 2.0f;
             }
+
             rayTraceRangeEvent.setRange((float) correctedRange);
             rayTraceRangeEvent.setBlockReachDistance((float) Math.max(Methods.mc.playerController.getBlockReachDistance(), correctedRange));
         }
@@ -158,60 +143,64 @@ public class KillAura extends Module {
 
     @Listen
     public void onPostTickEvent(PostTickEvent postTickEvent) {
-        if(curEntity != null) {
+        if (curEntity != null) {
             mc.timer.timerSpeed = timerSpeed.getValue();
         } else {
             mc.timer.timerSpeed = 1;
         }
-        //  || mc.thePlayer.ticksExisted % 5 != 0
+
         if (mc.thePlayer == null)
             return;
 
-        // idk if dis is faster but maybe
         boolean entityIsValid = FightUtil.isValid(curEntity, findRange.getValue(), players.getValue(), animals.getValue(), monsters.getValue(), invisible.getValue());
 
         List<EntityLivingBase> targets = FightUtil.getMultipleTargets(findRange.getValue(), players.getValue(), animals.getValue(), walls.getValue(), monsters.getValue(), invisible.getValue());
-        switch (this.priority.getValue()) {
-            case "Distance":
-                targets.sort(new DistanceSorter());
-                break;
-            case "Health":
-                targets.sort(new HealthSorter());
-                break;
-        }
+        int targetsSize = targets.size();
+
+        Map<String, Comparator<EntityLivingBase>> comparatorMap = new HashMap<>();
+        comparatorMap.put("Distance", new DistanceSorter());
+        comparatorMap.put("Health", new HealthSorter());
+
+        targets.sort(comparatorMap.getOrDefault(this.priority.getValue(), new AttackRangeSorter()));
         targets.sort(new AttackRangeSorter());
+
         if (targets.isEmpty() || (curEntity != null && !targets.contains(curEntity))) {
             cpsDelay = 0L;
             curEntity = null;
             return;
         }
+
         switch (targetMode.getValue()) {
             case "Hybrid":
                 curEntity = targets.get(0);
                 break;
             case "Single":
-                if (curEntity == null || !entityIsValid)
+                if (curEntity == null || !entityIsValid) {
                     curEntity = targets.get(0);
+                }
                 break;
             case "Multi":
             case "Switch":
                 long switchDelay = targetMode.is("Multi") ? 0 : this.switchDelay.getValue();
                 if (!this.switchTimer.hasReached(switchDelay)) {
-                    if (curEntity == null || !entityIsValid)
+                    if (curEntity == null || !entityIsValid) {
                         curEntity = targets.get(0);
+                    }
                     return;
                 }
-                if (curEntity != null && entityIsValid && targets.size() == 1) {
+
+                if (curEntity != null && entityIsValid && targetsSize == 1) {
                     return;
                 } else if (curEntity == null) {
                     curEntity = targets.get(0);
-                } else if (targets.size() > 1) {
-                    int maxIndex = targets.size() - 1;
+                } else if (targetsSize > 1) {
+                    int maxIndex = targetsSize - 1;
                     if (this.currentIndex >= maxIndex) {
                         this.currentIndex = 0;
                     } else {
                         this.currentIndex += 1;
                     }
+
                     if (targets.get(currentIndex) != null && targets.get(currentIndex) != curEntity) {
                         curEntity = targets.get(currentIndex);
                         this.switchTimer.reset();
@@ -225,42 +214,35 @@ public class KillAura extends Module {
 
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
-        if(curEntity == null && autoBlockMode.is("Hold") && wasHolding) {
+        if (curEntity == null && autoBlockMode.is("Hold") && wasHolding) {
             mc.gameSettings.keyBindUseItem.pressed = false;
             wasHolding = false;
+            return;
         }
 
         if (curEntity != null) {
-            final float[] rotations = RotationUtil.getRotation(curEntity, aimVector.getValue(), heightDivisor.getValue(), mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
+            float[] rotations = RotationUtil.getRotation(curEntity, aimVector.getValue(), heightDivisor.getValue(), mouseFix.getValue(), heuristics.getValue(), minRandomYaw.getValue(), maxRandomYaw.getValue(), minRandomPitch.getValue(), maxRandomPitch.getValue(), this.prediction.getValue(), this.minYaw.getValue(), this.maxYaw.getValue(), this.minPitch.getValue(), this.maxPitch.getValue(), snapYaw.getValue(), snapPitch.getValue());
 
-            neccessaryRots: {
-                if(skipUnnecessaryRotations.getValue()) {
-                    MovingObjectPosition movingObjectPosition = mc.objectMouseOver;
-                    if(movingObjectPosition == null) {
-                        yawRot = rotations[0];
-                        pitchRot = rotations[1];
-                        break neccessaryRots;
-                    }
-                    boolean shouldSkip = (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY || movingObjectPosition.entityHit == curEntity) || (skipIfNear.getValue() && FightUtil.getRange(curEntity) <= nearDistance.getValue());
-                    if(shouldSkip) {
-                        if(unnecessaryRotations.getValue().equalsIgnoreCase("Yaw") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
-                            yawRot = PlayerHandler.yaw;
-                        if(unnecessaryRotations.getValue().equalsIgnoreCase("Pitch") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
-                            pitchRot = PlayerHandler.pitch;
-                    } else {
-                        yawRot = rotations[0];
-                        pitchRot = rotations[1];
-                    }
+            if (skipUnnecessaryRotations.getValue()) {
+                MovingObjectPosition movingObjectPosition = mc.objectMouseOver;
+                if (movingObjectPosition == null || (movingObjectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY || movingObjectPosition.entityHit == curEntity) || (skipIfNear.getValue() && FightUtil.getRange(curEntity) <= nearDistance.getValue())) {
+                    if (unnecessaryRotations.getValue().equalsIgnoreCase("Yaw") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
+                        yawRot = PlayerHandler.yaw;
+                    if (unnecessaryRotations.getValue().equalsIgnoreCase("Pitch") || unnecessaryRotations.getValue().equalsIgnoreCase("Both"))
+                        pitchRot = PlayerHandler.pitch;
                 } else {
                     yawRot = rotations[0];
                     pitchRot = rotations[1];
                 }
+            } else {
+                yawRot = rotations[0];
+                pitchRot = rotations[1];
             }
 
             rotationEvent.setYaw(yawRot);
             rotationEvent.setPitch(pitchRot);
 
-            if(this.lockView.getValue()) {
+            if (this.lockView.getValue()) {
                 Methods.mc.thePlayer.rotationYaw = yawRot;
                 Methods.mc.thePlayer.rotationPitch = pitchRot;
             }
@@ -269,31 +251,29 @@ public class KillAura extends Module {
 
     @Listen
     public final void onClick(ClickingEvent clickingEvent) {
-        if(curEntity != null) {
-            // We need to calculate 1.9 wait BEFORE attempting to attack to make sure we hit the cooldown correctly
+        if (curEntity != null) {
             switch (this.waitMode.getValue()) {
                 case "1.9":
                     cpsDelay = getAttackSpeed(Methods.mc.thePlayer.getHeldItem(), true);
                     break;
             }
 
-            if(!this.waitBeforeAttack.getValue() || this.attackTimer.hasReached(cpsDelay)) {
-                // We need to calculate cps delay after checking if the timer has reached, since the delay would be first set to 0, therefore we hit earlier
+            if (!this.waitBeforeAttack.getValue() || this.attackTimer.hasReached(cpsDelay)) {
                 switch (this.waitMode.getValue()) {
                     case "CPS":
-                        final double cps = this.cps.getValue() > 10 ? this.cps.getValue() + 5 : this.cps.getValue();
+                        double cps = this.cps.getValue() > 10 ? this.cps.getValue() + 5 : this.cps.getValue();
                         long calcCPS = (long) (1000 / cps);
-                        if(this.randomizeCps.getValue()) {
+                        if (this.randomizeCps.getValue()) {
                             try {
                                 calcCPS += SecureRandom.getInstanceStrong().nextGaussian() * 50;
                             } catch (NoSuchAlgorithmException e) {
                                 throw new RuntimeException(e);
                             }
                         }
-
                         cpsDelay = calcCPS;
                         break;
                 }
+
                 MovingObjectPosition objectPosition = Methods.mc.objectMouseOver;
                 if (objectPosition != null && objectPosition.entityHit != null && objectPosition.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
                     if (autoBlock.getValue()) {
@@ -307,11 +287,6 @@ public class KillAura extends Module {
                                     Methods.mc.thePlayer.setItemInUse(currentItem, 32767);
                                     break;
                                 case "AAC":
-                                    if (Methods.mc.thePlayer.ticksExisted % 2 == 0) {
-                                        Methods.mc.playerController.interactWithEntitySendPacket(Methods.mc.thePlayer, objectPosition.entityHit);
-                                        Methods.mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(currentItem));
-                                    }
-                                    break;
                                 case "GrimAC":
                                 case "Intave":
                                 case "Matrix":
@@ -319,9 +294,8 @@ public class KillAura extends Module {
                                     Methods.mc.thePlayer.sendQueue.addToSendQueue(new C08PacketPlayerBlockPlacement(currentItem));
                                     break;
                                 case "Hold":
-                                    if(!wasHolding)
+                                    if (!wasHolding)
                                         wasHolding = true;
-
                                     mc.gameSettings.keyBindUseItem.pressed = true;
                                     break;
                             }
@@ -347,56 +321,57 @@ public class KillAura extends Module {
 
     public static long getAttackSpeed(final ItemStack itemStack, final boolean responsive) {
         double baseSpeed = 250;
-        if (!responsive) {
+
+        if (!responsive || itemStack == null || !(itemStack.getItem() instanceof ItemTool || itemStack.getItem() instanceof ItemSword || itemStack.getItem() instanceof ItemHoe)) {
             return Long.MAX_VALUE;
-        } else if (itemStack != null) {
-            if (itemStack.getItem() instanceof ItemSword) {
-                baseSpeed = 625;
-            }
-            if (itemStack.getItem() instanceof ItemSpade) {
-                baseSpeed = 1000;
-            }
-            if (itemStack.getItem() instanceof ItemPickaxe) {
-                baseSpeed = 833.333333333333333;
-            }
-            if (itemStack.getItem() instanceof ItemAxe) {
-                if (itemStack.getItem() == Items.wooden_axe) {
+        }
+
+        Item item = itemStack.getItem();
+
+        if (item instanceof ItemSword) {
+            baseSpeed = 625;
+        } else if (item instanceof ItemSpade) {
+            baseSpeed = 1000;
+        } else if (item instanceof ItemPickaxe) {
+            baseSpeed = 833.333333333333333;
+        } else if (item instanceof ItemAxe) {
+            switch (item.getUnlocalizedName()) {
+                case "item.wooden_axe":
+                case "item.stone_axe":
                     baseSpeed = 1250;
-                }
-                if (itemStack.getItem() == Items.stone_axe) {
-                    baseSpeed = 1250;
-                }
-                if (itemStack.getItem() == Items.iron_axe) {
+                    break;
+                case "item.iron_axe":
                     baseSpeed = 1111.111111111111111;
-                }
-                if (itemStack.getItem() == Items.diamond_axe) {
+                    break;
+                case "item.diamond_axe":
+                case "item.golden_axe":
                     baseSpeed = 1000;
-                }
-                if (itemStack.getItem() == Items.golden_axe) {
-                    baseSpeed = 1000;
-                }
+                    break;
             }
-            if (itemStack.getItem() instanceof ItemHoe) {
-                if (itemStack.getItem() == Items.wooden_hoe) {
+        } else if (item instanceof ItemHoe) {
+            switch (item.getUnlocalizedName()) {
+                case "item.wooden_hoe":
                     baseSpeed = 1000;
-                }
-                if (itemStack.getItem() == Items.stone_hoe) {
+                    break;
+                case "item.stone_hoe":
                     baseSpeed = 500;
-                }
-                if (itemStack.getItem() == Items.iron_hoe) {
+                    break;
+                case "item.iron_hoe":
                     baseSpeed = 333.333333333333333;
-                }
-                if (itemStack.getItem() == Items.diamond_hoe) {
+                    break;
+                case "item.diamond_hoe":
                     baseSpeed = 250;
-                }
-                if (itemStack.getItem() == Items.golden_hoe) {
+                    break;
+                case "item.golden_hoe":
                     baseSpeed = 1000;
-                }
+                    break;
             }
         }
+
         if (Methods.mc.thePlayer.isPotionActive(Potion.digSpeed)) {
             baseSpeed *= 1.0 + 0.1 * (Methods.mc.thePlayer.getActivePotionEffect(Potion.digSpeed).getAmplifier() + 1);
         }
+
         return Math.round(baseSpeed);
     }
 

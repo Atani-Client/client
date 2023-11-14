@@ -109,8 +109,8 @@ public class GuiConnecting extends GuiScreen
     public void updateScreen()
     {
         DiscordRP.update(
-                "Connecting to a server...",
-                "Connecting to " + (serverData == null ? "hidden" : serverData.serverIP)
+                "Playing 100% Legit",
+                "Playing on " + (serverData == null ? "hidden" : serverData.serverIP)
         );
         if (this.networkManager != null)
         {

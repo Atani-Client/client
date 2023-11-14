@@ -22,3 +22,7 @@ Kellohylly (kellohyllyy) Owner
 Zmixin (zmixin.) Dev
 
 NO CONFIG SYSTEM YET | TO USE CONFIGS RENAME THE CONFIG YOU DOWNLOADED TO "modules"
+
+dont come crying to me if you dont like the code
+
+some of it was skidded by tabio!

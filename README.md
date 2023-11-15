@@ -26,3 +26,21 @@ NO CONFIG SYSTEM YET | TO USE CONFIGS RENAME THE CONFIG YOU DOWNLOADED TO "modul
 dont come crying to me if you dont like the code
 
 some of it was skidded by tabio!
+
+CREDITS:
+
+Karhu hop - Heritsy
+
+Old devs:
+
+Heritsy
+
+Geuxy
+
+Tabio
+
+MarkGG
+
+Liticane
+
+luca.class

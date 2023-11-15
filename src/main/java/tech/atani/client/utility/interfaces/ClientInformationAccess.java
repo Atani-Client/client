@@ -1,13 +1,12 @@
 package tech.atani.client.utility.interfaces;
 
-import tech.Catani;
 
 public interface ClientInformationAccess {
     boolean DEVELOPMENT_SWITCH = true, BETA_SWITCH = true;
 
     // im2lazy2fix lol
     // also hello people that are looking through the src:)
-    String CLIENT_NAME = Catani.catani ? "Catani" : "Atani";
+    String CLIENT_NAME = "Atani";
 //    String CLIENT_NAME = "MysteryClarinet";
     String CLIENT_VERSION = "0.0.5 BETA";
     String CLIENT_NAME_JAPANASE = "アタニ";

@@ -1,6 +1,11 @@
 package tech.atani.client.feature.guis.screens.mainmenu.atani;
 import net.minecraft.client.gui.*;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.GL11;
+import tech.atani.client.feature.account.Account;
+import tech.atani.client.feature.account.storage.AccountStorage;
 import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.guis.*;
@@ -9,6 +14,9 @@ import tech.atani.client.utility.discord.DiscordRP;
 import tech.atani.client.utility.interfaces.ClientInformationAccess;
 import tech.atani.client.utility.render.RenderUtil;
 import tech.atani.client.feature.guis.elements.background.ShaderBackground;
+import tech.atani.client.utility.render.shader.render.ingame.RenderableShaders;
+import tech.atani.client.utility.render.shader.shaders.RoundedShader;
+
 import java.awt.*;
 import java.io.IOException;
 public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, ClientInformationAccess
@@ -27,6 +35,8 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
     {
         return false;
     }
+
+
     /**
      * Fired when a key is typed (except F11 which toggles full screen). This is the equivalent of
      * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
@@ -83,6 +93,9 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
      * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        final FontRenderer fontRendererObj = FontStorage.getInstance().findFont("Roboto", 19);
+        FontStorage.getInstance().findFont("Roboto", 19).drawStringWithShadow(CLIENT_NAME + " - " + CLIENT_VERSION, 10.0f, 10.0f, -7829368);
+
         RenderUtil.drawRect(0, 0, this.width, this.height, new Color(16, 16, 16).getRGB());
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);

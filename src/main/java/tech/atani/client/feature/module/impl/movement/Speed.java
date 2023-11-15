@@ -839,29 +839,12 @@ public class Speed extends Module {
                 }
                 break;
             case "Karhu":
-                if(mc.gameSettings.keyBindJump.pressed ||!isMoving()) {
-                    mc.gameSettings.keyBindJump.pressed = false;
-                    return;
-                }
-
-                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
-
-                //mc.thePlayer.moveForward > 0 && mc.thePlayer.moveStrafing == 0 &&
-
-                mc.timer.timerSpeed = 1.004F;
-
-                mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
-
-                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
-
-                mc.thePlayer.motionY -= 0.00225;
-
-                if(mc.thePlayer.motionY > 0) {
-                    mc.timer.timerSpeed = (float) (0.995 + Math.abs(mc.thePlayer.motionY * (karhuMode.is("Rage") ? 0.1 : 0.05)));
-                    mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 3000F);
-                } else {
-                    mc.timer.timerSpeed = 1F;
-                    mc.thePlayer.speedInAir = 0.0202F;
+                // Creds to Heritsy
+                if (mc.thePlayer.onGround) {
+                    mc.thePlayer.jump();
+                    mc.timer.timerSpeed = (float) (karhuMode.is("Rage") ? 1.029 : 1.009);
+                } else if (mc.thePlayer.motionY > 0.2101) {
+                    mc.thePlayer.motionY *= 0.87;
                 }
                 break;
             case "Incognito":
@@ -947,40 +930,25 @@ public class Speed extends Module {
                         break;
                     case "Strafe":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
-                        ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
-                        switch(ticks) {
-                            case 0:
-                                mc.timer.timerSpeed = 1.1F;
-                                float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
-                                mc.thePlayer.motionX *= multiplier;
-                                mc.thePlayer.motionZ *= multiplier;
-                                mc.thePlayer.motionY -= 0.001;
-                                break;
-                            case 1:
-                                mc.timer.timerSpeed = 1.02F;
-                                float multiplier2 = (float) (1 + (Math.random() - 0.7) / 140);
-                                mc.thePlayer.motionX *= multiplier2;
-                                mc.thePlayer.motionZ *= multiplier2;
-                                break;
-                            case 2:
-                                mc.timer.timerSpeed = 1;
-                                break;
+                        if(mc.thePlayer.onGround) {
+                            mc.thePlayer.motionY -= 0.001;
+                            mc.timer.timerSpeed = 1.1F;
+                        } else {
+                            mc.timer.timerSpeed = 1;
                         }
 
                         double random = (Math.random() - 0.75) * 0.05;
                         if(isMoving()) {
-                            if(mc.thePlayer.hurtTime != 0) {
-                                if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
-                                    MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random + (KillAura.curEntity == null ? 0.04 : 0.02));
-                                    mc.timer.timerSpeed = 0.99F + (float) (random * 12);
+                            if(mc.thePlayer.hurtTime == 0) {
+                                // (KillAura.curEntity == null ? 0.039 : 0.019)
+                                if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random + 0.02 && 10 > strafeTicks) {
+                                    MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random + 0.02);
                                     strafeTicks++;
                                 } else {
                                     mc.timer.timerSpeed = 1;
                                     strafeTicks = 0;
                                 }
-                            } else {
-                                // Dmg boost :fire:
                             }
                         } else {
                             // 0.5 Kinda works? Gonna make it 0.75 for safe.

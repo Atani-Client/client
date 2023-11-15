@@ -3,6 +3,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.util.ResourceLocation;
+import tech.atani.client.feature.font.storage.FontStorage;
 import tech.atani.client.feature.guis.elements.background.ShaderBackground;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.AtaniMainMenu;
 import tech.atani.client.feature.guis.screens.mainmenu.atani.button.AtaniButton;
@@ -56,13 +57,14 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         // Imma make it ACTUALLY have a proper font soon, too lazy now :,)
         RenderUtil.drawRect(0, 0, this.width, this.height, new Color(16, 16, 16).getRGB());
-        mc.fontRendererObj.drawCenteredString("Changelog - " + ClientInformationAccess.CLIENT_VERSION + ":", (float) this.width / 2, 20, -1);
+        FontStorage.getInstance().findFont("Roboto", 19).drawString("Changelog - " + CLIENT_VERSION + ":", (float) (this.width / 2) - 50, 20, -1);
+        //mc.fontRendererObj.drawCenteredString("Changelog - " + ClientInformationAccess.CLIENT_VERSION + ":", (float) this.width / 2, 20, -1);
         int yellow = Color.HSBtoRGB(60F / 360.0f, 1.0F, 1.0F);
         int green = Color.HSBtoRGB(120F / 360.0f, 1.0F, 1.0F);
-        mc.fontRendererObj.drawCenteredString("- Made KillAura better", (float) this.width / 2, 100, yellow);
-        mc.fontRendererObj.drawCenteredString("- Fixed Hold AutoBlock (KillAura)", (float) this.width / 2, 110, yellow);
-        //mc.fontRendererObj.drawCenteredString("- Fixed Intave Speed DmgBoost", (float) this.width / 2, 120, yellow);
-        mc.fontRendererObj.drawCenteredString("+ Add ChangeLog Menu", (float) this.width / 2, 130, green);
+        FontStorage.getInstance().findFont("Roboto", 19).drawString("- Made KillAura better", (float) (this.width / 2) - 50, 100, yellow);
+        FontStorage.getInstance().findFont("Roboto", 19).drawString("- Fixed Hold AutoBlock (KillAura)", (float) (this.width / 2) - 50, 112, yellow);
+        FontStorage.getInstance().findFont("Roboto", 19).drawString("- Fixed Intave Strafe", (float) (this.width / 2) - 50, 124, yellow);
+        FontStorage.getInstance().findFont("Roboto", 19).drawString("+ Add ChangeLog Menu", (float) (this.width / 2) - 50, 136, green);
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

@@ -409,6 +409,13 @@ public class ItemRenderer
                                         this.transformFirstPersonItem(equippedProgress, swingProgress - 0.07f);
                                         this.doBlockTransformations();
                                         break;
+                                    case "Atani 2":
+                                        this.transformFirstPersonItem(equippedProgress - 0.125f, 0);
+                                        GlStateManager.rotate(-swingProgressFactor * 55 / 2f, -8f, 0.4f, 9f);
+                                        GlStateManager.rotate(-swingProgressFactor * 35, 1f, swingProgressFactor / 8, -0.0f);
+                                        GlStateManager.translate(0.0f, 0.1f, 0.0f);
+                                        this.doBlockTransformations();
+                                        break;
                                     case "Exhibition":
                                         this.transformFirstPersonItem(equippedProgress - 0.125f, 0);
                                         GlStateManager.rotate(-swingProgressFactor * 55 / 2f, -8f, 0.4f, 9f);

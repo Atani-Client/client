@@ -40,7 +40,7 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
     /**
      * Fired when a key is typed (except F11 which toggles full screen). This is the equivalent of
      * KeyListener.keyTyped(KeyEvent e). Args : character (character on the key), keyCode (lwjgl Keyboard key code)
-     */
+3     */
     protected void keyTyped(char typedChar, int keyCode) throws IOException {
     }
     /**
@@ -93,9 +93,6 @@ public class AtaniMainMenu extends GuiScreen implements GuiYesNoCallback, Client
      * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        final FontRenderer fontRendererObj = FontStorage.getInstance().findFont("Roboto", 19);
-        FontStorage.getInstance().findFont("Roboto", 19).drawStringWithShadow(CLIENT_NAME + " - " + CLIENT_VERSION, 10.0f, 10.0f, -7829368);
-
         RenderUtil.drawRect(0, 0, this.width, this.height, new Color(16, 16, 16).getRGB());
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);

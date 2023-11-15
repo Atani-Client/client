@@ -72,7 +72,7 @@ public class Speed extends Module {
             stop = new CheckBoxValue("Stop", "Should the module stop all motion when not moving?", this, false, new Supplier[]{() -> mode.is("Custom")}),
             yPort = new CheckBoxValue("Y-Port", "Should the module y-port?", this, false, new Supplier[]{() -> mode.is("Custom")});
     private final SliderValue<Double> minusMotionY = new SliderValue<Double>("Minus Motion Y", "How big will the -y motion be?", this, 0.42d, 0.01d, 2d, 2, new Supplier[]{() -> mode.is("Custom") && yPort.getValue()});
-    private final CheckBoxValue cpuSpeedUp = new CheckBoxValue("CPU SpeedUp exploit", "Make timer slightly faster (undetectable)?", this, true);
+    private final CheckBoxValue cpuSpeedUp = new CheckBoxValue("CPU SpeedUp exploit", "Make timer slightly faster (almost undetectable)?", this, true);
 
     // Spartan
     private final TimeHelper spartanTimer = new TimeHelper();

@@ -37,7 +37,7 @@ public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             karhuMode = new StringBoxValue("Karhu Mode", "Which mode will the karhu mode use?", this, new String[]{"Normal", "Rage"}, new Supplier[]{() -> mode.is("Karhu")}),
-            intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Stable", "Ground Strafe", "Combined Strafe"}, new Supplier[]{() -> mode.is("Intave")}),
+            intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Stable", "Ground Strafe", "Combined Strafe", "Timer"}, new Supplier[]{() -> mode.is("Intave")}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Slow", "Ground", "Y-Port", "Strafe", "TEST"}, new Supplier[]{() -> mode.is("Vulcan")}),
             incognitoMode = new StringBoxValue("Incognito Mode", "Which mode will the incognito mode use?", this, new String[]{"Normal", "Exploit"}, new Supplier[]{() -> mode.is("Incognito")}),
             ncpMode = new StringBoxValue("NCP Mode", "Which mode will the ncp mode use?", this, new String[]{"Custom", "Normal", "Normal 2", "Stable", "Strafe", "Hop", "Low"}, new Supplier[]{() -> mode.is("NCP")}),
@@ -957,6 +957,9 @@ public class Speed extends Module {
                             mc.thePlayer.motionX *= multiplier;
                             mc.thePlayer.motionZ *= multiplier;
                         }
+                        break;
+                    case "Timer":
+                        mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = isMoving();
                         break;
                     case "Rage":
                         mc.gameSettings.keyBindJump.pressed = isMoving();

@@ -55,16 +55,17 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
      * Draws the screen and all the components in it. Args : mouseX, mouseY, renderPartialTicks
      */
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        // Imma make it ACTUALLY have a proper font soon, too lazy now :,)
         RenderUtil.drawRect(0, 0, this.width, this.height, new Color(16, 16, 16).getRGB());
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("Changelog - " + CLIENT_VERSION + ":", (float) (this.width / 2), 20, -1);
         //mc.fontRendererObj.drawCenteredString("Changelog - " + ClientInformationAccess.CLIENT_VERSION + ":", (float) this.width / 2, 20, -1);
         int yellow = Color.HSBtoRGB(60F / 360.0f, 1.0F, 1.0F);
         int green = Color.HSBtoRGB(120F / 360.0f, 1.0F, 1.0F);
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Fixed Intave Rage Speed", (float) (this.width / 2), 112, yellow);
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Made Intave LongJump Better", (float) (this.width / 2), 112, yellow);
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Edit Test Velo", (float) (this.width / 2), 112, yellow);
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Added Smooth Block Animation", (float) (this.width / 2), 100, green);
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Added Intave Tower Ground Multiplier", (float) (this.width / 2), 100, green);
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Added Chance To Intave Jump Velocity", (float) (this.width / 2), 100, green);
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Fix Bugs", (float) (this.width / 2), 100, green);
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

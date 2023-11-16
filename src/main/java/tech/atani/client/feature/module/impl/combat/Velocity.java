@@ -24,6 +24,7 @@ import tech.atani.client.utility.math.random.RandomUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
+import tech.atani.client.utility.player.PlayerUtil;
 import tech.atani.client.utility.player.movement.MoveUtil;
 
 import java.util.Queue;
@@ -38,7 +39,7 @@ public class Velocity extends Module {
     private final SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse") || mode.is("Delay")});
     private final SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
     private final SliderValue<Integer> delayTicks = new SliderValue<Integer>("Delay Ticks", "How long will the velocity wait before cancelling it?", this, 500, 0, 1000, 0, new Supplier[]{() -> mode.is("Delay")});
-
+    private final SliderValue<Float> jumpChance = new SliderValue<Float>("Intave Jump Chance", "Whats the chance for intave jump velo to jump?", this, 100f,0f,100f, 1, new Supplier[] {() -> mode.is("Intave Jump")});
     private double packetX = 0;
     private double packetY = 0;
     private double packetZ = 0;
@@ -89,10 +90,13 @@ public class Velocity extends Module {
                 break;
             }
             case "Test":
-                if(mc.thePlayer.hurtTime == 9)
-                    mc.thePlayer.setSneaking(true);
-                else if(mc.thePlayer.hurtTime == 10)
-                    mc.thePlayer.setSneaking(false);
+                if(mc.thePlayer.hurtTime == 9) {
+                    boolean pressed = mc.gameSettings.keyBindJump.pressed;
+                    mc.gameSettings.keyBindJump.pressed = false;
+                    if(mc.thePlayer.onGround) mc.thePlayer.jump();
+                    mc.gameSettings.keyBindJump.pressed = pressed;
+                    PlayerUtil.addChatMessgae("SLOW", true);
+                }
                 break;
             case "Polar":
                 if (mc.thePlayer.isSwingInProgress) {
@@ -411,7 +415,7 @@ public class Velocity extends Module {
     public final void onSilent(SilentMoveEvent silentMoveEvent) {
         switch(this.mode.getValue()) {
             case "Intave Jump":
-                if (Velocity.mc.thePlayer.hurtTime == 9 && mc.currentScreen == null) {
+                if (Velocity.mc.thePlayer.hurtTime == 9 && mc.currentScreen == null && jumpChance.getValue() > Math.random() * 100) {
                     mc.gameSettings.keyBindJump.pressed = true;
                     jumped = true;
                     break;

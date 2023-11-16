@@ -66,6 +66,7 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Added Intave Tower Ground Multiplier", (float) (this.width / 2), 100, green);
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Added Chance To Intave Jump Velocity", (float) (this.width / 2), 100, green);
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Fix Bugs", (float) (this.width / 2), 100, green);
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Re Add Matrix Ground Strafe", (float) (this.width / 2), 100, green);
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

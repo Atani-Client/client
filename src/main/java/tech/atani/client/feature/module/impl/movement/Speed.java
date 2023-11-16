@@ -106,9 +106,10 @@ public class Speed extends Module {
     // Verus
     private boolean spoofGround;
     private int jumps;
-    // BMC Recode
+    // BMC
     private int bmcTicks;
-
+    // Matrix
+    private boolean firstJump;
     @Override
     public String getSuffix() {
         return mode.getValue();
@@ -133,7 +134,7 @@ public class Speed extends Module {
 
     @Listen
     public final void onOmniCheck(DirectionSprintCheckEvent directionSprintCheckEvent) {
-        if(mode.is("Matrix") || mode.is("Intave") && intaveMode.is("Ground Strafe")) {
+        if(mode.is("Matrix")) {
             if(MoveUtil.getSpeed() != 0) {
                 directionSprintCheckEvent.setSprintCheck(false);
             }
@@ -262,13 +263,15 @@ public class Speed extends Module {
                 }
                 break;
             case "Matrix":
-                getGameSettings().keyBindSprint.pressed = true;
-                if (mc.thePlayer.onGround && this.isMoving()){
-                    mc.thePlayer.jump();
-                    MoveUtil.strafe(0.30603073042201825);
+                getGameSettings().keyBindSprint.pressed = getGameSettings().keyBindJump.pressed = true;
+                if (mc.thePlayer.onGround && this.isMoving()) {
+                    if(mc.thePlayer.moveForward < 0) MoveUtil.strafe(0.30603073042201825);
                     mc.timer.timerSpeed = 1.05F;
+                    firstJump = false;
                 } else {
                     mc.timer.timerSpeed = 1;
+                    if(!isMoving())
+                        firstJump = true;
                 }
                 break;
             case "Vulcan":
@@ -1264,7 +1267,9 @@ public class Speed extends Module {
     }
 
     @Override
-    public void onEnable() {}
+    public void onEnable() {
+        firstJump = true;
+    }
 
     @Override
     public void onDisable() {

@@ -132,6 +132,14 @@ public class Speed extends Module {
     }
 
     @Listen
+    public final void onOmniCheck(DirectionSprintCheckEvent directionSprintCheckEvent) {
+        if(mode.is("Matrix") || mode.is("Intave") && intaveMode.is("Ground Strafe")) {
+            if(MoveUtil.getSpeed() != 0) {
+                directionSprintCheckEvent.setSprintCheck(false);
+            }
+        }
+    }
+    @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
         if(cpuSpeedUp.getValue())
             mc.timer.timerSpeed = 1.004F;
@@ -254,11 +262,10 @@ public class Speed extends Module {
                 }
                 break;
             case "Matrix":
-                mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
-
-                if(mc.thePlayer.onGround && isMoving()) {
-                    mc.thePlayer.motionX *= 1.002;
-                    mc.thePlayer.motionZ *= 1.002;
+                getGameSettings().keyBindSprint.pressed = true;
+                if (mc.thePlayer.onGround && this.isMoving()){
+                    mc.thePlayer.jump();
+                    MoveUtil.strafe(0.30603073042201825);
                     mc.timer.timerSpeed = 1.05F;
                 } else {
                     mc.timer.timerSpeed = 1;

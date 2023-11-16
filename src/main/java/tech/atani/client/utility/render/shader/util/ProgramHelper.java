@@ -1,11 +1,9 @@
 package tech.atani.client.utility.render.shader.util;
 
-import cn.muyang.nativeobfuscator.Native;
 import org.lwjgl.opengl.GL20;
 
 import java.nio.FloatBuffer;
 
-@Native
 public class ProgramHelper {
 
     public static void uniform1f(final int programId, final String name, final float f) {

@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.movement;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.potion.Potion;
@@ -21,7 +20,6 @@ import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 
-@Native
 @ModuleData(name = "LongJump", description = "Jumps long", category = Category.MOVEMENT)
 public class LongJump extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"NCP", "Vulcan", "Intave", "Karhu"});

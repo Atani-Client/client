@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.listener.event.minecraft.game.TimerManipulationEvent;
 import tech.atani.client.listener.radbus.Listen;
@@ -11,7 +10,6 @@ import tech.atani.client.utility.player.combat.FightUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.feature.value.impl.SliderValue;
 
-@Native
 @ModuleData(name = "TickBase", description = "Tick Base Manipulation", category = Category.COMBAT)
 public class TickBase extends Module {
 

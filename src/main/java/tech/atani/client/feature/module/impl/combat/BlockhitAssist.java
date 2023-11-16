@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
@@ -8,7 +7,6 @@ import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
 
-@Native
 @ModuleData(name = "BlockhitAssist", description = "Automatically Blockhits", category = Category.COMBAT)
 public class BlockhitAssist extends Module {
     private final SliderValue<Integer> chance = new SliderValue<>("Chance", "What should the chance to blockhit be?", this, 50, 10, 100, 1);

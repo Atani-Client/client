@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.player;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.radbus.Listen;
@@ -11,7 +10,6 @@ import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import com.google.common.base.Supplier;
 
-@Native
 @ModuleData(name = "NoFall", description = "Reduces fall damage", category = Category.PLAYER)
 public class NoFall extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Edit", "Smart", "Dumb", "Vulcan", "Verus"}),

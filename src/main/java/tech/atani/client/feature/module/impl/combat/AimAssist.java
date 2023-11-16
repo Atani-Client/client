@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.*;
@@ -14,13 +13,11 @@ import tech.atani.client.feature.value.impl.MultiStringBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
-import tech.atani.client.utility.player.rotation.RotationUtil;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Native
 @ModuleData(name = "AimAssist", description = "Assists aiming at players", category = Category.COMBAT)
 public class AimAssist extends Module {
 

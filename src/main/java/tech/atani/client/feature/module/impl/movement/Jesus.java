@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.movement;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
@@ -13,7 +12,6 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 
-@Native
 @ModuleData(name = "Jesus", description = "Walk on water like jesus", category = Category.MOVEMENT)
 public class Jesus extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "What mode should this module use?", this, new String[] {"Solid", "Matrix"});

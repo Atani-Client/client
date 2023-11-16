@@ -3,7 +3,6 @@ package tech.atani.client.utility.render.shader.shaders;
 import java.nio.FloatBuffer;
 import java.util.List;
 
-import cn.muyang.nativeobfuscator.Native;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
@@ -22,7 +21,6 @@ import tech.atani.client.utility.render.shader.data.ShaderRenderType;
 import tech.atani.client.utility.render.shader.render.FramebufferQuads;
 import tech.atani.client.utility.render.shader.render.Type;
 
-@Native
 @Info(frag = "/fragment/bloom.glsl")
 public class BloomShader extends ShaderContainer {
 

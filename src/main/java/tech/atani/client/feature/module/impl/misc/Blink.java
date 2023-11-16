@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.misc;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.Packet;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
@@ -15,7 +14,6 @@ import tech.atani.client.feature.value.impl.SliderValue;
 
 import java.util.ArrayDeque;
 
-@Native
 @ModuleData(name = "Blink", description = "Blocks your packets for a time being", category = Category.MISCELLANEOUS, alwaysRegistered = true)
 public class Blink extends Module {
     private final CheckBoxValue incoming = new CheckBoxValue("Incoming", "Queue incoming packets?", this, false),

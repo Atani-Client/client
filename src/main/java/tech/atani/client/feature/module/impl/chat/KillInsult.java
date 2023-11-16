@@ -22,7 +22,7 @@ public class KillInsult extends Module {
             "Toxic nigger",
             "Go back to roblox where you belong, you degenerate 6 year old kid",
             "You rush because you're bad and you want the satisfaction of one kill before dying to a noob, %s",
-            "Hey %s, check out Kellohylly on youtube!",
+            "Hey %s, check out KelloDev on youtube!",
             "Your ass is jealous of how much shit is coming trough your mouth, %s",
             "Wow, you died to a fucking free client, %s",
             "%s, r u mad?",

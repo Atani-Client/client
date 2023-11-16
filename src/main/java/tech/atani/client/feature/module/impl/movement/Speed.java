@@ -894,7 +894,7 @@ public class Speed extends Module {
                             if(mc.thePlayer.onGround) {
                                 watchDogTicks = 0;
                                 mc.thePlayer.jump();
-                                MoveUtil.strafe(0.399F);
+                                MoveUtil.strafe(0.3999F);
                             } else {
                                 watchDogTicks++;
                                 switch (watchDogTicks) {
@@ -961,8 +961,6 @@ public class Speed extends Module {
                     case "Rage":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                        mc.thePlayer.speedInAir = 0.0205F;
-
                         mc.gameSettings.keyBindJump.pressed = isMoving();
                         ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
@@ -977,7 +975,6 @@ public class Speed extends Module {
                             case 1:
                                 mc.thePlayer.motionY -= 0.005;
                                 mc.timer.timerSpeed = 1;
-                                MoveUtil.strafe();
                                 break;
                         }
 
@@ -986,8 +983,8 @@ public class Speed extends Module {
                             if(mc.thePlayer.hurtTime != 0)
                                 return;
 
-                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random5 * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
-                                MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random5 + (KillAura.curEntity == null ? 0.04 : 0.02));
+                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random5 * 1.25 + 0.019 && 10 > strafeTicks) {
+                                MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random5 + 0.02);
                                 mc.timer.timerSpeed = 0.99F + (float) (random5 * 12);
                                 strafeTicks++;
                             } else {
@@ -996,9 +993,8 @@ public class Speed extends Module {
                             }
                             break;
                         } else {
-                            // 0.5 Kinda works? Gonna make it 0.75 for safe.
-                            float multiplier = 0.75F;
                             mc.timer.timerSpeed = 1;
+                            float multiplier = 0.7F;
                             mc.thePlayer.motionX *= multiplier;
                             mc.thePlayer.motionZ *= multiplier;
                         }

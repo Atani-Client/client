@@ -52,6 +52,8 @@ public class LongJump extends Module {
                     if(Methods.mc.thePlayer.onGround) {
                         Methods.mc.thePlayer.jump();
                         Methods.mc.thePlayer.jump();
+                        mc.thePlayer.motionX *= 1.2;
+                        mc.thePlayer.motionZ *= 1.2;
                         this.setEnabled(false);
                     }
                     break;

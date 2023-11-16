@@ -74,6 +74,7 @@ public class ScaffoldWalk extends Module {
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
     private final CheckBoxValue intaveBoost = new CheckBoxValue("Intave Speed Boost", "Add speed boost?", this, false);
     private final CheckBoxValue intaveBoost2 = new CheckBoxValue("Intave Speed Boost 2", "Add speed boost 2?", this, false);
+    public SliderValue<Float> towerMultiplier = new SliderValue<>("Intave Tower Ground Multiplier", "How Much Faster Should Intave Tower Be While On Ground?", this, 1.1f, 1f, 1.3f, 5);
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper(), startingTimeHelper = new TimeHelper();
     private double[] lastPos = new double[3];
     private int lastItem = -1;
@@ -242,14 +243,13 @@ public class ScaffoldWalk extends Module {
                     mc.timer.timerSpeed = 1.004F;
                     if(mc.thePlayer.onGround) {
                         mc.thePlayer.jump();
+                        float multiplier = towerMultiplier.getValue();
+                        mc.thePlayer.motionX *= multiplier;
+                        mc.thePlayer.motionZ *= multiplier;
                         mc.thePlayer.motionY -= 0.01;
                     } else {
-                        mc.thePlayer.speedInAir = 0.0205F;
                         if(mc.thePlayer.ticksExisted % 3 == 0) {
                             mc.thePlayer.motionY -= 0.0025;
-                            mc.thePlayer.motionX *= 1.003F;
-                            mc.thePlayer.motionZ *= 1.003F;
-
                         }
                     }
                     break;
@@ -368,6 +368,7 @@ public class ScaffoldWalk extends Module {
     public void onEnable() {
         if(mc.thePlayer.onGround && intaveBoost.getValue()) {
             mc.thePlayer.setSprinting(true);
+            mc.thePlayer.jump();
             mc.thePlayer.jump();
             mc.thePlayer.setSprinting(true);
             /*

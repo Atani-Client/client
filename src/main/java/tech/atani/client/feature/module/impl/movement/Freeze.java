@@ -33,7 +33,7 @@ public class Freeze extends Module {
                 break;
             case "Intave":
                 // pretty useless, but funny to troll legits with >:)(might be patched?!?!??!)
-                if(mc.thePlayer.ticksExisted % 2 == 0)
+                if(mc.thePlayer.ticksExisted % 10 == 0)
                     blink = !blink;
 
                 if(blink)

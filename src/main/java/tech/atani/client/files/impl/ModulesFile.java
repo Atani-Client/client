@@ -41,4 +41,20 @@ public class ModulesFile extends LocalFile {
         }
     }
 
+    public void load(Gson gson, String fileName) {
+        if (!file.exists()) {
+            return;
+        }
+
+        JsonObject object = gson.fromJson(readFile(file), JsonObject.class);
+        if (object.has("Modules")){
+            JsonObject modulesObject = object.getAsJsonObject(fileName);
+
+            for (Module module : ModuleStorage.getInstance().getList()) {
+                if (modulesObject.has(module.getIdentifier()))
+                    module.load(modulesObject.getAsJsonObject(module.getIdentifier()));
+            }
+        }
+    }
+
 }

@@ -2,6 +2,7 @@ package tech.atani.client.feature.module.impl.misc;
 
 import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
+import net.minecraft.client.renderer.chunk.ChunkCompileTaskGenerator;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S05PacketSpawnPosition;
@@ -9,6 +10,7 @@ import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
+import tech.atani.client.feature.module.impl.combat.KillAura;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
@@ -18,6 +20,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
+import tech.atani.client.utility.math.time.TimeHelper;
 
 @Native
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
@@ -35,6 +38,9 @@ public class Disabler extends Module {
 
 	// Verus Combat
 	private int verusCounter;
+
+	// General
+	private TimeHelper timer = new TimeHelper();
 
 	@Override
 	public String getSuffix() {
@@ -108,6 +114,7 @@ public class Disabler extends Module {
 						((C03PacketPlayer.C06PacketPlayerPosLook) packet).setYaw(mc.thePlayer.rotationYaw + 180);
 					}
 					break;
+
 				case "Test":
 					break;
 			}

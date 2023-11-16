@@ -412,7 +412,7 @@ public class ItemRenderer
                                     case "Atani 2":
                                         this.transformFirstPersonItem(equippedProgress - 0.125f, 0);
                                         GlStateManager.rotate(-swingProgressFactor * 55 / 2f, -8f, 0.4f, 9f);
-                                        GlStateManager.rotate(-swingProgressFactor * 35, 1f, swingProgressFactor / 8, -0.0f);
+                                        GlStateManager.rotate(-swingProgressFactor * 45, 1f, swingProgressFactor / 0.75F, -0.0f);
                                         GlStateManager.translate(0.0f, 0.1f, 0.0f);
                                         this.doBlockTransformations();
                                         break;
@@ -449,6 +449,16 @@ public class ItemRenderer
                                         this.transformFirstPersonItem(equippedProgress / 2.5F, 0.0f);
                                         GlStateManager.rotate(-90, 1, 0, 0.2f);
                                         GlStateManager.rotate(spinCounter, 0, -1, 0);
+                                        break;
+                                    case "Smooth":
+                                        // Skidded from rise
+                                        this.transformFirstPersonItem(swingProgress, 0.0F);
+                                        final float y = -swingProgress * 2.0F;
+                                        GlStateManager.translate(0.0F, y / 10.0F + 0.1F, 0.0F);
+                                        GlStateManager.rotate(y * 10.0F, 0.0F, 1.0F, 0.0F);
+                                        GlStateManager.rotate(250, 0.2F, 1.0F, -0.6F);
+                                        GlStateManager.rotate(-10.0F, 1.0F, 0.5F, 1.0F);
+                                        GlStateManager.rotate(-y * 20.0F, 1.0F, 0.5F, 1.0F);
                                         break;
                                     case "Warped":
                                         transformFirstPersonItem(equippedProgress, 0);

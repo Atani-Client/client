@@ -970,9 +970,8 @@ public class Speed extends Module {
                         mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = isMoving();
                         break;
                     case "Rage":
-                        mc.gameSettings.keyBindJump.pressed = isMoving();
-
-                        mc.gameSettings.keyBindJump.pressed = isMoving();
+                        mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = isMoving();
+                        
                         ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
                         switch(ticks) {

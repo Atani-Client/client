@@ -847,9 +847,9 @@ public class Speed extends Module {
                 }
                 break;
             case "Karhu":
+                mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
                 // Creds to Heritsy
                 if (mc.thePlayer.onGround) {
-                    mc.thePlayer.jump();
                     mc.timer.timerSpeed = (float) (karhuMode.is("Rage") ? 1.029 : 1.009);
                 } else if (mc.thePlayer.motionY > 0.2101) {
                     mc.thePlayer.motionY *= 0.87;
@@ -951,7 +951,7 @@ public class Speed extends Module {
                             if(mc.thePlayer.hurtTime == 0) {
                                 // (KillAura.curEntity == null ? 0.039 : 0.019)
                                 if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random + 0.02 && 10 > strafeTicks) {
-                                    MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random + 0.02);
+                                    MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random / 1.7F + 0.019);
                                     strafeTicks++;
                                 } else {
                                     mc.timer.timerSpeed = 1;

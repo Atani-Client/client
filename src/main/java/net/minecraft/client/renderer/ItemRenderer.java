@@ -453,7 +453,7 @@ public class ItemRenderer
                                     case "Smooth":
                                         // Skidded from rise
                                         this.transformFirstPersonItem(swingProgress, 0.0F);
-                                        final float y = -swingProgress * 2.0F;
+                                        final float y = -swingProgress;
                                         GlStateManager.translate(0.0F, y / 10.0F + 0.1F, 0.0F);
                                         GlStateManager.rotate(y * 10.0F, 0.0F, 1.0F, 0.0F);
                                         GlStateManager.rotate(250, 0.2F, 1.0F, -0.6F);

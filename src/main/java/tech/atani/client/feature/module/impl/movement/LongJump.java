@@ -95,6 +95,10 @@ public class LongJump extends Module {
         Methods.mc.gameSettings.keyBindJump.pressed = MoveUtil.getSpeed() != 0;
         switch(mode.getValue()) {
             case "Karhu":
+                // Makes it look cool:fire:
+                mc.thePlayer.cameraYaw = 0.2F;
+                mc.thePlayer.cameraPitch = 0.2F;
+
                 if (karhuTrueGround && mc.thePlayer.onGround) {
                     mc.thePlayer.jump();
                     karhuTrueGround = false;

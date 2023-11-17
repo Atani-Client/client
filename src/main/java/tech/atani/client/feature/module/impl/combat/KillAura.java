@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.*;
@@ -34,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Native
 @ModuleData(name = "KillAura", description = "Attacks people", category = Category.COMBAT, key = Keyboard.KEY_R)
 public class KillAura extends Module {
 

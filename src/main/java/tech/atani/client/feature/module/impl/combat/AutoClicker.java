@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
@@ -11,11 +10,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.math.time.TimeHelper;
-import tech.atani.client.utility.player.PlayerUtil;
 
-import java.util.Random;
-
-@Native
 @ModuleData(name = "AutoClicker", description = "clicks for you", category = Category.COMBAT)
 public class AutoClicker extends Module {
 

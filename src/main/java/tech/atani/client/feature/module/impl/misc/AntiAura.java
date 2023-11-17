@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.misc;
 
-import cn.muyang.nativeobfuscator.Native;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import tech.atani.client.feature.module.Module;
@@ -14,7 +13,6 @@ import tech.atani.client.utility.math.time.TimeHelper;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Native
 @ModuleData(name = "AntiAura", description = "Can cause enemies aura to break", category = Category.MISCELLANEOUS)
 public class AntiAura extends Module {
     private final TimeHelper timeHelper = new TimeHelper();

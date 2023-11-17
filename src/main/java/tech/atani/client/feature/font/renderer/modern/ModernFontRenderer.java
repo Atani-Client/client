@@ -1,6 +1,5 @@
 package tech.atani.client.feature.font.renderer.modern;
 
-import cn.muyang.nativeobfuscator.Native;
 import de.florianmichael.rclasses.type.tuple.mutable.MutablePair;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -16,7 +15,6 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
-@Native
 public class ModernFontRenderer extends FontRenderer implements Methods {
     private static int[] colorCode;
     private static final String colorCodeIdentifiers = "0123456789abcdefklmnor";

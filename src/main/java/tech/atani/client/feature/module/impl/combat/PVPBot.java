@@ -1,6 +1,5 @@
 package tech.atani.client.feature.module.impl.combat;
 
-import cn.muyang.nativeobfuscator.Native;
 import com.google.common.base.Supplier;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
@@ -33,7 +32,6 @@ import java.security.SecureRandom;
 import java.util.Comparator;
 import java.util.List;
 
-@Native
 @ModuleData(name = "PVPBot", description = "Attacks people", category = Category.COMBAT, key = Keyboard.KEY_R)
 public class PVPBot extends Module {
     public StringBoxValue targetMode = new StringBoxValue("Target Mode", "How will the aura search for targets?", this, new String[]{"Single", "Hybrid", "Switch", "Multi"});

@@ -115,7 +115,7 @@ public class Speed extends Module {
 
     @Listen
     public void onTick(RunTickEvent event) {
-        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+        if (Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
 
         switch (mode.getValue()) {
@@ -132,15 +132,15 @@ public class Speed extends Module {
 
     @Listen
     public final void onOmniCheck(DirectionSprintCheckEvent directionSprintCheckEvent) {
-        if(mode.is("Matrix")) {
-            if(MoveUtil.getSpeed() != 0) {
+        if (mode.is("Matrix")) {
+            if (MoveUtil.getSpeed() != 0) {
                 directionSprintCheckEvent.setSprintCheck(false);
             }
         }
     }
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
-        if(cpuSpeedUp.getValue())
+        if (cpuSpeedUp.getValue())
             mc.timer.timerSpeed = 1.004F;
 
         switch (mode.getValue()) {
@@ -150,7 +150,7 @@ public class Speed extends Module {
                     mc.thePlayer.jump();
                 }
 
-                if(mc.thePlayer.isAirBorne) {
+                if (mc.thePlayer.isAirBorne) {
                     MoveUtil.setMoveSpeed(0.4f);
                     mc.timer.timerSpeed = 1f;
                 }
@@ -216,17 +216,17 @@ public class Speed extends Module {
 
                 break;
             case "Polar":
-                if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
                     mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                    if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
+                    if (mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
                         return;
 
-                    if(mc.thePlayer.onGround && isMoving()) {
+                    if (mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
                         //  1st: 0.15306319260371434
                         mc.timer.timerSpeed = 1.07F;
-                        if(MoveUtil.getSpeed() < 0.15306319260371435) {
+                        if (MoveUtil.getSpeed() < 0.15306319260371435) {
                             MoveUtil.strafe(groundBoost ? 0.15306319260371434 + Math.random() / 90 : 0.15306319260371434 + Math.random() / 100);
                         }
                     } else {
@@ -238,7 +238,7 @@ public class Speed extends Module {
                         MoveUtil.setMoveSpeed(MoveUtil.getSpeed());
                     }
 
-                    if(isMoving()) {
+                    if (isMoving()) {
                         if (mc.thePlayer.motionY > 0.003) {
                             mc.thePlayer.motionX *= 1.01;
                             mc.thePlayer.motionZ *= 1.01;
@@ -250,8 +250,8 @@ public class Speed extends Module {
                 }
                 break;
             case "Strafe":
-                if(updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    if(isMoving()) {
+                if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+                    if (isMoving()) {
                         MoveUtil.strafe(null);
 
                         if (mc.thePlayer.onGround && this.isMoving()) {
@@ -263,7 +263,7 @@ public class Speed extends Module {
             case "Matrix":
                 getGameSettings().keyBindSprint.pressed = getGameSettings().keyBindJump.pressed = true;
                 if (mc.thePlayer.onGround && this.isMoving()) {
-                    if(mc.thePlayer.moveForward < 0) MoveUtil.strafe(0.30603073042201825);
+                    if (mc.thePlayer.moveForward < 0) MoveUtil.strafe(0.30603073042201825);
                     mc.timer.timerSpeed = 1.05F;
                     firstJump = false;
                 } else {
@@ -274,7 +274,7 @@ public class Speed extends Module {
                 break;
             case "Vulcan":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    if(!vulcanMode.is("Ground"))
+                    if (!vulcanMode.is("Ground"))
                         mc.gameSettings.keyBindJump.pressed = false;
 
                     if (mc.thePlayer.onGround) {
@@ -306,14 +306,14 @@ public class Speed extends Module {
                             }
                             break;
                         case "Slow":
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 vulcanTicks = 0;
                             } else {
                                 vulcanTicks++;
                             }
-                            switch(vulcanTicks) {
+                            switch (vulcanTicks) {
                                 case 0:
-                                    if(this.isMoving())
+                                    if (this.isMoving())
                                         mc.thePlayer.jump();
 
                                     MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6F : 0.485F);
@@ -338,7 +338,7 @@ public class Speed extends Module {
                                     y = 0;
                                 }
 
-                                if(mc.thePlayer.ticksExisted % 10 == 0) {
+                                if (mc.thePlayer.ticksExisted % 10 == 0) {
 
                                     mc.thePlayer.motionX *= 1.00575;
                                     mc.thePlayer.motionZ *= 1.00575;
@@ -353,7 +353,7 @@ public class Speed extends Module {
                             MoveUtil.strafe(0.2);
                             break;
                         case "Y-Port":
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 vulcanTicks = 0;
                                 mc.thePlayer.jump();
                                 mc.timer.timerSpeed = 1.07F;
@@ -363,11 +363,11 @@ public class Speed extends Module {
                                 mc.timer.timerSpeed = 1;
                             }
 
-                            if(mc.thePlayer.fallDistance > 0.1) {
+                            if (mc.thePlayer.fallDistance > 0.1) {
                                 mc.thePlayer.motionY = -1337;
                             }
 
-                            if(3 > vulcanTicks) {
+                            if (3 > vulcanTicks) {
                                 MoveUtil.strafe();
                             }
                             break;
@@ -375,7 +375,7 @@ public class Speed extends Module {
                             if (mc.thePlayer.onGround && this.isMoving()){
                                 mc.thePlayer.jump();
                                 vulcanMoveForwardGround = mc.thePlayer.moveForward > 0;
-                                if(mc.thePlayer.moveForward < 0) {
+                                if (mc.thePlayer.moveForward < 0) {
                                     MoveUtil.strafe(0.34 + MoveUtil.getSpeedBoost(1));
                                 }
                             } else {
@@ -389,18 +389,18 @@ public class Speed extends Module {
                 break;
             case "Verus":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    if(mc.thePlayer.onGround) {
+                    if (mc.thePlayer.onGround) {
                         verusTicks = 0;
                     } else {
                         verusTicks++;
                     }
 
-                    if(mc.thePlayer.hurtTime > 1 && !mc.thePlayer.isBurning() && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava()) {
+                    if (mc.thePlayer.hurtTime > 1 && !mc.thePlayer.isBurning() && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava()) {
                         MoveUtil.strafe(5);
                         mc.thePlayer.motionY = 0.1F;
                     }
 
-                    switch(verusMode.getValue()) {
+                    switch (verusMode.getValue()) {
                         case "Hop":
                             if (mc.thePlayer.onGround) {
                                 mc.thePlayer.jump();
@@ -411,10 +411,10 @@ public class Speed extends Module {
                             MoveUtil.strafe((float) MoveUtil.getSpeed());
                             break;
                         case "Normal":
-                            if(!isMoving())
+                            if (!isMoving())
                                 return;
 
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 ticks = 0;
                                 mc.thePlayer.jump();
                             } else {
@@ -424,10 +424,10 @@ public class Speed extends Module {
                             MoveUtil.strafe(mc.thePlayer.onGround ? 0.55 + MoveUtil.getSpeedBoost(0.09F) : 0.33 + MoveUtil.getSpeedBoost(0.084F));
                             break;
                         case "Boost":
-                            if(!isMoving())
+                            if (!isMoving())
                                 return;
 
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 ticks = 0;
                             } else {
                                 ticks++;
@@ -452,11 +452,11 @@ public class Speed extends Module {
                             }
                             break;
                         case "Float":
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 mc.thePlayer.jump();
                                 MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
                             } else {
-                                if(verusTicks < 10) {
+                                if (verusTicks < 10) {
                                     mc.thePlayer.motionY = 0;
                                     mc.thePlayer.onGround = true;
                                     MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
@@ -466,11 +466,11 @@ public class Speed extends Module {
                             MoveUtil.strafe();
                             break;
                         case "Fast":
-                            if(mc.thePlayer.moveForward < 0)
+                            if (mc.thePlayer.moveForward < 0)
                                 return;
 
                             boolean ground = false;
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 ticks = 0;
                             } else {
                                 ticks++;
@@ -478,7 +478,7 @@ public class Speed extends Module {
 
                             switch (ticks) {
                                 case 0:
-                                    if(ticks2 == 4)
+                                    if (ticks2 == 4)
                                         mc.thePlayer.jump();
 
                                     ticks2 += 1;
@@ -488,25 +488,25 @@ public class Speed extends Module {
                                     break;
                             }
 
-                            if(spoofGround || mc.thePlayer.onGround) {
+                            if (spoofGround || mc.thePlayer.onGround) {
                                 ground = true;
                             }
 
                             MoveUtil.strafe(ground ? 0.53 + MoveUtil.getSpeedBoost(0.08F) : 0.33 + MoveUtil.getSpeedBoost(0.05F));
                             break;
                         case "Custom":
-                            if(!isMoving())
+                            if (!isMoving())
                                 return;
 
-                            if(mc.thePlayer.onGround)
+                            if (mc.thePlayer.onGround)
                                 mc.thePlayer.jump();
 
                             MoveUtil.strafe((mc.thePlayer.onGround ? verusGroundSpeed.getValue() : verusAirSpeed.getValue()) + MoveUtil.getSpeedBoost(verusSpeedBoost.getValue()));
 
                             switch (verusCustomMode.getValue()) {
                                 case "Float":
-                                    if(!mc.thePlayer.onGround) {
-                                        if(verusTicks < verusFloatTicks.getValue() + 1) {
+                                    if (!mc.thePlayer.onGround) {
+                                        if (verusTicks < verusFloatTicks.getValue() + 1) {
                                             mc.thePlayer.motionY = 0;
                                             mc.thePlayer.onGround = true;
                                             MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(verusSpeedBoost.getValue()));
@@ -516,11 +516,11 @@ public class Speed extends Module {
                                     }
                                     break;
                                 case "Low":
-                                    if(mc.gameSettings.keyBindJump.pressed)
+                                    if (mc.gameSettings.keyBindJump.pressed)
                                         return;
 
-                                    if(!mc.thePlayer.onGround) {
-                                        if(verusTicks == 1) {
+                                    if (!mc.thePlayer.onGround) {
+                                        if (verusTicks == 1) {
                                             switch (verusCustomLowMode.getValue()) {
                                                 case "Normal":
                                                     mc.thePlayer.motionY = -0.0980000019;
@@ -539,14 +539,14 @@ public class Speed extends Module {
                             }
                             break;
                         case "Low":
-                            if(!isMoving())
+                            if (!isMoving())
                                 return;
 
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 mc.thePlayer.jump();
                                 MoveUtil.strafe(0.475 + MoveUtil.getSpeedBoost(1));
                             } else {
-                                if(verusTicks == 1) {
+                                if (verusTicks == 1) {
                                     switch (verusLowMode.getValue()) {
                                         case "Normal":
                                             mc.thePlayer.motionY = -0.0980000019;
@@ -563,10 +563,10 @@ public class Speed extends Module {
                             MoveUtil.strafe(Math.max(MoveUtil.getSpeed(), mc.thePlayer.moveForward > 0 ? 0.33 : 0.3) + MoveUtil.getSpeedBoost(1));
                             break;
                         case "Air Boost":
-                            if(mc.thePlayer.hurtTime != 0) {
+                            if (mc.thePlayer.hurtTime != 0) {
                                 MoveUtil.strafe(5);
                             }
-                            switch(verusTicks) {
+                            switch (verusTicks) {
                                 case 0:
                                     mc.thePlayer.jump();
                                     MoveUtil.strafe(0.4F);
@@ -646,16 +646,16 @@ public class Speed extends Module {
                             break;
 
                         case "Timer":
-                            if(mc.thePlayer.onGround && isMoving()) {
+                            if (mc.thePlayer.onGround && isMoving()) {
                                 mc.thePlayer.jump();
                             }
 
-                            if(spartanTimer.hasReached(3000)) {
+                            if (spartanTimer.hasReached(3000)) {
                                 spartanBoost = !spartanBoost;
                                 spartanTimer.reset();
                             }
 
-                            if(spartanBoost) {
+                            if (spartanBoost) {
                                 mc.timer.timerSpeed = 1.6f;
                             } else {
                                 mc.timer.timerSpeed = 1.0f;
@@ -700,7 +700,7 @@ public class Speed extends Module {
                 break;
             case "NCP":
                 if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
-                    if(mc.thePlayer.onGround)
+                    if (mc.thePlayer.onGround)
                         ncpTicks = 0;
                     else
                         ncpTicks++;
@@ -741,11 +741,11 @@ public class Speed extends Module {
                             MoveUtil.strafe();
                             break;
                         case "Strafe":
-                            if(this.isMoving()) {
+                            if (this.isMoving()) {
                                 mc.gameSettings.keyBindJump.pressed = false;
-                                if(mc.thePlayer.onGround) {
+                                if (mc.thePlayer.onGround) {
                                     mc.thePlayer.jump();
-                                    if(mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
+                                    if (mc.thePlayer.isPotionActive(Potion.moveSpeed)) {
                                         if (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() == 0) {
                                             MoveUtil.strafe(0.5893f);
                                         } else if (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() == 1) {
@@ -759,10 +759,10 @@ public class Speed extends Module {
                             }
                             break;
                         case "Custom":
-                            if(!isMoving())
+                            if (!isMoving())
                                 return;
 
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = ncpOnGroundTimer.getValue();
                                 mc.thePlayer.jump();
                                 mc.thePlayer.motionY = ncpJumpMotion.getValue();
@@ -771,17 +771,17 @@ public class Speed extends Module {
                                 mc.timer.timerSpeed = ncpInAirTimer.getValue();
                             }
 
-                            if(ncpTicks == 5 && ncpMotionModify.getValue()) {
+                            if (ncpTicks == 5 && ncpMotionModify.getValue()) {
                                 mc.thePlayer.motionY -= ncpLowerMotion.getValue();
                             }
 
                             MoveUtil.strafe();
                             break;
                         case "Normal":
-                            if(!isMoving())
+                            if (!isMoving())
                                 return;
 
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 2F;
                                 mc.thePlayer.motionY = ncpJumpMotion.getValue();
                                 MoveUtil.strafe(0.485 + MoveUtil.getSpeedBoost(4));
@@ -790,17 +790,17 @@ public class Speed extends Module {
                                 MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(0.375F));
                             }
 
-                            if(ncpTicks == 5) {
+                            if (ncpTicks == 5) {
                                 mc.thePlayer.motionY -= 0.1;
                             }
                             break;
                         case "Normal 2":
-                            if(!isMoving()) {
+                            if (!isMoving()) {
                                 MoveUtil.strafe(0);
                                 return;
                             }
 
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 2F;
                                 mc.thePlayer.jump();
                                 mc.thePlayer.motionY = ncpJumpMotion.getValue();
@@ -812,10 +812,10 @@ public class Speed extends Module {
                             MoveUtil.strafe(MoveUtil.getSpeed());
                             break;
                         case "Stable":
-                            if(!isMoving())
+                            if (!isMoving())
                                 return;
 
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 mc.timer.timerSpeed = 1F;
                                 mc.thePlayer.motionY = ncpJumpMotion.getValue();
                                 MoveUtil.strafe(0.48 + MoveUtil.getSpeedBoost(4));
@@ -826,16 +826,16 @@ public class Speed extends Module {
                             }
                             break;
                         case "Hop":
-                            if(isMoving()) {
-                                if(mc.thePlayer.onGround)
+                            if (isMoving()) {
+                                if (mc.thePlayer.onGround)
                                     mc.thePlayer.jump();
-                                if(mc.thePlayer.fallDistance > 0.9) {
+                                if (mc.thePlayer.fallDistance > 0.9) {
                                     mc.timer.timerSpeed = 1.13f;
-                                } else if(!mc.thePlayer.onGround) {
+                                } else if (!mc.thePlayer.onGround) {
                                     mc.timer.timerSpeed = 1f;
                                 }
 
-                                if(isMoving()) {
+                                if (isMoving()) {
                                     MoveUtil.strafe(MoveUtil.getSpeed());
                                 } else {
                                     mc.thePlayer.motionX = 0;
@@ -860,13 +860,13 @@ public class Speed extends Module {
                     case "Normal":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                        if(mc.thePlayer.onGround) {
+                        if (mc.thePlayer.onGround) {
                             MoveUtil.strafe((float) (0.36 + Math.random() / 70 + MoveUtil.getSpeedBoost(1)));
                         } else {
                             MoveUtil.strafe((float) (MoveUtil.getSpeed() - (float) (Math.random() - 0.5F) / 70F));
                         }
 
-                        if(MoveUtil.getSpeed() < 0.25F) {
+                        if (MoveUtil.getSpeed() < 0.25F) {
                             MoveUtil.strafe((float) (MoveUtil.getSpeed() + 0.02));
                         }
                         break;
@@ -874,11 +874,11 @@ public class Speed extends Module {
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
                         float speed = (float) (Math.random() * 2.5);
-                        if(0.4 > speed) {
+                        if (0.4 > speed) {
                             speed = 1;
                         }
 
-                        if(mc.thePlayer.onGround) {
+                        if (mc.thePlayer.onGround) {
                             mc.timer.timerSpeed = (float) (speed + Math.random() / 2);
                             MoveUtil.strafe((float) (0.36 + Math.random() / 70 + MoveUtil.getSpeedBoost(1)));
                         } else {
@@ -886,20 +886,20 @@ public class Speed extends Module {
                             MoveUtil.strafe((float) (MoveUtil.getSpeed() - (float) (Math.random() - 0.5F) / 70F));
                         }
 
-                        if(MoveUtil.getSpeed() < 0.25F) {
+                        if (MoveUtil.getSpeed() < 0.25F) {
                             MoveUtil.strafe((float) (MoveUtil.getSpeed() + 0.02));
                         }
                         break;
                 }
                 break;
             case "WatchDog":
-                switch(watchDogMode.getValue()) {
+                switch (watchDogMode.getValue()) {
                     case "Normal":
-                        if(MoveUtil.getSpeed() == 0) {
+                        if (MoveUtil.getSpeed() == 0) {
                             mc.timer.timerSpeed = 1;
                         } else {
                             mc.timer.timerSpeed = (float) (1 + Math.random() / 30);
-                            if(mc.thePlayer.onGround) {
+                            if (mc.thePlayer.onGround) {
                                 watchDogTicks = 0;
                                 mc.thePlayer.jump();
                                 MoveUtil.strafe(0.3999F);
@@ -919,7 +919,7 @@ public class Speed extends Module {
                         }
                         break;
                     case "Strafe":
-                        if(mc.thePlayer.onGround && this.isMoving()) {
+                        if (mc.thePlayer.onGround && this.isMoving()) {
                             mc.thePlayer.jump();
 
                             MoveUtil.strafe(0.3999f);
@@ -928,7 +928,7 @@ public class Speed extends Module {
                 }
                 break;
             case "Intave":
-                switch(intaveMode.getValue()) {
+                switch (intaveMode.getValue()) {
                     case "Strafe 2":
                         mc.gameSettings.keyBindJump.pressed = true;
 
@@ -939,7 +939,7 @@ public class Speed extends Module {
                     case "Strafe":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                        if(mc.thePlayer.onGround) {
+                        if (mc.thePlayer.onGround) {
                             mc.thePlayer.motionY -= 0.001;
                             mc.timer.timerSpeed = 1.1F;
                         } else {
@@ -947,10 +947,10 @@ public class Speed extends Module {
                         }
 
                         double random = (Math.random() - 0.75) * 0.05;
-                        if(isMoving()) {
-                            if(mc.thePlayer.hurtTime == 0) {
+                        if (isMoving()) {
+                            if (mc.thePlayer.hurtTime == 0) {
                                 // (KillAura.curEntity == null ? 0.039 : 0.019)
-                                if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random + 0.02 && 10 > strafeTicks) {
+                                if (MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random + 0.02 && 10 > strafeTicks) {
                                     MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random / 1.7F + 0.019);
                                     strafeTicks++;
                                 } else {
@@ -967,14 +967,13 @@ public class Speed extends Module {
                         }
                         break;
                     case "Timer":
-                        mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = isMoving();
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
                         break;
                     case "Rage":
-                        mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = isMoving();
-                        
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
                         ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
-                        switch(ticks) {
+                        switch (ticks) {
                             case 0:
                                 mc.timer.timerSpeed = 1.1F;
                                 float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
@@ -989,11 +988,11 @@ public class Speed extends Module {
                         }
 
                         double random5 = (Math.random() - 0.75) * 0.05;
-                        if(isMoving()) {
-                            if(mc.thePlayer.hurtTime != 0)
+                        if (isMoving()) {
+                            if (mc.thePlayer.hurtTime != 0)
                                 return;
 
-                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random5 * 1.25 + 0.019 && 10 > strafeTicks) {
+                            if (MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + random5 * 1.25 + 0.019 && 10 > strafeTicks) {
                                 MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + random5 + 0.02);
                                 mc.timer.timerSpeed = 0.99F + (float) (random5 * 12);
                                 strafeTicks++;
@@ -1013,7 +1012,7 @@ public class Speed extends Module {
                         mc.gameSettings.keyBindJump.pressed = isMoving();
                         ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
-                        switch(ticks) {
+                        switch (ticks) {
                             case 0:
                                 mc.timer.timerSpeed = 1.1F;
                                 float multiplier = (float) (1 + (Math.random() - 0.7) / 100);
@@ -1027,11 +1026,11 @@ public class Speed extends Module {
                         }
 
                         double randomm = (Math.random() - 0.75) * 0.05;
-                        if(isMoving()) {
-                            if(mc.thePlayer.hurtTime != 0)
+                        if (isMoving()) {
+                            if (mc.thePlayer.hurtTime != 0)
                                 return;
 
-                            if(MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + randomm * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
+                            if (MoveUtil.getSpeed() < MoveUtil.getBaseGroundSpeed() + randomm * 1.25 + (KillAura.curEntity == null ? 0.039 : 0.019) && 10 > strafeTicks) {
                                 MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() + randomm + (KillAura.curEntity == null ? 0.04 : 0.02));
                                 mc.timer.timerSpeed = 0.99F + (float) (randomm * 12);
                                 strafeTicks++;
@@ -1051,15 +1050,15 @@ public class Speed extends Module {
                     case "Ground Strafe":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                        if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
+                        if (mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
                             return;
 
-                        if(mc.thePlayer.onGround && isMoving()) {
+                        if (mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
                             //  1st: 0.15306319260371434
                         //    mc.thePlayer.sendChatMessage("Boost");
                             mc.timer.timerSpeed = 1.07F;
-                            if(MoveUtil.getSpeed() < 0.15306319260371434 && groundBoost) {
+                            if (MoveUtil.getSpeed() < 0.15306319260371434 && groundBoost) {
                                 MoveUtil.strafe(0.15306319260371434);
                             }
                             groundBoost = true;
@@ -1076,21 +1075,21 @@ public class Speed extends Module {
                     case "Combined Strafe":
                         mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                        if(mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
+                        if (mc.thePlayer.isInWeb || mc.thePlayer.isInWater() || mc.thePlayer.isInLava())
                             return;
 
-                        if(mc.thePlayer.onGround && isMoving()) {
+                        if (mc.thePlayer.onGround && isMoving()) {
                         //    System.out.println("Speed: " + MoveUtil.getSpeed());
                             //  1st: 0.15306319260371434
                             mc.timer.timerSpeed = 1.07F;
-                            if(MoveUtil.getSpeed() < 0.15306319260371435 && groundBoost) {
+                            if (MoveUtil.getSpeed() < 0.15306319260371435 && groundBoost) {
                                 MoveUtil.strafe(0.15306319260371434);
                             }
                             groundBoost = true;
                         } else {
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 2000);
                             mc.timer.timerSpeed = (float) (1 + Math.random() / 500);
-                            if(!isMoving()) {
+                            if (!isMoving()) {
                                 groundBoost = false;
                             }
                         }
@@ -1114,9 +1113,9 @@ public class Speed extends Module {
                         break;
                 }
 
-                if(intaveTimer.getValue()) {
-                    if(intaveTimerBypass.getValue()) {
-                        if(mc.thePlayer.ticksExisted % 20 == 0)
+                if (intaveTimer.getValue()) {
+                    if (intaveTimerBypass.getValue()) {
+                        if (mc.thePlayer.ticksExisted % 20 == 0)
                             timerBoost = !timerBoost;
 
                         mc.timer.timerSpeed = timerBoost ? 1.204386728680024479550332481800278015503324817801F : 1;
@@ -1163,10 +1162,10 @@ public class Speed extends Module {
                 mc.gameSettings.keyBindJump.pressed = true;
 
                 mc.thePlayer.speedInAir = 0.021F;
-                if(isMoving()) {
+                if (isMoving()) {
                     mc.timer.timerSpeed = 1.0865f;
                     MoveUtil.setMoveSpeed(mc.thePlayer.onGround ? 0.485 : MoveUtil.getSpeed() * 1.002);
-                    if(getPlayer().onGround) {
+                    if (getPlayer().onGround) {
                         mc.thePlayer.motionY = 0.399;
                     }
                 } else {
@@ -1215,7 +1214,7 @@ public class Speed extends Module {
                 if (mc.thePlayer.onGround && this.isMoving()){
                     mc.thePlayer.jump();
                 } else {
-                    if(mc.thePlayer.motionY > 0)
+                    if (mc.thePlayer.motionY > 0)
                         mc.timer.timerSpeed = 0.96F;
                     else
                         mc.timer.timerSpeed = 1.07F;
@@ -1226,14 +1225,14 @@ public class Speed extends Module {
 
     @Listen
     public final void onPacket(PacketEvent packetEvent) {
-        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
+        if (Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
             return;
 
         switch (mode.getValue()) {
             case "Verus":
-                if(verusMode.is("Fast")) {
-                    if(spoofGround) {
-                        if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                if (verusMode.is("Fast")) {
+                    if (spoofGround) {
+                        if (packetEvent.getPacket() instanceof C03PacketPlayer) {
                             ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
                             ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
                             spoofGround = false;
@@ -1242,10 +1241,10 @@ public class Speed extends Module {
                 }
                 break;
             case "Vulcan":
-                if(packetEvent.getPacket() instanceof C03PacketPlayer) {
+                if (packetEvent.getPacket() instanceof C03PacketPlayer) {
                     ((C03PacketPlayer) packetEvent.getPacket()).y = mc.thePlayer.posY + y;
-                    if(vulcanMode.is("YPort")) {
-                        if(0 > mc.thePlayer.fallDistance) {
+                    if (vulcanMode.is("YPort")) {
+                        if (0 > mc.thePlayer.fallDistance) {
                             ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance - 1;
                         } else {
                             ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
@@ -1254,8 +1253,8 @@ public class Speed extends Module {
                 }
                 break;
             case "Intave":
-                if(intaveMode.is("Ground Strafe") || intaveMode.is("Combined Strafe")) {
-                    if(packetEvent.getPacket() instanceof C03PacketPlayer.C06PacketPlayerPosLook && mc.thePlayer.onGround) {
+                if (intaveMode.is("Ground Strafe") || intaveMode.is("Combined Strafe")) {
+                    if (packetEvent.getPacket() instanceof C03PacketPlayer.C06PacketPlayerPosLook && mc.thePlayer.onGround) {
                         ((C03PacketPlayer.C06PacketPlayerPosLook) packetEvent.getPacket()).setYaw(mc.thePlayer.rotationYaw + 180);
                     }
                 }
@@ -1270,7 +1269,7 @@ public class Speed extends Module {
 
     @Override
     public void onDisable() {
-        if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
+        if (Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
             return;
         }
 

@@ -19,7 +19,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
-	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat", "Intave Timer", "Omni Sprint", "Test"});
+	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat", "Intave Timer", "Omni Sprint", "Pulse", "Test"});
 
 	private final CheckBoxValue keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?", this, false, new Supplier[]{() -> mode.is("Custom")}),
 			c0fConfirm = new CheckBoxValue("C0FConfirmTransaction", "Should the module cancel C0FConfirmTransaction?", this, false, new Supplier[]{() -> mode.is("Custom")}),
@@ -35,6 +35,9 @@ public class Disabler extends Module {
 
 	// General
 	private TimeHelper timer = new TimeHelper();
+
+	// Pulse
+	private Packet lastPacket;
 
 	@Override
 	public String getSuffix() {
@@ -110,6 +113,15 @@ public class Disabler extends Module {
 					break;
 
 				case "Test":
+					break;
+				case "Pulse":
+					if (event.getPacket() instanceof C03PacketPlayer && lastPacket == null) {
+						lastPacket = (C03PacketPlayer) event.getPacket();
+						event.setCancelled(true);
+					} else if (lastPacket != null) {
+						mc.thePlayer.sendQueue.addToSendQueue(lastPacket);
+						lastPacket = null;
+					}
 					break;
 			}
 		}

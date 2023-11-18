@@ -130,11 +130,11 @@ public class Flight extends Module {
                                     verusUp = true;
                                 } else if (verusUp) {
                                     if (!mc.thePlayer.isCollidedHorizontally) {
-                                        mc.thePlayer.motionY = -0.0784000015258789;
+                                        mc.thePlayer.motionY = 0;
                                     }
                                     verusUp = false;
                                 }
-                            } else if (mc.thePlayer.ticksExisted % 3 == 0) {
+                            } else if (mc.thePlayer.ticksExisted % 2 == 0) {
                                 mc.thePlayer.motionY = 0.42f;
                             }
                             MoveUtil.setMoveSpeed(mc.gameSettings.keyBindJump.isKeyDown() ? 0 : 0.33);

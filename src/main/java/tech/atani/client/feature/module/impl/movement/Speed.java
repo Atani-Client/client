@@ -447,6 +447,8 @@ public class Speed extends Module {
                                 case 4:
                                     PlayerUtil.addChatMessgae("Boosted: Lower Motion", true);
                                     mc.timer.timerSpeed = (float) (1.08 + Math.random() / 50);
+
+                                    MoveUtil.strafe(0.41F + MoveUtil.getSpeedBoost(0.05F));
                                     mc.thePlayer.motionY = -0.09800000190734864;
                                     break;
                             }

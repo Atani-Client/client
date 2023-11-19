@@ -1170,9 +1170,9 @@ public class Speed extends Module {
                         mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = isMoving();
 
                         if (mc.thePlayer.onGround) {
-                            MoveUtil.strafe(0.612);
+                            MoveUtil.strafe(0.612 + MoveUtil.getSpeedBoost(0.09F));
                         } else {
-                            MoveUtil.strafe(0.36);
+                            MoveUtil.strafe(0.36 + MoveUtil.getSpeedBoost(0.08F));
                         }
                         break;
                 }

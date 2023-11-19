@@ -16,6 +16,7 @@ import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.utility.math.time.TimeHelper;
+import tech.atani.client.utility.player.PlayerUtil;
 
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
@@ -38,6 +39,8 @@ public class Disabler extends Module {
 
 	// Pulse
 	private Packet lastPacket;
+
+	private String state;
 
 	@Override
 	public String getSuffix() {
@@ -113,6 +116,17 @@ public class Disabler extends Module {
 					break;
 
 				case "Test":
+					if(state == "Slow") {
+						mc.timer.timerSpeed = 0.5F;
+						if(timer.hasReached(300, true)) {
+							state = "Fast";
+						}
+					} else if(state == "Fast"){
+						mc.timer.timerSpeed = 2;
+						if(timer.hasReached(600, true)) {
+							state = "None";
+						}
+					}
 					break;
 				case "Pulse":
 					if (event.getPacket() instanceof C03PacketPlayer && lastPacket == null) {
@@ -141,6 +155,7 @@ public class Disabler extends Module {
 
 	@Override
 	public void onEnable() {
+		state = "Slow";
 		verusCounter = 0;
 	}
 

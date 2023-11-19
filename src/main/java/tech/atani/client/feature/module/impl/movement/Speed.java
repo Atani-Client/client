@@ -411,6 +411,7 @@ public class Speed extends Module {
                             MoveUtil.strafe((float) MoveUtil.getSpeed());
                             break;
                         case "Normal":
+                            /*
                             if(!isMoving())
                                 return;
 
@@ -422,6 +423,8 @@ public class Speed extends Module {
                             }
 
                             MoveUtil.strafe(mc.thePlayer.onGround ? 0.55 + MoveUtil.getSpeedBoost(0.09F) : 0.33 + MoveUtil.getSpeedBoost(0.084F));
+
+                             */
                             break;
                         case "Boost":
                             if(!isMoving())
@@ -1161,20 +1164,20 @@ public class Speed extends Module {
                     mc.thePlayer.motionZ = 0.0;
                 }
                 break;
-            case "Test":
-                mc.gameSettings.keyBindJump.pressed = true;
+            case "Verus":
+                switch (verusMode.getValue()) {
+                    case "Normal":
+                        mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = isMoving();
 
-                mc.thePlayer.speedInAir = 0.021F;
-                if(isMoving()) {
-                    mc.timer.timerSpeed = 1.0865f;
-                    MoveUtil.setMoveSpeed(mc.thePlayer.onGround ? 0.485 : MoveUtil.getSpeed() * 1.002);
-                    if(getPlayer().onGround) {
-                        mc.thePlayer.motionY = 0.399;
-                    }
-                } else {
-                    mc.timer.timerSpeed = 1;
-                    MoveUtil.stop();
+                        if (mc.thePlayer.onGround) {
+                            MoveUtil.strafe(0.612);
+                        } else {
+                            MoveUtil.strafe(0.36);
+                        }
+                        break;
                 }
+                break;
+            case "Test":
                 break;
                 /*
                 if (!mc.thePlayer.isInWeb && !mc.thePlayer.isInLava() && !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder() && mc.thePlayer.ridingEntity == null) {
@@ -1190,21 +1193,6 @@ public class Speed extends Module {
                     }
                 }
                  */
-            case "Verus":
-                if (!isMoving() || !verusMode.is("Low") || !verusLowMode.is("Fast 2"))
-                    return;
-
-                    if (mc.thePlayer.onGround) {
-                        movePlayerEvent.setY(0.42F);
-                        MoveUtil.strafe(0.69F + MoveUtil.getSpeedBoost(0.1F));
-                        mc.thePlayer.motionY = 0F;
-                    } else {
-                        MoveUtil.strafe(0.41F + MoveUtil.getSpeedBoost(0.05F));
-                    }
-
-                    MoveUtil.strafe();
-                    mc.thePlayer.setSprinting(true);
-                    break;
         }
     }
 

@@ -106,8 +106,8 @@ public class Speed extends Module {
     private int jumps;
     // BMC
     private int bmcTicks;
-    // Matrix
-    private boolean firstJump;
+    // General
+    private boolean timered;
     @Override
     public String getSuffix() {
         return mode.getValue();
@@ -140,7 +140,7 @@ public class Speed extends Module {
     }
     @Listen
     public final void onUpdateMotion(UpdateMotionEvent updateMotionEvent) {
-        if(cpuSpeedUp.getValue())
+        if(cpuSpeedUp.getValue() && !timered)
             mc.timer.timerSpeed = 1.004F;
 
         switch (mode.getValue()) {
@@ -265,11 +265,8 @@ public class Speed extends Module {
                 if (mc.thePlayer.onGround && this.isMoving()) {
                     if(mc.thePlayer.moveForward < 0) MoveUtil.strafe(0.30603073042201825);
                     mc.timer.timerSpeed = 1.05F;
-                    firstJump = false;
                 } else {
                     mc.timer.timerSpeed = 1;
-                    if(!isMoving())
-                        firstJump = true;
                 }
                 break;
             case "Vulcan":
@@ -746,6 +743,7 @@ public class Speed extends Module {
                             MoveUtil.strafe();
                             break;
                         case "Strafe":
+                            // This was by mark meant to be a no strafe thing idfk
                             if(this.isMoving()) {
                                 mc.gameSettings.keyBindJump.pressed = false;
                                 if(mc.thePlayer.onGround) {
@@ -760,7 +758,6 @@ public class Speed extends Module {
                                         MoveUtil.strafe(0.485f);
                                     }
                                 }
-                                MoveUtil.strafe();
                             }
                             break;
                         case "Custom":
@@ -1143,9 +1140,8 @@ public class Speed extends Module {
                     }
                 }
                 break;
-
             case "AAA":
-                mc.timer.timerSpeed = 1.204386728680024479550332481800278015503324817801F;
+
                 break;
         }
     }
@@ -1201,15 +1197,21 @@ public class Speed extends Module {
         switch (mode.getValue()) {
             case "Grim":
                 getGameSettings().keyBindSprint.pressed = true;
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
                 // TODO: actually make it works goodingz
                 if (mc.thePlayer.onGround && this.isMoving()){
                     mc.thePlayer.jump();
+                    timered = true;
+                    mc.timer.timerSpeed = 1.1F;
                 } else {
                     if(mc.thePlayer.motionY > 0)
-                        mc.timer.timerSpeed = 0.96F;
+                        mc.timer.timerSpeed = 0.995F;
                     else
-                        mc.timer.timerSpeed = 1.07F;
+                        mc.timer.timerSpeed = 1.02F;
                 }
+                boolean debug = true;
+                if(isMoving() && debug)
+                    PlayerUtil.addChatMessgae("SPEED: " + MoveUtil.getSpeed() * mc.timer.timerSpeed + " - BOOST: " + mc.timer.timerSpeed, true);
                 break;
         }
     }
@@ -1255,7 +1257,7 @@ public class Speed extends Module {
 
     @Override
     public void onEnable() {
-        firstJump = true;
+
     }
 
     @Override

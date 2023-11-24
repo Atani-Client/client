@@ -45,7 +45,7 @@ import java.util.List;
 
 @ModuleData(name = "ScaffoldWalk", description = "Bridging automatically", category = Category.PLAYER)
 public class ScaffoldWalk extends Module {
-
+    // bypasses shit acs
     private final StringBoxValue rotations = new StringBoxValue("Rotations", "How will the scaffold rotate?", this, new String[]{"Reverse Advanced", "Reverse Simple", "Bruteforce"});
     private final StringBoxValue rayTraceMode = new StringBoxValue("Ray-Trace Mode", "What will the scaffold raytrace mode be?", this, new String[]{"Normal", "Strict"}, new Supplier[]{() -> rotations.is("Bruteforce")});
     public SliderValue<Float> minYaw = new SliderValue<>("Minimum Yaw", "What will be the minimum yaw for rotating?", this, 40f, 0f, 180f, 0);
@@ -67,7 +67,7 @@ public class ScaffoldWalk extends Module {
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
     private final CheckBoxValue tower = new CheckBoxValue("Tower", "Tower?", this, false);
     private final CheckBoxValue unSneakTower = new CheckBoxValue("Tower unSneak", "Stop sneaking when towering?", this, false, new Supplier[]{() -> sneak.getValue() && tower.getValue()});
-    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Matrix", "Intave"}, new Supplier[]{() -> tower.getValue()});
+    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Matrix", "Intave", "MMC (TEST)"}, new Supplier[]{() -> tower.getValue()});
     private final SliderValue<Long> unSneakDelay = new SliderValue<Long>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
     private final CheckBoxValue intaveBoost = new CheckBoxValue("Intave Speed Boost", "Add speed boost?", this, false);
@@ -250,6 +250,12 @@ public class ScaffoldWalk extends Module {
                             mc.thePlayer.motionY -= 0.0025;
                         }
                     }
+                    break;
+                case "MMC (TEST)":
+                    // Super usefull, i mean it makes it kinda faster so
+                    mc.timer.timerSpeed = 1.004F;
+                    if(isMoving() && !mc.thePlayer.onGround)
+                        MoveUtil.strafe(0.2499);
                     break;
             }
         }

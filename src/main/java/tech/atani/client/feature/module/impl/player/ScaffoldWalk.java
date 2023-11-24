@@ -254,8 +254,11 @@ public class ScaffoldWalk extends Module {
                 case "MMC (TEST)":
                     // Super usefull, i mean it makes it kinda faster so
                     mc.timer.timerSpeed = 1.004F;
-                    if(isMoving() && !mc.thePlayer.onGround)
+                    if(isMoving() && !mc.thePlayer.onGround) {
+                        getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());
+                        getGameSettings().keyBindForward.pressed = false;
                         MoveUtil.strafe(0.2499);
+                    }
                     break;
             }
         }

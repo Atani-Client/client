@@ -46,7 +46,7 @@ import java.util.List;
 @ModuleData(name = "ScaffoldWalk", description = "Bridging automatically", category = Category.PLAYER)
 public class ScaffoldWalk extends Module {
     // bypasses shit acs
-    private final StringBoxValue rotations = new StringBoxValue("Rotations", "How will the scaffold rotate?", this, new String[]{"Reverse Advanced", "Reverse Simple", "Bruteforce"});
+    private final StringBoxValue rotations = new StringBoxValue("Rotations", "How will the scaffold rotate?", this, new String[]{"Reverse Advanced", "Reverse Simple", "Bruteforce", "Legit"});
     private final StringBoxValue rayTraceMode = new StringBoxValue("Ray-Trace Mode", "What will the scaffold raytrace mode be?", this, new String[]{"Normal", "Strict"}, new Supplier[]{() -> rotations.is("Bruteforce")});
     public SliderValue<Float> minYaw = new SliderValue<>("Minimum Yaw", "What will be the minimum yaw for rotating?", this, 40f, 0f, 180f, 0);
     public SliderValue<Float> maxYaw = new SliderValue<>("Maximum Yaw", "What will be the maximum yaw for rotating?", this, 40f, 0f, 180f, 0);
@@ -79,9 +79,9 @@ public class ScaffoldWalk extends Module {
     private BlockPos blockPos;
     private boolean starting;
     private int verusTicks;
-    private float startY;
-    private int jumpTicks;
-    private int intaveBoosted;
+    private float pitch2;
+    private float oldPitch2;
+    // -178.89381
 
     @Listen
     public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {
@@ -386,7 +386,6 @@ public class ScaffoldWalk extends Module {
             PlayerUtil.addChatMessgae("BOOSTED. Boost times: " + intaveBoosted, true);
              */
         }
-        startY = Math.round(mc.thePlayer.posY - 0.5);
         timeHelper.reset();
         startingTimeHelper.reset();
         starting = true;
@@ -445,6 +444,17 @@ public class ScaffoldWalk extends Module {
 
     private float[] getRotations() {
         switch (this.rotations.getValue()) {
+            case "Legit":
+                for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {
+                    for (float possiblePitch = 90; possiblePitch > 30 ; possiblePitch -= possiblePitch > (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 60 : 80) ? 1 : 10) {
+                        if(RaytraceUtil.getOver(getEnumFacing(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ())), blockPos, !rayTraceMode.is("Normal"), 5, possibleYaw, possiblePitch)) {
+                            if(mc.thePlayer.ticksExisted % 10 + Math.round(Math.random() * 5) == 0)
+                                pitch2 = (float) (Math.random() - Math.random() * 3);
+
+                            return new float[]{possibleYaw, possiblePitch + pitch2};
+                        }
+                    }
+                }
             case "Bruteforce":
                 for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {
                     for (float possiblePitch = 90; possiblePitch > 30 ; possiblePitch -= possiblePitch > (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 60 : 80) ? 1 : 10) {

@@ -1141,8 +1141,17 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
-                // I <3 Verus
-                if(mc.thePlayer.onGround) MoveUtil.strafe(MoveUtil.getBaseGroundSpeed() * 1.5);
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+
+                switch(ticks) {
+                    case 0:
+                        mc.thePlayer.jump();
+                        MoveUtil.strafe(0.4);
+                        break;
+                    case 1:
+                        MoveUtil.strafe(0.4);
+                        break;
+                }
                 break;
         }
     }
@@ -1173,6 +1182,8 @@ public class Speed extends Module {
                         }
                         break;
                 }
+                break;
+            case "AAA":
                 break;
             case "Test":
                 break;

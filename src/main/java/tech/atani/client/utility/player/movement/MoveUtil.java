@@ -58,39 +58,6 @@ public class MoveUtil implements Methods {
                 + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
     }
 
-    public static double getAllowedHorizontalDistance() {
-        double horizontalDistance;
-        boolean useBaseModifiers = false;
-
-        if (mc.thePlayer.isInWeb) {
-            horizontalDistance = 0.105 / 0.221 * 0.221;
-        } else if (mc.thePlayer.isInWater() || mc.thePlayer.isInLava()) {
-            horizontalDistance = 0.115F / 0.221 * 0.221;
-
-        } else if (mc.thePlayer.isSneaking()) {
-            horizontalDistance = 0.3 * 0.221;
-        } else {
-            horizontalDistance = 0.221;
-            useBaseModifiers = true;
-        }
-
-        if (useBaseModifiers) {
-            if (canSprint(false)) {
-                horizontalDistance *= 1.3;
-            }
-
-            if (mc.thePlayer.isPotionActive(Potion.moveSpeed) && mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).duration > 0) {
-                horizontalDistance *= 1 + (0.2 * (mc.thePlayer.getActivePotionEffect(Potion.moveSpeed).getAmplifier() + 1));
-            }
-
-            if (mc.thePlayer.isPotionActive(Potion.moveSlowdown)) {
-                horizontalDistance = 0.29;
-            }
-        }
-
-        return horizontalDistance;
-    }
-
     public static boolean canSprint(final boolean legit) {
         return (legit ? mc.thePlayer.moveForward >= 0.8F
                 && !mc.thePlayer.isCollidedHorizontally

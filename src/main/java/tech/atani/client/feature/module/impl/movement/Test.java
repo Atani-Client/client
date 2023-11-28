@@ -8,6 +8,7 @@ import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
+import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.utility.math.time.TimeHelper;
@@ -18,7 +19,23 @@ public class Test extends Module {
 
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
-        PlayerUtil.addChatMessgae("PITCH: " + mc.thePlayer.rotationPitch, true);
+        if (updateMotionEvent.getType() == UpdateMotionEvent.Type.MID) {
+            if (Methods.mc.theWorld.getBlockState(new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 1.0, Methods.mc.thePlayer.posZ)).getBlock() instanceof BlockAir && Methods.mc.thePlayer.onGround) {
+                Methods.mc.gameSettings.keyBindSneak.pressed = true;
+            } else {
+                Methods.mc.gameSettings.keyBindSneak.pressed = Keyboard.isKeyDown(Methods.mc.gameSettings.keyBindSneak.getKeyCode());
+            }
+        }
+
+        if(mc.thePlayer.ticksExisted % 2 == 0)
+            mc.rightClickMouse();
+    }
+
+
+    @Listen
+    public final void onRotation(RotationEvent rotationEvent) {
+        rotationEvent.setPitch(81.943275F);
+        rotationEvent.setYaw(mc.thePlayer.rotationYaw + 180);
     }
 
     @Override

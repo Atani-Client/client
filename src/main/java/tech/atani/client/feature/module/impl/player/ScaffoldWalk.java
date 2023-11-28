@@ -445,16 +445,11 @@ public class ScaffoldWalk extends Module {
     private float[] getRotations() {
         switch (this.rotations.getValue()) {
             case "Legit":
-                for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {
-                    for (float possiblePitch = 90; possiblePitch > 30 ; possiblePitch -= possiblePitch > (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 60 : 80) ? 1 : 10) {
-                        if(RaytraceUtil.getOver(getEnumFacing(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ())), blockPos, !rayTraceMode.is("Normal"), 5, possibleYaw, possiblePitch)) {
-                            if(mc.thePlayer.ticksExisted % 10 + Math.round(Math.random() * 5) == 0)
-                                pitch2 = (float) (Math.random() - Math.random() * 3);
-
-                            return new float[]{possibleYaw, possiblePitch + pitch2};
-                        }
-                    }
-                }
+                /*
+             if(mc.thePlayer.ticksExisted % 10 + Math.round(Math.random() * 5) == 0)
+                pitch2 = (float) (Math.random() - Math.random() * 3);
+             */
+            return new float[]{mc.thePlayer.rotationYaw + 180, 81.943275F};
             case "Bruteforce":
                 for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {
                     for (float possiblePitch = 90; possiblePitch > 30 ; possiblePitch -= possiblePitch > (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 60 : 80) ? 1 : 10) {

@@ -4,8 +4,10 @@ import com.google.common.base.Supplier;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.*;
 import net.minecraft.network.play.client.C02PacketUseEntity;
+import net.minecraft.network.play.client.C07PacketPlayerDigging;
 import net.minecraft.network.play.client.C08PacketPlayerBlockPlacement;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import org.lwjgl.input.Keyboard;
@@ -46,7 +48,7 @@ public class KillAura extends Module {
     public CheckBoxValue invisible = new CheckBoxValue("Invisibles", "Attack Invisibles?", this, true);
     public CheckBoxValue walls = new CheckBoxValue("Walls", "Check for walls?", this, true);
     public CheckBoxValue autoBlock = new CheckBoxValue("Auto Block", "Should the aura block on hit?", this, true);
-    public StringBoxValue autoBlockMode = new StringBoxValue("Auto Block Mode", "Which mode should the autoblock use?", this, new String[] {"Vanilla", "NCP", "AAC", "GrimAC", "Intave", "Matrix", "Hold"}, new Supplier[]{() -> autoBlock.getValue()});
+    public StringBoxValue autoBlockMode = new StringBoxValue("Auto Block Mode", "Which mode should the autoblock use?", this, new String[] {"Vanilla", "NCP", "AAC", "GrimAC", "MosPixel", "Intave", "Matrix", "Hold"}, new Supplier[]{() -> autoBlock.getValue()});
     public SliderValue<Integer> fov = new SliderValue<>("FOV", "What'll the be fov for allowing targets?", this, 90, 0, 180, 0);
     public SliderValue<Float> attackRange = new SliderValue<>("Attack Range", "What'll be the range for Attacking?", this, 3f, 3f, 6f, 1);
     public CheckBoxValue advancedRange = new CheckBoxValue("Advanced Range", "Make attack range more advanced?", this, true);
@@ -145,6 +147,11 @@ public class KillAura extends Module {
             mc.timer.timerSpeed = timerSpeed.getValue();
         } else {
             mc.timer.timerSpeed = 1;
+        }
+
+        if(autoBlock.getValue() && autoBlockMode.is("MosPixel") && curEntity != null) {
+            mc.thePlayer.sendQueue.addToSendQueue(new C07PacketPlayerDigging(C07PacketPlayerDigging.Action.RELEASE_USE_ITEM, new BlockPos(-4, -7, -10), EnumFacing.SOUTH));
+            Methods.mc.playerController.interactWithEntitySendPacket(Methods.mc.thePlayer, curEntity);
         }
 
         if (mc.thePlayer == null)

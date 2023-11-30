@@ -16,6 +16,7 @@ import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEven
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
+import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
@@ -32,7 +33,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "MosPixel", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             karhuMode = new StringBoxValue("Karhu Mode", "Which mode will the karhu mode use?", this, new String[]{"Normal", "Rage"}, new Supplier[]{() -> mode.is("Karhu")}),
             intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Stable", "Ground Strafe", "Combined Strafe", "Timer"}, new Supplier[]{() -> mode.is("Intave")}),
@@ -154,6 +155,23 @@ public class Speed extends Module {
                     MoveUtil.setMoveSpeed(0.4f);
                     mc.timer.timerSpeed = 1f;
                 }
+                break;
+            case "MosPixel":
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+
+                switch (ticks) {
+                    case 0:
+                        mc.thePlayer.jump();
+                        MoveUtil.strafe(0.485);
+                        mc.timer.timerSpeed = 2;
+                        break;
+                    case 1:
+                        mc.timer.timerSpeed = 1;
+                        MoveUtil.strafe(MoveUtil.getSpeed() * 1.03);
+                        break;
+                }
+
+                MoveUtil.strafe();
                 break;
             case "BlocksMC":
                 bmcTicks = mc.thePlayer.onGround ? 0 : bmcTicks + 1;
@@ -1141,17 +1159,6 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
-                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
-
-                switch(ticks) {
-                    case 0:
-                        mc.thePlayer.jump();
-                        MoveUtil.strafe(0.4);
-                        break;
-                    case 1:
-                        MoveUtil.strafe(0.4);
-                        break;
-                }
                 break;
         }
     }
@@ -1178,12 +1185,22 @@ public class Speed extends Module {
                         if (mc.thePlayer.onGround) {
                             MoveUtil.strafe(0.612 + MoveUtil.getSpeedBoost(0.09F));
                         } else {
-                            MoveUtil.strafe(0.36 + MoveUtil.getSpeedBoost(0.08F));
+                            MoveUtil.strafe(Math.max(0.36 + MoveUtil.getSpeedBoost(0.08F), MoveUtil.getSpeed()));
                         }
                         break;
                 }
                 break;
             case "AAA":
+                MoveUtil.strafe(1);
+                //mc.thePlayer.motionY = -0.09800000190734864;
+                /*
+                if(mc.thePlayer.onGround) {
+                    MoveUtil.strafe(0.612);
+                    mc.thePlayer.motionY = 0.42;
+                } else {
+                    MoveUtil.strafe(Math.max(0.36 + MoveUtil.getSpeedBoost(0.08F), MoveUtil.getSpeed()));
+                }
+                 */
                 break;
             case "Test":
                 break;
@@ -1243,6 +1260,12 @@ public class Speed extends Module {
                             spoofGround = false;
                         }
                     }
+                }
+                break;
+            case "AAA":
+                if(packetEvent.getPacket() instanceof C03PacketPlayer.C06PacketPlayerPosLook) {
+                    ((C03PacketPlayer.C06PacketPlayerPosLook) packetEvent.getPacket()).setYaw((float) (Math.random() * 360));
+                    ((C03PacketPlayer.C06PacketPlayerPosLook) packetEvent.getPacket()).setPitch((float) (Math.random() * 180));
                 }
                 break;
             case "Vulcan":

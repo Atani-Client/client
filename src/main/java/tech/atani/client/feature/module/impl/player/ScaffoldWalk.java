@@ -57,6 +57,7 @@ public class ScaffoldWalk extends Module {
     public SliderValue<Float> maxStartYaw = new SliderValue<>("Maximum Start Yaw", "What will be the maximum yaw for rotating?", this, 5f, 0f, 180f, 0);
     public SliderValue<Float> minStartPitch = new SliderValue<>("Minimum Start Pitch", "What will be the minimum pitch for rotating?", this, 4f, 0f, 180f, 0);
     public SliderValue<Float> maxStartPitch = new SliderValue<>("Maximum Start Pitch", "What will be the maximum pitch for rotating?", this, 5f, 0f, 180f, 0);
+    private final CheckBoxValue intave = new CheckBoxValue("Intave", "Intave CPS Fix?", this, false);
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
     private final CheckBoxValue switchItems = new CheckBoxValue("Switch Items", "Switch to blocks?", this, true);
     private final CheckBoxValue reverseMovement = new CheckBoxValue("Reverse Movement", "Reverse your movement?", this, false);
@@ -151,6 +152,9 @@ public class ScaffoldWalk extends Module {
     public final void onUpdate(UpdateEvent updateEvent) {
         if(mc.gameSettings.limitFramerate < 145)
             mc.gameSettings.limitFramerate = 145;
+
+        if(intave.getValue())
+            mc.gameSettings.keyBindUseItem.pressed = true;
 
         if(verusBoost.getValue()) {
             if(!isMoving())
@@ -337,6 +341,9 @@ public class ScaffoldWalk extends Module {
     public void onClicking(ClickingEvent clickingEvent) {
     	if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null)
     		return;
+
+        if(intave.getValue())
+            return;
 
         MovingObjectPosition objectOver = Methods.mc.objectMouseOver;
         BlockPos blockpos = Methods.mc.objectMouseOver.getBlockPos();

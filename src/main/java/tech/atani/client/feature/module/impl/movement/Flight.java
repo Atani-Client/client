@@ -105,11 +105,10 @@ public class Flight extends Module {
     public void onUpdateMotion(UpdateMotionEvent motionEvent) {
         switch (mode.getValue()) {
             case "Test":
-                if(mc.thePlayer.hurtTime != 0) {
-                    MoveUtil.strafe(5);
-                    mc.thePlayer.motionY = 0;
-                }
-                    break;
+                if(mc.thePlayer.onGround) mc.thePlayer.jump();
+                MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
+                mc.thePlayer.motionY = -0.001;
+                break;
             case "BWPractice":
                 mc.thePlayer.motionY = 0.0D;
                 MoveUtil.setMoveSpeed(0.2f);
@@ -395,12 +394,6 @@ public class Flight extends Module {
     public void onEnable() {
         //if(mode.is("Intave Boat"))
         //    PlayerUtil.addChatMessgae("Enter and leave a boat to launch!", true);
-
-        if(mode.is("Test")) {
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY + 4, mc.thePlayer.posZ, true));
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ, false));
-            mc.thePlayer.sendQueue.addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(mc.thePlayer.posX, mc.thePlayer.posY - 4, mc.thePlayer.posZ, true));
-        }
         if(mode.is("Verus") && verusMode.is("DMG")) {
             PlayerUtil.mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(PlayerUtil.mc.thePlayer.posX, PlayerUtil.mc.thePlayer.posY + 3.001, PlayerUtil.mc.thePlayer.posZ, false));
             PlayerUtil.mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(PlayerUtil.mc.thePlayer.posX, PlayerUtil.mc.thePlayer.posY, PlayerUtil.mc.thePlayer.posZ, false));

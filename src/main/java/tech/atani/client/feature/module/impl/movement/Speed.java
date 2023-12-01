@@ -870,9 +870,10 @@ public class Speed extends Module {
                 mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
                 // Creds to Heritsy
                 if (mc.thePlayer.onGround) {
-                    mc.timer.timerSpeed = (float) (karhuMode.is("Rage") ? 1.029 : 1.009);
+                    mc.timer.timerSpeed = 1.009F;
                 } else if (mc.thePlayer.motionY > 0.2101) {
                     mc.thePlayer.motionY *= 0.87;
+                    if(mode.is("Rage")) mc.timer.timerSpeed = 1.2F;
                 }
                 break;
             case "Incognito":
@@ -915,9 +916,6 @@ public class Speed extends Module {
             case "WatchDog":
                 switch(watchDogMode.getValue()) {
                     case "Normal":
-                        if(MoveUtil.getSpeed() == 0) {
-                            mc.timer.timerSpeed = 1;
-                        } else {
                             mc.timer.timerSpeed = (float) (1 + Math.random() / 30);
                             if(mc.thePlayer.onGround) {
                                 watchDogTicks = 0;
@@ -927,7 +925,6 @@ public class Speed extends Module {
                                 watchDogTicks++;
                                 switch (watchDogTicks) {
                                     case 1:
-                                        mc.timer.timerSpeed = 1;
                                         mc.thePlayer.motionY -= 0.005;
                                         break;
                                     case 2:
@@ -936,13 +933,24 @@ public class Speed extends Module {
                                         break;
                                 }
                             }
-                        }
                         break;
                     case "Strafe":
-                        if(mc.thePlayer.onGround && this.isMoving()) {
-                            mc.thePlayer.jump();
+                        watchDogTicks = mc.thePlayer.onGround ? 0 : watchDogTicks + 1;
 
-                            MoveUtil.strafe(0.3999f);
+                        switch (watchDogTicks) {
+                            case 0:
+                                mc.thePlayer.jump();
+                                MoveUtil.strafe(0.3999);
+                                break;
+                            case 6:
+                                if(mc.gameSettings.keyBindBack.pressed || mc.gameSettings.keyBindLeft.pressed || mc.gameSettings.keyBindRight.pressed)
+                                    MoveUtil.strafe(0.15);
+                                
+                                mc.timer.timerSpeed = 1.2F;
+                                break;
+                            case 7:
+                                mc.timer.timerSpeed = 1;
+                                break;
                         }
                         break;
                 }
@@ -1159,6 +1167,7 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
+                mc.timer.timerSpeed = 1.075F;
                 break;
         }
     }
@@ -1191,7 +1200,6 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
-                MoveUtil.strafe(1);
                 //mc.thePlayer.motionY = -0.09800000190734864;
                 /*
                 if(mc.thePlayer.onGround) {
@@ -1203,6 +1211,8 @@ public class Speed extends Module {
                  */
                 break;
             case "Test":
+                mc.timer.timerSpeed = 0.5F;
+                MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() * 2);
                 break;
                 /*
                 if (!mc.thePlayer.isInWeb && !mc.thePlayer.isInLava() && !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder() && mc.thePlayer.ridingEntity == null) {
@@ -1263,10 +1273,6 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
-                if(packetEvent.getPacket() instanceof C03PacketPlayer.C06PacketPlayerPosLook) {
-                    ((C03PacketPlayer.C06PacketPlayerPosLook) packetEvent.getPacket()).setYaw((float) (Math.random() * 360));
-                    ((C03PacketPlayer.C06PacketPlayerPosLook) packetEvent.getPacket()).setPitch((float) (Math.random() * 180));
-                }
                 break;
             case "Vulcan":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {

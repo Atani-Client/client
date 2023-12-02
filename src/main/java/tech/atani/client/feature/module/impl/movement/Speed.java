@@ -410,11 +410,6 @@ public class Speed extends Module {
                         verusTicks++;
                     }
 
-                    if(mc.thePlayer.hurtTime > 1 && !mc.thePlayer.isBurning() && !mc.thePlayer.isInWater() && !mc.thePlayer.isInLava()) {
-                        MoveUtil.strafe(5);
-                        mc.thePlayer.motionY = 0.1F;
-                    }
-
                     switch(verusMode.getValue()) {
                         case "Hop":
                             if (mc.thePlayer.onGround) {
@@ -423,7 +418,7 @@ public class Speed extends Module {
 
                             mc.thePlayer.speedInAir = (float) (0.02 + Math.random() / 100);
 
-                            MoveUtil.strafe((float) MoveUtil.getSpeed());
+                            MoveUtil.strafe(MoveUtil.getSpeed());
                             break;
                         case "Normal":
                             /*
@@ -440,6 +435,22 @@ public class Speed extends Module {
                             MoveUtil.strafe(mc.thePlayer.onGround ? 0.55 + MoveUtil.getSpeedBoost(0.09F) : 0.33 + MoveUtil.getSpeedBoost(0.084F));
 
                              */
+                            // fastest verus speed(rel)
+                            /*
+                            if(mc.thePlayer.onGround) {
+                                MoveUtil.strafe(0.612);
+                                mc.thePlayer.jump();
+                            } else {
+                                MoveUtil.strafe(Math.max(0.36 + MoveUtil.getSpeedBoost(0.08F), MoveUtil.getSpeed()));
+                            }
+                             */
+                            // normal
+                            if(mc.thePlayer.onGround) {
+                                MoveUtil.strafe(0.55);
+                                mc.thePlayer.jump();
+                            } else {
+                                MoveUtil.strafe(Math.max(0.33 + MoveUtil.getSpeedBoost(0.08F), MoveUtil.getSpeed()));
+                            }
                             break;
                         case "Boost":
                             if(!isMoving())
@@ -867,13 +878,18 @@ public class Speed extends Module {
                 }
                 break;
             case "Karhu":
+
+                if(!isMoving())
+                    return;
+
                 mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = true;
-                // Creds to Heritsy
-                if (mc.thePlayer.onGround) {
-                    mc.timer.timerSpeed = 1.009F;
-                } else if (mc.thePlayer.motionY > 0.2101) {
-                    mc.thePlayer.motionY *= 0.87;
-                    if(mode.is("Rage")) mc.timer.timerSpeed = 1.2F;
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+
+                if(ticks == 3)
+                    mc.thePlayer.motionY -= 0.01;
+
+                if(3 > ticks && !mc.thePlayer.onGround) {
+                    mc.thePlayer.motionY *= karhuMode.is("Rage") ? 0.7 : 0.8;
                 }
                 break;
             case "Incognito":
@@ -945,7 +961,7 @@ public class Speed extends Module {
                             case 6:
                                 if(mc.gameSettings.keyBindBack.pressed || mc.gameSettings.keyBindLeft.pressed || mc.gameSettings.keyBindRight.pressed)
                                     MoveUtil.strafe(0.15);
-                                
+
                                 mc.timer.timerSpeed = 1.2F;
                                 break;
                             case 7:
@@ -1167,7 +1183,13 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
-                mc.timer.timerSpeed = 1.075F;
+                if(mc.thePlayer.moveStrafing != 0 || mc.thePlayer.moveForward < 0)
+                    MoveUtil.strafe(MoveUtil.getSpeed() * 0.975);
+
+                if(mc.thePlayer.onGround) {
+                    mc.thePlayer.jump();
+                    MoveUtil.strafe(0.485);
+                }
                 break;
         }
     }
@@ -1212,7 +1234,6 @@ public class Speed extends Module {
                 break;
             case "Test":
                 mc.timer.timerSpeed = 0.5F;
-                MoveUtil.setMoveSpeed(MoveUtil.getBaseGroundSpeed() * 2);
                 break;
                 /*
                 if (!mc.thePlayer.isInWeb && !mc.thePlayer.isInLava() && !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder() && mc.thePlayer.ridingEntity == null) {

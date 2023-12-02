@@ -107,8 +107,9 @@ public class LongJump extends Module {
                     karhuJumpTicks++;
                 }
 
-                if (karhuJumpTicks == 10)
+                if (karhuJumpTicks == 10) {
                     mc.thePlayer.jump();
+                }
 
                 if(karhuJumpTicks == 25)
                     this.toggle();
@@ -120,11 +121,13 @@ public class LongJump extends Module {
                 ncpTicks++;
             }
 
+            boolean speedPot = mc.thePlayer.isPotionActive(Potion.moveSpeed);
+
             if(Methods.mc.thePlayer.onGround) {
-                if(!mc.thePlayer.isPotionActive(Potion.moveSpeed)) mc.thePlayer.motionY = 0.43;
-                ncpSpeed = Methods.mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.53;
+                if(!speedPot) mc.thePlayer.motionY = 0.43;
+                ncpSpeed = speedPot ? 0.6 : 0.53;
             } else {
-                ncpSpeed -= Methods.mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.03 : 0.02;
+                ncpSpeed -= speedPot ? 0.03 : 0.02;
             }
 
             if(Methods.mc.thePlayer.moveForward > 0 && Methods.mc.thePlayer.moveStrafing == 0) {

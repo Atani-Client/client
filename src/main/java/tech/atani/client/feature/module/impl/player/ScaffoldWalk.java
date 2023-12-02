@@ -80,8 +80,10 @@ public class ScaffoldWalk extends Module {
     private BlockPos blockPos;
     private boolean starting;
     private int verusTicks;
+    private boolean placed;
     private float pitch2;
     private float oldPitch2;
+    private int ticks;
     // -178.89381
 
     @Listen
@@ -257,11 +259,33 @@ public class ScaffoldWalk extends Module {
                     break;
                 case "MMC (TEST)":
                     // Super usefull, i mean it makes it kinda faster so
+                    /*
                     mc.timer.timerSpeed = 1.004F;
                     if(isMoving() && !mc.thePlayer.onGround) {
                         getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());
                         getGameSettings().keyBindForward.pressed = false;
                         MoveUtil.strafe(0.2499);
+                    }
+                     */
+                    ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+
+                    if(mc.thePlayer.onGround) {
+                        mc.thePlayer.jump();
+                    }
+
+                    /*
+                    mc.thePlayer.motionY -= 0.012;
+                    //mc.thePlayer.motionY = -0.0980000019;
+                     */
+
+                    if(ticks == 3 && !isMoving())
+                        mc.thePlayer.motionY = -0.0980000019;
+                    else if(ticks == 3 && isMoving())
+                        mc.thePlayer.motionY = -9999;
+
+                    if(ticks == 3) {
+                        mc.thePlayer.motionX *= 1.02F;
+                        mc.thePlayer.motionZ *= 1.02F;
                     }
                     break;
             }
@@ -272,7 +296,7 @@ public class ScaffoldWalk extends Module {
             return;
         }
         if(sneak.getValue() && sneakMode.is("Edge")) {
-            if (unSneakDelay.getValue() == 0 || unsneakTimeHelper.hasReached((long) (unSneakDelay.getValue()))) {
+            if (unSneakDelay.getValue() == 0 || unsneakTimeHelper.hasReached(unSneakDelay.getValue())) {
                 getGameSettings().keyBindSneak.pressed = false;
             }
 
@@ -368,6 +392,7 @@ public class ScaffoldWalk extends Module {
                 Methods.mc.thePlayer.inventory.mainInventory[Methods.mc.thePlayer.inventory.currentItem] = null;
             }
 
+            placed = true;
             Methods.mc.sendClickBlockToController(Methods.mc.currentScreen == null && Methods.mc.gameSettings.keyBindAttack.isKeyDown() && Methods.mc.inGameHasFocus);
             timeHelper.reset();
         }
@@ -452,10 +477,6 @@ public class ScaffoldWalk extends Module {
     private float[] getRotations() {
         switch (this.rotations.getValue()) {
             case "Legit":
-                /*
-             if(mc.thePlayer.ticksExisted % 10 + Math.round(Math.random() * 5) == 0)
-                pitch2 = (float) (Math.random() - Math.random() * 3);
-             */
             return new float[]{mc.thePlayer.rotationYaw + 180, 81.943275F};
             case "Bruteforce":
                 for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {

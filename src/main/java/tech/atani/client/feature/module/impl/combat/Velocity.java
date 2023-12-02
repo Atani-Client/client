@@ -32,12 +32,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @ModuleData(name = "Velocity", description = "Modifies your velocity", category = Category.COMBAT)
 public class Velocity extends Module {
 
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Delay", "Intave","Intave Jump", "Test", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block", "Fake Lag", "MineMenClub"});
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"Simple", "Reverse", "Delay", "Jump", "Intave", "Test", "Grim Spoof", "Old Grim", "Grim Flag", "Vulcan", "AAC v4", "AAC v5 Packet", "AAC v5.2.0", "Matrix Semi", "Matrix Reverse", "Polar", "Polar Under-Block", "Fake Lag", "MineMenClub"});
     private final SliderValue<Integer> horizontal = new SliderValue<Integer>("Horizontal %", "How much horizontal velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse") || mode.is("Delay")});
     private final SliderValue<Integer> vertical = new SliderValue<Integer>("Vertical %", "How much vertical velocity will you take?", this, 100, 0, 100, 0, new Supplier[] {() -> mode.is("Simple") || mode.is("Reverse") || mode.is("Delay")});
     private final SliderValue<Float> aacv4Reduce = new SliderValue<Float>("Reduce", "How much motion will be reduced?", this, 0.62f,0f,1f, 1, new Supplier[] {() -> mode.is("AAC v4")});
     private final SliderValue<Integer> delayTicks = new SliderValue<Integer>("Delay Ticks", "How long will the velocity wait before cancelling it?", this, 500, 0, 1000, 0, new Supplier[]{() -> mode.is("Delay")});
-    private final SliderValue<Float> jumpChance = new SliderValue<Float>("Intave Jump Chance", "Whats the chance for intave jump velo to jump?", this, 100f,0f,100f, 1, new Supplier[] {() -> mode.is("Intave Jump")});
+    private final SliderValue<Float> jumpChance = new SliderValue<Float>("Jump Chance", "Whats the chance for jump velo to jump?", this, 100f,0f,100f, 1, new Supplier[] {() -> mode.is("Jump")});
     private double packetX = 0;
     private double packetY = 0;
     private double packetZ = 0;
@@ -48,9 +48,6 @@ public class Velocity extends Module {
 
     // AAC v5.2.0
     private final TimeHelper aacTimer = new TimeHelper();
-
-    // Intave Jump
-    private int counter;
 
     // Grim
     int grimCancel = 0;
@@ -68,7 +65,7 @@ public class Velocity extends Module {
     // MineMenClub
     private int mmcCounter;
 
-    // Intave Jump
+    // Jump
     private boolean jumped;
 
     @Override
@@ -412,7 +409,7 @@ public class Velocity extends Module {
     @Listen
     public final void onSilent(SilentMoveEvent silentMoveEvent) {
         switch(this.mode.getValue()) {
-            case "Intave Jump":
+            case "Jump":
                 if (Velocity.mc.thePlayer.hurtTime == 9 && mc.currentScreen == null && jumpChance.getValue() > Math.random() * 100) {
                     mc.gameSettings.keyBindJump.pressed = true;
                     jumped = true;

@@ -79,11 +79,8 @@ public class Spider extends Module {
 
                     if(mc.thePlayer.onGround)
                         mc.thePlayer.jump();
-                    else
-                        // DO NOT ASK, it doesn't work that well :D
-                        // mc.thePlayer.motionY -= 0.002; works but doesnt let you jump properly sometimes
-                        mc.thePlayer.motionY -= 0.0015;
-                    break;
+
+                    mc.thePlayer.motionY -= 0.001;
             }
         }
     }

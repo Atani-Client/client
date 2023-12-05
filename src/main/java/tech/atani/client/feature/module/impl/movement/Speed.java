@@ -1264,14 +1264,12 @@ public class Speed extends Module {
                     timered = true;
                     mc.timer.timerSpeed = 1.1F;
                 } else {
-                    if(mc.thePlayer.motionY > 0)
-                        mc.timer.timerSpeed = 0.995F;
-                    else
-                        mc.timer.timerSpeed = 1.02F;
+                    if(mc.thePlayer.motionY < 0) {
+                        mc.timer.timerSpeed = 1.12F;
+                    } else {
+                        mc.timer.timerSpeed = 0.9F;
+                    }
                 }
-                boolean debug = true;
-                if(isMoving() && debug)
-                    PlayerUtil.addChatMessgae("SPEED: " + MoveUtil.getSpeed() * mc.timer.timerSpeed + " - BOOST: " + mc.timer.timerSpeed, true);
                 break;
         }
     }

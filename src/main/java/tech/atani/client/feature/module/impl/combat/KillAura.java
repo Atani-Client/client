@@ -131,10 +131,8 @@ public class KillAura extends Module {
             double range2 = mc.thePlayer.isSprinting() ? sprintRange.getValue() : mc.thePlayer.onGround ? groundRange.getValue() : airRange.getValue();
             correctedRange = (advancedRange.getValue() ? range2 : attackRange.getValue()) + 0.00256f;
 
-            if (fixServersSideMisplace.getValue() &&
-                    (Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.NORTH || Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.WEST)) {
+            if (fixServersSideMisplace.getValue() && (Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.NORTH || Methods.mc.thePlayer.getHorizontalFacing() == EnumFacing.WEST))
                 correctedRange += 0.010625f * 2.0f;
-            }
 
             rayTraceRangeEvent.setRange((float) correctedRange);
             rayTraceRangeEvent.setBlockReachDistance((float) Math.max(Methods.mc.playerController.getBlockReachDistance(), correctedRange));

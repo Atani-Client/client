@@ -20,7 +20,7 @@ import tech.atani.client.utility.player.PlayerUtil;
 
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
-	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat", "Intave Timer", "Omni Sprint", "Pulse", "Test"});
+	private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the disabler use?", this, new String[] {"Custom", "Verus Combat", "Intave CPS","(Old) Intave Timer", "Omni Sprint", "Pulse", "Test"});
 
 	private final CheckBoxValue keepAlive = new CheckBoxValue("C00KeepAlive", "Should the module cancel C00KeepAlive?", this, false, new Supplier[]{() -> mode.is("Custom")}),
 			c0fConfirm = new CheckBoxValue("C0FConfirmTransaction", "Should the module cancel C0FConfirmTransaction?", this, false, new Supplier[]{() -> mode.is("Custom")}),
@@ -103,10 +103,14 @@ public class Disabler extends Module {
 						event.setCancelled(true);
 					}
 					break;
-				case "Intave Timer":
+				case "(Old) Intave Timer":
 					if(packet instanceof C19PacketResourcePackStatus) {
 						event.setCancelled(true);
 					}
+					break;
+				case "Intave CPS":
+					if(event.getPacket() instanceof C19PacketResourcePackStatus || event.getPacket() instanceof C0APacketAnimation)
+						event.setCancelled(true);
 					break;
 				case "Omni Sprint":
 					if(packet instanceof C03PacketPlayer.C06PacketPlayerPosLook) {

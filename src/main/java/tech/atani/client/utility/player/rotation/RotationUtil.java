@@ -32,6 +32,19 @@ public class RotationUtil implements Methods {
         return new Vec3(f2 * f3, f4, f * f3);
     }
 
+    public static float[] getRotationsToBlock(double blockX, double blockY, double blockZ) {
+        double x = blockX - (mc.thePlayer.posX);
+        double y = blockY - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight() / 2);
+        double z = blockZ - (mc.thePlayer.posZ);
+
+        double distance = MathHelper.sqrt_double(x * x + z * z);
+
+        float yaw   = (float) ( (Math.atan2(z, x) * 180.0D / Math.PI) - 90.0F);
+        float pitch = (float) (-(Math.atan2(y, distance) * 180.0D / Math.PI));
+
+        return new float[] { yaw, pitch };
+    }
+
     public static float[] getRotation(Vec3 aimVector) {
         double x = aimVector.xCoord - mc.thePlayer.posX;
         double y = aimVector.yCoord - (mc.thePlayer.posY + (double) mc.thePlayer.getEyeHeight());

@@ -68,7 +68,7 @@ public class ScaffoldWalk extends Module {
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will the module sneak?", this, new String[]{"Edge", "Constant"}, new Supplier[]{() -> sneak.getValue()});
     private final CheckBoxValue tower = new CheckBoxValue("Tower", "Tower?", this, false);
     private final CheckBoxValue unSneakTower = new CheckBoxValue("Tower unSneak", "Stop sneaking when towering?", this, false, new Supplier[]{() -> sneak.getValue() && tower.getValue()});
-    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Matrix", "Intave", "MMC (TEST)"}, new Supplier[]{() -> tower.getValue()});
+    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Karhu", "Matrix", "Intave", "MMC (TEST)"}, new Supplier[]{() -> tower.getValue()});
     private final SliderValue<Long> unSneakDelay = new SliderValue<Long>("Unsneak delay", "What will be the delay between unsneaking?", this, 0L, 0L, 1000L, 0, new Supplier[]{() -> sneak.getValue() && sneakMode.is("Edge")});
     private final CheckBoxValue verusBoost = new CheckBoxValue("Verus Speed Boost", "Add speed boost?", this, false);
     private final CheckBoxValue intaveBoost = new CheckBoxValue("Intave Speed Boost", "Add speed boost?", this, false);
@@ -257,37 +257,20 @@ public class ScaffoldWalk extends Module {
                         }
                     }
                     break;
+                case "Karhu":
+                    if(ticks == 3 && !isMoving())
+                        mc.thePlayer.motionY = -0.0980000019;
+                    else if(ticks == 3 && isMoving())
+                        mc.thePlayer.motionY = -9999;
+                    break;
                 case "MMC (TEST)":
-                    // Super usefull, i mean it makes it kinda faster so
-                    /*
+                    // Kinda usefull, i mean it makes it kinda faster so
                     mc.timer.timerSpeed = 1.004F;
                     if(isMoving() && !mc.thePlayer.onGround) {
                         getGameSettings().keyBindBack.pressed = isKeyDown(getGameSettings().keyBindForward.getKeyCode());
                         getGameSettings().keyBindForward.pressed = false;
                         MoveUtil.strafe(0.2499);
                     }
-                     */
-                    ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
-
-                    if(mc.thePlayer.onGround) {
-                        mc.thePlayer.jump();
-                    }
-
-                    /*
-                    mc.thePlayer.motionY -= 0.012;
-                    //mc.thePlayer.motionY = -0.0980000019;
-                     */
-
-                    if(ticks == 3 && !isMoving())
-                        mc.thePlayer.motionY = -0.0980000019;
-                    else if(ticks == 3 && isMoving())
-                        mc.thePlayer.motionY = -9999;
-
-                    if(ticks == 3) {
-                        mc.thePlayer.motionX *= 1.02F;
-                        mc.thePlayer.motionZ *= 1.02F;
-                    }
-                    break;
             }
         }
 
@@ -477,7 +460,8 @@ public class ScaffoldWalk extends Module {
     private float[] getRotations() {
         switch (this.rotations.getValue()) {
             case "Legit":
-            return new float[]{mc.thePlayer.rotationYaw + 180, 81.943275F};
+                float thingy = (float) (77.5F + Math.random());
+            return new float[]{mc.thePlayer.rotationYaw + 180, thingy};
             case "Bruteforce":
                 for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {
                     for (float possiblePitch = 90; possiblePitch > 30 ; possiblePitch -= possiblePitch > (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 60 : 80) ? 1 : 10) {

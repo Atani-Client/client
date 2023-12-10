@@ -83,6 +83,12 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
         sex += 12;
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Add Intave InventoryMove", (float) (this.width / 2), 100 + sex, green);
         sex += 12;
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Add Intave CPS Disabler", (float) (this.width / 2), 100 + sex, green);
+        sex += 12;
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Start Scaffold Recode", (float) (this.width / 2), 100 + sex, green);
+        sex += 12;
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Add IgnoreScaffold to CorrectMovement", (float) (this.width / 2), 100 + sex, green);
+        sex += 12;
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

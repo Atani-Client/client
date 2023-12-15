@@ -20,7 +20,10 @@ public class CorrectMovement extends Module {
 
     @Listen
     public final void onTick(RunTickEvent runTickEvent) {
-        if(ModuleStorage.getInstance().getModule("ScaffoldWalk").isEnabled() && ignoreScaffold.getValue())
+        if((ModuleStorage.getInstance().getModule("ScaffoldWalk").isEnabled() || ModuleStorage.getInstance().getModule("Scaffold").isEnabled()) && ignoreScaffold.getValue())
+            return;
+
+        if(ModuleStorage.getInstance().getModule("FunnyRotate").isEnabled())
             return;
 
         PlayerHandler.moveFix = this.isEnabled();

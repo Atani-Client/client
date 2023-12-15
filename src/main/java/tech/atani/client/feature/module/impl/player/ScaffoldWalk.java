@@ -8,14 +8,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.client.C0APacketAnimation;
-import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.*;
 import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
-import tech.atani.client.feature.module.impl.combat.KillAura;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
@@ -81,10 +79,7 @@ public class ScaffoldWalk extends Module {
     private boolean starting;
     private int verusTicks;
     private boolean placed;
-    private float pitch2;
-    private float oldPitch2;
     private int ticks;
-    // -178.89381
 
     @Listen
     public void onDirectionCheck(DirectionSprintCheckEvent sprintCheckEvent) {

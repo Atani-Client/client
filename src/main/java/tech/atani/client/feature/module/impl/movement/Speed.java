@@ -389,14 +389,9 @@ public class Speed extends Module {
                         case "Strafe":
                             if (mc.thePlayer.onGround && this.isMoving()){
                                 mc.thePlayer.jump();
-                                vulcanMoveForwardGround = mc.thePlayer.moveForward > 0;
-                                if(mc.thePlayer.moveForward < 0) {
-                                    MoveUtil.strafe(0.34 + MoveUtil.getSpeedBoost(1));
-                                }
+                                MoveUtil.strafe(0.34 + MoveUtil.getSpeedBoost(1));
                             } else {
-                                if (mc.thePlayer.hurtTime <= 6 && (vulcanMoveForwardGround ? mc.thePlayer.moveForward > 0 : mc.thePlayer.moveForward < 0) && mc.thePlayer.moveStrafing != 0) {
-                                    MoveUtil.strafe();
-                                }
+                                MoveUtil.strafe(MoveUtil.getSpeed() * 0.975);
                             }
                             break;
                     }
@@ -878,7 +873,6 @@ public class Speed extends Module {
                 }
                 break;
             case "Karhu":
-
                 if(!isMoving())
                     return;
 
@@ -1015,7 +1009,7 @@ public class Speed extends Module {
                         break;
                     case "Rage":
                         mc.gameSettings.keyBindJump.pressed = mc.gameSettings.keyBindSprint.pressed = isMoving();
-                        
+
                         ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
 
                         switch(ticks) {
@@ -1265,7 +1259,7 @@ public class Speed extends Module {
                     mc.timer.timerSpeed = 1.1F;
                 } else {
                     if(mc.thePlayer.motionY < 0) {
-                        mc.timer.timerSpeed = 1.12F;
+                        mc.timer.timerSpeed = 1.15F;
                     } else {
                         mc.timer.timerSpeed = 0.9F;
                     }

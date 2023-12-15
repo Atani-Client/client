@@ -1,8 +1,6 @@
 # ATANI CLIENT!
 Open sourced!
 
-Focused on Intave currently
-
 Current version: 0.0.6 (0.1 - BETA)
 
 CURRENT BUGS:
@@ -26,8 +24,6 @@ dont come crying to me if you dont like the code
 some of it was skidded by tabio!
 
 CREDITS:
-
-Karhu hop - Heritsy
 
 Old devs:
 

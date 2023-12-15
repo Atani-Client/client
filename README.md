@@ -25,8 +25,6 @@ some of it was skidded by tabio!
 
 CREDITS:
 
-Karhu hop - Heritsy
-
 Old devs:
 
 Heritsy

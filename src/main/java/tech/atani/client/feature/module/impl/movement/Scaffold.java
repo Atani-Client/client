@@ -39,7 +39,7 @@ import java.util.List;
 public class Scaffold extends Module {
     private final CheckBoxValue intave = new CheckBoxValue("Intave", "Intave CPS Fix?", this, false);
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
-    private final StringBoxValue rotations = new StringBoxValue("Rotations", "How will the scaffold rotate?", this, new String[]{"Reverse", "Funny", "Bruteforce", "360 Bob Bridge", "Static", "Simple", "90", "Snap", "Random"});
+    private final StringBoxValue rotations = new StringBoxValue("Rotations", "How will the scaffold rotate?", this, new String[]{"Reverse", "Funny", "Bruteforce", "360 Bob Bridge", "Static", "Simple", "90", "Snap", "Grim Snap", "Random"});
     private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0);
     private final SliderValue<Long> randomDelay = new SliderValue<>("Random Delay", "What will be the added delay between placing?", this, 0L, 0L, 1000L, 0);
     private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
@@ -156,7 +156,9 @@ public class Scaffold extends Module {
                 mc.thePlayer.setSneaking(true);
                 break;
         }
-        mc.thePlayer.setSprinting(sprint.getValue());
+
+
+        mc.thePlayer.setSprinting((rotations.is("Grim Snap") && (Methods.mc.theWorld.getBlockState(new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 1.0, Methods.mc.thePlayer.posZ)).getBlock() instanceof BlockAir && Methods.mc.thePlayer.onGround)) ? false : sprint.getValue());
 
         mc.gameSettings.keyBindSprint.pressed = false;
         if ((Methods.mc.thePlayer.getHeldItem() != null && !(Methods.mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)) || Methods.mc.thePlayer.getHeldItem() == null) {
@@ -231,16 +233,7 @@ public class Scaffold extends Module {
                 rotationEvent.setYaw((float) (mc.thePlayer.rotationYaw + 180 + lol));
                 break;
             case "Funny":
-                // Super readable!1!
-                double thing = xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx ? -4 : 4;
-
-                if(thing > 23) {
-                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx = true;
-                } else if (-15.3 > thing) {
-                    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx = false;
-                }
-
-                xxxxxxxxx += thing + (Math.random() / 10);
+                xxxxxxxxx += (float) (7.5 + (Math.random()));
 
                 rotationEvent.setPitch(82);
                 rotationEvent.setYaw(mc.thePlayer.rotationYaw + 180 + xxxxxxxxx);
@@ -264,6 +257,13 @@ public class Scaffold extends Module {
                 if (Methods.mc.theWorld.getBlockState(new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 1.0, Methods.mc.thePlayer.posZ)).getBlock() instanceof BlockAir && Methods.mc.thePlayer.onGround) {
                     rotationEvent.setPitch((float) (81.943275 + Math.random() * 3));
                     rotationEvent.setYaw((float) (mc.thePlayer.rotationYaw + 180 + Math.random() * 8));
+                }
+                break;
+            case "Grim Snap":
+                if (Methods.mc.theWorld.getBlockState(new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 1.0, Methods.mc.thePlayer.posZ)).getBlock() instanceof BlockAir && Methods.mc.thePlayer.onGround) {
+                    rotationEvent.setPitch(81.943275F);
+                    rotationEvent.setYaw(mc.thePlayer.rotationYaw + 180);
+                    mc.thePlayer.setSprinting(false);
                 }
                 break;
             case "360 Bob Bridge":
@@ -294,10 +294,9 @@ public class Scaffold extends Module {
                     }
                     break;
             case "Bruteforce":
-                // dont ask why crash (please dont ask)
                 for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {
                     for (float possiblePitch = 90; possiblePitch > 30 ; possiblePitch -= possiblePitch > (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 60 : 80) ? 1 : 10) {
-                        if(RaytraceUtil.getOver(getEnumFacing(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ())), blockPos, !rayTraceMode.is("Normal"), 5, possibleYaw, possiblePitch)) {
+                        if(RaytraceUtil.getOver(getEnumFacing(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ())), new BlockPos(blockPos.getX(), blockPos.getY(), blockPos.getZ()), !rayTraceMode.is("Normal"), 5, possibleYaw, possiblePitch)) {
                             rotationEvent.setPitch(possiblePitch);
                             rotationEvent.setYaw(possibleYaw);
                         }

@@ -33,7 +33,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "MosPixel", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "MosPixel", "Spoof", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             karhuMode = new StringBoxValue("Karhu Mode", "Which mode will the karhu mode use?", this, new String[]{"Normal", "Rage"}, new Supplier[]{() -> mode.is("Karhu")}),
             intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Stable", "Ground Strafe", "Combined Strafe", "Timer"}, new Supplier[]{() -> mode.is("Intave")}),
@@ -137,6 +137,38 @@ public class Speed extends Module {
             if(MoveUtil.getSpeed() != 0) {
                 directionSprintCheckEvent.setSprintCheck(false);
             }
+        }
+    }
+
+    @Listen
+    public final void onRotation(RotationEvent rotationEvent) {
+        switch (mode.getValue()) {
+            case "Spoof":
+                // From Raze but improved, also I made this for raze, so it really doesn't matter.
+                mc.gameSettings.keyBindJump.pressed = isMoving();
+                int yaw = 0;
+
+                if (mc.thePlayer.moveForward < 0) {
+                    yaw = -180;
+                } else if (mc.thePlayer.moveStrafing > 0) {
+                    yaw = 90;
+                } else if (mc.thePlayer.moveStrafing < 0) {
+                    yaw = -90;
+                }
+
+                if (mc.thePlayer.moveForward != 0 && mc.thePlayer.moveStrafing != 0) {
+                    if (mc.thePlayer.moveStrafing < 0) {
+                        yaw = (mc.thePlayer.moveForward < 0) ? -135 : -45;
+                    } else {
+                        yaw = (mc.thePlayer.moveForward < 0) ? 135 : 45;
+                    }
+                }
+
+
+                rotationEvent.setYaw(mc.thePlayer.rotationYaw - yaw);
+
+                MoveUtil.strafe();
+                break;
         }
     }
     @Listen
@@ -365,7 +397,7 @@ public class Speed extends Module {
                             }
                             break;
                         case "TEST":
-                            MoveUtil.strafe(0.2);
+                            MoveUtil.strafe(0.215);
                             break;
                         case "Y-Port":
                             if(mc.thePlayer.onGround) {
@@ -1177,12 +1209,22 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
-                if(mc.thePlayer.moveStrafing != 0 || mc.thePlayer.moveForward < 0)
-                    MoveUtil.strafe(MoveUtil.getSpeed() * 0.975);
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+                mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                if(mc.thePlayer.onGround) {
-                    mc.thePlayer.jump();
-                    MoveUtil.strafe(0.485);
+                switch (ticks) {
+                    case 0:
+                        MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.485);
+                        break;
+                    case 1:
+                        MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() * 1.25);
+                        break;
+                    case 2:
+                        MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() * 1.125);
+                        break;
+                    default:
+                        MoveUtil.strafe(0.215);
+                        break;
                 }
                 break;
         }
@@ -1297,6 +1339,11 @@ public class Speed extends Module {
                             ((C03PacketPlayer) packetEvent.getPacket()).y -= mc.thePlayer.fallDistance;
                         }
                     }
+                }
+
+                if(vulcanMode.is("Strafe") && spoofGround) {
+                    if(packetEvent.getPacket() instanceof C03PacketPlayer)
+                        ((C03PacketPlayer) packetEvent.getPacket()).setOnGround(true);
                 }
                 break;
             case "Intave":

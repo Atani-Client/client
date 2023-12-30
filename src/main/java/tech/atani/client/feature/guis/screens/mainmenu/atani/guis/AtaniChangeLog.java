@@ -61,34 +61,9 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
         int yellow = Color.HSBtoRGB(60F / 360.0f, 1.0F, 1.0F);
         int green = Color.HSBtoRGB(120F / 360.0f, 1.0F, 1.0F);
         int sex = 0;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Fixed Intave Rage Speed", (float) (this.width / 2), 100 + sex, yellow);
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added Spoof Speed", (float) (this.width / 2), 100 + sex, green);
         sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Edit Test Velo", (float) (this.width / 2), 100 + sex, yellow);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Fix Karhu Speed", (float) (this.width / 2), 100 + sex, yellow);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Improve Karhu Spider", (float) (this.width / 2), 100 + sex, yellow);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Added Smooth Block Animation", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Added Intave Tower Ground Multiplier", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Added Chance To Intave Jump Velocity", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Fix Bugs", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Re Add Matrix Ground Strafe", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Add InventoryMove", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Add Intave InventoryMove", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Add Intave CPS Disabler", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Start Scaffold Recode", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("+ Add IgnoreScaffold to CorrectMovement", (float) (this.width / 2), 100 + sex, green);
-        sex += 12;
+
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

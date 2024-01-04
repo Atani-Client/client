@@ -7,6 +7,8 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.network.play.client.C03PacketPlayer;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
 import net.minecraft.potion.Potion;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import tech.atani.client.feature.anticheat.check.Check;
 import tech.atani.client.feature.module.impl.combat.KillAura;
 import tech.atani.client.feature.module.storage.ModuleStorage;
@@ -33,7 +35,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "Strafe", "Incognito", "Karhu", "MosPixel", "Spoof", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "CSGO","Strafe", "Incognito", "Karhu", "MosPixel", "Spoof", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             karhuMode = new StringBoxValue("Karhu Mode", "Which mode will the karhu mode use?", this, new String[]{"Normal", "Rage"}, new Supplier[]{() -> mode.is("Karhu")}),
             intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Stable", "Ground Strafe", "Combined Strafe", "Timer"}, new Supplier[]{() -> mode.is("Intave")}),
@@ -397,7 +399,19 @@ public class Speed extends Module {
                             }
                             break;
                         case "TEST":
-                            MoveUtil.strafe(0.215);
+                            switch (vulcanTicks) {
+                                case 0:
+                                    mc.thePlayer.jump();
+                                    MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.485);
+                                    break;
+                                case 1:
+                                    MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() * 1.2);
+                                    break;
+                                default:
+                                    MoveUtil.strafe(0.215);
+                                    break;
+
+                            }
                             break;
                         case "Y-Port":
                             if(mc.thePlayer.onGround) {
@@ -1209,23 +1223,6 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
-                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
-                mc.gameSettings.keyBindJump.pressed = isMoving();
-
-                switch (ticks) {
-                    case 0:
-                        MoveUtil.strafe(mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 0.6 : 0.485);
-                        break;
-                    case 1:
-                        MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() * 1.25);
-                        break;
-                    case 2:
-                        MoveUtil.strafe(MoveUtil.getBaseMoveSpeed() * 1.125);
-                        break;
-                    default:
-                        MoveUtil.strafe(0.215);
-                        break;
-                }
                 break;
         }
     }
@@ -1244,6 +1241,34 @@ public class Speed extends Module {
                     mc.thePlayer.motionZ = 0.0;
                 }
                 break;
+            case "CSGO":
+                if(mc.thePlayer.onGround && !mc.gameSettings.keyBindJump.pressed) {
+                    float speed;
+                    ticks += 1;
+
+                    if(!isMoving())
+                        ticks = 0;
+
+                    speed = ticks * 0.016F + 0.06F;
+                    if(speed > MoveUtil.getBaseMoveSpeed() + 0.02)
+                        speed = (float) MoveUtil.getBaseMoveSpeed() + 0.02F;
+
+                    MoveUtil.strafe(speed);
+                } else {
+                    ticks = 0;
+                }
+
+                if(y > 75)
+                    y = 75;
+
+                MoveUtil.strafe(((MoveUtil.getSpeed() * 1.04) + Math.abs(mc.thePlayer.rotationPitch - y) * 0.0015) * (1 - (MoveUtil.getSpeed() * 0.1)));
+                mc.thePlayer.motionY -= (0.04) * Math.abs(mc.thePlayer.motionY);
+                if(mc.thePlayer.onGround) {
+                    y = mc.thePlayer.rotationPitch;
+                    MoveUtil.strafe(MoveUtil.getSpeed() * 0.975);
+                    mc.thePlayer.motionY += 0.02;
+                }
+                break;
             case "Verus":
                 switch (verusMode.getValue()) {
                     case "Normal":
@@ -1258,18 +1283,47 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
-                //mc.thePlayer.motionY = -0.09800000190734864;
                 /*
+                if(y > 75)
+                    y = 75;
+                MoveUtil.strafe(((MoveUtil.getSpeed() * 1.03) + Math.abs(mc.thePlayer.rotationPitch - y) * 0.004) * (1 - (MoveUtil.getSpeed() * 0.1)));
+                mc.thePlayer.motionY -= 0.006;
+                mc.gameSettings.keyBindJump.pressed = isMoving();
                 if(mc.thePlayer.onGround) {
-                    MoveUtil.strafe(0.612);
-                    mc.thePlayer.motionY = 0.42;
+                    y = mc.thePlayer.rotationPitch;
+                    MoveUtil.strafe(MoveUtil.getSpeed() * 0.9);
+                    mc.thePlayer.motionY += 0.02;
+                }
+                 */
+                /*
+                ticks = mc.thePlayer.onGround ? 0 : ticks + 1;
+                mc.gameSettings.keyBindJump.pressed = isMoving();
+
+                double[] strafeValues = {
+                        0.5861977171066631,
+                        0.3455384292602152,
+                        0.33991883975496545,
+                        0.33480501319862616,
+                        0.33015143093361826,
+                        0.32591667098096977,
+                        0.3220630393393012,
+                        0.3185562344668912,
+                        0.3153650419603474,
+                        0.31246105671218993,
+                        0.3098184300742468,
+                        0.3074136397763403
+                };
+
+                int maxTicks = strafeValues.length;
+
+                if (ticks < maxTicks) {
+                    MoveUtil.strafe(strafeValues[ticks]);
                 } else {
-                    MoveUtil.strafe(Math.max(0.36 + MoveUtil.getSpeedBoost(0.08F), MoveUtil.getSpeed()));
+                    ticks = 0;
                 }
                  */
                 break;
             case "Test":
-                mc.timer.timerSpeed = 0.5F;
                 break;
                 /*
                 if (!mc.thePlayer.isInWeb && !mc.thePlayer.isInLava() && !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder() && mc.thePlayer.ridingEntity == null) {
@@ -1328,6 +1382,9 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
+                mc.timer.timerSpeed = 1.0872F;
+                MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
+                mc.gameSettings.keyBindJump.pressed = isMoving();
                 break;
             case "Vulcan":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {

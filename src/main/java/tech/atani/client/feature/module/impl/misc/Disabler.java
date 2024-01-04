@@ -17,6 +17,7 @@ import tech.atani.client.utility.interfaces.Methods;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.utility.math.time.TimeHelper;
 import tech.atani.client.utility.player.PlayerUtil;
+import tech.atani.client.utility.player.movement.MoveUtil;
 
 @ModuleData(name = "Disabler", description = "Disable anti cheats", category = Category.MISCELLANEOUS)
 public class Disabler extends Module {
@@ -120,16 +121,8 @@ public class Disabler extends Module {
 					break;
 
 				case "Test":
-					if(state == "Slow") {
-						mc.timer.timerSpeed = 0.5F;
-						if(timer.hasReached(300, true)) {
-							state = "Fast";
-						}
-					} else if(state == "Fast"){
-						mc.timer.timerSpeed = 2;
-						if(timer.hasReached(600, true)) {
-							state = "None";
-						}
+					if(!mc.thePlayer.onGround && event.getPacket() instanceof C03PacketPlayer.C05PacketPlayerLook) {
+						((C03PacketPlayer.C05PacketPlayerLook) event.getPacket()).setPitch(90);
 					}
 					break;
 				case "Pulse":

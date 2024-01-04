@@ -5,6 +5,8 @@ import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S12PacketEntityVelocity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.MovePlayerEvent;
@@ -23,7 +25,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 
 @ModuleData(name = "Flight", description = "Makes you fly", category = Category.MOVEMENT)
 public class Flight extends Module {
-    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground", "Test", "Intave"}),
+    private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[]{"Vanilla", "Block Fly", "Old NCP", "Collision", "Vulcan", "Grim", "Verus", "BWPractice", "Spoof Ground", "Test", "Intave"}),
             vulcanMode = new StringBoxValue("Vulcan Mode", "Which mode will the vulcan mode use?", this, new String[]{"Normal", "Clip & Glide", "Glide", "Vanilla"}, new Supplier[]{() -> mode.is("Vulcan")}),
             grimMode = new StringBoxValue("Grim Mode", "Which mode will the grim mode use?", this, new String[]{"Explosion", "Boat"}, new Supplier[]{() -> mode.is("Grim")}),
             verusMode = new StringBoxValue("Verus Mode", "Which mode will the verus mode use?", this, new String[]{"Jump", "Collision", "DMG"}, new Supplier[]{() -> mode.is("Verus")});
@@ -81,6 +83,9 @@ public class Flight extends Module {
     @Listen
     public void onRotation(RotationEvent rotationEvent) {
         switch (this.mode.getValue()) {
+            case "Block Fly":
+                rotationEvent.setPitch(90);
+                break;
             case "Grim":
                 switch (this.grimMode.getValue()) {
                     case "Boat":
@@ -108,6 +113,10 @@ public class Flight extends Module {
                 if(mc.thePlayer.onGround) mc.thePlayer.jump();
                 MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
                 mc.thePlayer.motionY = -0.001;
+                break;
+            case "Block Fly":
+                if(mc.playerController.onPlayerRightClick(mc.thePlayer, mc.theWorld, mc.thePlayer.getCurrentEquippedItem(), new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY - 1, mc.thePlayer.posZ), EnumFacing.UP, mc.objectMouseOver.hitVec))
+                    mc.thePlayer.sendQueue.addToSendQueue(new C0BPacketEntityAction());
                 break;
             case "BWPractice":
                 mc.thePlayer.motionY = 0.0D;
@@ -143,11 +152,11 @@ public class Flight extends Module {
                                 bool = true;
                             }
 
-                            if(bool && 30 > ticks) {
+                            if(bool && 15 > ticks) {
                                 ticks++;
-                                mc.thePlayer.motionY = 0.42 / 3;
+                                mc.thePlayer.motionY = 0.14;
                                 MoveUtil.strafe(5);
-                            } else if(30 < ticks) {
+                            } else if(15 < ticks) {
                                 bool = false;
                                 ticks = 0;
                             }
@@ -392,8 +401,6 @@ public class Flight extends Module {
 
     @Override
     public void onEnable() {
-        //if(mode.is("Intave Boat"))
-        //    PlayerUtil.addChatMessgae("Enter and leave a boat to launch!", true);
         if(mode.is("Verus") && verusMode.is("DMG")) {
             PlayerUtil.mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(PlayerUtil.mc.thePlayer.posX, PlayerUtil.mc.thePlayer.posY + 3.001, PlayerUtil.mc.thePlayer.posZ, false));
             PlayerUtil.mc.getNetHandler().addToSendQueue(new C03PacketPlayer.C04PacketPlayerPosition(PlayerUtil.mc.thePlayer.posX, PlayerUtil.mc.thePlayer.posY, PlayerUtil.mc.thePlayer.posZ, false));

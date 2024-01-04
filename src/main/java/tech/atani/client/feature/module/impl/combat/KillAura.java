@@ -305,6 +305,9 @@ public class KillAura extends Module {
                         }
                     }
 
+                    if(mc.pointedEntity == null)
+                        return;
+
                     Methods.mc.thePlayer.swingItem();
                     switch (attackMode.getValue()) {
                         case "Normal":
@@ -389,7 +392,6 @@ public class KillAura extends Module {
 
         if(autoBlock.getValue() && autoBlockMode.is("Hold") && wasHolding) {
             Methods.mc.gameSettings.keyBindUseItem.pressed = false;
-            wasHolding = false;
         }
         curEntity = null;
         wasHolding = false;

@@ -8,17 +8,16 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.*;
 import org.lwjgl.input.Keyboard;
 import tech.atani.client.feature.module.Module;
 import tech.atani.client.feature.module.data.ModuleData;
 import tech.atani.client.feature.module.data.enums.Category;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.value.impl.CheckBoxValue;
 import tech.atani.client.feature.value.impl.SliderValue;
 import tech.atani.client.feature.value.impl.StringBoxValue;
+import tech.atani.client.listener.event.minecraft.game.RunTickEvent;
 import tech.atani.client.listener.event.minecraft.input.ClickingEvent;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.SafeWalkEvent;
@@ -26,29 +25,44 @@ import tech.atani.client.listener.event.minecraft.player.movement.UpdateEvent;
 import tech.atani.client.listener.event.minecraft.player.rotation.RotationEvent;
 import tech.atani.client.listener.radbus.Listen;
 import tech.atani.client.utility.interfaces.Methods;
+import tech.atani.client.utility.math.MathUtil;
 import tech.atani.client.utility.math.random.RandomUtil;
 import tech.atani.client.utility.math.time.TimeHelper;
+import tech.atani.client.utility.player.PlayerHandler;
+import tech.atani.client.utility.player.PlayerUtil;
 import tech.atani.client.utility.player.movement.MoveUtil;
 import tech.atani.client.utility.player.raytrace.RaytraceUtil;
+import tech.atani.client.utility.player.rotation.RotationUtil;
 import tech.atani.client.utility.world.WorldUtil;
+import tech.atani.client.utility.world.block.BlockUtil;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 @ModuleData(name = "Scaffold", description = "Places blocks under you", category = Category.MOVEMENT)
 public class Scaffold extends Module {
     private final CheckBoxValue intave = new CheckBoxValue("Intave", "Intave CPS Fix?", this, false);
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
-    private final StringBoxValue rotations = new StringBoxValue("Rotations", "How will the scaffold rotate?", this, new String[]{"Reverse", "Funny", "Bruteforce", "360 Bob Bridge", "Static", "Simple", "90", "Snap", "Grim Snap", "Random"});
+    private final StringBoxValue rotations = new StringBoxValue("Rotations", "How will the scaffold rotate?", this, new String[]{"Legit", "Bruteforce", "Reverse Simple", "Snap"});
     private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0);
     private final SliderValue<Long> randomDelay = new SliderValue<>("Random Delay", "What will be the added delay between placing?", this, 0L, 0L, 1000L, 0);
     private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
     private final CheckBoxValue slowDown = new CheckBoxValue("SlowDown", "Slowdown?", this, false);
     private final StringBoxValue rayTraceMode = new StringBoxValue("Ray-Trace Mode", "What will the scaffold raytrace mode be?", this, new String[]{"Normal", "Strict"}, new Supplier[]{() -> rotations.is("Bruteforce")});
     private final StringBoxValue sneakMode = new StringBoxValue("Sneak Mode", "When will scaffold sneak?", this, new String[]{"None", "Edge", "Always"});
+    public SliderValue<Float> minYaw = new SliderValue<>("Minimum Yaw", "What will be the minimum yaw for rotating?", this, 40f, 0f, 180f, 0);
+    public SliderValue<Float> maxYaw = new SliderValue<>("Maximum Yaw", "What will be the maximum yaw for rotating?", this, 40f, 0f, 180f, 0);
+    public SliderValue<Float> minPitch = new SliderValue<>("Minimum Pitch", "What will be the minimum pitch for rotating?", this, 40f, 0f, 180f, 0);
+    public SliderValue<Float> maxPitch = new SliderValue<>("Maximum Pitch", "What will be the maximum pitch for rotating?", this, 40f, 0f, 180f, 0);
+    public SliderValue<Float> minStartYaw = new SliderValue<>("Minimum Start Yaw", "What will be the minimum yaw for rotating?", this, 4f, 0f, 180f, 0);
+    public SliderValue<Float> maxStartYaw = new SliderValue<>("Maximum Start Yaw", "What will be the maximum yaw for rotating?", this, 5f, 0f, 180f, 0);
+    public SliderValue<Float> minStartPitch = new SliderValue<>("Minimum Start Pitch", "What will be the minimum pitch for rotating?", this, 4f, 0f, 180f, 0);
+    public SliderValue<Float> maxStartPitch = new SliderValue<>("Maximum Start Pitch", "What will be the maximum pitch for rotating?", this, 5f, 0f, 180f, 0);
     private final CheckBoxValue tower = new CheckBoxValue("Tower", "Tower?", this, false);
     private final CheckBoxValue unSneakTower = new CheckBoxValue("Tower unSneak", "Stop sneaking when towering?", this, false, new Supplier[]{() -> !sneakMode.is("None") && tower.getValue()});
-    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Karhu", "Matrix", "Intave", "MMC (TEST)"}, new Supplier[]{() -> tower.getValue()});
+    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Karhu", "Matrix", "Intave", "MMC (TEST)", "Polar"}, new Supplier[]{() -> tower.getValue()});
     public SliderValue<Float> towerMultiplier = new SliderValue<>("Intave Tower Ground Multiplier", "How Much Faster Should Intave Tower Be While On Ground?", this, 1.1f, 1f, 1.3f, 5);
     private int lastItem = -1;
     private BlockPos blockPos;
@@ -56,6 +70,8 @@ public class Scaffold extends Module {
     private float xxxxxxxxx;
     private int rotStage;
     private int ticks;
+    private boolean starting;
+    private double[] lastPos = new double[3];
     private final TimeHelper timeHelper = new TimeHelper(), unsneakTimeHelper = new TimeHelper(), startingTimeHelper = new TimeHelper();
     private static final List<Block> invalidBlocks = Arrays.asList(Blocks.air, Blocks.water, Blocks.tnt, Blocks.chest,
             Blocks.flowing_water, Blocks.lava, Blocks.flowing_lava, Blocks.tnt, Blocks.enchanting_table, Blocks.carpet,
@@ -71,10 +87,26 @@ public class Scaffold extends Module {
             Blocks.light_weighted_pressure_plate, Blocks.stone_pressure_plate, Blocks.wooden_pressure_plate, Blocks.stone_slab2,
             Blocks.double_stone_slab2, Blocks.tripwire, Blocks.tripwire_hook, Blocks.tallgrass, Blocks.dispenser,
             Blocks.command_block, Blocks.web, Blocks.soul_sand);
+
+    @Listen
+    public final void onTick(RunTickEvent tickEvent) {
+        if(startingTimeHelper.hasReached(200, true) && starting) {
+            starting = false;
+        }
+    }
     @Listen
     public final void onUpdate(UpdateEvent updateEvent) {
-        if(tower.getValue() && mc.gameSettings.keyBindJump.pressed && mc.thePlayer.fallDistance < 1.5) {
+        BlockPos playerPos = new BlockPos(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);
+        boolean canTower = !mc.theWorld.isAirBlock(playerPos.down(2)) || !mc.theWorld.isAirBlock(playerPos.down(1)) || !mc.theWorld.isAirBlock(playerPos.down(0));
+
+        if(tower.getValue() && mc.gameSettings.keyBindJump.pressed && canTower) {
             switch(towerMode.getValue()) {
+                case "Polar":
+                    if(mc.thePlayer.onGround) {
+                        mc.thePlayer.jump();
+                        mc.thePlayer.motionY = 0.39;
+                    }
+                    break;
                 case "Vanilla":
                     mc.thePlayer.motionY = 0.3;
                     break;
@@ -91,14 +123,14 @@ public class Scaffold extends Module {
                         mc.thePlayer.motionY = 0.42;
                     }
                     if (mc.thePlayer.motionY < 0.23) {
-                        mc.thePlayer.setPosition(mc.thePlayer.posX,  mc.thePlayer.posY, mc.thePlayer.posZ);
+                        //mc.thePlayer.setPosition(mc.thePlayer.posX,  mc.thePlayer.posY, mc.thePlayer.posZ);
                         mc.thePlayer.motionY = 0.42;
                         break;
                     }
                     break;
                 case "Matrix":
-                    if (mc.thePlayer.motionY < 0.2) {
-                        mc.thePlayer.motionY = 0.42F;
+                    if (mc.thePlayer.motionY <= 0.1) {
+                        mc.thePlayer.motionY = 0;
                         mc.thePlayer.onGround = true;
                     }
                     break;
@@ -158,17 +190,23 @@ public class Scaffold extends Module {
         }
 
 
-        mc.thePlayer.setSprinting((rotations.is("Grim Snap") && (Methods.mc.theWorld.getBlockState(new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 1.0, Methods.mc.thePlayer.posZ)).getBlock() instanceof BlockAir && Methods.mc.thePlayer.onGround)) ? false : sprint.getValue());
+        mc.thePlayer.setSprinting(sprint.getValue());
+        if(!sprint.getValue() && ModuleStorage.getInstance().getModule("Sprint").isEnabled())
+            ModuleStorage.getInstance().getModule("Sprint").toggle();
 
-        mc.gameSettings.keyBindSprint.pressed = false;
-        if ((Methods.mc.thePlayer.getHeldItem() != null && !(Methods.mc.thePlayer.getHeldItem().getItem() instanceof ItemBlock)) || Methods.mc.thePlayer.getHeldItem() == null) {
+        ItemStack heldItem = Methods.mc.thePlayer.getHeldItem();
+
+        if (heldItem == null || !(heldItem.getItem() instanceof ItemBlock)) {
             for (int i = 0; i < 9; i++) {
                 ItemStack stack = Methods.mc.thePlayer.inventory.getStackInSlot(i);
 
-                if (stack != null && stack.stackSize != 0 && stack.getItem() instanceof ItemBlock && !invalidBlocks.contains(((ItemBlock) stack.getItem()).getBlock())) {
-                    if(lastItem == -1)
+                if (stack != null && stack.stackSize != 0 && stack.getItem() instanceof ItemBlock
+                        && !invalidBlocks.contains(((ItemBlock) stack.getItem()).getBlock())) {
+                    if (lastItem == -1)
                         lastItem = Methods.mc.thePlayer.inventory.currentItem;
+
                     Methods.mc.thePlayer.inventory.currentItem = i;
+                    break;
                 }
             }
         }
@@ -222,6 +260,127 @@ public class Scaffold extends Module {
     public final void onPacket(PacketEvent packetEvent) {
 
     }
+
+    private float[] getRotations() {
+        switch (this.rotations.getValue()) {
+            case "Legit":
+                float thingy = mc.gameSettings.keyBindJump.pressed ? 90 : (float) (81F + Math.random());
+                return new float[]{mc.thePlayer.rotationYaw + 180, thingy};
+            case "Bruteforce":
+                for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {
+                    for (float possiblePitch = 90; possiblePitch > 30 ; possiblePitch -= possiblePitch > (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 60 : 80) ? 1 : 10) {
+                        if(RaytraceUtil.getOver(getEnumFacing(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ())), blockPos, !rayTraceMode.is("Normal"), 5, possibleYaw, possiblePitch)) {
+                            return new float[]{possibleYaw, possiblePitch};
+                        }
+                    }
+                }
+
+                return RotationUtil.getRotation(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
+            case "Reverse Simple":
+                return new float[] {mc.thePlayer.rotationYaw + 180, 80.34f};
+            case "Snap":
+                if (Methods.mc.theWorld.getBlockState(new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 1.0, Methods.mc.thePlayer.posZ)).getBlock() instanceof BlockAir && Methods.mc.thePlayer.onGround) {
+                    return new float[] {(float) (mc.thePlayer.rotationYaw - 179.5F + Math.random()), 80.34f};
+                } else {
+                    return new float[] {mc.thePlayer.rotationYaw, mc.gameSettings.keyBindJump.pressed ? 90 : mc.thePlayer.rotationPitch};
+                }
+            default: {
+                final float[] angles = {PlayerHandler.yaw, PlayerHandler.pitch};
+                final BlockPos playerPos = new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 0.5, Methods.mc.thePlayer.posZ);
+
+                if (this.starting) {
+                    angles[1] = 80.34f;
+                    angles[0] = Methods.mc.thePlayer.rotationYaw - 180;
+                    return angles;
+                }
+
+                float yaw = Methods.mc.thePlayer.rotationYaw - 180.0f;
+                angles[0] = yaw;
+
+                double x = Methods.mc.thePlayer.posX;
+                double z = Methods.mc.thePlayer.posZ;
+                final double add1 = 1.288;
+                final double add2 = 0.288;
+
+                if (!PlayerUtil.canBuildForward()) {
+                    x += Methods.mc.thePlayer.posX - this.lastPos[0];
+                    z += Methods.mc.thePlayer.posZ - this.lastPos[2];
+                }
+
+                this.lastPos = new double[]{Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY, Methods.mc.thePlayer.posZ};
+
+                final double maxX = this.blockPos.getX() + add1;
+                final double minX = this.blockPos.getX() - add2;
+                final double maxZ = this.blockPos.getZ() + add1;
+                final double minZ = this.blockPos.getZ() - add2;
+
+                if (!(x > maxX || x < minX || z > maxZ || z < minZ)) {
+                    angles[1] = PlayerHandler.pitch;
+                    return angles;
+                }
+
+                final List<MovingObjectPosition> hitBlockList = new ArrayList<>();
+                final List<Float> pitchList = new ArrayList<>();
+
+                for (float pitch = Math.max(PlayerHandler.pitch - 20.0f, -90.0f); pitch < Math.min(PlayerHandler.pitch + 20.0f, 90.0f); pitch += 0.05f) {
+                    final float[] rotation = RotationUtil.applyMouseFix(yaw, pitch);
+                    final MovingObjectPosition hitBlock = Methods.mc.thePlayer.customRayTrace(4.5, 1.0f, yaw, rotation[1]);
+
+                    if (hitBlock.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
+                            && BlockUtil.isOkBlock(hitBlock.getBlockPos())
+                            && !hitBlockList.contains(hitBlock)
+                            && hitBlock.getBlockPos().equalsBlockPos(this.blockPos)
+                            && hitBlock.sideHit != EnumFacing.DOWN
+                            && hitBlock.sideHit != EnumFacing.UP
+                            && hitBlock.getBlockPos().getY() <= playerPos.getY()) {
+                        hitBlockList.add(hitBlock);
+                        pitchList.add(rotation[1]);
+                    }
+                }
+
+                hitBlockList.sort(Comparator.comparingDouble(m -> Methods.mc.thePlayer.getDistanceSq(m.getBlockPos().add(0.5, 0.5, 0.5))));
+                MovingObjectPosition nearestBlock = hitBlockList.isEmpty() ? null : hitBlockList.get(0);
+
+                if (nearestBlock != null) {
+                    angles[0] = yaw;
+                    pitchList.sort(Comparator.comparingDouble(RotationUtil::getDistanceToLastPitch));
+
+                    if (!pitchList.isEmpty()) {
+                        angles[1] = pitchList.get(0);
+                    }
+                }
+
+                return angles;
+            }
+        }
+    }
+
+    @Listen
+    public final void onRotation(RotationEvent rotationEvent) {
+        this.blockPos = BlockUtil.getAimBlockPos();
+        if (this.blockPos != null) {
+            float[] rotations = this.getRotations();
+            float yawSpeed;
+            float pitchSpeed;
+            if(starting) {
+                yawSpeed = (float) RandomUtil.randomBetween(minStartYaw.getValue(), maxStartYaw.getValue());
+                pitchSpeed = (float) RandomUtil.randomBetween(minStartPitch.getValue(), maxStartPitch.getValue());
+            } else {
+                yawSpeed = (float) RandomUtil.randomBetween(minYaw.getValue(), maxYaw.getValue());
+                pitchSpeed = (float) RandomUtil.randomBetween(minPitch.getValue(), maxPitch.getValue());
+            }
+            final float deltaYaw = (((rotations[0] - PlayerHandler.yaw) + 540) % 360) - 180;
+            final float deltaPitch = rotations[1] - PlayerHandler.pitch;
+            final float yawDistance = MathHelper.clamp_float(deltaYaw, -yawSpeed, yawSpeed);
+            final float pitchDistance = MathHelper.clamp_float(deltaPitch, -pitchSpeed, pitchSpeed);
+            final float targetYaw = PlayerHandler.yaw + yawDistance, targetPitch = PlayerHandler.pitch + pitchDistance;
+            rotations = RotationUtil.applyMouseFix(targetYaw, targetPitch);
+            rotationEvent.setYaw(rotations[0]);
+            rotationEvent.setPitch(rotations[1]);
+        }
+    }
+
+    /*
     @Listen
     public final void onRotation(RotationEvent rotationEvent) {
         switch(rotations.getValue()) {
@@ -310,41 +469,28 @@ public class Scaffold extends Module {
             rotationEvent.setPitch((float) (89 + Math.random()));
         }
     }
+     */
 
     public EnumFacing getEnumFacing(final Vec3 position) {
-        for (int x2 = -1; x2 <= 1; x2 += 2) {
-            if (!(WorldUtil.getBlock(position.xCoord + x2, position.yCoord, position.zCoord) instanceof BlockAir)) {
-                if (x2 > 0) {
-                    return EnumFacing.WEST;
-                } else {
-                    return EnumFacing.EAST;
-                }
+        for (int coord : new int[]{-1, 1}) {
+            if (!(WorldUtil.getBlock(position.xCoord + coord, position.yCoord, position.zCoord) instanceof BlockAir)) {
+                return coord > 0 ? EnumFacing.WEST : EnumFacing.EAST;
+            }
+            if (!(WorldUtil.getBlock(position.xCoord, position.yCoord + coord, position.zCoord) instanceof BlockAir)) {
+                return coord < 0 ? EnumFacing.UP : null;
+            }
+            if (!(WorldUtil.getBlock(position.xCoord, position.yCoord, position.zCoord + coord) instanceof BlockAir)) {
+                return coord < 0 ? EnumFacing.SOUTH : EnumFacing.NORTH;
             }
         }
-
-        for (int y2 = -1; y2 <= 1; y2 += 2) {
-            if (!(WorldUtil.getBlock(position.xCoord, position.yCoord + y2, position.zCoord) instanceof BlockAir)) {
-                if (y2 < 0) {
-                    return EnumFacing.UP;
-                }
-            }
-        }
-
-        for (int z2 = -1; z2 <= 1; z2 += 2) {
-            if (!(WorldUtil.getBlock(position.xCoord, position.yCoord, position.zCoord + z2) instanceof BlockAir)) {
-                if (z2 < 0) {
-                    return EnumFacing.SOUTH;
-                } else {
-                    return EnumFacing.NORTH;
-                }
-            }
-        }
-
         return null;
     }
 
+
     @Override
-    public void onEnable() {}
+    public void onEnable() {
+        starting = true;
+    }
 
     @Override
     public void onDisable() {

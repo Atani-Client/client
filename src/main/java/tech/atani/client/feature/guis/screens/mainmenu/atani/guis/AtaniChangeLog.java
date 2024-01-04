@@ -60,9 +60,20 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
         //mc.fontRendererObj.drawCenteredString("Changelog - " + ClientInformationAccess.CLIENT_VERSION + ":", (float) this.width / 2, 20, -1);
         int yellow = Color.HSBtoRGB(60F / 360.0f, 1.0F, 1.0F);
         int green = Color.HSBtoRGB(120F / 360.0f, 1.0F, 1.0F);
+        int lightblue = Color.HSBtoRGB(180F / 360.0f, 1.0F, 1.0F);
+        boolean beta = true;
         int sex = 0;
-        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added Spoof Speed", (float) (this.width / 2), 100 + sex, green);
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added CSGO Speed", (float) (this.width / 2), 100 + sex, green);
         sex += 12;
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added Block Fly", (float) (this.width / 2), 100 + sex, green);
+        sex += 12;
+
+        if(beta) {
+            sex += 54;
+            FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("! BETA VERSION !", (float) (this.width / 2), 100 + sex, lightblue);
+            sex += 12;
+            FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("Leaking any files or source code of this beta will lead into a removal of beta access.", (float) (this.width / 2), 100 + sex, lightblue);
+        }
 
         shaderBackground.render();
         super.drawScreen(mouseX, mouseY, partialTicks);

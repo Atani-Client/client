@@ -6,6 +6,7 @@ import net.minecraft.network.play.client.*;
 import net.minecraft.network.play.server.S05PacketSpawnPosition;
 import net.minecraft.network.play.server.S07PacketRespawn;
 import net.minecraft.network.play.server.S2BPacketChangeGameState;
+import tech.atani.client.feature.module.storage.ModuleStorage;
 import tech.atani.client.feature.value.impl.StringBoxValue;
 import tech.atani.client.listener.event.minecraft.network.PacketEvent;
 import tech.atani.client.listener.event.minecraft.player.movement.UpdateMotionEvent;
@@ -126,13 +127,8 @@ public class Disabler extends Module {
 					}
 					break;
 				case "Pulse":
-					if (event.getPacket() instanceof C03PacketPlayer && lastPacket == null) {
-						lastPacket = (C03PacketPlayer) event.getPacket();
-						event.setCancelled(true);
-					} else if (lastPacket != null) {
-						mc.thePlayer.sendQueue.addToSendQueue(lastPacket);
-						lastPacket = null;
-					}
+					if(mc.thePlayer.ticksExisted % 2 == 0)
+						ModuleStorage.getInstance().getModule("Blink").toggle();
 					break;
 			}
 		}
@@ -158,6 +154,8 @@ public class Disabler extends Module {
 
 	@Override
 	public void onDisable() {
+		if(ModuleStorage.getInstance().getModule("Blink").isEnabled())
+			ModuleStorage.getInstance().getModule("Blink").toggle();
 		verusCounter = 0;
 	}
 

@@ -214,7 +214,8 @@ public class Speed extends Module {
 
                 switch (bmcTicks) {
                     case 0:
-                        mc.timer.timerSpeed = 1.2F;
+                        mc.timer.timerSpeed = 1.07F;
+                        MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(1.25F));
                         break;
                     case 1:
                         mc.thePlayer.motionY -= 0.005;
@@ -225,8 +226,25 @@ public class Speed extends Module {
                         mc.timer.timerSpeed = 1;
                         break;
                 }
-                MoveUtil.strafe(0.27 > MoveUtil.getSpeed() ? !mc.thePlayer.onGround ? 0.27 : MoveUtil.getSpeed() : MoveUtil.getSpeed());
-                    break;
+
+                if(!mc.thePlayer.onGround) {
+                    float speed = 0;
+                    if(isMoving())
+                        speed = 0.27F;
+
+                    if(mc.thePlayer.hurtTime != 0)
+                        speed *= 1.4F;
+
+                    if(mc.thePlayer.isPotionActive(Potion.moveSpeed))
+                        speed *= 1.3F;
+
+                    if(mc.thePlayer.ticksExisted % 5 == 0) {
+                        speed *= 1.4F;
+                    }
+
+                    MoveUtil.strafe(speed);
+                }
+                break;
             case "Custom":
                 mc.timer.timerSpeed = timer.getValue();
                 if (mc.thePlayer.onGround) {
@@ -1382,9 +1400,16 @@ public class Speed extends Module {
                 }
                 break;
             case "AAA":
-                mc.timer.timerSpeed = 1.0872F;
-                MoveUtil.strafe(MoveUtil.getBaseMoveSpeed());
-                mc.gameSettings.keyBindJump.pressed = isMoving();
+                mc.gameSettings.keyBindJump.pressed = true;
+                if (mc.thePlayer.onGround) {
+                    mc.timer.timerSpeed = 0.821F;
+                }
+                if (mc.thePlayer.fallDistance > 0.1 && mc.thePlayer.fallDistance < 1) {
+                    mc.timer.timerSpeed = 1 + (1F - Math.floorMod((long) 2.520, (long) 2.600));
+                }
+                if (mc.thePlayer.fallDistance >= 1) {
+                    mc.timer.timerSpeed = 0.91F;
+                }
                 break;
             case "Vulcan":
                 if(packetEvent.getPacket() instanceof C03PacketPlayer) {
@@ -1423,6 +1448,9 @@ public class Speed extends Module {
         if(Methods.mc.thePlayer == null || Methods.mc.theWorld == null) {
             return;
         }
+
+        if(mode.is("BlocksMC") && ModuleStorage.getInstance().getModule("Blink").isEnabled())
+            ModuleStorage.getInstance().getModule("Blink").toggle();
 
         onTicks = 0;
         offTicks = 0;

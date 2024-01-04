@@ -45,7 +45,7 @@ import java.util.List;
 public class Scaffold extends Module {
     private final CheckBoxValue intave = new CheckBoxValue("Intave", "Intave CPS Fix?", this, false);
     private final CheckBoxValue sprint = new CheckBoxValue("Sprint", "Allow sprinting?", this, false);
-    private final StringBoxValue rotations = new StringBoxValue("Rotations", "How will the scaffold rotate?", this, new String[]{"Legit", "Bruteforce", "Reverse Simple", "Snap"});
+    private final StringBoxValue rotations = new StringBoxValue("Rotations", "How will the scaffold rotate?", this, new String[]{"Legit", "Bruteforce", "Reverse Simple", "Snap", "BlocksMC"});
     private final SliderValue<Long> delay = new SliderValue<>("Delay", "What will be the delay between placing?", this, 0L, 0L, 1000L, 0);
     private final SliderValue<Long> randomDelay = new SliderValue<>("Random Delay", "What will be the added delay between placing?", this, 0L, 0L, 1000L, 0);
     private final CheckBoxValue safeWalk = new CheckBoxValue("SafeWalk", "Safewalk?", this, false);
@@ -62,7 +62,7 @@ public class Scaffold extends Module {
     public SliderValue<Float> maxStartPitch = new SliderValue<>("Maximum Start Pitch", "What will be the maximum pitch for rotating?", this, 5f, 0f, 180f, 0);
     private final CheckBoxValue tower = new CheckBoxValue("Tower", "Tower?", this, false);
     private final CheckBoxValue unSneakTower = new CheckBoxValue("Tower unSneak", "Stop sneaking when towering?", this, false, new Supplier[]{() -> !sneakMode.is("None") && tower.getValue()});
-    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "Verus", "NCP", "Karhu", "Matrix", "Intave", "MMC (TEST)", "Polar"}, new Supplier[]{() -> tower.getValue()});
+    private final StringBoxValue towerMode = new StringBoxValue("Tower Mode", "How will the module tower?", this, new String[]{"Vanilla", "BlocksMC", "Verus", "NCP", "Karhu", "Matrix", "Intave", "MMC (TEST)", "Polar"}, new Supplier[]{() -> tower.getValue()});
     public SliderValue<Float> towerMultiplier = new SliderValue<>("Intave Tower Ground Multiplier", "How Much Faster Should Intave Tower Be While On Ground?", this, 1.1f, 1f, 1.3f, 5);
     private int lastItem = -1;
     private BlockPos blockPos;
@@ -102,13 +102,44 @@ public class Scaffold extends Module {
         if(tower.getValue() && mc.gameSettings.keyBindJump.pressed && canTower) {
             switch(towerMode.getValue()) {
                 case "Polar":
+                    /*
                     if(mc.thePlayer.onGround) {
                         mc.thePlayer.jump();
                         mc.thePlayer.motionY = 0.39;
                     }
+                     */
+                    mc.thePlayer.motionY -= 0.009;
                     break;
                 case "Vanilla":
                     mc.thePlayer.motionY = 0.3;
+                    break;
+                case "BlocksMC":
+                    if(!isMoving()) {
+                        if (mc.thePlayer.onGround) {
+                            mc.thePlayer.motionY = 0.42;
+                        }
+                        if (mc.thePlayer.motionY < 0.23) {
+                            //mc.thePlayer.setPosition(mc.thePlayer.posX,  mc.thePlayer.posY, mc.thePlayer.posZ);
+                            mc.thePlayer.motionY = 0.42;
+                            break;
+                        }
+                    } else {
+                        if (mc.thePlayer.onGround) {
+                            mc.thePlayer.motionY = 0.4;
+                            ticks = 0;
+                        }
+                    }
+
+                    if(!mc.thePlayer.onGround) {
+                        float speed = 0;
+                        if(isMoving())
+                            speed = (float) MoveUtil.getSpeed();
+
+                        if(mc.thePlayer.ticksExisted % 5 == 0)
+                            speed *= 1.4F;
+
+                        MoveUtil.strafe(speed);
+                    }
                     break;
                 case "Verus":
                     if(mc.thePlayer.ticksExisted % 3 == 0) {
@@ -190,9 +221,16 @@ public class Scaffold extends Module {
         }
 
 
-        mc.thePlayer.setSprinting(sprint.getValue());
-        if(!sprint.getValue() && ModuleStorage.getInstance().getModule("Sprint").isEnabled())
-            ModuleStorage.getInstance().getModule("Sprint").toggle();
+        if(!sprint.getValue()) {
+            if(ModuleStorage.getInstance().getModule("Sprint").isEnabled())
+                ModuleStorage.getInstance().getModule("Sprint").toggle();
+
+            mc.thePlayer.setSprinting(false);
+            mc.gameSettings.keyBindSprint.pressed = false;
+        } else {
+            mc.thePlayer.setSprinting(MoveUtil.canSprint(true));
+            mc.gameSettings.keyBindSprint.pressed = true;
+        }
 
         ItemStack heldItem = Methods.mc.thePlayer.getHeldItem();
 
@@ -278,9 +316,32 @@ public class Scaffold extends Module {
                 return RotationUtil.getRotation(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ()));
             case "Reverse Simple":
                 return new float[] {mc.thePlayer.rotationYaw + 180, 80.34f};
+            case "BlocksMC":
+                if (Methods.mc.theWorld.getBlockState(new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 1.0, Methods.mc.thePlayer.posZ)).getBlock() instanceof BlockAir && Methods.mc.thePlayer.onGround) {
+                    for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {
+                        for (float possiblePitch = 90; possiblePitch > 30 ; possiblePitch -= possiblePitch > (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 60 : 80) ? 1 : 10) {
+                            if(RaytraceUtil.getOver(getEnumFacing(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ())), blockPos, !rayTraceMode.is("Normal"), 5, possibleYaw, possiblePitch)) {
+                                return new float[]{possibleYaw, possiblePitch};
+                            }
+                        }
+                    }
+                } else {
+                    if(sprint.getValue()) {
+                        mc.thePlayer.setSprinting(false);
+                        mc.gameSettings.keyBindSprint.pressed = false;
+                    }
+
+                    return new float[] {mc.thePlayer.rotationYaw, mc.gameSettings.keyBindJump.pressed ? 90 : mc.thePlayer.rotationPitch};
+                }
             case "Snap":
                 if (Methods.mc.theWorld.getBlockState(new BlockPos(Methods.mc.thePlayer.posX, Methods.mc.thePlayer.posY - 1.0, Methods.mc.thePlayer.posZ)).getBlock() instanceof BlockAir && Methods.mc.thePlayer.onGround) {
-                    return new float[] {(float) (mc.thePlayer.rotationYaw - 179.5F + Math.random()), 80.34f};
+                    for (float possibleYaw = mc.thePlayer.rotationYaw - 180 + 0; possibleYaw <= mc.thePlayer.rotationYaw + 360 - 180 ; possibleYaw += 45) {
+                        for (float possiblePitch = 90; possiblePitch > 30 ; possiblePitch -= possiblePitch > (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 60 : 80) ? 1 : 10) {
+                            if(RaytraceUtil.getOver(getEnumFacing(new Vec3(blockPos.getX(), blockPos.getY(), blockPos.getZ())), blockPos, !rayTraceMode.is("Normal"), 5, possibleYaw, possiblePitch)) {
+                                return new float[]{possibleYaw, possiblePitch};
+                            }
+                        }
+                    }
                 } else {
                     return new float[] {mc.thePlayer.rotationYaw, mc.gameSettings.keyBindJump.pressed ? 90 : mc.thePlayer.rotationPitch};
                 }
@@ -362,7 +423,7 @@ public class Scaffold extends Module {
             float[] rotations = this.getRotations();
             float yawSpeed;
             float pitchSpeed;
-            if(starting) {
+            if (starting) {
                 yawSpeed = (float) RandomUtil.randomBetween(minStartYaw.getValue(), maxStartYaw.getValue());
                 pitchSpeed = (float) RandomUtil.randomBetween(minStartPitch.getValue(), maxStartPitch.getValue());
             } else {
@@ -371,14 +432,20 @@ public class Scaffold extends Module {
             }
             final float deltaYaw = (((rotations[0] - PlayerHandler.yaw) + 540) % 360) - 180;
             final float deltaPitch = rotations[1] - PlayerHandler.pitch;
-            final float yawDistance = MathHelper.clamp_float(deltaYaw, -yawSpeed, yawSpeed);
+
+            // Ensure that deltaYaw is within the valid range of yaw values (-180 to 180)
+            final float clampedDeltaYaw = MathHelper.clamp_float(deltaYaw, -180, 180);
+            final float yawDistance = MathHelper.clamp_float(clampedDeltaYaw, -yawSpeed, yawSpeed);
             final float pitchDistance = MathHelper.clamp_float(deltaPitch, -pitchSpeed, pitchSpeed);
-            final float targetYaw = PlayerHandler.yaw + yawDistance, targetPitch = PlayerHandler.pitch + pitchDistance;
+
+            final float targetYaw = PlayerHandler.yaw + yawDistance;
+            final float targetPitch = PlayerHandler.pitch + pitchDistance;
             rotations = RotationUtil.applyMouseFix(targetYaw, targetPitch);
             rotationEvent.setYaw(rotations[0]);
             rotationEvent.setPitch(rotations[1]);
         }
     }
+
 
     /*
     @Listen

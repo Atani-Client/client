@@ -1,11 +1,6 @@
 # ATANI CLIENT!
-Open sourced!
-
-Current version: 0.0.6 (0.1 - BETA)
 
 CURRENT BUGS:
-
-Scaffold raycast broken
 
 Some (Most) code is super goofy
 

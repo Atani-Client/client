@@ -63,9 +63,15 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
         int lightblue = Color.HSBtoRGB(180F / 360.0f, 1.0F, 1.0F);
         boolean beta = true;
         int sex = 0;
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Fix BMC Speed", (float) (this.width / 2), 100 + sex, yellow);
+        sex += 12;
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added CSGO Speed", (float) (this.width / 2), 100 + sex, green);
         sex += 12;
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added Block Fly", (float) (this.width / 2), 100 + sex, green);
+        sex += 12;
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added BMC Tower", (float) (this.width / 2), 100 + sex, green);
+        sex += 12;
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added BMC Scaffold Rots (Experimental)", (float) (this.width / 2), 100 + sex, green);
         sex += 12;
 
         if(beta) {

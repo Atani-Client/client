@@ -58,7 +58,7 @@ public class MoveUtil implements Methods {
                 + mc.thePlayer.motionZ * mc.thePlayer.motionZ);
     }
 
-    public static boolean canSprint(final boolean legit) {
+    public static boolean canSprint(boolean legit) {
         return (legit ? mc.thePlayer.moveForward >= 0.8F
                 && !mc.thePlayer.isCollidedHorizontally
                 && (mc.thePlayer.getFoodStats().getFoodLevel() > 6 || mc.thePlayer.capabilities.allowFlying)

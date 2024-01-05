@@ -232,15 +232,14 @@ public class Speed extends Module {
                     if(isMoving())
                         speed = 0.27F;
 
-                    if(mc.thePlayer.hurtTime != 0)
-                        speed *= 1.4F;
-
                     if(mc.thePlayer.isPotionActive(Potion.moveSpeed))
-                        speed *= 1.3F;
+                        speed *= 1.15F;
 
-                    if(mc.thePlayer.ticksExisted % 5 == 0) {
-                        speed *= 1.4F;
-                    }
+                    if(mc.thePlayer.hurtTime != 0)
+                        speed *= (float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 1.2 : 1.4);
+
+                    if(KillAura.curEntity != null)
+                        speed *= 1.05F;
 
                     MoveUtil.strafe(speed);
                 }

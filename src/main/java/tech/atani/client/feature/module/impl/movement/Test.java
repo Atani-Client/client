@@ -29,9 +29,7 @@ public class Test extends Module {
 
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {
-        if(timer.hasReached(1000, true))
-            // (Important)
-            mc.thePlayer.sendChatMessage("/report Axidagret");
+        mc.gameSettings.fovSetting = 130;
     }
 
     @Override

@@ -102,13 +102,10 @@ public class Scaffold extends Module {
         if(tower.getValue() && mc.gameSettings.keyBindJump.pressed && canTower) {
             switch(towerMode.getValue()) {
                 case "Polar":
-                    /*
                     if(mc.thePlayer.onGround) {
                         mc.thePlayer.jump();
                         mc.thePlayer.motionY = 0.39;
                     }
-                     */
-                    mc.thePlayer.motionY -= 0.009;
                     break;
                 case "Vanilla":
                     mc.thePlayer.motionY = 0.3;

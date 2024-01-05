@@ -73,6 +73,8 @@ public class AtaniChangeLog extends GuiScreen implements GuiYesNoCallback, Clien
         sex += 12;
         FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added BMC Scaffold Rots (Experimental)", (float) (this.width / 2), 100 + sex, green);
         sex += 12;
+        FontStorage.getInstance().findFont("Roboto", 19).drawCenteredString("- Added CustomFov", (float) (this.width / 2), 100 + sex, green);
+        sex += 12;
 
         if(beta) {
             sex += 54;

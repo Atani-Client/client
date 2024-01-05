@@ -210,7 +210,6 @@ public class Speed extends Module {
             case "BlocksMC":
                 bmcTicks = mc.thePlayer.onGround ? 0 : bmcTicks + 1;
                 mc.gameSettings.keyBindJump.pressed = isMoving();
-                mc.gameSettings.keyBindSprint.pressed = isMoving();
 
                 switch (bmcTicks) {
                     case 0:
@@ -236,7 +235,7 @@ public class Speed extends Module {
                         speed *= 1.15F;
 
                     if(mc.thePlayer.hurtTime != 0)
-                        speed *= (float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 1.2 : 1.4);
+                        speed *= (float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 1.2 : 1.3);
 
                     if(KillAura.curEntity != null)
                         speed *= 1.05F;

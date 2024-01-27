@@ -36,6 +36,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "CSGO","Strafe", "Incognito", "Karhu", "MosPixel", "Spoof", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
+            bmcMode = new StringBoxValue("BlocksMC Mode", "Which mode will the BlocksMC mode use?", this, new String[]{"Normal", "Low"}, new Supplier[]{() -> mode.is("Spartan")}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             karhuMode = new StringBoxValue("Karhu Mode", "Which mode will the karhu mode use?", this, new String[]{"Normal", "Rage"}, new Supplier[]{() -> mode.is("Karhu")}),
             intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Stable", "Ground Strafe", "Combined Strafe", "Timer"}, new Supplier[]{() -> mode.is("Intave")}),
@@ -208,39 +209,50 @@ public class Speed extends Module {
                 MoveUtil.strafe();
                 break;
             case "BlocksMC":
-                bmcTicks = mc.thePlayer.onGround ? 0 : bmcTicks + 1;
-                mc.gameSettings.keyBindJump.pressed = isMoving();
+                switch (bmcMode.getValue()) {
+                    case "Normal":
+                        bmcTicks = mc.thePlayer.onGround ? 0 : bmcTicks + 1;
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
 
-                switch (bmcTicks) {
-                    case 0:
-                        mc.timer.timerSpeed = 1.07F;
-                        MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(1.25F));
+                        switch (bmcTicks) {
+                            case 0:
+                                mc.timer.timerSpeed = 1.07F;
+                                MoveUtil.strafe(MoveUtil.getSpeed() + MoveUtil.getSpeedBoost(1.25F));
+                                break;
+                            case 1:
+                                mc.thePlayer.motionY -= 0.005;
+                                mc.thePlayer.motionX *= 1.005;
+                                mc.thePlayer.motionZ *= 1.005;
+                                break;
+                            case 2:
+                                mc.timer.timerSpeed = 1;
+                                break;
+                        }
+
+                        if(!mc.thePlayer.onGround) {
+                            float speed = 0;
+                            if(isMoving())
+                                speed = 0.27F;
+
+                            if(mc.thePlayer.isPotionActive(Potion.moveSpeed))
+                                speed *= 1.15F;
+
+                            if(mc.thePlayer.hurtTime != 0)
+                                speed *= (float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 1.2 : 1.3);
+
+                            if(KillAura.curEntity != null)
+                                speed *= 1.05F;
+
+                            MoveUtil.strafe(speed);
+                        }
                         break;
-                    case 1:
-                        mc.thePlayer.motionY -= 0.005;
-                        mc.thePlayer.motionX *= 1.005;
-                        mc.thePlayer.motionZ *= 1.005;
+                    case "Low":
+                        mc.gameSettings.keyBindJump.pressed = isMoving();
+                        bmcTicks = mc.thePlayer.onGround ? 0 : bmcTicks + 1;
+
+                        if(bmcTicks == 4 && mc.thePlayer.hurtTime == 0)
+                            mc.thePlayer.motionY = -0.09800000190734864;
                         break;
-                    case 2:
-                        mc.timer.timerSpeed = 1;
-                        break;
-                }
-
-                if(!mc.thePlayer.onGround) {
-                    float speed = 0;
-                    if(isMoving())
-                        speed = 0.27F;
-
-                    if(mc.thePlayer.isPotionActive(Potion.moveSpeed))
-                        speed *= 1.15F;
-
-                    if(mc.thePlayer.hurtTime != 0)
-                        speed *= (float) (mc.thePlayer.isPotionActive(Potion.moveSpeed) ? 1.2 : 1.3);
-
-                    if(KillAura.curEntity != null)
-                        speed *= 1.05F;
-
-                    MoveUtil.strafe(speed);
                 }
                 break;
             case "Custom":
@@ -1340,6 +1352,7 @@ public class Speed extends Module {
                  */
                 break;
             case "Test":
+                //-0.0980000019073
                 break;
                 /*
                 if (!mc.thePlayer.isInWeb && !mc.thePlayer.isInLava() && !mc.thePlayer.isInWater() && !mc.thePlayer.isOnLadder() && mc.thePlayer.ridingEntity == null) {

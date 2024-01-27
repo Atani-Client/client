@@ -36,7 +36,7 @@ import tech.atani.client.feature.value.impl.StringBoxValue;
 @ModuleData(name = "Speed", description = "Makes you speedy", category = Category.MOVEMENT)
 public class Speed extends Module {
     private final StringBoxValue mode = new StringBoxValue("Mode", "Which mode will the module use?", this, new String[] {"BHop", "CSGO","Strafe", "Incognito", "Karhu", "MosPixel", "Spoof", "NCP", "Old NCP", "Verus", "BlocksMC", "Vulcan", "Spartan", "Grim", "Matrix", "WatchDog", "Intave", "MineMenClub", "Polar", "Custom", "AAC3", "AAA"}),
-            bmcMode = new StringBoxValue("BlocksMC Mode", "Which mode will the BlocksMC mode use?", this, new String[]{"Normal", "Low"}, new Supplier[]{() -> mode.is("Spartan")}),
+            bmcMode = new StringBoxValue("BlocksMC Mode", "Which mode will the BlocksMC mode use?", this, new String[]{"Normal", "Low"}, new Supplier[]{() -> mode.is("BlocksMC")}),
             spartanMode = new StringBoxValue("Spartan Mode", "Which mode will the spartan mode use?", this, new String[]{"Normal", "Y-Port Jump", "Timer"}, new Supplier[]{() -> mode.is("Spartan")}),
             karhuMode = new StringBoxValue("Karhu Mode", "Which mode will the karhu mode use?", this, new String[]{"Normal", "Rage"}, new Supplier[]{() -> mode.is("Karhu")}),
             intaveMode = new StringBoxValue("Intave Mode", "Which mode will the intave mode use?", this, new String[]{"Strafe", "Strafe 2", "Rage", "Stable", "Ground Strafe", "Combined Strafe", "Timer"}, new Supplier[]{() -> mode.is("Intave")}),
@@ -252,6 +252,8 @@ public class Speed extends Module {
 
                         if(bmcTicks == 4 && mc.thePlayer.hurtTime == 0)
                             mc.thePlayer.motionY = -0.09800000190734864;
+
+                        MoveUtil.strafe();
                         break;
                 }
                 break;

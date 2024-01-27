@@ -12,7 +12,7 @@ import tech.atani.client.utility.math.time.TimeHelper;
 
 @ModuleData(name = "CustomFov", description = "Change FOV to a custom value over 110.", category = Category.PLAYER)
 public class CustomFov extends Module {
-    private final SliderValue<Integer> fov = new SliderValue<Integer>("FOV", "What will the fov be changed to?", this, 130, 10, 200, 0);
+    private final SliderValue<Integer> fov = new SliderValue<Integer>("FOV", "What will the fov be changed to?", this, 130, 10, 180, 0);
 
     @Listen
     public final void onMotion(UpdateMotionEvent updateMotionEvent) {

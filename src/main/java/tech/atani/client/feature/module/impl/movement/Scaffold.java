@@ -225,7 +225,7 @@ public class Scaffold extends Module {
             mc.thePlayer.setSprinting(false);
             mc.gameSettings.keyBindSprint.pressed = false;
         } else {
-            mc.thePlayer.setSprinting(MoveUtil.canSprint(true));
+            mc.thePlayer.setSprinting(isMoving());
             mc.gameSettings.keyBindSprint.pressed = true;
         }
 

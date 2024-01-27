@@ -71,6 +71,9 @@ public class Flight extends Module {
                     case "Collision":
                         boxesEvent.setBoundingBox(new AxisAlignedBB(-5, -1, -5, 5, 1, 5).offset(boxesEvent.getBlockPos().getX(), boxesEvent.getBlockPos().getY(), boxesEvent.getBlockPos().getZ()));
                         break;
+                    case "Jump":
+                        boxesEvent.setBoundingBox(new AxisAlignedBB(-5, -1, -5, 5, 1, 5).offset(boxesEvent.getBlockPos().getX(), Math.round(startY), boxesEvent.getBlockPos().getZ()));
+                        break;
                 }
                 break;
             case "Collision":
@@ -162,10 +165,8 @@ public class Flight extends Module {
                             }
                             break;
                         case "Jump":
-                            if (verusTimer.hasReached(545, true)) {
+                            if(mc.thePlayer.onGround)
                                 mc.thePlayer.jump();
-                                mc.thePlayer.onGround = true;
-                            }
                             break;
                     }
                 }

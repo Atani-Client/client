@@ -33,7 +33,7 @@ public class SpinBot extends Module {
         mc.thePlayer.setSprinting(sprint.getValue());
         switch (mode.getValue()) {
             case "Normal":
-                yaw += 1;
+                yaw += 3;
                 break;
             case "Randomization":
                 yaw += Math.random() * 4;
@@ -47,7 +47,7 @@ public class SpinBot extends Module {
 
         PlayerUtil.addChatMessgae("S: " + yaw, true);
 
-        //rotationEvent.setYaw(yaw);
+        rotationEvent.setYaw(yaw);
     }
 
     @Listen

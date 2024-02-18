@@ -11,7 +11,7 @@ import tech.atani.client.feature.value.impl.SliderValue;
 @ModuleData(name = "TriggerBot", description = "Automatically clicks at entities", category = Category.COMBAT)
 public class TriggerBot extends Module {
 
-    private final SliderValue<Integer> cps = new SliderValue<>("CPS", "How many cps will the client click?", this, 12, 1, 24, 1);
+    private final SliderValue<Integer> cps = new SliderValue<>("CPS", "How many cps will the client click?", this, 12, 1, 24, 2);
 
     private final TimeHelper timer = new TimeHelper();
 

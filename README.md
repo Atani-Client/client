@@ -1,35 +1,26 @@
-# ATANI CLIENT!
+# Atani Client
+## About  
+Atani Client is now a discontinued client. If you want new features make them yourself and make a pull request which we'll then merge. We are currently working on a recode so join our discord if you want to see more.
 
-CURRENT BUGS:
+## Current Issues  
+- No config system, rename your downloaded config to **"modules"** to use it.
 
-Some (Most) code is super goofy
+## Reporting Bugs  
+- Join our **[Discord server](https://discord.gg/vXNhNJq5gq)**  
 
-Report bugs at the atani discord or by dming kellohyllyy on discord
+## Developers  
+- **Kellohylly** (*kellohyllyy*) – Owner  
+- Some code was "borrowed" from **Tabio**
 
-DISCORD: https://discord.gg/vXNhNJq5gq
+## Credits
+### Previous developers  
+- **Heritsy**  
+- **Geuxy**  
+- **Tabio**  
+- **MarkGG**  
+- **Liticane**  
+- **Luca**
+- **Exterminate**
 
-Current devs:
-
-Kellohylly (kellohyllyy) Owner
-
-NO CONFIG SYSTEM YET | TO USE CONFIGS RENAME THE CONFIG YOU DOWNLOADED TO "modules"
-
-dont come crying to me if you dont like the code
-
-some of it was skidded by tabio!
-
-CREDITS:
-
-Old devs:
-
-Heritsy
-
-Geuxy
-
-Tabio
-
-MarkGG
-
-Liticane
-
-luca.class
+### Source code (some)
+- [FDP Client](https://github.com/SkidderMC/FDPClient)

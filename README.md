@@ -9,8 +9,7 @@ Atani Client is now a discontinued client. If you want new features make them yo
 - Join our **[Discord server](https://discord.gg/vXNhNJq5gq)**  
 
 ## Developers  
-- **Kellohylly** (*kellohyllyy*) – Owner  
-- Some code was "borrowed" from **Tabio**
+- **Kellohylly** (*kellohyllyy*) – Owner
 
 ## Credits
 ### Previous developers  
